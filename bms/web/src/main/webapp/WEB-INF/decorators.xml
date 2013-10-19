@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/WEB-INF/jsp/decorators">
+    <decorator name="system" page="system.jsp">
+        <pattern>/system/*</pattern>
+    </decorator>
+
+    <excludes>
+        <pattern>/css/*</pattern>
+        <pattern>/js/*</pattern>
+        <pattern>/images/*</pattern>
+
+        <pattern>/index.jsp*</pattern>
+        <pattern>/login*</pattern>
+        <pattern>/400.jsp*</pattern>
+        <pattern>/403.jsp*</pattern>
+        <pattern>/404.jsp*</pattern>
+        <pattern>/exception.jsp*</pattern>
+    </excludes>
+</decorators>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/mvc
+          http://www.springframework.org/schema/mvc/spring-mvc.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--annotation configuration -->
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="cn.greenwishing.bms"/>
+
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+
+    <!--static resource-->
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/images/**" location="/images/"/>
+
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="methodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+        <property name="paramName" value="m"/>
+    </bean>
+
+    <bean id="handlerAdapter" class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/**">commonController</prop>
+                <prop key="/system/billing/**">billingController</prop>
+                <prop key="/system/billing/add">billingFormController</prop>
+                <prop key="/system/article/**">articleController</prop>
+                <prop key="/system/article/add">articleFormController</prop>
+                <prop key="/system/article/edit">articleFormController</prop>
+                <prop key="/system/article/category/**">articleCategoryController</prop>
+                <prop key="/system/article/category/add">articleCategoryFormController</prop>
+                <prop key="/system/article/category/edit">articleCategoryFormController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="commonController" class="cn.greenwishing.bms.web.controller.CommonController"/>
+    <bean id="billingController" class="cn.greenwishing.bms.web.controller.billing.BillingController">
+        <property name="billingService" ref="billingService"/>
+    </bean>
+    <bean id="billingFormController" class="cn.greenwishing.bms.web.controller.billing.BillingFormController">
+        <property name="billingService" ref="billingService"/>
+        <property name="validator" ref="billingValidator"/>
+    </bean>
+    <bean id="articleController" class="cn.greenwishing.bms.web.controller.article.ArticleController">
+        <property name="articleService" ref="articleService"/>
+    </bean>
+    <bean id="articleFormController" class="cn.greenwishing.bms.web.controller.article.ArticleFormController">
+        <property name="articleService" ref="articleService"/>
+        <property name="validator" ref="articleValidator"/>
+    </bean>
+    <bean id="articleCategoryController" class="cn.greenwishing.bms.web.controller.article.ArticleCategoryController">
+        <property name="articleService" ref="articleService"/>
+    </bean>
+    <bean id="articleCategoryFormController" class="cn.greenwishing.bms.web.controller.article.ArticleCategoryFormController">
+        <property name="articleService" ref="articleService"/>
+    </bean>
+</beans>
