@@ -5,17 +5,6 @@
 <head>
     <title>记账列表</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <script type="text/javascript" src="/js/qq_blog_list.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            var table = $('#qq_blog_list');
-            table.append('<tr><th>序号</th><th>分类</th><th>时间</th><th>标题</th><th>编号</th><th>评论数</th></tr>');
-            for (var i in blogList) {
-                var blog = blogList[i];
-                table.append('<tr><td>'+i+'</td><td>'+blog.cate+'</td><td>'+blog.pubTime+'</td><td>'+blog.title+'</td><td>'+blog.blogId+'</td><td>'+blog.commentNum+'</td></tr>')
-            }
-        });
-    </script>
 </head>
 <body>
 <div class="operation">
@@ -24,17 +13,17 @@
 <div>
     <table class="content_table">
         <tr>
-            <th>名称</th>
+            <th class="w120">名称</th>
             <th>描述</th>
-            <th>类型</th>
-            <th>金额</th>
-            <th>时间</th>
-            <th>操作</th>
+            <th class="w100">类型</th>
+            <th class="w100">金额</th>
+            <th class="w100">时间</th>
+            <th class="w120">操作</th>
         </tr>
         <c:forEach items="${billingDTOs}" var="billing">
             <tr>
                 <td>${billing.name}</td>
-                <td>${billing.description}</td>
+                <td><div title="${billing.description}">${billing.description}</div></td>
                 <td>${billing.type}</td>
                 <td><span class="price ${billing.type}">${billing.amount}</span></td>
                 <td>${billing.occurredTime}</td>
@@ -42,7 +31,6 @@
             </tr>
         </c:forEach>
     </table>
-    <table id="qq_blog_list" style="margin-top: 20px;" class="content_table"></table>
 </div>
 </body>
 </html>

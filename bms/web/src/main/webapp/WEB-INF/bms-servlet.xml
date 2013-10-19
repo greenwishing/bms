@@ -70,5 +70,6 @@
     </bean>
     <bean id="articleCategoryFormController" class="cn.greenwishing.bms.web.controller.article.ArticleCategoryFormController">
         <property name="articleService" ref="articleService"/>
+        <property name="validator" ref="articleCategoryValidator"/>
     </bean>
 </beans>

@@ -25,6 +25,12 @@ html,body { overflow:-moz-scrollbars-vertical; min-height: 100%; }
 .textarea { border: solid 1px rgb(169,169,169); padding: 3px 5px; resize: none;}
 .select { padding: 3px 5px;}
 
+.w45 { width: 45px;}
+.w50 { width: 50px;}
+.w60 { width: 60px;}
+.w75 { width: 75px;}
+.w100 { width: 100px;}
+.w120 { width: 120px;}
 .w200 { width: 200px;}
 .w400 { width: 400px;}
 
@@ -59,7 +65,7 @@ html,body { overflow:-moz-scrollbars-vertical; min-height: 100%; }
 .form .items .item label { display: inline-block; width: 80px; margin-right: 3px; text-align: right;}
 .form .items .item span[id$=errors] { color: red;}
 
-.operation { padding: 10px 0;}
+.operation { padding: 10px;}
 
 .price.INCOME { color: green;}
 .price.EXPEND { color: red;}
