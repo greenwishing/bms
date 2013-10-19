@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>文章分类列表</title>
+    <title>文章分类</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
@@ -15,10 +15,10 @@
     <table class="content_table">
         <tr>
             <th>名称</th>
-            <th>操作</th>
+            <th class="w100">操作</th>
         </tr>
-        <c:forEach items="${categoryDTOs}" var="category">
-            <tr>
+        <c:forEach items="${categoryDTOs}" var="category" varStatus="i">
+            <tr class="${i.index%2==0?'tr_odd':''}">
                 <td>${category.name}</td>
                 <td><a href="edit?guid=${category.guid}">编辑</a></td>
             </tr>

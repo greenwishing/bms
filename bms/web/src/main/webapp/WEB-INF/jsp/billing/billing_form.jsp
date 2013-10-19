@@ -40,6 +40,7 @@
                     <label>&nbsp;</label>
                     <spring-form:hidden path="occurredUserGuid"/>
                     <input type="submit" value="保存"/>
+                    <input type="button" value="返回" onclick="history.back()"/>
                 </div>
             </div>
         </spring-form:form>

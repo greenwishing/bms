@@ -4,7 +4,7 @@
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 <html>
 <head>
-    <title><decorator:title default="bms"/> - 凡</title>
+    <title><decorator:title default="bms"/></title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <link rel="stylesheet" href="/css/base.css" type="text/css" media="all" />
     <script type="text/javascript" src="/js/jquery/jquery-1.7.min.js"></script>

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>记账列表</title>
+    <title>账单</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
@@ -20,8 +20,8 @@
             <th class="w100">时间</th>
             <th class="w120">操作</th>
         </tr>
-        <c:forEach items="${billingDTOs}" var="billing">
-            <tr>
+        <c:forEach items="${billingDTOs}" var="billing" varStatus="i">
+            <tr class="${i.index%2==0?'tr_odd':''}">
                 <td>${billing.name}</td>
                 <td><div title="${billing.description}">${billing.description}</div></td>
                 <td>${billing.type}</td>

@@ -73,9 +73,9 @@ html,body { overflow:-moz-scrollbars-vertical; min-height: 100%; }
 
 .content_table { width: 100%; table-layout: fixed; border:none 0; border-collapse:collapse;}
 .content_table tr { height: 35px;}
-.content_table tr.tr_odd { background-color: rgb(252,252,255);}
-.content_table tr:hover td { background-color: rgb(248,248,248) !important;}
 .content_table tr th { text-align: left; font-weight: normal; padding: 5px 0 0 4px; border-bottom: 2px solid rgb(130,180,255); background: #ececec repeat-x 0 -20px;}
 .content_table tr th.first { border-left: none;}
 .content_table tr td { border-bottom: 1px solid rgb(235,235,235); padding: 0 0 0 4px; cursor: default;}
 .content_table tr td div { text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+.content_table tr:hover td { background-color: rgb(248,248,248) !important;}
+.content_table tr.tr_odd td { background-color: rgb(255,252,252);}
