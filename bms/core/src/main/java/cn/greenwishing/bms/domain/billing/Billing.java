@@ -3,6 +3,7 @@ package cn.greenwishing.bms.domain.billing;
 import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.user.User;
+import cn.greenwishing.bms.utils.paging.BillingPaging;
 import org.joda.time.LocalDate;
 
 import java.util.List;
@@ -49,8 +50,8 @@ public class Billing extends AbstractDomain {
         getRepository().saveOrUpdate(this);
     }
 
-    public static List<Billing> loadAll() {
-        return getRepository().findAll(Billing.class);
+    public static BillingPaging findByPaging(BillingPaging paging) {
+        return getRepository().findBillingByPaging(paging);
     }
 
     public static void deleteByGuid(String guid) {

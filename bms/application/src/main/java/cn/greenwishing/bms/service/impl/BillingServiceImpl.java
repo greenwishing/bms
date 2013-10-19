@@ -2,7 +2,9 @@ package cn.greenwishing.bms.service.impl;
 
 import cn.greenwishing.bms.domain.billing.Billing;
 import cn.greenwishing.bms.dto.BillingDTO;
+import cn.greenwishing.bms.dto.BillingPagingDTO;
 import cn.greenwishing.bms.service.BillingService;
+import cn.greenwishing.bms.utils.paging.BillingPaging;
 
 import java.util.List;
 
@@ -12,9 +14,9 @@ import java.util.List;
 public class BillingServiceImpl implements BillingService {
 
     @Override
-    public List<BillingDTO> loadBillings() {
-        List<Billing> billings = Billing.loadAll();
-        return BillingDTO.toDTOs(billings);
+    public BillingPagingDTO loadBillingPaging(BillingPagingDTO pagingDTO) {
+        BillingPaging paging = Billing.findByPaging(pagingDTO.toPaging());
+        return pagingDTO.convertResult(paging);
     }
 
     @Override

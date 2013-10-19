@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.service;
 
 import cn.greenwishing.bms.dto.BillingDTO;
+import cn.greenwishing.bms.dto.BillingPagingDTO;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public interface BillingService {
 
-    List<BillingDTO> loadBillings();
+    BillingPagingDTO loadBillingPaging(BillingPagingDTO pagingDTO);
 
     void saveOrUpdateBilling(BillingDTO billingDTO);
 

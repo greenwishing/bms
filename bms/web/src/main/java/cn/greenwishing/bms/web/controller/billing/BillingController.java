@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.web.controller.billing;
 
-import cn.greenwishing.bms.dto.BillingDTO;
+import cn.greenwishing.bms.domain.billing.BillingType;
+import cn.greenwishing.bms.dto.BillingPagingDTO;
 import cn.greenwishing.bms.service.BillingService;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
@@ -8,7 +9,8 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Wu Fan
@@ -24,8 +26,13 @@ public class BillingController extends MultiActionController {
     }
 
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<BillingDTO> billingDTOs = billingService.loadBillings();
-        return new ModelAndView("billing/billing_list", "billingDTOs", billingDTOs);
+        BillingPagingDTO billingPagingDTO = new BillingPagingDTO();
+        bind(request, billingPagingDTO);
+        BillingPagingDTO pagingDTO = billingService.loadBillingPaging(billingPagingDTO);
+        Map<String, Object> model = new HashMap<>();
+        model.put("pagingDTO", pagingDTO);
+        model.put("types", BillingType.values());
+        return new ModelAndView("billing/billing_list", model);
     }
 
     public ModelAndView delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
