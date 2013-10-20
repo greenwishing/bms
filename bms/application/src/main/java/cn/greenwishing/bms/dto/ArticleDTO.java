@@ -3,6 +3,7 @@ package cn.greenwishing.bms.dto;
 import cn.greenwishing.bms.domain.article.Article;
 import cn.greenwishing.bms.domain.article.ArticleCategory;
 import cn.greenwishing.bms.domain.user.User;
+import cn.greenwishing.bms.utils.HtmlFilter;
 import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
@@ -81,6 +82,10 @@ public class ArticleDTO {
 
     public String getContent() {
         return content;
+    }
+
+    public String getContentText() {
+        return HtmlFilter.doFilter(content);
     }
 
     public void setContent(String content) {

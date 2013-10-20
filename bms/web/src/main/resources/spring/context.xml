@@ -6,10 +6,11 @@
 
     <!-- property configuration -->
     <bean id="propertyConfigurer"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+          class="cn.greenwishing.bms.utils.BMSProperties">
         <property name="locations">
             <list>
                 <value>classpath:database.properties</value>
+                <value>classpath:application.properties</value>
             </list>
         </property>
     </bean>

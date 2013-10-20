@@ -23,7 +23,7 @@
         <c:forEach items="${articleDTOs}" var="article" varStatus="i">
             <tr class="${i.index%2==0?'tr_odd':''}">
                 <td><div title="${article.title}">${article.title}</div></td>
-                <td><div title="${article.content}">${article.content}</div></td>
+                <td><div title="${article.contentText}">${article.contentText}</div></td>
                 <td>${article.categoryName}</td>
                 <td>${article.creationTime}</td>
                 <td><a href="edit?guid=${article.guid}">编辑</a></td>

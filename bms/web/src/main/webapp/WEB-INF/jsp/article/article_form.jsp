@@ -6,20 +6,37 @@
 <head>
     <title>写文章</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script type="text/javascript" src="/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="/js/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            WF.editor.init('article_content');
+        });
+        function articleFormSubmit() {
+            WF.form.submit($('#article_form'), {first: function(){
+                var content = WF.editor.getContent('article_content');
+                $('#content').val(content);
+            }});
+        }
+    </script>
 </head>
 <body>
     <div class="form">
-        <spring-form:form commandName="articleDTO" method="post">
+        <spring-form:form id="article_form" commandName="articleDTO" method="post" onsubmit="return false;">
             <div class="items">
                 <div class="item">
                     <label>标题</label>
                     <spring-form:input path="title" cssClass="text"/>
                     <spring-form:errors path="title"/>
                 </div>
-                <div class="item">
+                <div class="item editor">
                     <label>内容</label>
-                    <spring-form:textarea path="content" cssClass="textarea w400 h300"/>
-                    <spring-form:errors path="content"/>
+                    <div class="content">
+                        <spring-form:textarea id="content" path="content" cssClass="textarea hidden"/>
+                        <script type="text/plain" id="article_content">${articleDTO.content}</script>
+                        <spring-form:errors path="content"/>
+                    </div>
+                    <div class="clear"></div>
                 </div>
                 <div class="item">
                     <label>分类</label>
@@ -27,8 +44,8 @@
                 </div>
                 <div class="item">
                     <label>&nbsp;</label>
-                    <input type="submit" value="保存"/>
-                    <input type="button" value="返回" onclick="history.back()"/>
+                    <input type="button" value="保存" onclick="articleFormSubmit();"/>
+                    <input type="button" value="返回" onclick="WF.page.list()"/>
                 </div>
             </div>
         </spring-form:form>

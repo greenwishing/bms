@@ -19,7 +19,7 @@
                 <div class="item">
                     <label>&nbsp;</label>
                     <input type="submit" value="保存"/>
-                    <input type="button" value="返回" onclick="history.back()"/>
+                    <input type="button" value="返回" onclick="WF.page.list()"/>
                 </div>
             </div>
         </spring-form:form>

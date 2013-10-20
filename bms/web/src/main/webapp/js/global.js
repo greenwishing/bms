@@ -14,6 +14,29 @@ var WF = {
     page: {
         forward: function(url) {
             location.href = url;
+        },
+        list: function() {
+            WF.page.forward('list');
+        }
+    },
+    editor: {
+        init: function(id) {
+            var editor = new UE.ui.Editor();
+            editor.render(id);
+        },
+        getContent: function(id) {
+            return UE.getEditor(id).getContent();
+        }
+    },
+    form: {
+        submit: function(form, params) {
+            if (params) {
+                var firstFn = params.first;
+                if (firstFn && typeof firstFn == 'function'){
+                    firstFn();
+                }
+            }
+            $(form).submit();
         }
     }
 };
