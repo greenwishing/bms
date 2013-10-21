@@ -30,4 +30,9 @@ public class BMSProperties extends PropertyPlaceholderConfigurer {
     public static String get(String name) {
         return ctxPropertiesMap.get(name);
     }
+
+    public static boolean isDevelopMode() {
+        String develop = BMSProperties.get("bms.system.develop");
+        return "true".equals(develop);
+    }
 }
