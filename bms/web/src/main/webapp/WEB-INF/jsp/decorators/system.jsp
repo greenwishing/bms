@@ -15,6 +15,7 @@
 <div class="container">
     <div class="head">
         <div class="logo"><span>凡</span></div>
+        <div class="toolbar"><a href="/logout">退出</a></div>
     </div>
     <div class="body">
         <div class="left">

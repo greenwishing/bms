@@ -1,11 +1,18 @@
 package cn.greenwishing.bms.utils;
 
+import cn.greenwishing.bms.shared.PublicUserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 /**
  * @author Wu Fan
  */
 public class SecurityHolder {
 
+    public static PublicUserDetails get() {
+        return (PublicUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
     public static String getUserGuid() {
-        return "cd4b1012-e53f-47bf-b0db-91a7fe9fb09b";
+        return get().getGuid();
     }
 }

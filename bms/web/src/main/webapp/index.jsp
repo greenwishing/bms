@@ -3,11 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>greenwishing.cn</title>
+    <title>欢迎</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <meta http-equiv="refresh" content="1;url=/system/article/list">
+    <meta http-equiv="refresh" content="1;url=/login">
 </head>
 <body>
- 页面跳转中...
+    正在跳转至登录页面……
 </body>
 </html>

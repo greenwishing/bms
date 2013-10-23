@@ -18,7 +18,11 @@ create table `user` (
   id int,
   guid varchar(255),
   creation_time datetime,
-  name varchar(255)
+  username varchar(255),
+  account varchar(255),
+  password varchar(255),
+  last_login_time datetime,
+  status varchar(255)
 );
 
 drop table if exists article_category;

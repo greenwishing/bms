@@ -35,7 +35,7 @@
             <th class="w100">类型</th>
             <th class="w100">金额</th>
             <th class="w100">时间</th>
-            <th class="w120">操作</th>
+            <%--<th class="w120">操作</th>--%>
         </tr>
         <c:forEach items="${pagingDTO.list}" var="billing" varStatus="i">
             <tr class="${i.index%2==0?'tr_odd':''}">
@@ -44,7 +44,7 @@
                 <td>${billing.type}</td>
                 <td><span class="price ${billing.type}">${billing.amount}</span></td>
                 <td>${billing.occurredTime}</td>
-                <td><a href="delete?guid=${billing.guid}">删除</a></td>
+                <%--<td><a href="delete?guid=${billing.guid}">删除</a></td>--%>
             </tr>
         </c:forEach>
     </table>
