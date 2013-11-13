@@ -28,6 +28,9 @@
     </form>
 </div>
 <div>
+    <div class="paging">
+        <tags:paging formName="billing_search_form" paging="${pagingDTO}"/>
+    </div>
     <table class="content_table">
         <tr>
             <th class="w120">名称</th>

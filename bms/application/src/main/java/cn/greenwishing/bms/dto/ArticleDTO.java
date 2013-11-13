@@ -60,6 +60,9 @@ public class ArticleDTO {
         if (ValidationUtils.isNotEmpty(categoryGuid)) {
             category = ArticleCategory.findByGuid(categoryGuid);
         }
+        if (ValidationUtils.isEmpty(title)) {
+            this.title = JodaUtils.today().toString(JodaUtils.DATE_FORMAT);
+        }
         article.update(title, content, category);
         return article;
     }

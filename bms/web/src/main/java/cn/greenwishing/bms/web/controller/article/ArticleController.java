@@ -2,6 +2,7 @@ package cn.greenwishing.bms.web.controller.article;
 
 import cn.greenwishing.bms.dto.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.ArticleDTO;
+import cn.greenwishing.bms.dto.ArticlePagingDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -24,8 +25,10 @@ public class ArticleController extends MultiActionController {
     }
 
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<ArticleDTO> articleDTOs = articleService.loadArticles();
-        return new ModelAndView("article/article_list", "articleDTOs", articleDTOs);
+        ArticlePagingDTO articlePagingDTO = new ArticlePagingDTO();
+        bind(request, articlePagingDTO);
+        ArticlePagingDTO pagingDTO = articleService.loadArticlePaging(articlePagingDTO);
+        return new ModelAndView("article/article_list", "pagingDTO", pagingDTO);
     }
 
     public ModelAndView category(HttpServletRequest request, HttpServletResponse response) throws Exception {

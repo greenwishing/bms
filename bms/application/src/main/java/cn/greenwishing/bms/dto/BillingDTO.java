@@ -23,7 +23,7 @@ public class BillingDTO {
     private String description;
     private BillingType type;
     private String amount;
-    private String occurredTime;
+    private String occurredTime = JodaUtils.today().toString(JodaUtils.DATE_FORMAT);
     private String occurredUserGuid = SecurityHolder.getUserGuid();
 
     public BillingDTO(){}

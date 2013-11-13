@@ -3,6 +3,7 @@ package cn.greenwishing.bms.domain.article;
 import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.user.User;
+import cn.greenwishing.bms.utils.paging.ArticlePaging;
 
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class Article extends AbstractDomain {
         getRepository().saveOrUpdate(this);
     }
 
-    public static List<Article> loadAll() {
-        return getRepository().findAll(Article.class);
+    public static ArticlePaging loadByPaging(ArticlePaging articlePaging) {
+        return getRepository().findArticlePaging(articlePaging);
     }
 
     public static Article findByGuid(String guid) {

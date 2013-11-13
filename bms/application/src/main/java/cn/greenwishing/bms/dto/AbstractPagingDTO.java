@@ -11,7 +11,7 @@ import java.util.List;
  * @author Wu Fan
  */
 public abstract class AbstractPagingDTO<T, P extends AbstractPaging> implements Paging<T> {
-    protected int pageSize = 20;
+    protected int pageSize = 10;
     protected int currentPage = 1;
     private int pageCount;
     private long totalCount;

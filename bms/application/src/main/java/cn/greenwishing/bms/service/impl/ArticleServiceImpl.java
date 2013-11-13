@@ -4,8 +4,10 @@ import cn.greenwishing.bms.domain.article.Article;
 import cn.greenwishing.bms.domain.article.ArticleCategory;
 import cn.greenwishing.bms.dto.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.ArticleDTO;
+import cn.greenwishing.bms.dto.ArticlePagingDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import cn.greenwishing.bms.utils.SecurityHolder;
+import cn.greenwishing.bms.utils.paging.ArticlePaging;
 
 import java.util.List;
 
@@ -14,9 +16,9 @@ import java.util.List;
  */
 public class ArticleServiceImpl implements ArticleService {
     @Override
-    public List<ArticleDTO> loadArticles() {
-        List<Article> articles = Article.loadAll();
-        return ArticleDTO.toDTOs(articles);
+    public ArticlePagingDTO loadArticlePaging(ArticlePagingDTO articlePagingDTO) {
+        ArticlePaging paging = Article.loadByPaging(articlePagingDTO.toPaging());
+        return articlePagingDTO.convertResult(paging);
     }
 
     @Override

@@ -17,11 +17,6 @@ public class ArticleValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         ArticleDTO articleDTO = (ArticleDTO) o;
-
-        String title = articleDTO.getTitle();
-        if (ValidationUtils.isEmpty(title)) {
-            errors.rejectValue("title", "title", "请输入文章标题");
-        }
         String content = articleDTO.getContent();
         if (ValidationUtils.isEmpty(content)) {
             errors.rejectValue("content", "content", "请输入文章内容");
