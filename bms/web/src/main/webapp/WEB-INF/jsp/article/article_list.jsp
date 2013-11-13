@@ -15,7 +15,7 @@
 <div class="search">
     <form id="article_search_form" action="list">
         <div class="items">
-            <div class="item"><label>关键字</label><input name="key" class="text"/></div>
+            <div class="item"><label>关键字</label><input name="key" class="text" value="${pagingDTO.key}"/></div>
             <div class="item"><input type="button" value="查询" onclick="WF.paging.GO($('#article_search_form'), 1)"/></div>
         </div>
     </form>

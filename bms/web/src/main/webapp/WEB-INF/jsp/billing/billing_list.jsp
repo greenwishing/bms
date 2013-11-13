@@ -14,7 +14,7 @@
 <div class="search">
     <form id="billing_search_form" action="list">
         <div class="items">
-            <div class="item"><label>关键字</label><input name="key" class="text"/></div>
+            <div class="item"><label>关键字</label><input name="key" class="text" value="${pagingDTO.key}"/></div>
             <div class="item"><label>类型</label>
                 <select name="type" class="select">
                     <option value="">请选择</option>
@@ -22,7 +22,7 @@
                         <option value="${type.value}" ${pagingDTO.type eq type ?'selected':''}>${type.label}</option>
                     </c:forEach>
                 </select></div>
-            <div class="item"><label>时间</label><input name="dateFrom" class="text"/>-<input name="dateTo" class="text"/></div>
+            <div class="item"><label>时间</label><input name="dateFrom" class="text" value="${pagingDTO.dateFrom}"/>-<input name="dateTo" class="text" value="${pagingDTO.dateTo}"/></div>
             <div class="item"><input type="button" value="查询" onclick="WF.paging.GO($('#billing_search_form'), 1)"/></div>
         </div>
     </form>
