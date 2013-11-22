@@ -12,6 +12,7 @@
     <http pattern="/images/**" security="none"/>
     <http pattern="/index.jsp*" security="none"/>
     <http pattern="/login*" security="none"/>
+    <http pattern="/api/**" security="none"/>
 
     <http access-denied-page="/403.jsp" disable-url-rewriting="true">
 

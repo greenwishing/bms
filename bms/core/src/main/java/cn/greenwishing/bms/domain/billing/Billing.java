@@ -4,8 +4,10 @@ import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Billing extends AbstractDomain {
@@ -13,7 +15,7 @@ public class Billing extends AbstractDomain {
 	private String name;
     private String description;
 	private BillingType type;
-	private Number amount;
+	private BigDecimal amount;
     /**
      * 发生时间
      */
@@ -36,7 +38,7 @@ public class Billing extends AbstractDomain {
     public Billing() {
     }
 
-    public Billing(String name, String description, BillingType type, Number amount, LocalDate occurredTime, User occurredUser, User operator) {
+    public Billing(String name, String description, BillingType type, BigDecimal amount, LocalDate occurredTime, User occurredUser, User operator) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -58,6 +60,14 @@ public class Billing extends AbstractDomain {
         getRepository().remove(Billing.class, guid);
     }
 
+    public static BigDecimal loadMonthInCountByStartTime(DateTime dateTime) {
+        return getRepository().loadMonthInCountByStartTime(dateTime);
+    }
+
+    public static BigDecimal loadMonthOutCountByStartTime(DateTime dateTime) {
+        return getRepository().loadMonthOutCountByStartTime(dateTime);
+    }
+
     public String name() {
         return name;
     }
@@ -70,7 +80,7 @@ public class Billing extends AbstractDomain {
         return type;
     }
 
-    public Number amount() {
+    public BigDecimal amount() {
         return amount;
     }
 

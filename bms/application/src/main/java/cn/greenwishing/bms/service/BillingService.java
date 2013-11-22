@@ -3,6 +3,7 @@ package cn.greenwishing.bms.service;
 import cn.greenwishing.bms.dto.BillingDTO;
 import cn.greenwishing.bms.dto.BillingPagingDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -15,4 +16,9 @@ public interface BillingService {
     void saveOrUpdateBilling(BillingDTO billingDTO);
 
     void deleteBillingByGuid(String guid);
+
+    BigDecimal loadMonthInCount();
+
+    BigDecimal loadMonthOutCount();
+
 }

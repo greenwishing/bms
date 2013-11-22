@@ -65,4 +65,9 @@ public class JodaUtils {
     public static LocalDate yesterday() {
         return today().minusDays(1);
     }
+
+    public static DateTime dayOfCurrentMonth(int day) {
+        LocalDate today = JodaUtils.today();
+        return new DateTime(today.getYear(), today.getMonthOfYear(), day, 0, 0, 0, 0);
+    }
 }

@@ -5,6 +5,11 @@
 <head>
     <title>登录</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script type="text/javascript">
+        $(function(){
+            $(':input:first').focus();
+        });
+    </script>
     <style type="text/css">
         * { font-family: "microsoft yahei",serif;}
         html, body { width: 100%; height: 100%; padding: 0; margin: 0; background: rgb(150,150,150);}

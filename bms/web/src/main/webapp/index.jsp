@@ -5,9 +5,35 @@
 <head>
     <title>欢迎</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <meta http-equiv="refresh" content="1;url=/login">
+    <script type="text/javascript" src="/js/jquery/jquery-1.7.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.ajax({
+                type: 'post',
+                url: '/api/month_in',
+                success: function(result){
+                    $('#month_in').text(result.monthCount);
+                }
+            });
+            $.ajax({
+                type: 'post',
+                url: '/api/month_out',
+                success: function(result){
+                    $('#month_out').text(result.monthCount);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-    正在跳转至登录页面……
+<div>
+    <ul>
+        <li>total in: <span id="month_in"></span></li>
+        <li>total out: <span id="month_out"></span></li>
+    </ul>
+</div>
+<div>
+    <a href="/login">登录</a>
+</div>
 </body>
 </html>

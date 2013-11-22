@@ -18,7 +18,7 @@
                 <param name="enumClass">cn.greenwishing.bms.domain.billing.BillingType</param>
             </type>
         </property>
-        <property name="amount" column="amount" type="java.lang.Number"/>
+        <property name="amount" column="amount" type="java.math.BigDecimal"/>
         <property name="occurredTime" column="occurred_time" type="org.joda.time.contrib.hibernate.PersistentLocalDate"/>
         <many-to-one name="occurredUser" column="occurred_user_id" class="cn.greenwishing.bms.domain.user.User"/>
         <many-to-one name="operator" column="operator_id" class="cn.greenwishing.bms.domain.user.User"/>

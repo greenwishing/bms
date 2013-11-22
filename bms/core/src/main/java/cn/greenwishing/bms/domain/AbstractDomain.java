@@ -41,7 +41,7 @@ public abstract class AbstractDomain implements Domain {
 
     @Override
     public Serializable getId() {
-        return guid;
+        return id;
     }
 
     public Integer id() {

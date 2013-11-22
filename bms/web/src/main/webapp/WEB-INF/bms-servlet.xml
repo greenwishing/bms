@@ -38,6 +38,7 @@
         <property name="mappings">
             <props>
                 <prop key="/**">commonController</prop>
+                <prop key="/api/**">apiController</prop>
                 <prop key="/system/billing/**">billingController</prop>
                 <prop key="/system/billing/add">billingFormController</prop>
                 <prop key="/system/article/**">articleController</prop>
@@ -51,6 +52,9 @@
     </bean>
 
     <bean id="commonController" class="cn.greenwishing.bms.web.controller.CommonController"/>
+    <bean id="apiController" class="cn.greenwishing.bms.web.controller.APIController">
+        <property name="billingService" ref="billingService"/>
+    </bean>
     <bean id="billingController" class="cn.greenwishing.bms.web.controller.billing.BillingController">
         <property name="billingService" ref="billingService"/>
     </bean>

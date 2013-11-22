@@ -24,9 +24,6 @@
     <listener>
         <listener-class>cn.greenwishing.bms.commons.spring.BMSContextLoadListener</listener-class>
     </listener>
-    <listener>
-        <listener-class>cn.greenwishing.bms.web.listener.DatabaseBackupListener</listener-class>
-    </listener>
 
     <filter>
         <filter-name>encodingFilter</filter-name>
