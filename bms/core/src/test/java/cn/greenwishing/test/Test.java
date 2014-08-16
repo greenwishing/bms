@@ -7,8 +7,18 @@ package cn.greenwishing.test;
 public class Test {
 
     public static void main(String[] args) {
-        MySqlTempTable table = new MySqlTempTable(User.class);
-        System.out.println(table.createSql());
-        System.out.println(table.dropSql());
+        TempTable instance1 = TempTableFactory.getInstance(Family.class);
+        System.out.println(instance1);
+        TempTable instance2 = TempTableFactory.getInstance(User.class);
+        System.out.println(instance2);
+        TempTable instance3 = TempTableFactory.getInstance(Family.class);
+        System.out.println(instance3);
+        System.out.println(instance1.createSql());
+        System.out.println(instance2.createSql());
+        System.out.println(instance3.createSql());
+        System.out.println(instance1.dropSql());
+        System.out.println(instance2.dropSql());
+        System.out.println(instance3.dropSql());
+
     }
 }

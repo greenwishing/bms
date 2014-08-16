@@ -10,7 +10,7 @@ import java.util.*;
  * @author Wufan
  * @datetime 2014-08-16 10:44
  */
-public class MySqlTempTable {
+public class TempTable {
 
     public static final String CREATE_PREFIX = "create temporary table ";
     public static final String DROP_PREFIX = "drop temporary table ";
@@ -20,13 +20,16 @@ public class MySqlTempTable {
 
     private List<Column> columns = new ArrayList<>();
 
-    public MySqlTempTable(Class<?> clazz) {
+    private String createSql;
+    private String dropSql;
+
+    public TempTable(Class<?> clazz) {
         this.clazz = clazz;
 
         init();
     }
 
-    public void init() {
+    private void init() {
         if (clazz.isAnnotationPresent(SyncTable.class)) {
             SyncTable table = clazz.getAnnotation(SyncTable.class);
             this.table = table.value();
@@ -40,9 +43,11 @@ public class MySqlTempTable {
                 }
             }
         }
+        generateCreateSql();
+        generateDropSql();
     }
 
-    public String createSql() {
+    private void generateCreateSql() {
         StringBuilder sql = new StringBuilder(CREATE_PREFIX);
         sql.append(this.table);
         sql.append(" (");
@@ -52,10 +57,18 @@ public class MySqlTempTable {
             sql.append(column.getSqlDefine());
         }
         sql.append(")");
-        return sql.toString();
+        this.createSql =  sql.toString();
+    }
+
+    private void generateDropSql() {
+        this.dropSql = DROP_PREFIX + this.table;
+    }
+
+    public String createSql() {
+        return createSql;
     }
 
     public String dropSql() {
-        return DROP_PREFIX + this.table;
+        return dropSql;
     }
 }
