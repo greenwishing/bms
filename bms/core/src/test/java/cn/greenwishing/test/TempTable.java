@@ -48,21 +48,15 @@ public class TempTable {
         generateDropSql();
     }
 
-    private void generateCreateSql() {
-        StringBuilder sql = new StringBuilder("create temporary table ");
-        sql.append(table);
-        sql.append(" (");
-        Iterator<Column> iterator = columns.values().iterator();
-        while (iterator.hasNext()) {
-            Column column = iterator.next();
-            sql.append(column.getSqlDefine());
-            if (iterator.hasNext()) sql.append(", ");
-        }
-        sql.append(")");
-        this.createSql =  sql.toString();
+    public static String getCreateSql(Object obj) {
+        return TempTableFactory.getInstance(obj.getClass()).createSql();
     }
 
-    public static String generateInsertSql(Object obj) {
+    public static String getDropSql(Object obj) {
+        return TempTableFactory.getInstance(obj.getClass()).dropSql();
+    }
+
+    public static String getInsertSql(Object obj) {
         Class clazz = obj.getClass();
         TempTable instance = TempTableFactory.getInstance(clazz);
         StringBuilder sql = new StringBuilder("insert into ");
@@ -83,6 +77,24 @@ public class TempTable {
         }
         sql.append(")");
         return sql.toString();
+    }
+
+    private void generateCreateSql() {
+        StringBuilder sql = new StringBuilder("create temporary table ");
+        sql.append(table);
+        sql.append(" (");
+        Iterator<Column> iterator = columns.values().iterator();
+        while (iterator.hasNext()) {
+            Column column = iterator.next();
+            sql.append(column.getSqlDefine());
+            if (iterator.hasNext()) sql.append(", ");
+        }
+        sql.append(")");
+        this.createSql =  sql.toString();
+    }
+
+    private void generateDropSql() {
+        this.dropSql = "drop temporary table " + table;
     }
 
     private static String fieldValue(Object obj, Column column) {
@@ -109,10 +121,6 @@ public class TempTable {
             e.printStackTrace();
         }
         return "";
-    }
-
-    private void generateDropSql() {
-        this.dropSql = "drop temporary table " + table;
     }
 
     public String createSql() {
