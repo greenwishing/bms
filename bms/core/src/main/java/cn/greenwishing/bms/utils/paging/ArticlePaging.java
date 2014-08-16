@@ -18,6 +18,6 @@ public class ArticlePaging extends AbstractPaging<Article> {
     }
 
     public String getKey() {
-        return StringDecoder.decode(key);
+        return key;
     }
 }

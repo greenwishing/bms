@@ -21,15 +21,15 @@
     </script>
 </head>
 <body>
-    <div class="form">
+    <div class="p10">
         <spring-form:form id="article_form" commandName="articleDTO" method="post" onsubmit="return false;">
-            <div class="items">
-                <div class="item">
+            <div class="form-items">
+                <div class="form-item">
                     <label>标题</label>
                     <spring-form:input path="title" cssClass="text"/>
                     <spring-form:errors path="title"/>
                 </div>
-                <div class="item editor">
+                <div class="form-item editor">
                     <label>内容</label>
                     <div class="content">
                         <spring-form:textarea id="content" path="content" cssClass="textarea hidden"/>
@@ -38,11 +38,11 @@
                     </div>
                     <div class="clear"></div>
                 </div>
-                <div class="item">
+                <div class="form-item">
                     <label>分类</label>
                     <spring-form:select path="categoryGuid" items="${categoryDTOs}" itemValue="guid" itemLabel="name" cssClass="select"/>
                 </div>
-                <div class="item">
+                <div class="form-item">
                     <label>&nbsp;</label>
                     <input type="button" value="保存" onclick="articleFormSubmit();"/>
                     <input type="button" value="返回" onclick="WF.page.list()"/>

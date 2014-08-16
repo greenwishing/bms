@@ -23,7 +23,7 @@ public class BillingPaging extends AbstractPaging<Billing> {
     }
 
     public String getKey() {
-        return StringDecoder.decode(key);
+        return key;
     }
 
     public BillingType getType() {

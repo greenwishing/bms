@@ -7,9 +7,9 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<div class="operation">
-    <a href="/system/article/category/add">添加分类</a>
-    <a href="../list">返回</a>
+<div class="p10">
+    <a class="btn" href="/system/article/category/add">添加分类</a>
+    <a class="btn" href="../list">返回</a>
 </div>
 <div>
     <table class="content_table">

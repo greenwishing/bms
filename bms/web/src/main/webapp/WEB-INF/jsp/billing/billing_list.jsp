@@ -8,29 +8,27 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<div class="operation">
-    <a href="/system/billing/add">添加</a>
-</div>
-<div class="search">
+<div class="p10">
     <form id="billing_search_form" action="list">
-        <div class="items">
-            <div class="item"><label>关键字</label><input name="key" class="text" value="${pagingDTO.key}"/></div>
-            <div class="item"><label>类型</label>
-                <select name="type" class="select">
-                    <option value="">请选择</option>
-                    <c:forEach items="${types}" var="type">
-                        <option value="${type.value}" ${pagingDTO.type eq type ?'selected':''}>${type.label}</option>
-                    </c:forEach>
-                </select></div>
-            <div class="item"><label>时间</label><input name="dateFrom" class="text" value="${pagingDTO.dateFrom}"/>-<input name="dateTo" class="text" value="${pagingDTO.dateTo}"/></div>
-            <div class="item"><input type="button" value="查询" onclick="WF.paging.GO($('#billing_search_form'), 1)"/></div>
-        </div>
+        <a class="btn" href="/system/billing/add">添加</a>
+        <span>|</span>
+        <label>关键字</label>
+        <input type="text" name="key" value="${pagingDTO.key}"/>
+        <label>类型</label>
+        <select name="type" class="select">
+            <option value="">请选择</option>
+            <c:forEach items="${types}" var="type">
+                <option value="${type.value}" ${pagingDTO.type eq type ?'selected':''}>${type.label}</option>
+            </c:forEach>
+        </select>
+        <label>时间</label>
+        <input type="text" name="dateFrom" value="${pagingDTO.dateFrom}"/>
+        <span>-</span>
+        <input type="text" name="dateTo" value="${pagingDTO.dateTo}"/>
+        <input type="button" value="查询" onclick="WF.paging.GO($('#billing_search_form'), 1)"/>
     </form>
 </div>
 <div>
-    <div class="paging">
-        <tags:paging formName="billing_search_form" paging="${pagingDTO}"/>
-    </div>
     <table class="content_table">
         <tr>
             <th class="w120">名称</th>
@@ -43,7 +41,7 @@
         <c:forEach items="${pagingDTO.list}" var="billing" varStatus="i">
             <tr class="${i.index%2==0?'tr_odd':''}">
                 <td>${billing.name}</td>
-                <td><div title="${billing.description}">${billing.description}</div></td>
+                <td><div class="nowrap" title="${billing.description}">${billing.description}</div></td>
                 <td>${billing.type}</td>
                 <td><span class="price ${billing.type}">${billing.amount}</span></td>
                 <td>${billing.occurredTime}</td>
@@ -51,9 +49,9 @@
             </tr>
         </c:forEach>
     </table>
-    <div class="paging">
-        <tags:paging formName="billing_search_form" paging="${pagingDTO}"/>
-    </div>
+</div>
+<div class="p10">
+    <tags:paging formName="billing_search_form" paging="${pagingDTO}"/>
 </div>
 </body>
 </html>

@@ -2,6 +2,7 @@ package cn.greenwishing.bms.dto;
 
 import cn.greenwishing.bms.domain.billing.Billing;
 import cn.greenwishing.bms.domain.billing.BillingType;
+import cn.greenwishing.bms.utils.StringDecoder;
 import cn.greenwishing.bms.utils.paging.AbstractPaging;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 
@@ -38,7 +39,7 @@ public class BillingPagingDTO extends AbstractPagingDTO<BillingDTO, BillingPagin
     }
 
     public void setKey(String key) {
-        this.key = key;
+        this.key = StringDecoder.decode(key);
     }
 
     public BillingType getType() {

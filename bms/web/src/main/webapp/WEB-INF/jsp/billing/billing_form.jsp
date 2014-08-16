@@ -10,33 +10,33 @@
 <body>
     <div class="form">
         <spring-form:form commandName="billingDTO" method="post">
-            <div class="items">
-                <div class="item">
+            <div class="p10">
+                <div class="form-item">
                     <label>类型</label>
                     <spring-form:select path="type" items="${types}" itemValue="value" itemLabel="label" cssClass="select"/>
                     <spring-form:errors path="type"/>
                 </div>
-                <div class="item">
+                <div class="form-item">
                     <label>名称</label>
                     <spring-form:input path="name" cssClass="text"/>
                     <spring-form:errors path="name"/>
                 </div>
-                <div class="item">
+                <div class="form-item">
                     <label>描述</label>
                     <spring-form:textarea path="description" cssClass="textarea w400"/>
                     <spring-form:errors path="description"/>
                 </div>
-                <div class="item">
+                <div class="form-item">
                     <label>金额</label>
                     <spring-form:input path="amount" cssClass="text"/>
                     <spring-form:errors path="amount"/>
                 </div>
-                <div class="item">
+                <div class="form-item">
                     <label>时间</label>
                     <spring-form:input path="occurredTime" cssClass="text"/>
                     <spring-form:errors path="occurredTime"/>
                 </div>
-                <div class="item">
+                <div class="form-item">
                     <label>&nbsp;</label>
                     <spring-form:hidden path="occurredUserGuid"/>
                     <input type="submit" value="保存"/>

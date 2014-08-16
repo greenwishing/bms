@@ -6,36 +6,36 @@
     <c:if test="${!simple}">
         <c:choose>
             <c:when test="${paging.currentPage == 1}">
-                <a class="disable_button" href="javascript:void(0)" title="首页"><span>首页</span></a>
+                <a class="btn disabled" href="javascript:void(0)" title="首页"><span>首页</span></a>
             </c:when>
             <c:otherwise>
-                <a class="page_button" href="javascript:WF.paging.GO($('#${formName}'), '1')" title="首页"><span>首页</span></a>
+                <a class="btn" href="javascript:WF.paging.GO($('#${formName}'), '1')" title="首页"><span>首页</span></a>
             </c:otherwise>
         </c:choose>
     </c:if>
     <c:choose>
         <c:when test="${paging.hasPreviousPage}">
-            <a class="page_button" href="javascript:WF.paging.GO($('#${formName}'), '${paging.previousPage}')" title="上页"><span>上页</span></a>
+            <a class="btn" href="javascript:WF.paging.GO($('#${formName}'), '${paging.previousPage}')" title="上页"><span>上页</span></a>
         </c:when>
         <c:otherwise>
-            <a class="disable_button" href="javascript:void(0)" title="上页"><span>上页</span></a>
+            <a class="btn disabled" href="javascript:void(0)" title="上页"><span>上页</span></a>
         </c:otherwise>
     </c:choose>
     <c:choose>
         <c:when test="${paging.hasNextPage}">
-            <a class="page_button" href="javascript:WF.paging.GO($('#${formName}'), '${paging.nextPage}')" title="下页"><span>下页</span></a>
+            <a class="btn" href="javascript:WF.paging.GO($('#${formName}'), '${paging.nextPage}')" title="下页"><span>下页</span></a>
         </c:when>
         <c:otherwise>
-            <a class="disable_button" href="javascript:void(0)" title="下页"><span>下页</span></a>
+            <a class="btn disabled" href="javascript:void(0)" title="下页"><span>下页</span></a>
         </c:otherwise>
     </c:choose>
     <c:if test="${!simple}">
         <c:choose>
             <c:when test="${paging.currentPage == paging.pageCount}">
-                <a class="disable_button" href="javascript:void(0)" title="末页"><span>末页</span></a>
+                <a class="btn disabled" href="javascript:void(0)" title="末页"><span>末页</span></a>
             </c:when>
             <c:otherwise>
-                <a class="page_button" href="javascript:WF.paging.GO($('#${formName}'), '${paging.pageCount}')" title="末页"><span>末页</span></a>
+                <a class="btn" href="javascript:WF.paging.GO($('#${formName}'), '${paging.pageCount}')" title="末页"><span>末页</span></a>
             </c:otherwise>
         </c:choose>
     </c:if>

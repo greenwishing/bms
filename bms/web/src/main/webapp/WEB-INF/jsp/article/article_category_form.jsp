@@ -8,15 +8,15 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-    <div class="form">
+    <div class="p10">
         <spring-form:form commandName="articleCategoryDTO" method="post">
-            <div class="items">
+            <div class="form-items">
                 <div class="item">
                     <label>名称</label>
                     <spring-form:input path="name" cssClass="text"/>
                     <spring-form:errors path="name"/>
                 </div>
-                <div class="item">
+                <div class="form-item">
                     <label>&nbsp;</label>
                     <input type="submit" value="保存"/>
                     <input type="button" value="返回" onclick="WF.page.list()"/>
