@@ -13,4 +13,9 @@ public class Family {
     private Integer id;
     @SyncColumn(value = "name", types = ColumnType.VARCHAR)
     private String name;
+
+    public Family(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

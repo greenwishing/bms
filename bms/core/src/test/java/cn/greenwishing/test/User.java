@@ -6,6 +6,8 @@ import cn.greenwishing.test.annotation.SyncTable;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
+import java.math.BigInteger;
+
 /**
  * @author Wufan
  * @datetime 2014-08-16 10:42
@@ -20,4 +22,16 @@ public class User {
     private LocalDate dob;
     @SyncColumn(value = "creation_time", types = ColumnType.DATETIME)
     private DateTime creationTime;
+    @SyncColumn(value = "update_time", types = ColumnType.BIGINT)
+    private BigInteger updateTime;
+    @SyncColumn(value = "description", types = ColumnType.TEXT)
+    private String description;
+
+    public User(Integer id, String name, LocalDate dob, DateTime creationTime, BigInteger updateTime) {
+        this.id = id;
+        this.name = name;
+        this.dob = dob;
+        this.creationTime = creationTime;
+        this.updateTime = updateTime;
+    }
 }
