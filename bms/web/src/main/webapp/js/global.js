@@ -38,5 +38,23 @@ var WF = {
             }
             $(form).submit();
         }
+    },
+    util: {
+        dateFromToPicker: function(from, to) {
+            $("#" + from).datepicker({
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (date) {
+                    $("#" + to).datepicker("option", "minDate", date);
+                }
+            });
+            $("#" + to).datepicker({
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (date) {
+                    $("#" + from).datepicker("option", "maxDate", date);
+                }
+            });
+        }
     }
 };

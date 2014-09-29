@@ -6,6 +6,11 @@
 <head>
     <title>账单</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script type="text/javascript">
+        $(function(){
+            WF.util.dateFromToPicker('dateFrom', 'dateTo');
+        });
+    </script>
 </head>
 <body>
 <div class="p10">
@@ -22,9 +27,9 @@
             </c:forEach>
         </select>
         <label>时间</label>
-        <input type="text" name="dateFrom" value="${pagingDTO.dateFrom}"/>
+        <input type="text" id="dateFrom" name="dateFrom" value="${pagingDTO.dateFrom}"/>
         <span>-</span>
-        <input type="text" name="dateTo" value="${pagingDTO.dateTo}"/>
+        <input type="text" id="dateTo" name="dateTo" value="${pagingDTO.dateTo}"/>
         <input type="button" value="查询" onclick="WF.paging.GO($('#billing_search_form'), 1)"/>
     </form>
 </div>

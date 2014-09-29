@@ -8,6 +8,9 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <link rel="stylesheet" href="/css/base.css" type="text/css" media="all" />
     <script type="text/javascript" src="/js/jquery/jquery-1.7.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="/js/jquery/ui/redmond/jquery-ui-1.8.16.custom.css">
+    <script type="text/javascript" src="/js/jquery/ui/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="/js/jquery/ui/i18n/jquery.ui.datepicker-zh-CN.min.js"></script>
     <script type="text/javascript" src="/js/global.js"></script>
     <decorator:head/>
 </head>
