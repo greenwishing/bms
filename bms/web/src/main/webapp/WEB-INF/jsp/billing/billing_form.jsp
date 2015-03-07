@@ -79,9 +79,12 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="createTemplate">创建模板</label>
-        <div class="col-sm-10">
-            <spring-form:checkbox cssClass="form-control" path="createTemplate" id="createTemplate"/>
+        <div class="col-sm-10 col-sm-offset-2">
+            <div class="checkbox">
+                <label>
+                    <spring-form:checkbox path="createTemplate"/> 创建模板
+                </label>
+            </div>
         </div>
     </div>
     <div class="form-group">
