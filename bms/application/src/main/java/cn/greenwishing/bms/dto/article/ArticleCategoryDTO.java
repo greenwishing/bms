@@ -1,4 +1,4 @@
-package cn.greenwishing.bms.dto;
+package cn.greenwishing.bms.dto.article;
 
 import cn.greenwishing.bms.domain.article.ArticleCategory;
 import cn.greenwishing.bms.domain.user.User;

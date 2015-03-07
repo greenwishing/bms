@@ -1,7 +1,7 @@
 package cn.greenwishing.bms.web.controller.article;
 
-import cn.greenwishing.bms.dto.ArticleCategoryDTO;
-import cn.greenwishing.bms.dto.ArticleDTO;
+import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
+import cn.greenwishing.bms.dto.article.ArticleDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.validation.BindException;

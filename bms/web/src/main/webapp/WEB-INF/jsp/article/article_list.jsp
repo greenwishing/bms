@@ -10,8 +10,8 @@
 <body>
 <blockquote>
     <form id="search-form" action="list" class="form-inline">
-        <a class="btn btn-primary" href="/system/article/add"><span class="glyphicon glyphicon-plus"></span>写文章</a>
-        <a class="btn btn-primary" href="/system/article/category/list">文章分类</a>
+        <a class="btn btn-success" href="add">写文章</a>
+        <a class="btn btn-primary" href="/system/article_category/list">文章分类</a>
         <div class="form-group">
             <label class="control-label" for="key">关键字</label>
             <input class="form-control" id="key" name="key" type="text" value="${pagingDTO.key}" placeholder="关键字"/>
@@ -23,7 +23,6 @@
     <thead>
     <tr>
         <th>标题</th>
-        <th>内容</th>
         <th>分类</th>
         <th>发布时间</th>
         <th>操作</th>
@@ -32,11 +31,13 @@
     <tbody>
     <c:forEach items="${pagingDTO.list}" var="article">
         <tr>
-            <td><div class="nowrap" title="${article.title}">${article.title}</div></td>
-            <td><div class="nowrap" title="${article.contentText}">${article.contentText}</div></td>
+            <td><div title="${article.title}">${article.title}</div></td>
             <td>${article.categoryName}</td>
             <td>${article.creationTime}</td>
-            <td><a href="edit?guid=${article.guid}">编辑</a></td>
+            <td>
+                <a href="edit?guid=${article.guid}">编辑</a>
+                <a href="show?guid=${article.guid}">查看</a>
+            </td>
         </tr>
     </c:forEach>
     </tbody>

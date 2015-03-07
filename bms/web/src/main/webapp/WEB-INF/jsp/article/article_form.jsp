@@ -45,7 +45,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
-            <input type="button" class="btn btn-primary" value="保存" onclick="articleFormSubmit();"/>
+            <input type="button" class="btn btn-success" value="保存" onclick="articleFormSubmit();"/>
             <input type="button" class="btn btn-default" value="返回" onclick="WF.page.list()"/>
         </div>
     </div>

@@ -1,8 +1,8 @@
 package cn.greenwishing.bms.service;
 
-import cn.greenwishing.bms.dto.ArticleCategoryDTO;
-import cn.greenwishing.bms.dto.ArticleDTO;
-import cn.greenwishing.bms.dto.ArticlePagingDTO;
+import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
+import cn.greenwishing.bms.dto.article.ArticleDTO;
+import cn.greenwishing.bms.dto.article.ArticlePagingDTO;
 
 import java.util.List;
 

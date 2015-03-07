@@ -4,7 +4,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>账单</title>
+    <title>账单列表</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <script type="text/javascript">
         $(function(){
@@ -15,7 +15,9 @@
 <body>
 <blockquote>
     <form id="search-form" action="list" class="form-inline">
-        <a class="btn btn-primary" href="/system/billing/add">添加</a>
+        <a class="btn btn-success" href="/system/billing/add">添加</a>
+        <a class="btn btn-primary" href="/system/billing_category/list">分类管理</a>
+        <a class="btn btn-primary" href="/system/billing_template/list">模板管理</a>
         <div class="form-group">
             <label class="control-label" for="key">关键字</label>
             <input id="key" name="key" type="text" class="form-control" value="${pagingDTO.key}" placeholder="关键字"/>
@@ -29,11 +31,12 @@
                 </c:forEach>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group form-more" style="display: none;">
             <label class="control-label" for="dateFrom">时间</label>
             <input class="form-control" type="text" id="dateFrom" name="dateFrom" value="${pagingDTO.dateFrom}" placeholder="开始时间"/>
             <input class="form-control" type="text" id="dateTo" name="dateTo" value="${pagingDTO.dateTo}" placeholder="结束时间"/>
         </div>
+        <button type="button" class="btn btn-default" onclick="$('.form-more').toggle()">&gt;</button>
         <button type="button" class="btn btn-default" onclick="WF.paging.GO($('#search-form'), 1)">查询</button>
     </form>
 </blockquote>

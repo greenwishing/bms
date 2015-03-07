@@ -13,9 +13,11 @@ import java.util.List;
 public class Billing extends AbstractDomain {
 
 	private String name;
-    private String description;
 	private BillingType type;
+    private BillingCategory category;
+    private BillingSubcategory subcategory;
 	private BigDecimal amount;
+    private String description;
     /**
      * 发生时间
      */
@@ -26,23 +28,22 @@ public class Billing extends AbstractDomain {
 	private User occurredUser;
 	private User operator;
 
-    private static BillingRepository billingRepository;
-
+    private static BillingRepository repository;
     private static BillingRepository getRepository() {
-        if (billingRepository == null) {
-            billingRepository = InstanceFactory.getInstance(BillingRepository.class);
-        }
-        return billingRepository;
+        if (repository == null) repository = InstanceFactory.getInstance(BillingRepository.class);
+        return repository;
     }
 
     public Billing() {
     }
 
-    public Billing(String name, String description, BillingType type, BigDecimal amount, LocalDate occurredTime, User occurredUser, User operator) {
+    public Billing(String name, BillingType type, BillingCategory category, BillingSubcategory subcategory, BigDecimal amount, String description, LocalDate occurredTime, User occurredUser, User operator) {
         this.name = name;
-        this.description = description;
         this.type = type;
+        this.category = category;
+        this.subcategory = subcategory;
         this.amount = amount;
+        this.description = description;
         this.occurredTime = occurredTime;
         this.occurredUser = occurredUser;
         this.operator = operator;
@@ -68,16 +69,24 @@ public class Billing extends AbstractDomain {
         return getRepository().loadMonthOutCountByStartTime(dateTime);
     }
 
+    public BillingType type() {
+        return type;
+    }
+
+    public BillingCategory category() {
+        return category;
+    }
+
+    public BillingSubcategory subcategory() {
+        return subcategory;
+    }
+
     public String name() {
         return name;
     }
 
     public String description() {
         return description;
-    }
-
-    public BillingType type() {
-        return type;
     }
 
     public BigDecimal amount() {

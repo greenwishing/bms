@@ -1,11 +1,12 @@
 package cn.greenwishing.bms.web.controller.billing;
 
 import cn.greenwishing.bms.domain.billing.BillingType;
-import cn.greenwishing.bms.dto.billing.BillingDTO;
+import cn.greenwishing.bms.dto.billing.BillingCategoryDTO;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
@@ -15,16 +16,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Wu Fan
+ * @author Wufan
+ * @date 2015/3/7.
  */
-public class BillingFormController extends SimpleFormController {
+public class BillingCategoryFormController extends SimpleFormController {
 
     private BillingService billingService;
 
-    public BillingFormController() {
-        setCommandClass(BillingDTO.class);
-        setCommandName("billingDTO");
-        setFormView("billing/billing_form");
+    public BillingCategoryFormController() {
+        setCommandClass(BillingCategoryDTO.class);
+        setCommandName("billingCategoryDTO");
+        setFormView("billing/billing_category_form");
         setSessionForm(true);
     }
 
@@ -37,29 +39,28 @@ public class BillingFormController extends SimpleFormController {
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new BillingDTO();
+        String guid = ServletRequestUtils.getStringParameter(request, "guid");
+        if (ValidationUtils.isNotEmpty(guid)) {
+            return billingService.loadBillingCategoryByGuid(guid);
+        }
+        return new BillingCategoryDTO();
     }
 
     @Override
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-        BillingDTO billingDTO = (BillingDTO) command;
-
-        BillingType type = billingDTO.getType();
+        BillingCategoryDTO categoryDTO = (BillingCategoryDTO) command;
+        BillingType type = categoryDTO.getType();
         if (type == null) {
             errors.rejectValue("type", "type", "请选择类型");
         }
-        String categoryGuid = billingDTO.getCategoryGuid();
-        if (ValidationUtils.isEmpty(categoryGuid)) {
-            errors.rejectValue("categoryGuid", "categoryGuid", "请选择账单分类");
-        }
-        String subcategoryGuid = billingDTO.getSubcategoryGuid();
-        if (ValidationUtils.isEmpty(subcategoryGuid)) {
-            errors.rejectValue("subcategoryGuid", "subcategoryGuid", "请选择账单子分类");
+        String name = categoryDTO.getName();
+        if (ValidationUtils.isEmpty(name)) {
+            errors.rejectValue("name", "name", "请输入名称");
         }
         if (errors.hasErrors()) {
             return showForm(request, response, errors);
         }
-        billingService.saveOrUpdateBilling(billingDTO);
+        billingService.saveOrUpdateBillingCategory(categoryDTO);
         return new ModelAndView("redirect:list");
     }
 

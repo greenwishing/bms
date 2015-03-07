@@ -45,11 +45,15 @@
         </div>
     </nav>
     <div class="container">
-        <div class="col-lg-2 list-group">
-            <a class="list-group-item" href="/system/billing/list">账单</a>
-            <a class="list-group-item" href="/system/article/list">文章</a>
+        <div class="col-lg-3 list-group">
+            <a class="list-group-item active" href="/system/billing/list">账单</a>
+            <a class="list-group-item" href="/system/billing_category/list">账单分类</a>
+            <a class="list-group-item" href="/system/billing_template/list">账单模板</a>
+            <a class="list-group-item active" href="/system/article/list">文章</a>
+            <a class="list-group-item" href="/system/article_category/list">文章分类</a>
         </div>
-        <div class="col-lg-10">
+        <div class="col-lg-9">
+            <h3 class="page-header"><decorator:title default="bms"/></h3>
             <decorator:body/>
         </div>
     </div>

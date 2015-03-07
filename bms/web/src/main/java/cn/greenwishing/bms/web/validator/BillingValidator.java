@@ -1,6 +1,6 @@
 package cn.greenwishing.bms.web.validator;
 
-import cn.greenwishing.bms.dto.BillingDTO;
+import cn.greenwishing.bms.dto.billing.BillingDTO;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

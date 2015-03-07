@@ -6,17 +6,52 @@
 <head>
     <title>记账</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script type="text/javascript">
+        $(function(){
+            WF.billing.templates($('.template-container'), function(btn){
+                var template = $(btn);
+                $('#categoryGuid').attr({'default-value': template.attr('categoryGuid')});
+                $('#subcategoryGuid').attr({'default-value': template.attr('subcategoryGuid')});
+                $('#name').val(template.attr('name'));
+                $('#amount').val(template.attr('amount'));
+                var type = $('#type');
+                type.val(template.attr('type'));
+                WF.billing.categories(type);
+            });
+        });
+    </script>
 </head>
 <body>
-<spring-form:form cssClass="form-horizontal" commandName="billingDTO" method="post">
+<spring-form:form cssClass="form-horizontal" commandName="billingDTO" method="post" onsubmit="return false;">
     <spring-form:errors path="type" element="div" cssClass="alert alert-danger"/>
     <spring-form:errors path="name" element="div" cssClass="alert alert-danger"/>
     <spring-form:errors path="occurredTime" element="div" cssClass="alert alert-danger"/>
     <spring-form:errors path="amount" element="div" cssClass="alert alert-danger"/>
     <div class="form-group">
+        <div class="col-sm-12">
+            <div class="template-container"></div>
+        </div>
+    </div>
+    <div class="form-group">
         <label class="control-label col-sm-2" for="type">类型</label>
         <div class="col-sm-10">
-            <spring-form:select id="type" cssClass="form-control" path="type" items="${types}" itemValue="value" itemLabel="label"/>
+            <spring-form:select id="type" cssClass="form-control" path="type" items="${types}" itemValue="value" itemLabel="label" targetId="categoryGuid"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="categoryGuid">分类</label>
+        <div class="col-sm-10">
+            <select id="categoryGuid" class="form-control" name="categoryGuid" onchange="WF.billing.subcategories(this)" default-value="${billingDTO.categoryGuid}" targetId="subcategoryGuid">
+                <option value="">请选择</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="subcategoryGuid">子分类</label>
+        <div class="col-sm-10">
+            <select id="subcategoryGuid" class="form-control" name="subcategoryGuid" default-value="${billingDTO.subcategoryGuid}">
+                <option value="">请选择</option>
+            </select>
         </div>
     </div>
     <div class="form-group">
@@ -44,9 +79,15 @@
         </div>
     </div>
     <div class="form-group">
+        <label class="control-label col-sm-2" for="createTemplate">创建模板</label>
+        <div class="col-sm-10">
+            <spring-form:checkbox cssClass="form-control" path="createTemplate" id="createTemplate"/>
+        </div>
+    </div>
+    <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
             <spring-form:hidden path="occurredUserGuid"/>
-            <input class="btn btn-primary" type="submit" value="保存"/>
+            <input class="btn btn-success" type="submit" value="保存"/>
             <input class="btn btn-default" type="button" value="返回" onclick="WF.page.list()"/>
         </div>
     </div>

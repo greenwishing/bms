@@ -2,9 +2,9 @@ package cn.greenwishing.bms.service.impl;
 
 import cn.greenwishing.bms.domain.article.Article;
 import cn.greenwishing.bms.domain.article.ArticleCategory;
-import cn.greenwishing.bms.dto.ArticleCategoryDTO;
-import cn.greenwishing.bms.dto.ArticleDTO;
-import cn.greenwishing.bms.dto.ArticlePagingDTO;
+import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
+import cn.greenwishing.bms.dto.article.ArticleDTO;
+import cn.greenwishing.bms.dto.article.ArticlePagingDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.paging.ArticlePaging;

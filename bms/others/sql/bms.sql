@@ -1,7 +1,7 @@
 
 drop table if exists billing;
 create table billing (
-  id int,
+  id int auto_increment primary key,
   guid varchar(255),
   creation_time datetime,
   name varchar(255),
@@ -15,7 +15,7 @@ create table billing (
 
 drop table if exists `user`;
 create table `user` (
-  id int,
+  id int auto_increment primary key,
   guid varchar(255),
   creation_time datetime,
   username varchar(255),
@@ -27,7 +27,7 @@ create table `user` (
 
 drop table if exists article_category;
 create table article_category (
-  id int,
+  id int auto_increment primary key,
   guid varchar(255),
   creation_time datetime,
   name varchar(255),
@@ -36,7 +36,7 @@ create table article_category (
 
 drop table if exists article;
 create table article (
-  id int,
+  id int auto_increment primary key,
   guid varchar(255),
   creation_time datetime,
   title varchar(255),

@@ -1,10 +1,12 @@
 package cn.greenwishing.bms.domain.billing;
 
 import cn.greenwishing.bms.domain.Repository;
+import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface BillingRepository extends Repository {
 
@@ -13,4 +15,14 @@ public interface BillingRepository extends Repository {
     BigDecimal loadMonthInCountByStartTime(DateTime dateTime);
 
     BigDecimal loadMonthOutCountByStartTime(DateTime dateTime);
+
+    List<BillingCategory> findBillCategoryByUserGuid(String userGuid);
+
+    List<BillingSubcategory> findBillingSubcategory(String categoryGuid);
+
+    List<BillingTemplate> findBillingTemplateByUserGuid(String userGuid);
+
+    List<BillingCategory> findBillCategoryByType(BillingType billingType, String userGuid);
+
+    BillingTemplate findBillTemplate(User user, BillingType type, BillingCategory category, BillingSubcategory subcategory);
 }

@@ -4,12 +4,19 @@
 <%@ taglib prefix="spring-form" uri="http://www.springframework.org/tags/form" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>文章分类</title>
+    <title>账单分类</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<spring-form:form commandName="articleCategoryDTO" cssClass="form-horizontal" method="post">
+<spring-form:form cssClass="form-horizontal" commandName="billingCategoryDTO" method="post">
+    <spring-form:errors path="type" element="div" cssClass="alert alert-danger"/>
     <spring-form:errors path="name" element="div" cssClass="alert alert-danger"/>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="type">类型</label>
+        <div class="col-sm-10">
+            <spring-form:select id="type" cssClass="form-control" path="type" items="${types}" itemValue="value" itemLabel="label"/>
+        </div>
+    </div>
     <div class="form-group">
         <label class="control-label col-sm-2" for="name">名称</label>
         <div class="col-sm-10">

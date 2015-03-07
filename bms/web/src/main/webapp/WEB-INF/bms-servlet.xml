@@ -39,14 +39,25 @@
             <props>
                 <prop key="/**">commonController</prop>
                 <prop key="/api/**">apiController</prop>
+
                 <prop key="/system/billing/**">billingController</prop>
                 <prop key="/system/billing/add">billingFormController</prop>
+                <prop key="/system/billing_category/**">billingCategoryController</prop>
+                <prop key="/system/billing_category/add">billingCategoryFormController</prop>
+                <prop key="/system/billing_category/edit">billingCategoryFormController</prop>
+                <prop key="/system/billing_subcategory/**">billingSubcategoryController</prop>
+                <prop key="/system/billing_subcategory/add">billingSubcategoryFormController</prop>
+                <prop key="/system/billing_subcategory/edit">billingSubcategoryFormController</prop>
+                <prop key="/system/billing_template/**">billingTemplateController</prop>
+                <prop key="/system/billing_template/add">billingTemplateFormController</prop>
+                <prop key="/system/billing_template/edit">billingTemplateFormController</prop>
+
                 <prop key="/system/article/**">articleController</prop>
                 <prop key="/system/article/add">articleFormController</prop>
                 <prop key="/system/article/edit">articleFormController</prop>
-                <prop key="/system/article/category/**">articleCategoryController</prop>
-                <prop key="/system/article/category/add">articleCategoryFormController</prop>
-                <prop key="/system/article/category/edit">articleCategoryFormController</prop>
+                <prop key="/system/article_category/**">articleCategoryController</prop>
+                <prop key="/system/article_category/add">articleCategoryFormController</prop>
+                <prop key="/system/article_category/edit">articleCategoryFormController</prop>
             </props>
         </property>
     </bean>
@@ -61,6 +72,24 @@
     <bean id="billingFormController" class="cn.greenwishing.bms.web.controller.billing.BillingFormController">
         <property name="billingService" ref="billingService"/>
         <property name="validator" ref="billingValidator"/>
+    </bean>
+    <bean id="billingCategoryController" class="cn.greenwishing.bms.web.controller.billing.BillingCategoryController">
+        <property name="billingService" ref="billingService"/>
+    </bean>
+    <bean id="billingCategoryFormController" class="cn.greenwishing.bms.web.controller.billing.BillingCategoryFormController">
+        <property name="billingService" ref="billingService"/>
+    </bean>
+    <bean id="billingSubcategoryController" class="cn.greenwishing.bms.web.controller.billing.BillingSubcategoryController">
+        <property name="billingService" ref="billingService"/>
+    </bean>
+    <bean id="billingSubcategoryFormController" class="cn.greenwishing.bms.web.controller.billing.BillingSubcategoryFormController">
+        <property name="billingService" ref="billingService"/>
+    </bean>
+    <bean id="billingTemplateController" class="cn.greenwishing.bms.web.controller.billing.BillingTemplateController">
+        <property name="billingService" ref="billingService"/>
+    </bean>
+    <bean id="billingTemplateFormController" class="cn.greenwishing.bms.web.controller.billing.BillingTemplateFormController">
+        <property name="billingService" ref="billingService"/>
     </bean>
     <bean id="articleController" class="cn.greenwishing.bms.web.controller.article.ArticleController">
         <property name="articleService" ref="articleService"/>

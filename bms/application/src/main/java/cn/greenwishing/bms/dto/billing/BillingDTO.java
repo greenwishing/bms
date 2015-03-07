@@ -1,5 +1,7 @@
-package cn.greenwishing.bms.dto;
+package cn.greenwishing.bms.dto.billing;
 
+import cn.greenwishing.bms.domain.billing.BillingCategory;
+import cn.greenwishing.bms.domain.billing.BillingSubcategory;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.domain.billing.Billing;
 import cn.greenwishing.bms.domain.billing.BillingType;
@@ -22,18 +24,34 @@ public class BillingDTO {
     private String name;
     private String description;
     private BillingType type;
+    private String categoryGuid;
+    private String categoryName;
+    private String subcategoryGuid;
+    private String subcategoryName;
     private String amount;
     private String occurredTime = JodaUtils.today().toString(JodaUtils.DATE_FORMAT);
     private String occurredUserGuid = SecurityHolder.getUserGuid();
+
+    private boolean createTemplate;
 
     public BillingDTO(){}
 
     public BillingDTO(Billing billing) {
         this.guid = billing.guid();
         this.name = billing.name();
-        this.description = billing.description();
         this.type = billing.type();
+        BillingCategory category = billing.category();
+        if (category != null) {
+            this.categoryGuid = category.guid();
+            this.categoryName = category.name();
+        }
+        BillingSubcategory subcategory = billing.subcategory();
+        if (subcategory != null) {
+            this.subcategoryGuid = subcategory.guid();
+            this.subcategoryName = subcategory.name();
+        }
         this.amount = NumberUtils.priceFormat(billing.amount());
+        this.description = billing.description();
         this.occurredTime = billing.occurredTime().toString();
     }
 
@@ -54,7 +72,15 @@ public class BillingDTO {
         if (ValidationUtils.isNotEmpty(this.occurredTime)) {
             occurredTime = JodaUtils.parseLocalDate(this.occurredTime);
         }
-        return new Billing(name, description, type, amount, occurredTime, occurredUser, occurredUser);
+        BillingCategory category = null;
+        BillingSubcategory subcategory = null;
+        if (ValidationUtils.isNotEmpty(categoryGuid)) {
+            category = BillingCategory.findByGuid(categoryGuid);
+            if (ValidationUtils.isNotEmpty(subcategoryGuid)) {
+                subcategory = BillingSubcategory.findByGuid(subcategoryGuid);
+            }
+        }
+        return new Billing(name, type, category, subcategory, amount, description, occurredTime, occurredUser, occurredUser);
     }
 
     public String getGuid() {
@@ -89,6 +115,30 @@ public class BillingDTO {
         this.type = type;
     }
 
+    public String getCategoryGuid() {
+        return categoryGuid;
+    }
+
+    public void setCategoryGuid(String categoryGuid) {
+        this.categoryGuid = categoryGuid;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public String getSubcategoryGuid() {
+        return subcategoryGuid;
+    }
+
+    public void setSubcategoryGuid(String subcategoryGuid) {
+        this.subcategoryGuid = subcategoryGuid;
+    }
+
+    public String getSubcategoryName() {
+        return subcategoryName;
+    }
+
     public String getAmount() {
         return amount;
     }
@@ -111,5 +161,14 @@ public class BillingDTO {
 
     public void setOccurredUserGuid(String occurredUserGuid) {
         this.occurredUserGuid = occurredUserGuid;
+    }
+
+
+    public boolean isCreateTemplate() {
+        return createTemplate;
+    }
+
+    public void setCreateTemplate(boolean createTemplate) {
+        this.createTemplate = createTemplate;
     }
 }

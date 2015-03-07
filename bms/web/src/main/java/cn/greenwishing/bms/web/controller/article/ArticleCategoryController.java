@@ -1,7 +1,6 @@
 package cn.greenwishing.bms.web.controller.article;
 
-import cn.greenwishing.bms.dto.ArticleCategoryDTO;
-import cn.greenwishing.bms.dto.ArticleDTO;
+import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;

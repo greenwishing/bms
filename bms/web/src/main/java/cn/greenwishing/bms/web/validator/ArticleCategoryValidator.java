@@ -1,6 +1,6 @@
 package cn.greenwishing.bms.web.validator;
 
-import cn.greenwishing.bms.dto.ArticleCategoryDTO;
+import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

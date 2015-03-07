@@ -1,7 +1,7 @@
 package cn.greenwishing.bms.service;
 
-import cn.greenwishing.bms.dto.BillingDTO;
-import cn.greenwishing.bms.dto.BillingPagingDTO;
+import cn.greenwishing.bms.domain.billing.BillingType;
+import cn.greenwishing.bms.dto.billing.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,4 +21,23 @@ public interface BillingService {
 
     BigDecimal loadMonthOutCount();
 
+    List<BillingCategoryDTO> loadBillingCategory();
+
+    BillingCategoryDTO loadBillingCategoryByGuid(String guid);
+
+    void saveOrUpdateBillingCategory(BillingCategoryDTO categoryDTO);
+
+    BillingSubcategoryDTO loadBillingSubcategoryByGuid(String guid);
+
+    void saveOrUpdateBillingSubcategory(BillingSubcategoryDTO subcategoryDTO);
+
+    List<BillingSubcategoryDTO> loadBillingSubcategory(String categoryGuid);
+
+    List<BillingTemplateDTO> loadBillingTemplate();
+
+    BillingTemplateDTO loadBillingTemplateByGuid(String guid);
+
+    void saveOrUpdateBillingTemplate(BillingTemplateDTO templateDTO);
+
+    List<BillingCategoryDTO> loadBillingCategoryByType(BillingType billingType);
 }

@@ -3,6 +3,7 @@ package cn.greenwishing.bms.domain.billing;
 public enum BillingType {
     EXPEND("支出", true),
     INCOME("收入", false),
+	TRANSFER("转账", true),
     BALANCE("余额", false);
 
 	private String label;

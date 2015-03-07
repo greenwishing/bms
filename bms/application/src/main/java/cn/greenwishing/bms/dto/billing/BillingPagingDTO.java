@@ -1,9 +1,9 @@
-package cn.greenwishing.bms.dto;
+package cn.greenwishing.bms.dto.billing;
 
 import cn.greenwishing.bms.domain.billing.Billing;
 import cn.greenwishing.bms.domain.billing.BillingType;
+import cn.greenwishing.bms.dto.AbstractPagingDTO;
 import cn.greenwishing.bms.utils.StringDecoder;
-import cn.greenwishing.bms.utils.paging.AbstractPaging;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 
 import java.util.List;
