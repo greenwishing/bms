@@ -21,34 +21,34 @@
     </script>
 </head>
 <body>
-    <div class="p10">
-        <spring-form:form id="article_form" commandName="articleDTO" method="post" onsubmit="return false;">
-            <div class="form-items">
-                <div class="form-item">
-                    <label>标题</label>
-                    <spring-form:input path="title" cssClass="text"/>
-                    <spring-form:errors path="title"/>
-                </div>
-                <div class="form-item editor">
-                    <label>内容</label>
-                    <div class="content">
-                        <spring-form:textarea id="content" path="content" cssClass="textarea hidden"/>
-                        <script type="text/plain" id="article_content">${articleDTO.content}</script>
-                        <spring-form:errors path="content"/>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                <div class="form-item">
-                    <label>分类</label>
-                    <spring-form:select path="categoryGuid" items="${categoryDTOs}" itemValue="guid" itemLabel="name" cssClass="select"/>
-                </div>
-                <div class="form-item">
-                    <label>&nbsp;</label>
-                    <input type="button" value="保存" onclick="articleFormSubmit();"/>
-                    <input type="button" value="返回" onclick="WF.page.list()"/>
-                </div>
-            </div>
-        </spring-form:form>
+<spring-form:form id="article_form" cssClass="form-horizontal" commandName="articleDTO" method="post" onsubmit="return false;">
+    <spring-form:errors path="title" element="div" cssClass="alert alert-danger"/>
+    <spring-form:errors path="content" element="div" cssClass="alert alert-danger"/>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="title">标题</label>
+        <div class="col-sm-10">
+            <spring-form:input cssClass="form-control" path="title" id="title" placeholder="标题"/>
+        </div>
     </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="categoryGuid">分类</label>
+        <div class="col-sm-10">
+            <spring-form:select cssClass="form-control" id="categoryGuid" path="categoryGuid" items="${categoryDTOs}" itemValue="guid" itemLabel="name"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="title">内容</label>
+        <div class="col-sm-10">
+            <script type="text/plain" id="article_content">${articleDTO.content}</script>
+            <spring-form:textarea cssClass="form-control" id="content" path="content" cssStyle="display: none;"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <input type="button" class="btn btn-primary" value="保存" onclick="articleFormSubmit();"/>
+            <input type="button" class="btn btn-default" value="返回" onclick="WF.page.list()"/>
+        </div>
+    </div>
+</spring-form:form>
 </body>
 </html>

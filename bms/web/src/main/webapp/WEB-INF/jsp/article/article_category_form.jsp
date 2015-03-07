@@ -8,21 +8,20 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-    <div class="p10">
-        <spring-form:form commandName="articleCategoryDTO" method="post">
-            <div class="form-items">
-                <div class="item">
-                    <label>名称</label>
-                    <spring-form:input path="name" cssClass="text"/>
-                    <spring-form:errors path="name"/>
-                </div>
-                <div class="form-item">
-                    <label>&nbsp;</label>
-                    <input type="submit" value="保存"/>
-                    <input type="button" value="返回" onclick="WF.page.list()"/>
-                </div>
-            </div>
-        </spring-form:form>
+<spring-form:form commandName="articleCategoryDTO" cssClass="form-horizontal" method="post">
+    <spring-form:errors path="name" element="div" cssClass="alert alert-danger"/>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="name">名称</label>
+        <div class="col-sm-10">
+            <spring-form:input cssClass="form-control" path="name" id="name" placeholder="名称"/>
+        </div>
     </div>
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <input class="btn btn-primary" type="submit" value="保存"/>
+            <input class="btn btn-default" type="button" value="返回" onclick="WF.page.list()"/>
+        </div>
+    </div>
+</spring-form:form>
 </body>
 </html>

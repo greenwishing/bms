@@ -8,37 +8,39 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<div class="p10">
-    <form id="article_search_form" action="list">
-        <a class="btn" href="/system/article/add">写文章</a>
-        <a class="btn" href="/system/article/category/list">文章分类</a>
-        <label>关键字</label>
-        <input name="key" type="text" value="${pagingDTO.key}"/>
-        <input type="button" value="查询" onclick="WF.paging.GO($('#article_search_form'), 1)"/>
+<blockquote>
+    <form id="search-form" action="list" class="form-inline">
+        <a class="btn btn-primary" href="/system/article/add"><span class="glyphicon glyphicon-plus"></span>写文章</a>
+        <a class="btn btn-primary" href="/system/article/category/list">文章分类</a>
+        <div class="form-group">
+            <label class="control-label" for="key">关键字</label>
+            <input class="form-control" id="key" name="key" type="text" value="${pagingDTO.key}" placeholder="关键字"/>
+        </div>
+        <button type="button" class="btn btn-default" onclick="WF.paging.GO($('#search-form'), 1)">查询</button>
     </form>
-</div>
-<div>
-    <table class="content_table">
+</blockquote>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>标题</th>
+        <th>内容</th>
+        <th>分类</th>
+        <th>发布时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${pagingDTO.list}" var="article">
         <tr>
-            <th class="w200">标题</th>
-            <th>内容</th>
-            <th class="w100">分类</th>
-            <th class="w120">发布时间</th>
-            <th class="w100">操作</th>
+            <td><div class="nowrap" title="${article.title}">${article.title}</div></td>
+            <td><div class="nowrap" title="${article.contentText}">${article.contentText}</div></td>
+            <td>${article.categoryName}</td>
+            <td>${article.creationTime}</td>
+            <td><a href="edit?guid=${article.guid}">编辑</a></td>
         </tr>
-        <c:forEach items="${pagingDTO.list}" var="article" varStatus="i">
-            <tr class="${i.index%2==0?'tr_odd':''}">
-                <td><div class="nowrap" title="${article.title}">${article.title}</div></td>
-                <td><div class="nowrap" title="${article.contentText}">${article.contentText}</div></td>
-                <td>${article.categoryName}</td>
-                <td>${article.creationTime}</td>
-                <td><a href="edit?guid=${article.guid}">编辑</a></td>
-            </tr>
-        </c:forEach>
-    </table>
-    <div class="p10">
-        <tags:paging formName="article_search_form" paging="${pagingDTO}"/>
-    </div>
-</div>
+    </c:forEach>
+    </tbody>
+</table>
+<tags:paging formName="search-form" paging="${pagingDTO}"/>
 </body>
 </html>

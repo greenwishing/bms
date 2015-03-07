@@ -36,24 +36,17 @@ var WF = {
                     firstFn();
                 }
             }
-            $(form).submit();
+            $(form)[0].submit();
         }
     },
     util: {
         dateFromToPicker: function(from, to) {
-            $("#" + from).datepicker({
-                changeMonth: true,
-                changeYear: true,
-                onClose: function (date) {
-                    $("#" + to).datepicker("option", "minDate", date);
-                }
+            var options = {language:  'zh-CN', format: 'yyyy-mm-dd', weekStart: 1, todayBtn: 1, autoclose: 1, todayHighlight: 1, startView: 2, minView: 2, forceParse: 0};
+            $("#" + from).datetimepicker(options).on('changeDate', function(ev){
+                $("#" + to).datetimepicker("setStartDate", ev.date);
             });
-            $("#" + to).datepicker({
-                changeMonth: true,
-                changeYear: true,
-                onClose: function (date) {
-                    $("#" + from).datepicker("option", "maxDate", date);
-                }
+            $("#" + to).datetimepicker(options).on('changeDate', function(ev){
+                $("#" + from).datetimepicker("setEndDate", ev.date);
             });
         }
     }

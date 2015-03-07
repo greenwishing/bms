@@ -8,42 +8,48 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-    <div class="form">
-        <spring-form:form commandName="billingDTO" method="post">
-            <div class="p10">
-                <div class="form-item">
-                    <label>类型</label>
-                    <spring-form:select path="type" items="${types}" itemValue="value" itemLabel="label" cssClass="select"/>
-                    <spring-form:errors path="type"/>
-                </div>
-                <div class="form-item">
-                    <label>名称</label>
-                    <spring-form:input path="name" cssClass="text"/>
-                    <spring-form:errors path="name"/>
-                </div>
-                <div class="form-item">
-                    <label>描述</label>
-                    <spring-form:textarea path="description" cssClass="textarea w400"/>
-                    <spring-form:errors path="description"/>
-                </div>
-                <div class="form-item">
-                    <label>金额</label>
-                    <spring-form:input path="amount" cssClass="text"/>
-                    <spring-form:errors path="amount"/>
-                </div>
-                <div class="form-item">
-                    <label>时间</label>
-                    <spring-form:input path="occurredTime" cssClass="text"/>
-                    <spring-form:errors path="occurredTime"/>
-                </div>
-                <div class="form-item">
-                    <label>&nbsp;</label>
-                    <spring-form:hidden path="occurredUserGuid"/>
-                    <input type="submit" value="保存"/>
-                    <input type="button" value="返回" onclick="WF.page.list()"/>
-                </div>
-            </div>
-        </spring-form:form>
+<spring-form:form cssClass="form-horizontal" commandName="billingDTO" method="post">
+    <spring-form:errors path="type" element="div" cssClass="alert alert-danger"/>
+    <spring-form:errors path="name" element="div" cssClass="alert alert-danger"/>
+    <spring-form:errors path="occurredTime" element="div" cssClass="alert alert-danger"/>
+    <spring-form:errors path="amount" element="div" cssClass="alert alert-danger"/>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="type">类型</label>
+        <div class="col-sm-10">
+            <spring-form:select id="type" cssClass="form-control" path="type" items="${types}" itemValue="value" itemLabel="label"/>
+        </div>
     </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="name">名称</label>
+        <div class="col-sm-10">
+            <spring-form:input cssClass="form-control" path="name" id="name" placeholder="名称"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="occurredTime">时间</label>
+        <div class="col-sm-10">
+            <spring-form:input cssClass="form-control" path="occurredTime" id="occurredTime" placeholder="时间"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="amount">金额</label>
+        <div class="col-sm-10">
+            <spring-form:input cssClass="form-control" path="amount" id="amount" placeholder="金额"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="description">描述</label>
+        <div class="col-sm-10">
+            <spring-form:textarea cssClass="form-control" path="description" id="description" placeholder="描述"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <spring-form:hidden path="occurredUserGuid"/>
+            <input class="btn btn-primary" type="submit" value="保存"/>
+            <input class="btn btn-default" type="button" value="返回" onclick="WF.page.list()"/>
+        </div>
+    </div>
+</spring-form:form>
 </body>
 </html>

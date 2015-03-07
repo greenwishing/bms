@@ -5,7 +5,7 @@
 <head>
     <title>欢迎</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <script type="text/javascript" src="/js/jquery/jquery-1.7.min.js"></script>
+    <script type="text/javascript" src="/js/jquery/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
         $(function(){
             $.ajax({

@@ -13,50 +13,52 @@
     </script>
 </head>
 <body>
-<div class="p10">
-    <form id="billing_search_form" action="list">
-        <a class="btn" href="/system/billing/add">添加</a>
-        <span>|</span>
-        <label>关键字</label>
-        <input type="text" name="key" value="${pagingDTO.key}"/>
-        <label>类型</label>
-        <select name="type" class="select">
-            <option value="">请选择</option>
-            <c:forEach items="${types}" var="type">
-                <option value="${type.value}" ${pagingDTO.type eq type ?'selected':''}>${type.label}</option>
-            </c:forEach>
-        </select>
-        <label>时间</label>
-        <input type="text" id="dateFrom" name="dateFrom" value="${pagingDTO.dateFrom}"/>
-        <span>-</span>
-        <input type="text" id="dateTo" name="dateTo" value="${pagingDTO.dateTo}"/>
-        <input type="button" value="查询" onclick="WF.paging.GO($('#billing_search_form'), 1)"/>
+<blockquote>
+    <form id="search-form" action="list" class="form-inline">
+        <a class="btn btn-primary" href="/system/billing/add">添加</a>
+        <div class="form-group">
+            <label class="control-label" for="key">关键字</label>
+            <input id="key" name="key" type="text" class="form-control" value="${pagingDTO.key}" placeholder="关键字"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="type">类型</label>
+            <select id="type" name="type" class="form-control">
+                <option value="">请选择</option>
+                <c:forEach items="${types}" var="type">
+                    <option value="${type.value}" ${pagingDTO.type eq type ?'selected':''}>${type.label}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="dateFrom">时间</label>
+            <input class="form-control" type="text" id="dateFrom" name="dateFrom" value="${pagingDTO.dateFrom}" placeholder="开始时间"/>
+            <input class="form-control" type="text" id="dateTo" name="dateTo" value="${pagingDTO.dateTo}" placeholder="结束时间"/>
+        </div>
+        <button type="button" class="btn btn-default" onclick="WF.paging.GO($('#search-form'), 1)">查询</button>
     </form>
-</div>
-<div>
-    <table class="content_table">
+</blockquote>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>名称</th>
+        <th>描述</th>
+        <th>类型</th>
+        <th>金额</th>
+        <th>时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${pagingDTO.list}" var="billing" varStatus="i">
         <tr>
-            <th class="w120">名称</th>
-            <th>描述</th>
-            <th class="w100">类型</th>
-            <th class="w100">金额</th>
-            <th class="w100">时间</th>
-            <%--<th class="w120">操作</th>--%>
+            <td>${billing.name}</td>
+            <td><div class="nowrap" title="${billing.description}">${billing.description}</div></td>
+            <td>${billing.type}</td>
+            <td><span class="price ${billing.type}">${billing.amount}</span></td>
+            <td>${billing.occurredTime}</td>
         </tr>
-        <c:forEach items="${pagingDTO.list}" var="billing" varStatus="i">
-            <tr class="${i.index%2==0?'tr_odd':''}">
-                <td>${billing.name}</td>
-                <td><div class="nowrap" title="${billing.description}">${billing.description}</div></td>
-                <td>${billing.type}</td>
-                <td><span class="price ${billing.type}">${billing.amount}</span></td>
-                <td>${billing.occurredTime}</td>
-                <%--<td><a href="delete?guid=${billing.guid}">删除</a></td>--%>
-            </tr>
-        </c:forEach>
-    </table>
-</div>
-<div class="p10">
-    <tags:paging formName="billing_search_form" paging="${pagingDTO}"/>
-</div>
+    </c:forEach>
+    </tbody>
+</table>
+<tags:paging formName="search-form" paging="${pagingDTO}"/>
 </body>
 </html>
