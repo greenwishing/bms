@@ -13,7 +13,7 @@
             WF.editor.init('article_content');
         });
         function articleFormSubmit() {
-            WF.form.submit($('#article_form'), {first: function(){
+            WF.form.submit($('#data-form'), {first: function(){
                 var content = WF.editor.getContent('article_content');
                 $('#content').val(content);
             }});
@@ -21,7 +21,7 @@
     </script>
 </head>
 <body>
-<spring-form:form id="article_form" cssClass="form-horizontal" commandName="articleDTO" method="post" onsubmit="return false;">
+<spring-form:form id="data-form" cssClass="form-horizontal" commandName="articleDTO" method="post" onsubmit="return false;">
     <spring-form:errors path="title" element="div" cssClass="alert alert-danger"/>
     <spring-form:errors path="content" element="div" cssClass="alert alert-danger"/>
     <div class="form-group">

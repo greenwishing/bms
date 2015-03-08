@@ -22,7 +22,7 @@
     </script>
 </head>
 <body>
-<spring-form:form cssClass="form-horizontal" commandName="billingDTO" method="post" onsubmit="return false;">
+<spring-form:form cssClass="form-horizontal" id="data-form" commandName="billingDTO" method="post" onsubmit="return false;">
     <spring-form:errors path="type" element="div" cssClass="alert alert-danger"/>
     <spring-form:errors path="name" element="div" cssClass="alert alert-danger"/>
     <spring-form:errors path="occurredTime" element="div" cssClass="alert alert-danger"/>
@@ -90,7 +90,7 @@
     <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
             <spring-form:hidden path="occurredUserGuid"/>
-            <input class="btn btn-success" type="submit" value="保存"/>
+            <input class="btn btn-success" type="button" value="保存" onclick="WF.form.submit($('#data-form'))"/>
             <input class="btn btn-default" type="button" value="返回" onclick="WF.page.list()"/>
         </div>
     </div>
