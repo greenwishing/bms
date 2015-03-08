@@ -18,6 +18,7 @@
                 type.val(template.attr('type'));
                 WF.billing.categories(type);
             });
+            WF.billing.categories($('#type'));
         });
     </script>
 </head>
@@ -35,7 +36,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2" for="type">类型</label>
         <div class="col-sm-10">
-            <spring-form:select id="type" cssClass="form-control" path="type" items="${types}" itemValue="value" itemLabel="label" targetId="categoryGuid"/>
+            <spring-form:select id="type" cssClass="form-control" path="type" items="${types}" itemValue="value" itemLabel="label" onchange="WF.billing.categories(this)" targetId="categoryGuid"/>
         </div>
     </div>
     <div class="form-group">

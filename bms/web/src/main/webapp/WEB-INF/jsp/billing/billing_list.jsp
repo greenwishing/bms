@@ -44,8 +44,8 @@
     <thead>
     <tr>
         <th>名称</th>
-        <th>描述</th>
         <th>类型</th>
+        <th>分类</th>
         <th>金额</th>
         <th>时间</th>
     </tr>
@@ -54,8 +54,8 @@
     <c:forEach items="${pagingDTO.list}" var="billing" varStatus="i">
         <tr>
             <td>${billing.name}</td>
-            <td><div class="nowrap" title="${billing.description}">${billing.description}</div></td>
-            <td>${billing.type}</td>
+            <td>${billing.type.label}</td>
+            <td>${billing.categoryName} ${billing.subcategoryName}</td>
             <td><span class="price ${billing.type}">${billing.amount}</span></td>
             <td>${billing.occurredTime}</td>
         </tr>
