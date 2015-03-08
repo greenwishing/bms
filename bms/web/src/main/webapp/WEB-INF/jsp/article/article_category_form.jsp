@@ -8,7 +8,7 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<spring-form:form commandName="articleCategoryDTO" cssClass="form-horizontal" method="post">
+<spring-form:form commandName="articleCategoryDTO" cssClass="form-horizontal" method="post" id="data-form" onsubmit="return false;">
     <spring-form:errors path="name" element="div" cssClass="alert alert-danger"/>
     <div class="form-group">
         <label class="control-label col-sm-2" for="name">名称</label>
@@ -18,7 +18,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
-            <input class="btn btn-success" type="submit" value="保存"/>
+            <input class="btn btn-success" type="button" value="保存" onclick="WF.form.submit($('#data-form'))"/>
             <input class="btn btn-default" type="button" value="返回" onclick="WF.page.list()"/>
         </div>
     </div>
