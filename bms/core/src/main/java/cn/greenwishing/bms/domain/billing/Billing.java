@@ -2,6 +2,7 @@ package cn.greenwishing.bms.domain.billing;
 
 import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
+import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
@@ -9,6 +10,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class Billing extends AbstractDomain {
 
@@ -73,6 +75,10 @@ public class Billing extends AbstractDomain {
 
     public static BigDecimal loadMonthOutCountByStartTime(DateTime dateTime) {
         return getRepository().loadMonthOutCountByStartTime(dateTime);
+    }
+
+    public static List<BillingStatistics> loadStatistics(String userGuid, LocalDate startDate, LocalDate endDate, String group) {
+        return getRepository().loadBillingStatistics(userGuid, startDate, endDate, group);
     }
 
     public BillingType type() {

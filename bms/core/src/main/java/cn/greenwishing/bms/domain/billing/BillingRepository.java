@@ -1,9 +1,11 @@
 package cn.greenwishing.bms.domain.billing;
 
 import cn.greenwishing.bms.domain.Repository;
+import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,4 +27,6 @@ public interface BillingRepository extends Repository {
     List<BillingCategory> findBillCategoryByType(BillingType billingType, String userGuid);
 
     BillingTemplate findBillTemplate(User user, BillingType type, BillingCategory category, BillingSubcategory subcategory);
+
+    List<BillingStatistics> loadBillingStatistics(String userGuid, LocalDate startDate, LocalDate endDate, String group);
 }
