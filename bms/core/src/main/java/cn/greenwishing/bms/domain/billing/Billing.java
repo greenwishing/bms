@@ -3,12 +3,12 @@ package cn.greenwishing.bms.domain.billing;
 import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.user.User;
+import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class Billing extends AbstractDomain {
 
@@ -47,6 +47,12 @@ public class Billing extends AbstractDomain {
         this.occurredTime = occurredTime;
         this.occurredUser = occurredUser;
         this.operator = operator;
+    }
+
+    public void update(BillingType type, BillingCategory category, BillingSubcategory subcategory) {
+        this.type = type;
+        this.category = category;
+        this.subcategory = subcategory;
     }
 
     public void saveOrUpdate() {
@@ -103,5 +109,20 @@ public class Billing extends AbstractDomain {
 
     public User operator() {
         return operator;
+    }
+
+    public static void changeCategory(String guid, BillingType billingType, String categoryGuid, String subcategoryGuid) {
+        Billing billing = getRepository().findByGuid(Billing.class, guid);
+        if (billing != null) {
+            BillingCategory category = null;
+            BillingSubcategory subcategory = null;
+            if (ValidationUtils.isNotEmpty(categoryGuid)) {
+                category = BillingCategory.findByGuid(categoryGuid);
+            }
+            if (ValidationUtils.isNotEmpty(subcategoryGuid)) {
+                subcategory = BillingSubcategory.findByGuid(subcategoryGuid);
+            }
+            billing.update(billingType, category, subcategory);
+        }
     }
 }

@@ -15,12 +15,14 @@ public class BillingPagingDTO extends AbstractPagingDTO<BillingDTO, BillingPagin
 
     private String key;
     private BillingType type;
+    private String categoryGuid;
+    private String subcategoryGuid;
     private String dateFrom;
     private String dateTo;
 
     @Override
     public BillingPaging toPaging() {
-        return new BillingPaging(currentPage, pageSize, key, type, dateFrom, dateTo);
+        return new BillingPaging(currentPage, pageSize, key, type, categoryGuid, subcategoryGuid, dateFrom, dateTo);
     }
 
     @Override
@@ -48,6 +50,22 @@ public class BillingPagingDTO extends AbstractPagingDTO<BillingDTO, BillingPagin
 
     public void setType(BillingType type) {
         this.type = type;
+    }
+
+    public String getCategoryGuid() {
+        return categoryGuid;
+    }
+
+    public void setCategoryGuid(String categoryGuid) {
+        this.categoryGuid = categoryGuid;
+    }
+
+    public String getSubcategoryGuid() {
+        return subcategoryGuid;
+    }
+
+    public void setSubcategoryGuid(String subcategoryGuid) {
+        this.subcategoryGuid = subcategoryGuid;
     }
 
     public String getDateFrom() {

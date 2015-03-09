@@ -42,6 +42,17 @@ public class BillingController extends MultiActionController {
         return new ModelAndView("redirect:list");
     }
 
+    public ModelAndView updateCategory(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String[] guids = ServletRequestUtils.getRequiredStringParameters(request, "guid");
+        String type = ServletRequestUtils.getRequiredStringParameter(request, "type");
+        String categoryGuid = ServletRequestUtils.getRequiredStringParameter(request, "categoryGuid");
+        String subcategoryGuid = ServletRequestUtils.getRequiredStringParameter(request, "subcategoryGuid");
+        for (String guid : guids) {
+            billingService.changeBillingCategory(guid, EnumUtils.nameOf(BillingType.class, type), categoryGuid, subcategoryGuid);
+        }
+        return null;
+    }
+
     public ModelAndView categories(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String type = ServletRequestUtils.getRequiredStringParameter(request, "type");
         BillingType billingType = EnumUtils.nameOf(BillingType.class, type);

@@ -28,6 +28,15 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
             addFilter(typeFilter(type));
         }
 
+        String categoryGuid = paging.getCategoryGuid();
+        if (ValidationUtils.isNotEmpty(categoryGuid)) {
+            addFilter(categoryFilter(categoryGuid));
+        }
+        String subcategoryGuid = paging.getSubcategoryGuid();
+        if (ValidationUtils.isNotEmpty(subcategoryGuid)) {
+            addFilter(subcategoryFilter(subcategoryGuid));
+        }
+
         String dateFrom = paging.getDateFrom();
         String dateTo = paging.getDateTo();
         if (ValidationUtils.isValidDate(dateFrom) && ValidationUtils.isValidDate(dateTo)) {
@@ -35,6 +44,34 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
             LocalDate to = JodaUtils.parseLocalDate(dateTo).plusDays(1);
             addFilter(dateRangeFilter(from, to));
         }
+    }
+
+    private Filter subcategoryFilter(final String subcategoryGuid) {
+        return new ParameterFilter() {
+            @Override
+            public void setParameter(Query query) {
+                query.setParameter("subcategoryGuid", subcategoryGuid);
+            }
+
+            @Override
+            public String getSubHql() {
+                return " and b.subcategory.guid=:subcategoryGuid";
+            }
+        };
+    }
+
+    private Filter categoryFilter(final String categoryGuid) {
+        return new ParameterFilter() {
+            @Override
+            public void setParameter(Query query) {
+                query.setParameter("categoryGuid", categoryGuid);
+            }
+
+            @Override
+            public String getSubHql() {
+                return " and b.category.guid=:categoryGuid";
+            }
+        };
     }
 
     private Filter dateRangeFilter(final LocalDate from, final LocalDate to) {

@@ -11,13 +11,17 @@ public class BillingPaging extends AbstractPaging<Billing> {
 
     private String key;
     private BillingType type;
+    private String categoryGuid;
+    private String subcategoryGuid;
     private String dateFrom;
     private String dateTo;
 
-    public BillingPaging(int currentPage, int pageSize, String key, BillingType type, String dateFrom, String dateTo) {
+    public BillingPaging(int currentPage, int pageSize, String key, BillingType type, String categoryGuid, String subcategoryGuid, String dateFrom, String dateTo) {
         super(currentPage, pageSize);
         this.key = key;
         this.type = type;
+        this.categoryGuid = categoryGuid;
+        this.subcategoryGuid = subcategoryGuid;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
     }
@@ -28,6 +32,14 @@ public class BillingPaging extends AbstractPaging<Billing> {
 
     public BillingType getType() {
         return type;
+    }
+
+    public String getCategoryGuid() {
+        return categoryGuid;
+    }
+
+    public String getSubcategoryGuid() {
+        return subcategoryGuid;
     }
 
     public String getDateFrom() {

@@ -51,6 +51,18 @@ var WF = {
             $("#" + to).datetimepicker(options).on('changeDate', function(ev){
                 $("#" + from).datetimepicker("setEndDate", ev.date);
             });
+        },
+        checkAll: function(field) {
+            var all = $(field);
+            alert(all.attr('data-name'))
+            var checkbox = $('input:checkbox[name="' + all.attr('data-name') + '"]');
+            all.bind('click', function(){
+                if (all.attr('checked') == 'checked') {
+                    checkbox.attr({'checked': 'checked'});
+                } else {
+                    checkbox.removeAttr('checked');
+                }
+            });
         }
     },
     ajax: {
