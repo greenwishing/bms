@@ -49,6 +49,7 @@
             <a class="list-group-item active" href="/system/billing/list">账单</a>
             <a class="list-group-item" href="/system/billing_category/list">账单分类</a>
             <a class="list-group-item" href="/system/billing_template/list">账单模板</a>
+            <a class="list-group-item" href="/system/billing/statistics">账单统计</a>
             <a class="list-group-item active" href="/system/article/list">文章</a>
             <a class="list-group-item" href="/system/article_category/list">文章分类</a>
         </div>

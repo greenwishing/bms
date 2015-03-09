@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.web.controller.billing;
 
 import cn.greenwishing.bms.domain.billing.BillingType;
+import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.dto.billing.BillingCategoryDTO;
 import cn.greenwishing.bms.dto.billing.BillingPagingDTO;
 import cn.greenwishing.bms.dto.billing.BillingSubcategoryDTO;
@@ -43,7 +44,14 @@ public class BillingController extends MultiActionController {
     }
 
     public ModelAndView statistics(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return null;
+        return new ModelAndView("billing/billing_statistics");
+    }
+
+    public ModelAndView data(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String group = ServletRequestUtils.getStringParameter(request, "group", "subcategory");
+        String type = ServletRequestUtils.getStringParameter(request, "type", "month");
+        List<BillingStatistics> data = billingService.loadBillingStatistics(type, group);
+        return new ModelAndView(new MappingJacksonJsonView(), "data", data);
     }
 
     public ModelAndView categories(HttpServletRequest request, HttpServletResponse response) throws Exception {
