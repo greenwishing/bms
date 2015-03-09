@@ -110,19 +110,4 @@ public class Billing extends AbstractDomain {
     public User operator() {
         return operator;
     }
-
-    public static void changeCategory(String guid, BillingType billingType, String categoryGuid, String subcategoryGuid) {
-        Billing billing = getRepository().findByGuid(Billing.class, guid);
-        if (billing != null) {
-            BillingCategory category = null;
-            BillingSubcategory subcategory = null;
-            if (ValidationUtils.isNotEmpty(categoryGuid)) {
-                category = BillingCategory.findByGuid(categoryGuid);
-            }
-            if (ValidationUtils.isNotEmpty(subcategoryGuid)) {
-                subcategory = BillingSubcategory.findByGuid(subcategoryGuid);
-            }
-            billing.update(billingType, category, subcategory);
-        }
-    }
 }

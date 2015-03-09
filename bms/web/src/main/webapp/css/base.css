@@ -4,5 +4,5 @@
 body { padding-top: 70px;}
 
 .price.INCOME { color: green;}
-.price.EXPEND, .price.TRANSFER { color: red;}
-.price.EXPEND:before, .price.TRANSFER:before { content: '-';}
+.price.EXPEND { color: red;}
+.price.EXPEND:before { content: '-';}

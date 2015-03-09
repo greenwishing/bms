@@ -40,6 +40,4 @@ public interface BillingService {
     void saveOrUpdateBillingTemplate(BillingTemplateDTO templateDTO);
 
     List<BillingCategoryDTO> loadBillingCategoryByType(BillingType billingType);
-
-    void changeBillingCategory(String guid, BillingType billingType, String categoryGuid, String subcategoryGuid);
 }

@@ -125,9 +125,4 @@ public class BillingServiceImpl implements BillingService {
         List<BillingCategory> categories = BillingCategory.findByType(billingType, userGuid);
         return BillingCategoryDTO.toDTOs(categories);
     }
-
-    @Override
-    public void changeBillingCategory(String guid, BillingType billingType, String categoryGuid, String subcategoryGuid) {
-        Billing.changeCategory(guid, billingType, categoryGuid, subcategoryGuid);
-    }
 }

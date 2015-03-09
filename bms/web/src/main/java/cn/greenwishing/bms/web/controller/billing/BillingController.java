@@ -42,14 +42,7 @@ public class BillingController extends MultiActionController {
         return new ModelAndView("redirect:list");
     }
 
-    public ModelAndView updateCategory(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String[] guids = ServletRequestUtils.getRequiredStringParameters(request, "guid");
-        String type = ServletRequestUtils.getRequiredStringParameter(request, "type");
-        String categoryGuid = ServletRequestUtils.getRequiredStringParameter(request, "categoryGuid");
-        String subcategoryGuid = ServletRequestUtils.getRequiredStringParameter(request, "subcategoryGuid");
-        for (String guid : guids) {
-            billingService.changeBillingCategory(guid, EnumUtils.nameOf(BillingType.class, type), categoryGuid, subcategoryGuid);
-        }
+    public ModelAndView statistics(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return null;
     }
 
