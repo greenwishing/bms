@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.persistence.hibernate.billing;
 
 import cn.greenwishing.bms.domain.billing.*;
+import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.persistence.hibernate.AbstractRepositoryHibernate;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
@@ -9,6 +10,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 import java.math.BigDecimal;
@@ -77,5 +79,20 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     public BillingTemplate findBillTemplate(User user, BillingType type, BillingCategory category, BillingSubcategory subcategory) {
         List list = getHibernateTemplate().find("from BillingTemplate t where t.user=? and t.type=? and t.category=? and t.subcategory=?", user, type, category, subcategory);
         return list.isEmpty() ? null : (BillingTemplate) list.get(0);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<BillingStatistics> loadBillingStatistics(String userGuid, LocalDate startDate, LocalDate endDate, String group) {
+        String queryString = "select new cn.greenwishing.bms.domain.statistics.BillingStatistics(b.type, b.category.name, b.subcategory.name, sum(b.amount))" +
+                " from Billing b where b.occurredUser.guid=? and b.occurredTime>=? and b.occurredTime<=?";
+        if ("subcategory".equals(group)) {
+            queryString += " group by b.subcategory.id";
+        } else if ("category".equals(group)) {
+            queryString += " group by b.category.id";
+        } else if ("type".equals(group)) {
+            queryString += " group by b.type";
+        }
+        return getHibernateTemplate().find(queryString, userGuid, startDate, endDate);
     }
 }
