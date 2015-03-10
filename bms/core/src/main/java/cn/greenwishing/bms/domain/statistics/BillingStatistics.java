@@ -1,7 +1,6 @@
 package cn.greenwishing.bms.domain.statistics;
 
 import cn.greenwishing.bms.domain.billing.BillingType;
-import cn.greenwishing.bms.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -35,7 +34,7 @@ public class BillingStatistics {
         return subcategory;
     }
 
-    public String getAmount() {
-        return NumberUtils.priceFormat(amount);
+    public Float getAmount() {
+        return amount.floatValue();
     }
 }
