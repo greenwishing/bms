@@ -39,12 +39,10 @@ public class BillingServiceImpl implements BillingService {
             BillingSubcategory subcategory = billing.subcategory();
             BigDecimal amount = billing.amount();
             BillingTemplate template = BillingTemplate.findByBilling(user, type, category, subcategory);
-            if (template != null) {
-                template.updateAmount(amount);
-            } else {
+            if (template == null) {
                 template = new BillingTemplate(user);
-                template.update(name, type, category, subcategory, amount);
             }
+            template.update(name, type, category, subcategory, amount);
             template.saveOrUpdate();
         }
     }
