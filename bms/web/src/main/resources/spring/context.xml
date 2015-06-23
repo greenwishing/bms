@@ -53,9 +53,9 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <task:scheduled-tasks>
+    <!--<task:scheduled-tasks>
         <task:scheduled ref="taskService" method="testTask" cron="0 * * * * ?"/>
     </task:scheduled-tasks>
 
-    <bean id="taskService" class="cn.greenwishing.bms.service.impl.TaskServiceImpl"/>
+    <bean id="taskService" class="cn.greenwishing.bms.service.impl.TaskServiceImpl"/>-->
 </beans>
