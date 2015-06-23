@@ -26,27 +26,15 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     }
 
     @Override
-    public BigDecimal loadMonthInCountByStartTime(final DateTime dateTime) {
-        final String queryString = "select sum(b.amount) from Billing b where b.type=:type";
-        return getHibernateTemplate().execute(new HibernateCallback<BigDecimal>() {
+    @SuppressWarnings("unchecked")
+    public List<Object[]> loadNearestStatistics(final BillingType billingType, final Integer size) {
+        return getHibernateTemplate().execute(new HibernateCallback<List<Object[]>>() {
             @Override
-            public BigDecimal doInHibernate(Session session) throws HibernateException, SQLException {
-                Query query = session.createQuery(queryString);
-                query.setParameter("type", BillingType.INCOME);
-                return (BigDecimal) query.uniqueResult();
-            }
-        });
-    }
-
-    @Override
-    public BigDecimal loadMonthOutCountByStartTime(final DateTime dateTime) {
-        final String queryString = "select sum(b.amount) from Billing b where b.type=:type";
-        return getHibernateTemplate().execute(new HibernateCallback<BigDecimal>() {
-            @Override
-            public BigDecimal doInHibernate(Session session) throws HibernateException, SQLException {
-                Query query = session.createQuery(queryString);
-                query.setParameter("type", BillingType.EXPEND);
-                return (BigDecimal) query.uniqueResult();
+            public List<Object[]> doInHibernate(Session session) throws HibernateException, SQLException {
+                String sql = "select date(b.occurred_time), sum(b.amount) from billing b where b.type=:type group by concat(year(b.occurred_time), month(b.occurred_time)) order by b.occurred_time desc, id desc";
+                Query query = session.createSQLQuery(sql);
+                query.setParameter("type", billingType.getValue());
+                return query.setMaxResults(size).list();
             }
         });
     }

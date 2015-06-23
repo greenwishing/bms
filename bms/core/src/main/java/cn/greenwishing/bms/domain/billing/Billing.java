@@ -4,9 +4,7 @@ import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
-import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
@@ -69,12 +67,8 @@ public class Billing extends AbstractDomain {
         getRepository().remove(Billing.class, guid);
     }
 
-    public static BigDecimal loadMonthInCountByStartTime(DateTime dateTime) {
-        return getRepository().loadMonthInCountByStartTime(dateTime);
-    }
-
-    public static BigDecimal loadMonthOutCountByStartTime(DateTime dateTime) {
-        return getRepository().loadMonthOutCountByStartTime(dateTime);
+    public static List<Object[]> loadNearestStatistics(BillingType billingType, Integer size) {
+        return getRepository().loadNearestStatistics(billingType, size);
     }
 
     public static List<BillingStatistics> loadStatistics(String userGuid, LocalDate startDate, LocalDate endDate, String group) {

@@ -22,6 +22,9 @@ public class JodaUtils {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
+    public static final String DATE_SHORT_CN_FORMAT = "MM月dd日";
+    public static final String MONTH_CN_FORMAT = "MM月";
+
     public static DateTime now() {
         return new DateTime();
     }

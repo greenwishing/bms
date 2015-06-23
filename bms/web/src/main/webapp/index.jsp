@@ -6,34 +6,91 @@
     <title>欢迎</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <script type="text/javascript" src="/js/jquery/jquery-1.11.2.min.js"></script>
+
+    <link rel="stylesheet" href="/js/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="/js/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="/js/highcharts/4.0.3/highcharts.js"></script>
+
     <script type="text/javascript">
         $(function(){
+            $(':input:first').focus();
             $.ajax({
                 type: 'post',
-                url: '/api/month_in',
+                url: '/api/nearest',
+                data: { size: 7},
                 success: function(result){
-                    $('#month_in').text(result.monthCount);
-                }
-            });
-            $.ajax({
-                type: 'post',
-                url: '/api/month_out',
-                success: function(result){
-                    $('#month_out').text(result.monthCount);
+                    for (var i in result.series)
+                    renderHighcharts(result.series[i]);
                 }
             });
         });
+        function renderHighcharts(series) {
+            var div = $('<div class="col-lg-6"></div>');
+            $('.nearest').append(div);
+            var data = [];
+            data.push(series);
+            var categories = [];
+            for (var i in series.data) {
+                categories.push(series.data[i].name);
+            }
+            var color = (series.name == '收入' ? 'green' : 'red');
+            div.highcharts({
+                chart: { height: 220, type: 'areaspline' },
+                title: { text: series.name },
+                tooltip: {
+                    headerFormat: '',
+                    pointFormat: '{point.name}{series.name} {point.y}元'
+                },
+                plotOptions: {
+                    areaspline: { borderWidth: 0, lineWidth: 1, lineColor: color, fillOpacity: 0.1, states: { hover: { enabled: false } }, marker: { radius: 2} }
+                },
+                xAxis: {
+                    title: { text: ''},
+                    categories: categories,
+                    labels: { rotation: -45}
+                },
+                yAxis: {
+                    title: {text: '金额'},
+                    min: 0
+                },
+                series: data,
+                legend: { enabled: false, verticalAlign: 'top' },
+                credits: { enabled: false}
+            });
+        }
     </script>
+    <style type="text/css">
+        html, body, h1, h2, h3, h4, h5, h6 { font-family: "microsoft yahei",serif;}
+    </style>
 </head>
 <body>
-<div>
-    <ul>
-        <li>total in: <span id="month_in"></span></li>
-        <li>total out: <span id="month_out"></span></li>
-    </ul>
-</div>
-<div>
-    <a href="/login">登录</a>
+<div class="container">
+    <div class="nearest row"></div>
+    <form action="/account_check" class="form-horizontal" method="post">
+        <div class="form-group form-group-lg">
+            <div class="col-lg-3"><label for="account" class="form-control-static">帐号</label></div>
+            <div class="col-lg-9">
+                <input id="account" type="text" class="form-control" name="account" />
+            </div>
+        </div>
+        <div class="form-group form-group-lg">
+            <div class="col-lg-3"><label for="password" class="form-control-static">密码</label></div>
+            <div class="col-lg-9">
+                <input id="password" type="password" class="form-control" name="password" />
+            </div>
+        </div>
+        <div class="form-group form-group-lg">
+            <div class="col-lg-offset-3 col-lg-9">
+                <input type="submit" class="btn btn-primary btn-block btn-lg" value="登录"/>
+            </div>
+        </div>
+    </form>
+    <c:choose>
+        <c:when test="${param.action==1}"><div class="alert alert-danger">帐号或密码错误</div></c:when>
+        <c:when test="${param.action==2}"><div class="alert alert-danger">登录超时</div></c:when>
+        <c:when test="${param.action==1}"><div class="alert alert-danger">已退出</div></c:when>
+    </c:choose>
 </div>
 </body>
 </html>

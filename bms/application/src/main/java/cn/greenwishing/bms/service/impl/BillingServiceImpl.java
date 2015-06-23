@@ -4,14 +4,15 @@ import cn.greenwishing.bms.domain.billing.*;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.dto.billing.*;
+import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,15 +54,20 @@ public class BillingServiceImpl implements BillingService {
     }
 
     @Override
-    public BigDecimal loadMonthInCount() {
-        DateTime dateTime = JodaUtils.dayOfCurrentMonth(16);
-        return Billing.loadMonthInCountByStartTime(dateTime);
+    public List<SeriesObject> loadNearestStatistics(Integer size) {
+        List<SeriesObject> series = new ArrayList<>();
+
+        SeriesObject income = loadSeriesObject(BillingType.INCOME, size);
+        SeriesObject expend = loadSeriesObject(BillingType.EXPEND, size);
+        series.add(income);
+        series.add(expend);
+
+        return series;
     }
 
-    @Override
-    public BigDecimal loadMonthOutCount() {
-        DateTime dateTime = JodaUtils.dayOfCurrentMonth(16);
-        return Billing.loadMonthOutCountByStartTime(dateTime);
+    private SeriesObject loadSeriesObject(BillingType billingType, Integer size) {
+        List<Object[]> results = Billing.loadNearestStatistics(billingType, size);
+        return SeriesObject.valueOf(billingType, results);
     }
 
     @Override

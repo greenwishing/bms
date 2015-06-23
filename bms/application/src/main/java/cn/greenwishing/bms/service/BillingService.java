@@ -3,6 +3,7 @@ package cn.greenwishing.bms.service;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.dto.billing.*;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
+import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,9 +19,7 @@ public interface BillingService {
 
     void deleteBillingByGuid(String guid);
 
-    BigDecimal loadMonthInCount();
-
-    BigDecimal loadMonthOutCount();
+    List<SeriesObject> loadNearestStatistics(Integer size);
 
     List<BillingCategoryDTO> loadBillingCategory();
 

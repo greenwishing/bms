@@ -4,7 +4,6 @@ import cn.greenwishing.bms.domain.Repository;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
@@ -14,9 +13,7 @@ public interface BillingRepository extends Repository {
 
     BillingPaging findBillingByPaging(BillingPaging paging);
 
-    BigDecimal loadMonthInCountByStartTime(DateTime dateTime);
-
-    BigDecimal loadMonthOutCountByStartTime(DateTime dateTime);
+    List<Object[]> loadNearestStatistics(BillingType billingType, Integer size);
 
     List<BillingCategory> findBillCategoryByUserGuid(String userGuid);
 
