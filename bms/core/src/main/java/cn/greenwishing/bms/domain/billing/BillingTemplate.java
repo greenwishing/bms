@@ -1,30 +1,40 @@
 package cn.greenwishing.bms.domain.billing;
 
-import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.user.User;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * @author Wufan
  * @date 2015/3/7.
  */
+@Entity
+@Table(name = "billing_template")
 public class BillingTemplate extends AbstractDomain {
 
+    @JoinColumn(name = "user_id")
+    @ManyToOne(targetEntity = User.class)
     private User user;
-    private String name;
-    private BillingType type;
-    private BillingCategory category;
-    private BillingSubcategory subcategory;
-    private BigDecimal amount;
 
-    private static BillingRepository repository;
-    private static BillingRepository getRepository() {
-        if (repository == null) repository = InstanceFactory.getInstance(BillingRepository.class);
-        return repository;
-    }
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private BillingType type;
+
+    @JoinColumn(name = "category_id")
+    @ManyToOne(targetEntity = BillingCategory.class)
+    private BillingCategory category;
+
+    @JoinColumn(name = "subcategory_id")
+    @ManyToOne(targetEntity = BillingSubcategory.class)
+    private BillingSubcategory subcategory;
+
+    @Column(name = "amount")
+    private BigDecimal amount;
 
     public BillingTemplate() {
     }
@@ -39,26 +49,6 @@ public class BillingTemplate extends AbstractDomain {
         this.category = category;
         this.subcategory = subcategory;
         this.amount = amount;
-    }
-
-    public void updateAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public static List<BillingTemplate> findByUserGuid(String userGuid) {
-        return getRepository().findBillingTemplateByUserGuid(userGuid);
-    }
-
-    public static BillingTemplate findByBilling(User user, BillingType type, BillingCategory category, BillingSubcategory subcategory) {
-        return getRepository().findBillTemplate(user, type, category, subcategory);
-    }
-
-    public static BillingTemplate findByGuid(String guid) {
-        return getRepository().findByGuid(BillingTemplate.class, guid);
-    }
-
-    public void saveOrUpdate() {
-        getRepository().saveOrUpdate(this);
     }
 
     public User user() {

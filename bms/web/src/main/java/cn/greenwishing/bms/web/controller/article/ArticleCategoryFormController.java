@@ -3,45 +3,49 @@ package cn.greenwishing.bms.web.controller.article;
 import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import cn.greenwishing.bms.utils.ValidationUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
-import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Wu Fan
  */
-public class ArticleCategoryFormController extends SimpleFormController {
+@Controller
+@RequestMapping({"/system/article/add_category", "/system/article/edit_category"})
+@SessionAttributes("articleCategoryDTO")
+public class ArticleCategoryFormController {
 
+    public static final String FORM_VIEW = "article/article_category_form";
+    @Autowired
     private ArticleService articleService;
 
-    public ArticleCategoryFormController() {
-        setCommandClass(ArticleCategoryDTO.class);
-        setCommandName("articleCategoryDTO");
-        setFormView("article/article_category_form");
-        setSessionForm(true);
-    }
-
-    @Override
-    protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        String guid = ServletRequestUtils.getStringParameter(request, "guid");
-        if (ValidationUtils.isNotEmpty(guid)) {
-            return articleService.loadArticleCategoryByGuid(guid);
+    @RequestMapping(method = RequestMethod.GET)
+    public String form(String guid, ModelMap model) {
+        ArticleCategoryDTO articleCategoryDTO;
+        if (ValidationUtils.isEmpty(guid)) {
+            articleCategoryDTO = new ArticleCategoryDTO();
+        } else {
+            articleCategoryDTO = articleService.loadArticleCategoryByGuid(guid);
         }
-        return new ArticleCategoryDTO();
+        model.put("articleCategoryDTO", articleCategoryDTO);
+        return FORM_VIEW;
     }
 
-    @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-        ArticleCategoryDTO categoryDTO = (ArticleCategoryDTO) command;
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView save(ArticleCategoryDTO categoryDTO, BindException errors) throws Exception {
+        String name = categoryDTO.getName();
+        if (ValidationUtils.isEmpty(name)) {
+            errors.rejectValue("name", "name", "请输入分类名称");
+        }
+        if (errors.hasErrors()) {
+            return new ModelAndView(FORM_VIEW);
+        }
         articleService.saveOrUpdateArticleCategory(categoryDTO);
         return new ModelAndView("redirect:list");
-    }
-
-    public void setArticleService(ArticleService articleService) {
-        this.articleService = articleService;
     }
 }

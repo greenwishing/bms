@@ -1,6 +1,11 @@
 package cn.greenwishing.bms.shared;
 
+import cn.greenwishing.bms.domain.oauth.OAuthResourceId;
+import cn.greenwishing.bms.utils.ValidationUtils;
+
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 public class EnumUtils {
 
@@ -44,5 +49,27 @@ public class EnumUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * 将指定枚举以逗号分割的字符串转换成枚举类集合
+     * @param clazz 枚举类Class
+     * @param value 以逗号分割的字符串
+     * @param <T> 枚举
+     * @return 枚举类型
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Enum> List<T> fromValue(Class<T> clazz, String value) {
+        List<T> elemList = new ArrayList<>();
+        if (ValidationUtils.isNotEmpty(value)) {
+            String[] list = value.split(",");
+            for (String id : list) {
+                T elem = nameOf(clazz, id);
+                if (elem != null) {
+                    elemList.add(elem);
+                }
+            }
+        }
+        return elemList;
     }
 }

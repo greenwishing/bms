@@ -5,19 +5,19 @@
 <head>
     <title>欢迎</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <script type="text/javascript" src="/js/jquery/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
-    <link rel="stylesheet" href="/js/bootstrap/3.3.2/css/bootstrap.min.css">
-    <script src="/js/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/js/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="${pageContext.request.contextPath}/js/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript" src="/js/highcharts/4.0.3/highcharts.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/highcharts/4.0.3/highcharts.js"></script>
 
     <script type="text/javascript">
         $(function(){
             $(':input:first').focus();
             $.ajax({
                 type: 'post',
-                url: '/api/nearest',
+                url: '${pageContext.request.contextPath}/api/nearest',
                 data: { size: 7},
                 success: function(result){
                     for (var i in result.series)
@@ -67,7 +67,7 @@
 <body>
 <div class="container">
     <div class="nearest row"></div>
-    <form action="/account_check" class="form-horizontal" method="post">
+    <form action="${pageContext.request.contextPath}/account_check" class="form-horizontal" method="post">
         <div class="form-group form-group-lg">
             <div class="col-lg-3"><label for="account" class="form-control-static">帐号</label></div>
             <div class="col-lg-9">
@@ -83,14 +83,14 @@
         <div class="form-group form-group-lg">
             <div class="col-lg-offset-3 col-lg-9">
                 <input type="submit" class="btn btn-primary btn-block btn-lg" value="登录"/>
+                <c:choose>
+                    <c:when test="${param.action==1}"><div class="help-block help-block-danger">帐号或密码错误</div></c:when>
+                    <c:when test="${param.action==2}"><div class="help-block help-block-danger">登录超时</div></c:when>
+                    <c:when test="${param.action==1}"><div class="help-block">已退出</div></c:when>
+                </c:choose>
             </div>
         </div>
     </form>
-    <c:choose>
-        <c:when test="${param.action==1}"><div class="alert alert-danger">帐号或密码错误</div></c:when>
-        <c:when test="${param.action==2}"><div class="alert alert-danger">登录超时</div></c:when>
-        <c:when test="${param.action==1}"><div class="alert alert-danger">已退出</div></c:when>
-    </c:choose>
 </div>
 </body>
 </html>

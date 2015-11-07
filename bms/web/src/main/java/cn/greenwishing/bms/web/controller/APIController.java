@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -26,7 +23,7 @@ public class APIController {
     private BillingService billingService;
 
     @RequestMapping("nearest")
-    public ModelAndView nearest_in(@RequestParam(defaultValue = "20")Integer size) throws Exception {
+    public ModelAndView nearest(@RequestParam(defaultValue = "20") Integer size) {
         List<SeriesObject> series = billingService.loadNearestStatistics(size);
         return new ModelAndView(new MappingJacksonJsonView(), "series", series);
     }

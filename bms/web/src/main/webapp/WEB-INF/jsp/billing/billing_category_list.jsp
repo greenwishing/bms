@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <title>账单分类</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -10,7 +10,7 @@
 <body>
 <blockquote>
     <a class="btn btn-success" href="add">添加</a>
-    <a class="btn btn-default" href="/system/billing/list">返回</a>
+    <a class="btn btn-default" href="list">返回</a>
 </blockquote>
 <table class="table table-hover">
     <thead>
@@ -27,7 +27,7 @@
             <td>${category.name}</td>
             <td>
                 <a href="edit?guid=${category.guid}">编辑</a>
-                <a href="/system/billing_subcategory/list?categoryGuid=${category.guid}">子分类</a>
+                <a href="subcategories?categoryGuid=${category.guid}">子分类</a>
             </td>
         </tr>
     </c:forEach>

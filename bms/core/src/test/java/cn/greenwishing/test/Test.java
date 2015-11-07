@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.math.BigInteger;
+import java.util.UUID;
 
 /**
  * @author Wufan

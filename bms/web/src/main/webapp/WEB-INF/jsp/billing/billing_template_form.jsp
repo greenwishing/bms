@@ -14,14 +14,11 @@
 </head>
 <body>
 <spring-form:form cssClass="form-horizontal" commandName="billingTemplateDTO" method="post" id="data-form" onsubmit="return false;">
-    <spring-form:errors path="type" element="div" cssClass="alert alert-danger"/>
-    <spring-form:errors path="categoryGuid" element="div" cssClass="alert alert-danger"/>
-    <spring-form:errors path="subcategoryGuid" element="div" cssClass="alert alert-danger"/>
-    <spring-form:errors path="amount" element="div" cssClass="alert alert-danger"/>
     <div class="form-group">
         <label class="control-label col-sm-2" for="type">类型</label>
         <div class="col-sm-10">
             <spring-form:select id="type" cssClass="form-control" path="type" items="${types}" itemValue="value" itemLabel="label" onchange="WF.billing.categories(this)" targetId="categoryGuid"/>
+            <spring-form:errors path="type" cssClass="help-block help-block-danger"/>
         </div>
     </div>
     <div class="form-group">
@@ -30,6 +27,7 @@
             <select id="categoryGuid" class="form-control" name="categoryGuid" onchange="WF.billing.subcategories(this)" default-value="${billingTemplateDTO.categoryGuid}" targetId="subcategoryGuid">
                 <option value="">请选择</option>
             </select>
+            <spring-form:errors path="categoryGuid" cssClass="help-block help-block-danger"/>
         </div>
     </div>
     <div class="form-group">
@@ -38,6 +36,7 @@
             <select id="subcategoryGuid" class="form-control" name="subcategoryGuid" default-value="${billingTemplateDTO.subcategoryGuid}">
                 <option value="">请选择</option>
             </select>
+            <spring-form:errors path="subcategoryGuid" cssClass="help-block help-block-danger"/>
         </div>
     </div>
     <div class="form-group">
@@ -50,12 +49,13 @@
         <label class="control-label col-sm-2" for="amount">金额</label>
         <div class="col-sm-10">
             <spring-form:input cssClass="form-control" path="amount" id="amount" placeholder="金额"/>
+            <spring-form:errors path="amount" cssClass="help-block help-block-danger"/>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
             <input class="btn btn-success" type="button" value="保存" onclick="WF.form.submit($('#data-form'))"/>
-            <input class="btn btn-default" type="button" value="返回" onclick="WF.page.list()"/>
+            <input class="btn btn-default" type="button" value="返回" onclick="WF.page.forward('templates')"/>
         </div>
     </div>
 </spring-form:form>

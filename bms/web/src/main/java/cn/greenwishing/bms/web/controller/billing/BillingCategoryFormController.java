@@ -4,51 +4,44 @@ import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.dto.billing.BillingCategoryDTO;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Wufan
  * @date 2015/3/7.
  */
-public class BillingCategoryFormController extends SimpleFormController {
+@Controller
+@RequestMapping({"/system/billing/add_category", "/system/billing/edit_category"})
+@SessionAttributes("billingCategoryDTO")
+public class BillingCategoryFormController {
 
+    public static final String FORM_VIEW = "billing/billing_category_form";
+
+    @Autowired
     private BillingService billingService;
 
-    public BillingCategoryFormController() {
-        setCommandClass(BillingCategoryDTO.class);
-        setCommandName("billingCategoryDTO");
-        setFormView("billing/billing_category_form");
-        setSessionForm(true);
-    }
-
-    @Override
-    protected Map referenceData(HttpServletRequest request, Object command, Errors errors) throws Exception {
-        Map<String, Object> data = new HashMap<>();
-        data.put("types", BillingType.values());
-        return data;
-    }
-
-    @Override
-    protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        String guid = ServletRequestUtils.getStringParameter(request, "guid");
-        if (ValidationUtils.isNotEmpty(guid)) {
-            return billingService.loadBillingCategoryByGuid(guid);
+    @RequestMapping(method = RequestMethod.GET)
+    public String form(String guid, ModelMap model) {
+        model.put("types", BillingType.values());
+        BillingCategoryDTO billingCategoryDTO;
+        if (ValidationUtils.isEmpty(guid)) {
+            billingCategoryDTO = new BillingCategoryDTO();
+        } else {
+            billingCategoryDTO = billingService.loadBillingCategoryByGuid(guid);
         }
-        return new BillingCategoryDTO();
+        model.put("billingCategoryDTO", billingCategoryDTO);
+        return FORM_VIEW;
     }
 
-    @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-        BillingCategoryDTO categoryDTO = (BillingCategoryDTO) command;
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView save(BillingCategoryDTO categoryDTO, BindingResult errors) {
         BillingType type = categoryDTO.getType();
         if (type == null) {
             errors.rejectValue("type", "type", "请选择类型");
@@ -58,13 +51,9 @@ public class BillingCategoryFormController extends SimpleFormController {
             errors.rejectValue("name", "name", "请输入名称");
         }
         if (errors.hasErrors()) {
-            return showForm(request, response, errors);
+            return new ModelAndView(FORM_VIEW);
         }
         billingService.saveOrUpdateBillingCategory(categoryDTO);
         return new ModelAndView("redirect:list");
-    }
-
-    public void setBillingService(BillingService billingService) {
-        this.billingService = billingService;
     }
 }

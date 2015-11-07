@@ -1,19 +1,34 @@
 package cn.greenwishing.bms.domain;
 
-import cn.greenwishing.bms.commons.domain.Domain;
 import cn.greenwishing.bms.utils.GuidGenerator;
 import cn.greenwishing.bms.utils.JodaUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 /**
  * @author Wu Fan
  */
+@MappedSuperclass
 public abstract class AbstractDomain implements Domain {
 
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(generator = "generator")
+    @GenericGenerator(name = "generator", strategy = "native")
     protected Integer id;
+
+    @Column(name = "guid")
     protected String guid = GuidGenerator.generate();
+
+    @Column(name = "creation_time")
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
     protected DateTime creationTime = JodaUtils.now();
 
     protected AbstractDomain() {
@@ -36,7 +51,7 @@ public abstract class AbstractDomain implements Domain {
 
     @Override
     public int hashCode() {
-        return id().hashCode();
+        return getId().hashCode();
     }
 
     @Override

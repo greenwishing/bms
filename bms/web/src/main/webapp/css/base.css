@@ -6,3 +6,5 @@ body { padding-top: 70px;}
 .price.INCOME { color: green;}
 .price.EXPEND { color: red;}
 .price.EXPEND:before { content: '-';}
+
+.help-block-danger { color: red;}

@@ -1,45 +1,29 @@
 package cn.greenwishing.bms.domain.article;
 
-import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.user.User;
 
-import java.util.List;
+import javax.persistence.*;
 
 /**
  * @author Wu Fan
  */
+@Entity
+@Table(name = "article_category")
 public class ArticleCategory extends AbstractDomain {
 
+    @Column(name = "name")
     private String name;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "owner_id")
     private User owner;
-
-    private static ArticleRepository repository;
-
-    private static ArticleRepository getRepository() {
-        if (repository == null) {
-            repository = InstanceFactory.getInstance(ArticleRepository.class);
-        }
-        return repository;
-    }
 
     public ArticleCategory() {
     }
 
     public ArticleCategory(User owner) {
         this.owner = owner;
-    }
-
-    public static List<ArticleCategory> loadByUserGuid(String userGuid) {
-        return getRepository().findArticleCategoryByUserGuid(userGuid);
-    }
-
-    public static ArticleCategory findByGuid(String guid) {
-        return getRepository().findByGuid(ArticleCategory.class, guid);
-    }
-
-    public void saveOrUpdate() {
-        getRepository().saveOrUpdate(this);
     }
 
     public void update(String name) {

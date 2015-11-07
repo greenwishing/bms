@@ -9,8 +9,8 @@
 </head>
 <body>
 <blockquote>
-    <a class="btn btn-success" href="add?categoryGuid=${param.categoryGuid}">添加</a>
-    <a class="btn btn-default" href="/system/billing_category/list">返回</a>
+    <a class="btn btn-success" href="add_subcategory?categoryGuid=${param.categoryGuid}">添加</a>
+    <a class="btn btn-default" href="categories">返回</a>
 </blockquote>
 <table class="table table-hover">
     <thead>
@@ -24,7 +24,7 @@
         <tr>
             <td>${subcategory.name}</td>
             <td>
-                <a href="edit?categoryGuid=${param.categoryGuid}&guid=${subcategory.guid}&">编辑</a>
+                <a href="edit_subcategory?categoryGuid=${param.categoryGuid}&guid=${subcategory.guid}&">编辑</a>
             </td>
         </tr>
     </c:forEach>

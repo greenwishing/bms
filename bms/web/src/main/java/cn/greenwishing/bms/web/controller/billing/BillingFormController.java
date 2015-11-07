@@ -4,66 +4,63 @@ import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.dto.billing.BillingDTO;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Wu Fan
  */
-public class BillingFormController extends SimpleFormController {
+@Controller
+@RequestMapping("/system/billing/add")
+@SessionAttributes("billingDTO")
+public class BillingFormController {
 
+    @Autowired
     private BillingService billingService;
 
-    public BillingFormController() {
-        setCommandClass(BillingDTO.class);
-        setCommandName("billingDTO");
-        setFormView("billing/billing_form");
-        setSessionForm(true);
+    @RequestMapping(method = RequestMethod.GET)
+    public String form(ModelMap model) {
+        model.put("types", BillingType.values());
+        model.put("billingDTO", new BillingDTO());
+        return "billing/billing_form";
     }
 
-    @Override
-    protected Map referenceData(HttpServletRequest request, Object command, Errors errors) throws Exception {
-        Map<String, Object> data = new HashMap<>();
-        data.put("types", BillingType.values());
-        return data;
-    }
-
-    @Override
-    protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new BillingDTO();
-    }
-
-    @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-        BillingDTO billingDTO = (BillingDTO) command;
-
-        BillingType type = billingDTO.getType();
-        if (type == null) {
-            errors.rejectValue("type", "type", "请选择类型");
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView save(BillingDTO billingDTO, BindingResult errors) {
+        Map<String, Object> model = new HashMap<>();
+        String name = billingDTO.getName();
+        if (ValidationUtils.isEmpty(name)) {
+            errors.rejectValue("name", "name", "名称不能为空");
         }
-        String categoryGuid = billingDTO.getCategoryGuid();
-        if (ValidationUtils.isEmpty(categoryGuid)) {
-            errors.rejectValue("categoryGuid", "categoryGuid", "请选择账单分类");
+        String amount = billingDTO.getAmount();
+        if (ValidationUtils.isEmpty(amount)) {
+            errors.rejectValue("amount", "amount", "金额不能为空");
+        } else if (!ValidationUtils.isPriceBigDecimal(amount)) {
+            errors.rejectValue("amount", "amount", "金额格式不正确");
         }
-        String subcategoryGuid = billingDTO.getSubcategoryGuid();
-        if (ValidationUtils.isEmpty(subcategoryGuid)) {
-            errors.rejectValue("subcategoryGuid", "subcategoryGuid", "请选择账单子分类");
+        String occurredTime = billingDTO.getOccurredTime();
+        if (!ValidationUtils.isEmpty(occurredTime) && !ValidationUtils.isValidDate(occurredTime)) {
+            errors.rejectValue("occurredTime", "occurredTime", "时间格式不正确");
         }
         if (errors.hasErrors()) {
-            return showForm(request, response, errors);
+            model.put("success", false);
+            model.put("message", errors.getFieldError().getDefaultMessage());
+            model.put("errors", errors.getModel());
+        } else {
+            billingService.saveOrUpdateBilling(billingDTO);
+            model.put("success", true);
+            model.put("redirectUrl", "list");
         }
-        billingService.saveOrUpdateBilling(billingDTO);
-        return new ModelAndView("redirect:list");
-    }
-
-    public void setBillingService(BillingService billingService) {
-        this.billingService = billingService;
+        return new ModelAndView(new MappingJacksonJsonView(), model);
     }
 }

@@ -3,19 +3,13 @@ package cn.greenwishing.bms.service.impl;
 import cn.greenwishing.bms.service.FileService;
 import cn.greenwishing.bms.utils.BMSProperties;
 import com.baidu.inf.iis.bcs.BaiduBCS;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Wu Fan
  */
+@Service("fileService")
 public class FileServiceImpl implements FileService {
 
-    public static final String DEFAULT_ENCODING = BMSProperties.get("baidu.bcs.default.encoding");
-
-    private BaiduBCS baiduBCS;
-
-
-    public void setBaiduBCS(BaiduBCS baiduBCS) {
-        baiduBCS.setDefaultEncoding(DEFAULT_ENCODING);
-        this.baiduBCS = baiduBCS;
-    }
 }

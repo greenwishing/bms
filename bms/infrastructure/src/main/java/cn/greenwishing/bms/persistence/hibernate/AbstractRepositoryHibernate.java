@@ -1,11 +1,14 @@
 package cn.greenwishing.bms.persistence.hibernate;
 
-import cn.greenwishing.bms.commons.domain.Domain;
+import cn.greenwishing.bms.domain.Domain;
 import cn.greenwishing.bms.domain.Repository;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DaoSupport;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.sql.SQLException;
@@ -16,7 +19,10 @@ import java.util.List;
 /**
  * @author Wu Fan
  */
-public class AbstractRepositoryHibernate extends HibernateDaoSupport implements Repository {
+public class AbstractRepositoryHibernate extends DaoSupport implements Repository {
+
+    @Autowired
+    private HibernateTemplate hibernateTemplate;
 
     @Override
     public void saveOrUpdate(Domain domain) {
@@ -93,7 +99,7 @@ public class AbstractRepositoryHibernate extends HibernateDaoSupport implements 
      *
      * @param clazz 查询的Domain类
      * @param guids guid集合
-     * @param <T> 对应的类
+     * @param <T>   对应的类
      * @return 一系列Domain
      */
     @Override
@@ -151,8 +157,7 @@ public class AbstractRepositoryHibernate extends HibernateDaoSupport implements 
         getHibernateTemplate().bulkUpdate("delete from " + clazz.getSimpleName() + " c where c.guid=?", guid);
     }
 
-
-    protected List find(final String hql, final Integer startIndex, final Integer pageCount, final Object... args) {
+    public List find(final String hql, final Integer startIndex, final Integer pageCount, final Object... args) {
         return getHibernateTemplate().executeFind(new HibernateCallback<List>() {
             @Override
             public List doInHibernate(Session session) throws HibernateException, SQLException {
@@ -165,6 +170,17 @@ public class AbstractRepositoryHibernate extends HibernateDaoSupport implements 
                         .list();
             }
         });
+    }
+
+    public HibernateTemplate getHibernateTemplate() {
+        return hibernateTemplate;
+    }
+
+    @Override
+    protected void checkDaoConfig() throws IllegalArgumentException {
+        if (this.hibernateTemplate == null) {
+            throw new IllegalArgumentException("\'sessionFactory\' or \'hibernateTemplate\' is required");
+        }
     }
 
 }

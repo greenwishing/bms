@@ -6,7 +6,7 @@
 <head>
     <title>账单统计</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <script type="text/javascript" src="/js/highcharts/4.0.3/highcharts.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/highcharts/4.0.3/highcharts.js"></script>
     <script type="text/javascript">
         $(function(){
             loadBillingStatistics();

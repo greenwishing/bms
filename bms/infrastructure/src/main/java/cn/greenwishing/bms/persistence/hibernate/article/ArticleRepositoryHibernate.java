@@ -5,12 +5,14 @@ import cn.greenwishing.bms.domain.article.ArticleRepository;
 import cn.greenwishing.bms.persistence.hibernate.AbstractRepositoryHibernate;
 import cn.greenwishing.bms.utils.paging.ArticlePaging;
 import cn.greenwishing.bms.utils.query.helper.ArticleQueryHelper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * @author Wu Fan
  */
+@Repository("articleRepository")
 public class ArticleRepositoryHibernate extends AbstractRepositoryHibernate implements ArticleRepository {
     @Override
     @SuppressWarnings("unchecked")

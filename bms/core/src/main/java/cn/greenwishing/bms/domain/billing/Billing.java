@@ -1,38 +1,49 @@
 package cn.greenwishing.bms.domain.billing;
 
-import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
-import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
-import cn.greenwishing.bms.utils.paging.BillingPaging;
+import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
 
+@Entity
+@Table(name = "billing")
 public class Billing extends AbstractDomain {
 
+    @Column(name = "name")
 	private String name;
-	private BillingType type;
-    private BillingCategory category;
-    private BillingSubcategory subcategory;
-	private BigDecimal amount;
-    private String description;
-    /**
-     * 发生时间
-     */
-	private LocalDate occurredTime;
-    /**
-     * 发生人
-     */
-	private User occurredUser;
-	private User operator;
 
-    private static BillingRepository repository;
-    private static BillingRepository getRepository() {
-        if (repository == null) repository = InstanceFactory.getInstance(BillingRepository.class);
-        return repository;
-    }
+    @Column(name = "type")
+    @Enumerated(value = EnumType.STRING)
+	private BillingType type;
+
+    @JoinColumn(name = "category_id")
+    @ManyToOne(targetEntity = BillingCategory.class)
+    private BillingCategory category;
+
+    @JoinColumn(name = "subcategory_id")
+    @ManyToOne(targetEntity = BillingSubcategory.class)
+    private BillingSubcategory subcategory;
+
+    @Column(name = "amount")
+	private BigDecimal amount;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "occurred_time")
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
+	private LocalDate occurredTime;
+
+    @JoinColumn(name = "occurred_user_id")
+    @ManyToOne(targetEntity = User.class)
+	private User occurredUser;
+
+    @JoinColumn(name = "operator_id")
+    @ManyToOne(targetEntity = User.class)
+	private User operator;
 
     public Billing() {
     }
@@ -53,26 +64,6 @@ public class Billing extends AbstractDomain {
         this.type = type;
         this.category = category;
         this.subcategory = subcategory;
-    }
-
-    public void saveOrUpdate() {
-        getRepository().saveOrUpdate(this);
-    }
-
-    public static BillingPaging findByPaging(BillingPaging paging) {
-        return getRepository().findBillingByPaging(paging);
-    }
-
-    public static void deleteByGuid(String guid) {
-        getRepository().remove(Billing.class, guid);
-    }
-
-    public static List<Object[]> loadNearestStatistics(BillingType billingType, Integer size) {
-        return getRepository().loadNearestStatistics(billingType, size);
-    }
-
-    public static List<BillingStatistics> loadStatistics(String userGuid, LocalDate startDate, LocalDate endDate, String group) {
-        return getRepository().loadBillingStatistics(userGuid, startDate, endDate, group);
     }
 
     public BillingType type() {

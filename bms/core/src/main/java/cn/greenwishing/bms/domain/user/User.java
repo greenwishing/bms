@@ -1,38 +1,36 @@
 package cn.greenwishing.bms.domain.user;
 
-import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+
+import javax.persistence.*;
 
 /**
  * @author Wu Fan
  */
+@Entity
+@Table(name = "`user`")
 public class User extends AbstractDomain {
 
     public static final String ADMIN_GUID = "cd4b1012-e53f-47bf-b0db-91a7fe9fb09b";
 
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "account")
     private String account;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "last_login_time")
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
     private DateTime lastLoginTime;
+
+    @Column(name = "`status`")
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
-
-    private static UserRepository repository;
-
-    private static UserRepository getRepository() {
-        if (repository == null) {
-            repository = InstanceFactory.getInstance(UserRepository.class);
-        }
-        return repository;
-    }
-
-    public static User findByGuid(String guid) {
-        return getRepository().findByGuid(User.class, guid);
-    }
-
-    public static User findByAccount(String account) {
-        return getRepository().findUserByAccount(account);
-    }
 
     public String username() {
         return username;

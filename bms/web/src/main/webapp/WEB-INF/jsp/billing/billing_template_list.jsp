@@ -9,8 +9,8 @@
 </head>
 <body>
 <blockquote>
-    <a class="btn btn-success" href="/system/billing_template/add">添加</a>
-    <a class="btn btn-default" href="/system/billing/list">返回</a>
+    <a class="btn btn-success" href="add_template">添加</a>
+    <a class="btn btn-default" href="list">返回</a>
 </blockquote>
 <table class="table table-hover">
     <thead>
@@ -29,7 +29,7 @@
             <td>${template.type.label}</td>
             <td>${template.categoryName} ${template.subcategoryName}</td>
             <td><span class="price">${template.amount}</span></td>
-            <td><a href="edit?guid=${template.guid}">编辑</a></td>
+            <td><a href="edit_template?guid=${template.guid}">编辑</a></td>
         </tr>
     </c:forEach>
     </tbody>

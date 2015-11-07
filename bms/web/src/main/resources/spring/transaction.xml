@@ -10,6 +10,8 @@
 			http://www.springframework.org/schema/aop
 			http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
     <aop:config>
         <aop:advisor advice-ref="applicationAdvisor" pointcut="execution(* cn.greenwishing.bms.service.*.*(..))"/>
     </aop:config>

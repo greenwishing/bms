@@ -11,7 +11,7 @@
 <blockquote>
     <form id="search-form" action="list" class="form-inline">
         <a class="btn btn-success" href="add">写文章</a>
-        <a class="btn btn-primary" href="/system/article_category/list">文章分类</a>
+        <a class="btn btn-primary" href="categories">文章分类</a>
         <div class="form-group">
             <label class="control-label" for="key">关键字</label>
             <input class="form-control" id="key" name="key" type="text" value="${pagingDTO.key}" placeholder="关键字"/>

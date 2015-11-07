@@ -3,12 +3,14 @@ package cn.greenwishing.bms.persistence.hibernate.user;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.domain.user.UserRepository;
 import cn.greenwishing.bms.persistence.hibernate.AbstractRepositoryHibernate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * @author Wu Fan
  */
+@Repository("userRepository")
 public class UserRepositoryHibernate extends AbstractRepositoryHibernate implements UserRepository {
     @Override
     @SuppressWarnings("unchecked")

@@ -11,17 +11,19 @@
           http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--annotation configuration -->
-    <mvc:annotation-driven/>
-    <context:component-scan base-package="cn.greenwishing.bms"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="cn.greenwishing.bms">
+        <context:exclude-filter type="annotation"  expression="org.springframework.stereotype.Service" />
+    </context:component-scan>
 
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+    <mvc:annotation-driven/>
 
     <!--static resource-->
     <mvc:resources mapping="/js/**" location="/js/"/>
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/images/**" location="/images/"/>
     <mvc:resources mapping="/*.html" location="/"/>
+    <mvc:resources mapping="/favicon.ico" location="/"/>
 
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -29,75 +31,31 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean id="methodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
-        <property name="paramName" value="m"/>
-    </bean>
+    <bean id="defaultAnnotationHandlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
 
-    <bean id="handlerAdapter" class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
-
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="mappings">
-            <props>
-
-                <prop key="/system/billing/**">billingController</prop>
-                <prop key="/system/billing/add">billingFormController</prop>
-                <prop key="/system/billing_category/**">billingCategoryController</prop>
-                <prop key="/system/billing_category/add">billingCategoryFormController</prop>
-                <prop key="/system/billing_category/edit">billingCategoryFormController</prop>
-                <prop key="/system/billing_subcategory/**">billingSubcategoryController</prop>
-                <prop key="/system/billing_subcategory/add">billingSubcategoryFormController</prop>
-                <prop key="/system/billing_subcategory/edit">billingSubcategoryFormController</prop>
-                <prop key="/system/billing_template/**">billingTemplateController</prop>
-                <prop key="/system/billing_template/add">billingTemplateFormController</prop>
-                <prop key="/system/billing_template/edit">billingTemplateFormController</prop>
-
-                <prop key="/system/article/**">articleController</prop>
-                <prop key="/system/article/add">articleFormController</prop>
-                <prop key="/system/article/edit">articleFormController</prop>
-                <prop key="/system/article_category/**">articleCategoryController</prop>
-                <prop key="/system/article_category/add">articleCategoryFormController</prop>
-                <prop key="/system/article_category/edit">articleCategoryFormController</prop>
-            </props>
+    <bean id="annotationMethodHandlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJacksonHttpMessageConverter" />
+                <ref bean="stringHttpMessageConverter" />
+            </list>
         </property>
     </bean>
 
-    <bean id="billingController" class="cn.greenwishing.bms.web.controller.billing.BillingController">
-        <property name="billingService" ref="billingService"/>
+    <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json</value>
+            </list>
+        </property>
     </bean>
-    <bean id="billingFormController" class="cn.greenwishing.bms.web.controller.billing.BillingFormController">
-        <property name="billingService" ref="billingService"/>
-        <property name="validator" ref="billingValidator"/>
+
+    <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter" >
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
     </bean>
-    <bean id="billingCategoryController" class="cn.greenwishing.bms.web.controller.billing.BillingCategoryController">
-        <property name="billingService" ref="billingService"/>
-    </bean>
-    <bean id="billingCategoryFormController" class="cn.greenwishing.bms.web.controller.billing.BillingCategoryFormController">
-        <property name="billingService" ref="billingService"/>
-    </bean>
-    <bean id="billingSubcategoryController" class="cn.greenwishing.bms.web.controller.billing.BillingSubcategoryController">
-        <property name="billingService" ref="billingService"/>
-    </bean>
-    <bean id="billingSubcategoryFormController" class="cn.greenwishing.bms.web.controller.billing.BillingSubcategoryFormController">
-        <property name="billingService" ref="billingService"/>
-    </bean>
-    <bean id="billingTemplateController" class="cn.greenwishing.bms.web.controller.billing.BillingTemplateController">
-        <property name="billingService" ref="billingService"/>
-    </bean>
-    <bean id="billingTemplateFormController" class="cn.greenwishing.bms.web.controller.billing.BillingTemplateFormController">
-        <property name="billingService" ref="billingService"/>
-    </bean>
-    <bean id="articleController" class="cn.greenwishing.bms.web.controller.article.ArticleController">
-        <property name="articleService" ref="articleService"/>
-    </bean>
-    <bean id="articleFormController" class="cn.greenwishing.bms.web.controller.article.ArticleFormController">
-        <property name="articleService" ref="articleService"/>
-        <property name="validator" ref="articleValidator"/>
-    </bean>
-    <bean id="articleCategoryController" class="cn.greenwishing.bms.web.controller.article.ArticleCategoryController">
-        <property name="articleService" ref="articleService"/>
-    </bean>
-    <bean id="articleCategoryFormController" class="cn.greenwishing.bms.web.controller.article.ArticleCategoryFormController">
-        <property name="articleService" ref="articleService"/>
-        <property name="validator" ref="articleCategoryValidator"/>
-    </bean>
+
 </beans>

@@ -4,57 +4,53 @@ import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.article.ArticleDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Wu Fan
  */
-public class ArticleFormController extends SimpleFormController {
+@Controller
+@RequestMapping({"/system/article/add", "/system/article/edit"})
+@SessionAttributes("articleDTO")
+public class ArticleFormController {
 
+    public static final String FORM_VIEW = "article/article_form";
+    @Autowired
     private ArticleService articleService;
 
-    public ArticleFormController() {
-        setCommandClass(ArticleDTO.class);
-        setCommandName("articleDTO");
-        setFormView("article/article_form");
-        setSessionForm(true);
-    }
-
-    @Override
-    protected Map referenceData(HttpServletRequest request, Object command, Errors errors) throws Exception {
+    @RequestMapping(method = RequestMethod.GET)
+    public String form(String guid, ModelMap model) {
         List<ArticleCategoryDTO> categoryDTOs = articleService.loadArticleCategories();
-        Map<String, Object> data = new HashMap<>();
-        data.put("categoryDTOs", categoryDTOs);
-        return data;
-    }
-
-    @Override
-    protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        String guid = ServletRequestUtils.getStringParameter(request, "guid");
-        if (ValidationUtils.isNotEmpty(guid)) {
-            return articleService.loadArticleByGuid(guid);
+        model.put("categoryDTOs", categoryDTOs);
+        ArticleDTO articleDTO;
+        if (ValidationUtils.isEmpty(guid)) {
+            articleDTO = new ArticleDTO();
+        } else {
+            articleDTO = articleService.loadArticleByGuid(guid);
         }
-        return new ArticleDTO();
+        model.put("articleDTO", articleDTO);
+        return FORM_VIEW;
     }
 
-    @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-        ArticleDTO articleDTO = (ArticleDTO) command;
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView save(ArticleDTO articleDTO, BindingResult errors) {
+        String content = articleDTO.getContent();
+        if (ValidationUtils.isEmpty(content)) {
+            errors.rejectValue("content", "content", "请输入文章内容");
+        }
+        if (errors.hasErrors()) {
+            return new ModelAndView(FORM_VIEW);
+        }
         articleService.saveOrUpdateArticle(articleDTO);
         return new ModelAndView("redirect:list");
-    }
-
-    public void setArticleService(ArticleService articleService) {
-        this.articleService = articleService;
     }
 }

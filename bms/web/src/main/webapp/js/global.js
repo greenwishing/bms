@@ -40,6 +40,25 @@ var WF = {
                 }
             }
             $(form)[0].submit();
+        },
+        ajaxSubmit: function(form) {
+            WF.ajax.req({
+                url: $(form).attr('action'),
+                type: $(form).attr('method') || 'POST',
+                data: $(form).serialize(),
+                success: function(result) {
+                    console.log(result);
+                    if (result.success) {
+                        if (result.redirectUrl) {
+                            WF.page.forward(result.redirectUrl);
+                        } else {
+                            location.reload();
+                        }
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            });
         }
     },
     util: {
@@ -54,7 +73,6 @@ var WF = {
         },
         checkAll: function(field) {
             var all = $(field);
-            alert(all.attr('data-name'))
             var checkbox = $('input:checkbox[name="' + all.attr('data-name') + '"]');
             all.bind('click', function(){
                 if (all.attr('checked') == 'checked') {
@@ -112,7 +130,8 @@ var WF = {
 
             WF.ajax.req({
                 type: 'post',
-                url: '/system/billing/categories?type=' + billingType,
+                url: 'categories',
+                data: {type: billingType, dataType: 'json'},
                 success: function (result) {
                     var categories = result.categories;
                     for (var i in categories) {
@@ -137,7 +156,8 @@ var WF = {
 
             WF.ajax.req({
                 type: 'post',
-                url: '/system/billing/subcategories?categoryGuid=' + categoryGuid,
+                url: 'subcategories',
+                data: {categoryGuid: categoryGuid, dataType: 'json'},
                 success: function (result) {
                     var subcategories = result.subcategories;
                     for (var i in subcategories) {
@@ -153,7 +173,8 @@ var WF = {
             container.addClass('btn-group');
             WF.ajax.req({
                 type: 'post',
-                url: '/system/billing/templates',
+                url: 'templates',
+                data: {dataType: 'json'},
                 success: function(result) {
                     var templates = result.templates;
                     for (var i in templates) {

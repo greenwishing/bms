@@ -9,7 +9,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>commons</module>
         <module>core</module>
         <module>infrastructure</module>
         <module>application</module>
@@ -150,6 +149,16 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-annotations</artifactId>
+                <version>3.4.0.GA</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-commons-annotations</artifactId>
+                <version>3.1.0.GA</version>
             </dependency>
             <dependency>
                 <groupId>joda-time</groupId>

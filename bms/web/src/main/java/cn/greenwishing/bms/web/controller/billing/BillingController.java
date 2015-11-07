@@ -8,13 +8,15 @@ import cn.greenwishing.bms.dto.billing.BillingSubcategoryDTO;
 import cn.greenwishing.bms.dto.billing.BillingTemplateDTO;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.shared.EnumUtils;
-import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,59 +25,78 @@ import java.util.Map;
 /**
  * @author Wu Fan
  */
-public class BillingController extends MultiActionController {
+@Controller
+@RequestMapping("/system/billing/")
+public class BillingController {
 
+    @Autowired
     private BillingService billingService;
 
-    public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        BillingPagingDTO billingPagingDTO = new BillingPagingDTO();
-        bind(request, billingPagingDTO);
-        BillingPagingDTO pagingDTO = billingService.loadBillingPaging(billingPagingDTO);
-        Map<String, Object> model = new HashMap<>();
+    @RequestMapping("list")
+    public String list(BillingPagingDTO pagingDTO, ModelMap model) {
+        pagingDTO = billingService.loadBillingPaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
         model.put("types", BillingType.values());
-        return new ModelAndView("billing/billing_list", model);
+        return "billing/billing_list";
     }
 
-    public ModelAndView delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String guid = ServletRequestUtils.getRequiredStringParameter(request, "guid");
+    @RequestMapping("delete")
+    public String delete(String guid) {
         billingService.deleteBillingByGuid(guid);
-        return new ModelAndView("redirect:list");
+        return "redirect:list";
     }
 
-    public ModelAndView statistics(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return new ModelAndView("billing/billing_statistics");
+    @RequestMapping("statistics")
+    public String statistics() {
+        return "billing/billing_statistics";
     }
 
-    public ModelAndView data(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String group = ServletRequestUtils.getStringParameter(request, "group", "subcategory");
-        String type = ServletRequestUtils.getStringParameter(request, "type", "month");
+    @RequestMapping("data")
+    public ModelAndView data(
+            @RequestParam(value = "group", defaultValue = "subcategory") String group,
+            @RequestParam(value = "type", defaultValue = "month") String type) {
         List<BillingStatistics> data = billingService.loadBillingStatistics(type, group);
-        return new ModelAndView(new MappingJacksonJsonView(), "data", data);
+        Map<String, Object> model = new HashMap<>();
+        model.put("data", data);
+        return new ModelAndView(new MappingJacksonJsonView(), model);
     }
 
-    public ModelAndView categories(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String type = ServletRequestUtils.getRequiredStringParameter(request, "type");
+    @RequestMapping("categories")
+    public ModelAndView categories(String type, String dataType) {
         BillingType billingType = EnumUtils.nameOf(BillingType.class, type);
-        List<BillingCategoryDTO> categories = new ArrayList<>();
+        List<BillingCategoryDTO> categories;
         if (billingType != null) {
             categories = billingService.loadBillingCategoryByType(billingType);
+        } else {
+            categories = billingService.loadBillingCategory();
         }
-        return new ModelAndView(new MappingJacksonJsonView(), "categories", categories);
+        Map<String, Object> model = new HashMap<>();
+        model.put("categories", categories);
+        if ("json".equals(dataType)) {
+            return new ModelAndView(new MappingJacksonJsonView(), model);
+        }
+        return new ModelAndView("billing/billing_category_list", model);
     }
 
-    public ModelAndView subcategories(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String categoryGuid = ServletRequestUtils.getRequiredStringParameter(request, "categoryGuid");
+    @RequestMapping("subcategories")
+    public ModelAndView subcategories(String categoryGuid, String dataType) {
         List<BillingSubcategoryDTO> subcategories = billingService.loadBillingSubcategory(categoryGuid);
-        return new ModelAndView(new MappingJacksonJsonView(), "subcategories", subcategories);
+        Map<String, Object> model = new HashMap<>();
+        model.put("subcategories", subcategories);
+        if ("json".equals(dataType)) {
+            return new ModelAndView(new MappingJacksonJsonView(), model);
+        }
+        return new ModelAndView("billing/billing_subcategory_list", model);
     }
 
-    public ModelAndView templates(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping("templates")
+    public ModelAndView templates(String dataType) {
         List<BillingTemplateDTO> templates = billingService.loadBillingTemplate();
-        return new ModelAndView(new MappingJacksonJsonView(), "templates", templates);
-    }
-
-    public void setBillingService(BillingService billingService) {
-        this.billingService = billingService;
+        Map<String, Object> model = new HashMap<>();
+        model.put("templates", templates);
+        if ("json".equals(dataType)) {
+            return new ModelAndView(new MappingJacksonJsonView(), model);
+        }
+        return new ModelAndView("billing/billing_template_list", model);
     }
 }

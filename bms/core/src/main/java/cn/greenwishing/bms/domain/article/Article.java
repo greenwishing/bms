@@ -1,30 +1,30 @@
 package cn.greenwishing.bms.domain.article;
 
-import cn.greenwishing.bms.commons.spring.instance.InstanceFactory;
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.user.User;
-import cn.greenwishing.bms.utils.paging.ArticlePaging;
 
-import java.util.List;
+import javax.persistence.*;
 
 /**
  * @author Wu Fan
  */
+@Entity
+@Table(name = "article")
 public class Article extends AbstractDomain {
 
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "content")
     private String content;
+
+    @JoinColumn(name = "category_id")
+    @ManyToOne(targetEntity = ArticleCategory.class)
     private ArticleCategory category;
+
+    @JoinColumn(name = "author_id")
+    @ManyToOne(targetEntity = User.class)
     private User author;
-
-    private static ArticleRepository repository;
-
-    private static ArticleRepository getRepository() {
-        if (repository == null) {
-            repository = InstanceFactory.getInstance(ArticleRepository.class);
-        }
-        return repository;
-    }
 
     public Article(){}
 
@@ -36,18 +36,6 @@ public class Article extends AbstractDomain {
         this.title = title;
         this.content = content;
         this.category = category;
-    }
-
-    public void saveOrUpdate() {
-        getRepository().saveOrUpdate(this);
-    }
-
-    public static ArticlePaging loadByPaging(ArticlePaging articlePaging) {
-        return getRepository().findArticlePaging(articlePaging);
-    }
-
-    public static Article findByGuid(String guid) {
-        return getRepository().findByGuid(Article.class, guid);
     }
 
     public String title() {

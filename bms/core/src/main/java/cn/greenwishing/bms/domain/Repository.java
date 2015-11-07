@@ -1,8 +1,5 @@
 package cn.greenwishing.bms.domain;
 
-import cn.greenwishing.bms.commons.domain.Domain;
-
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 

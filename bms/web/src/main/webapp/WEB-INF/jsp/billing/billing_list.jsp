@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <title>账单列表</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -16,9 +16,9 @@
 <body>
 <blockquote>
     <form id="search-form" action="list" class="form-inline" onsubmit="return false;">
-        <a class="btn btn-success" href="/system/billing/add">添加</a>
-        <a class="btn btn-primary" href="/system/billing_category/list">分类管理</a>
-        <a class="btn btn-primary" href="/system/billing_template/list">模板管理</a>
+        <a class="btn btn-success" href="add">添加</a>
+        <a class="btn btn-primary" href="categories">分类管理</a>
+        <a class="btn btn-primary" href="templates">模板管理</a>
         <div class="form-group">
             <label class="control-label" for="key">关键字</label>
             <input id="key" name="key" type="text" class="form-control" value="${pagingDTO.key}" placeholder="关键字"/>
@@ -32,16 +32,16 @@
         </div>
         <div class="form-group form-more" style="display: none;">
             <label class="control-label" for="type">类型/分类</label>
-            <select id="type" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
+            <select id="type" class="form-control" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
                 <option value="">请选择</option>
                 <c:forEach items="${types}" var="type">
                     <option value="${type.value}">${type.label}</option>
                 </c:forEach>
             </select>
-            <select id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid" default-value="${param.categoryGuid}">
+            <select id="categoryGuid" class="form-control" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid" default-value="${param.categoryGuid}">
                 <option value="">请选择</option>
             </select>
-            <select id="subcategoryGuid" name="subcategoryGuid" default-value="${param.subcategoryGuid}">
+            <select id="subcategoryGuid" class="form-control" name="subcategoryGuid" default-value="${param.subcategoryGuid}">
                 <option value="">请选择</option>
             </select>
         </div>
