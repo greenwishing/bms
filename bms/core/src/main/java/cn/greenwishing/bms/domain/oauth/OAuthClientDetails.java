@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "oauth_client_details")
 public class OAuthClientDetails implements Domain {
 
-    public static final String CLIENT_ID_PREFIX = "bi";
+    public static final String CLIENT_ID_PREFIX = "bms";
     public static final String PUBLIC_CLIENT_ID = "test888888";
     public static final String PUBLIC_CLIENT_SECRET = "d25f622a6f0c4d34a27ac2864f9bb091";
 
@@ -26,7 +26,7 @@ public class OAuthClientDetails implements Domain {
     @Column(name = "client_id")
     @GeneratedValue(generator = "generator")
     @GenericGenerator(name = "generator", strategy = "assigned")
-    private String clientId = GuidGenerator.generate(14);
+    private String clientId = CLIENT_ID_PREFIX + GuidGenerator.generate(13);
     @Column(name = "client_secret")
     private String clientSecret = GuidGenerator.generate();
     /**
