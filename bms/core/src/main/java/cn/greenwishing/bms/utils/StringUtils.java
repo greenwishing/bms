@@ -10,7 +10,7 @@ import java.util.Iterator;
 public class StringUtils {
 
     public static String join(Collection list, String sp) {
-        if (list.isEmpty()) return "";
+        if (list == null || list.isEmpty()) return "";
         if (sp == null) sp = "";
         Iterator iterator = list.iterator();
         StringBuilder sb = new StringBuilder();
