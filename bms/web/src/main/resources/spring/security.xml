@@ -34,7 +34,7 @@
         <access-denied-handler ref="oauth2AccessDeniedHandler"/>
     </http>
 
-    <http pattern="/oauth/api/**" create-session="never" entry-point-ref="oauth2AuthenticationEntryPoint" access-decision-manager-ref="oauth2AccessDecisionManager">
+    <http pattern="/oauth/api/**" create-session="never" access-decision-manager-ref="oauth2AccessDecisionManager" entry-point-ref="oauth2AuthenticationEntryPoint">
         <anonymous enabled="false" />
         <intercept-url pattern="/oauth/api/**" access="ROLE_USER" />
         <custom-filter ref="oauthAPIResourceServer" before="PRE_AUTH_FILTER" />
@@ -42,7 +42,7 @@
     </http>
 
     <!-- 定义服务器资源 -->
-    <oauth2:resource-server id="oauthAPIResourceServer" resource-id="oauth_api" token-services-ref="tokenServices" />
+    <oauth2:resource-server id="oauthAPIResourceServer" resource-id="oauth_api" token-services-ref="tokenServices" entry-point-ref="oauth2AuthenticationEntryPoint" />
 
     <!-- 把验证类型、用户名密码都作为表单参数提交 -->
     <beans:bean id="clientCredentialsTokenEndpointFilter" class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
@@ -50,13 +50,30 @@
     </beans:bean>
 
     <!-- 访问成功 -->
-    <beans:bean id="oauth2AuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint"/>
+    <beans:bean id="oauth2AuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <beans:property name="exceptionRenderer" ref="oAuth2ExceptionRenderer"/>
+    </beans:bean>
     <!-- 访问拒绝 -->
-    <beans:bean id="oauth2AccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler"/>
+    <beans:bean id="oauth2AccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler">
+        <beans:property name="exceptionRenderer" ref="oAuth2ExceptionRenderer"/>
+    </beans:bean>
+
+    <!-- 异常消息处理 -->
+    <beans:bean id="oAuth2ExceptionRenderer" class="org.springframework.security.oauth2.provider.error.DefaultOAuth2ExceptionRenderer">
+        <beans:property name="messageConverters">
+            <beans:list>
+                <beans:ref bean="mappingJacksonHttpMessageConverter"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+    <!-- JSON 消息处理 -->
+    <beans:bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+
     <!-- 认证点 -->
     <beans:bean id="oauthUserApprovalHandler" class="org.springframework.security.oauth2.provider.approval.TokenServicesUserApprovalHandler">
         <beans:property name="tokenServices" ref="tokenServices"/>
     </beans:bean>
+
     <!-- 访问控制 -->
     <beans:bean id="oauth2AccessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
         <beans:constructor-arg>
