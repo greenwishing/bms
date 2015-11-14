@@ -2,6 +2,55 @@
  * @author Wu Fan
  */
 
+String.prototype.format = function (args) {
+    var result = this;
+    if (arguments.length > 0) {
+        if (arguments.length == 1 && typeof (args) == "object") {
+            for (var key in args) {
+                if (args[key] != undefined) {
+                    result = result.replace(new RegExp("({" + key + "})", "g"), args[key]);
+                }
+            }
+        }
+        else {
+            for (var i = 0; i < arguments.length; i++) {
+                if (arguments[i] != undefined) {
+                    result = result.replace(new RegExp("({)" + i + "(})", "g"), arguments[i]);
+                }
+            }
+        }
+    }
+    return result;
+};
+String.prototype.trim = function () {
+    return this.replace(/(^\s*)|(\s*$)/g, "")
+};
+String.prototype.replaceAll = function (c, b, a) {
+    if (!RegExp.prototype.isPrototypeOf(c)) {
+        return this.replace(new RegExp(c, (a ? "gi" : "g")), b);
+    } else {
+        return this.replace(c, b);
+    }
+};
+String.prototype.startsWith = function (a) {
+    return (!WF.validation.isEmpty(a) || this.length || a.length <= this.length) && this.substring(0, a.length) == a;
+};
+String.prototype.endsWith = function (a) {
+    return (!WF.validation.isEmpty(a) || this.length || a.length <= this.length) && this.substring(this.length - a.length) == a;
+};
+Date.prototype.add = function (a) {
+    if ("days" in a) {
+        return new Date(this.setDate(this.getDate() + a.days));
+    } else {
+        if ("month" in a) {
+            return new Date(this.setMonth(this.getMonth() + a.month));
+        } else {
+            console.error("Date add/subtract support days|month ONLY.");
+            return null;
+        }
+    }
+};
+
 var WF = {
     resources: {
         emptyOption: '<option value="">请选择</option>'
@@ -116,6 +165,9 @@ var WF = {
     validation: {
         isEmpty: function(val) {
             return null == val || "" == val;
+        },
+        isDate: function(val) {
+            return /^\d{4}-\d{2}-\d{2}$/.test(val);
         }
     },
     billing: {

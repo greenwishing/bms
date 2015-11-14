@@ -36,7 +36,7 @@
 
     <http pattern="/oauth/api/**" create-session="never" access-decision-manager-ref="oauth2AccessDecisionManager" entry-point-ref="oauth2AuthenticationEntryPoint">
         <anonymous enabled="false" />
-        <intercept-url pattern="/oauth/api/**" access="ROLE_USER" />
+        <intercept-url pattern="/oauth/api/**" access="ROLE_API_BASE" />
         <custom-filter ref="oauthAPIResourceServer" before="PRE_AUTH_FILTER" />
         <access-denied-handler ref="oauth2AccessDeniedHandler" />
     </http>

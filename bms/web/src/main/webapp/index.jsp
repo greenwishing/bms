@@ -11,6 +11,8 @@
     <script src="${pageContext.request.contextPath}/js/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/highcharts/4.0.3/highcharts.js"></script>
+   <%-- <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/solar.lunar.date.js"></script>--%>
 
     <script type="text/javascript">
         $(function(){
@@ -24,9 +26,11 @@
                     renderHighcharts(result.series[i]);
                 }
             });
+            $('#solar-lunar-date').solarLunarDate({minDate: '1950-01-01', maxDate: new Date()});
         });
         function renderHighcharts(series) {
             var div = $('<div class="col-lg-6"></div>');
+            Highcharts.numberFormat()
             $('.nearest').append(div);
             var data = [];
             data.push(series);
@@ -78,6 +82,12 @@
             <div class="col-lg-3"><label for="password" class="form-control-static">密码</label></div>
             <div class="col-lg-9">
                 <input id="password" type="password" class="form-control" name="password" />
+            </div>
+        </div>
+        <div class="form-group form-group-lg">
+            <div class="col-lg-3"><label for="password" class="form-control-static">生日</label></div>
+            <div class="col-lg-9">
+                <div id="solar-lunar-date"></div>
             </div>
         </div>
         <div class="form-group form-group-lg">

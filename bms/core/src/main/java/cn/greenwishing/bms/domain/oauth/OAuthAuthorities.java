@@ -7,7 +7,7 @@ import cn.greenwishing.bms.utils.BmsEnum;
  * @date 2015/11/7.
  */
 public enum OAuthAuthorities implements BmsEnum {
-    API_BASE("API Base"),
+    ROLE_API_BASE("API Base"),
     ;
 
     private String label;
