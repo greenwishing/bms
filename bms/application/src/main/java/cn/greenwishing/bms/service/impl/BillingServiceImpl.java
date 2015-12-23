@@ -7,6 +7,7 @@ import cn.greenwishing.bms.domain.user.UserRepository;
 import cn.greenwishing.bms.dto.billing.*;
 import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 import cn.greenwishing.bms.service.BillingService;
+import cn.greenwishing.bms.shared.EnumUtils;
 import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
@@ -14,7 +15,6 @@ import cn.greenwishing.bms.utils.paging.BillingPaging;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -204,22 +204,21 @@ public class BillingServiceImpl implements BillingService {
     }
 
     @Override
-    public List<BillingStatistics> loadBillingStatistics(String type, String group) {
-        LocalDate startDate;
-        LocalDate endDate;
-        if ("day".equals(type)) {
-            startDate = JodaUtils.today();
-            endDate = JodaUtils.today();
-        } else if ("week".equals(type)) {
-            startDate = JodaUtils.today().minusWeeks(1);
-            endDate = JodaUtils.today();
-        } else if ("month".equals(type)) {
-            startDate = JodaUtils.today().minusMonths(1);
-            endDate = JodaUtils.today();
-        } else {
+    public List<BillingStatistics> loadBillingStatistics(String type, String group, String fromDateStr, String toDateStr) {
+        BillingType billingType = EnumUtils.nameOf(BillingType.class, type);
+        if (billingType == null) {
+            billingType = BillingType.EXPEND;
+        }
+        LocalDate startDate = null;
+        LocalDate endDate = null;
+        if (ValidationUtils.isValidDate(fromDateStr) && ValidationUtils.isValidDate(toDateStr)) {
+            startDate = JodaUtils.parseLocalDate(fromDateStr);
+            endDate = JodaUtils.parseLocalDate(toDateStr);
+        }
+        if (startDate == null || endDate == null) {
             return Collections.emptyList();
         }
         String userGuid = SecurityHolder.getUserGuid();
-        return billingRepository.loadBillingStatistics(userGuid, startDate, endDate, group);
+        return billingRepository.loadBillingStatistics(userGuid, billingType, startDate, endDate, group);
     }
 }

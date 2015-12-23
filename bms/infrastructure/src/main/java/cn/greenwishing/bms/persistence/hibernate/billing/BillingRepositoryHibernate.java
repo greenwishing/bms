@@ -9,12 +9,10 @@ import cn.greenwishing.bms.utils.query.helper.BillingQueryHelper;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 @Repository("billingRepository")
@@ -72,16 +70,14 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<BillingStatistics> loadBillingStatistics(String userGuid, LocalDate startDate, LocalDate endDate, String group) {
+    public List<BillingStatistics> loadBillingStatistics(String userGuid, BillingType billingType, LocalDate startDate, LocalDate endDate, String group) {
         String queryString = "select new cn.greenwishing.bms.domain.statistics.BillingStatistics(b.type, b.category.name, b.subcategory.name, sum(b.amount))" +
-                " from Billing b where b.occurredUser.guid=? and b.occurredTime>=? and b.occurredTime<?";
+                " from Billing b where b.occurredUser.guid=? and b.type=? and b.occurredTime>=? and b.occurredTime<?";
         if ("subcategory".equals(group)) {
             queryString += " group by b.subcategory.id";
         } else if ("category".equals(group)) {
             queryString += " group by b.category.id";
-        } else if ("type".equals(group)) {
-            queryString += " group by b.type";
         }
-        return getHibernateTemplate().find(queryString, userGuid, startDate, endDate.plusDays(1));
+        return getHibernateTemplate().find(queryString, userGuid, billingType, startDate, endDate.plusDays(1));
     }
 }

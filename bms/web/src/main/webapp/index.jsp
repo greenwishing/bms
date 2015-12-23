@@ -85,12 +85,6 @@
             </div>
         </div>
         <div class="form-group form-group-lg">
-            <div class="col-lg-3"><label for="password" class="form-control-static">生日</label></div>
-            <div class="col-lg-9">
-                <div id="solar-lunar-date"></div>
-            </div>
-        </div>
-        <div class="form-group form-group-lg">
             <div class="col-lg-offset-3 col-lg-9">
                 <input type="submit" class="btn btn-primary btn-block btn-lg" value="登录"/>
                 <c:choose>

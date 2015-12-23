@@ -6,24 +6,47 @@
 <head>
     <title>账单统计</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/moment.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/highcharts/4.0.3/highcharts.js"></script>
     <script type="text/javascript">
         $(function(){
             loadBillingStatistics();
         });
-        function loadBillingStatisticsByType(type) {
-            $('#type').val(type);
-            var group = $('#group').find('option:selected').val();
+        function loadBillingStatistics() {
+            var $type = $('#type'), $mode = $('#mode'), $group = $('#group');
+            var type = $type.val(), mode = $mode.val(), group = $group.val();
+            var offset = parseInt($mode.attr('data-offset')) || 0;
+            var from = moment(), to;
+            if (mode == 'days') {
+                from = moment().add(offset, 'days');
+                to = from.clone();
+            } else if (mode == 'weeks') {
+                from = moment().add(offset, 'weeks').startOf('week');
+                to = from.clone().endOf('week');
+            } else if (mode == 'months') {
+                from = moment().add(offset, 'months').startOf('month');
+                to = from.clone().endOf('month');
+            } else {
+                return;
+            }
+            var dateFrom = from.format('YYYY-MM-DD');
+            var dateTo = to.format('YYYY-MM-DD');
+            $('#date').html(dateFrom == dateTo ? dateFrom : (dateFrom + '到' + dateTo));
+            console.log(dateFrom);
+            console.log(dateTo);
             WF.ajax.req({
-                url: 'data?type=' + type + '&group=' + group,
+                url: 'data',
+                data: { type: type, group: group, from: dateFrom, to: dateTo },
                 success: function(result) {
                     renderCharts(result.data);
                 }
             });
         }
-        function loadBillingStatistics() {
-            var type = $('#type').val();
-            loadBillingStatisticsByType(type);
+        function addModeOffset(val) {
+            var $mode = $('#mode');
+            var offset = parseInt($mode.attr('data-offset')) || 0;
+            $mode.attr({'data-offset': (offset + val)});
+            loadBillingStatistics();
         }
         function renderCharts(records) {
             var group = $('#group').find('option:selected').val();
@@ -74,27 +97,33 @@
 </head>
 <body>
 <div>
-    <div class="col-sm-10">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">账单统计
-                    <select id="group" onchange="loadBillingStatistics()">
-                        <option value="type">类型</option>
-                        <option value="category">分类</option>
-                        <option selected value="subcategory">子分类</option>
-                    </select>
-                </h3>
-            </div>
-            <div class="panel-body">
-                <div id="billing-statistics"></div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">账单统计 <span id="date"></span></h3>
+            <div class="form-inline" style="margin-top: 10px;">
+                <select id="type" class="form-control" onchange="loadBillingStatistics()">
+                    <c:forEach items="${types}" var="type">
+                        <option value="${type.value}">${type.label}</option>
+                    </c:forEach>
+                </select>
+                <select id="group" class="form-control" onchange="loadBillingStatistics()">
+                    <option value="category">分类</option>
+                    <option selected value="subcategory">子分类</option>
+                </select>
+                <select id="mode" class="form-control" onchange="loadBillingStatistics()" data-offset="0">
+                    <option value="days">按天</option>
+                    <option value="weeks">按周</option>
+                    <option value="months">按月</option>
+                </select>
+                <div class="btn-group">
+                    <button class="btn btn-default" onclick="addModeOffset(-1)">&lt;</button>
+                    <button class="btn btn-default" onclick="addModeOffset(1)">&gt;</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="list-group col-sm-2">
-        <input type="hidden" id="type" value="day"/>
-        <a class="list-group-item" href="javascript:loadBillingStatisticsByType('day')">今天</a>
-        <a class="list-group-item" href="javascript:loadBillingStatisticsByType('week')">本周</a>
-        <a class="list-group-item" href="javascript:loadBillingStatisticsByType('month')">本月</a>
+        <div class="panel-body">
+            <div id="billing-statistics"></div>
+        </div>
     </div>
 </div>
 </body>

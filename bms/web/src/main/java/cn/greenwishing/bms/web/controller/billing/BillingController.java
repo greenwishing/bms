@@ -45,15 +45,14 @@ public class BillingController {
     }
 
     @RequestMapping("statistics")
-    public String statistics() {
+    public String statistics(ModelMap model) {
+        model.put("types", BillingType.values());
         return "billing/billing_statistics";
     }
 
     @RequestMapping("data")
-    public ModelAndView data(
-            @RequestParam(value = "group", defaultValue = "subcategory") String group,
-            @RequestParam(value = "type", defaultValue = "month") String type) {
-        List<BillingStatistics> data = billingService.loadBillingStatistics(type, group);
+    public ModelAndView data(String type, String group, String from, String to) {
+        List<BillingStatistics> data = billingService.loadBillingStatistics(type, group, from, to);
         Map<String, Object> model = new HashMap<>();
         model.put("data", data);
         return new ModelAndView(new MappingJacksonJsonView(), model);

@@ -41,5 +41,5 @@ public interface BillingService {
 
     List<BillingCategoryDTO> loadBillingCategoryByType(BillingType billingType);
 
-    List<BillingStatistics> loadBillingStatistics(String type, String group);
+    List<BillingStatistics> loadBillingStatistics(String type, String group, String fromDateStr, String toDateStr);
 }
