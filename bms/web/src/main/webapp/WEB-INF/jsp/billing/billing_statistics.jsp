@@ -9,46 +9,98 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/moment.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/highcharts/4.0.3/highcharts.js"></script>
     <script type="text/javascript">
-        $(function(){
+        $(function () {
             loadBillingStatistics();
         });
         function loadBillingStatistics() {
             var $type = $('#type'), $mode = $('#mode'), $group = $('#group');
             var type = $type.val(), mode = $mode.val(), group = $group.val();
             var offset = parseInt($mode.attr('data-offset')) || 0;
-            var from = moment(), to;
+            var today = moment(), from = today, to;
             if (mode == 'days') {
-                from = moment().add(offset, 'days');
+                from = today.clone().add(offset, 'days');
                 to = from.clone();
             } else if (mode == 'weeks') {
-                from = moment().add(offset, 'weeks').startOf('week');
+                from = today.clone().add(offset, 'weeks').startOf('week');
                 to = from.clone().endOf('week');
             } else if (mode == 'months') {
-                from = moment().add(offset, 'months').startOf('month');
+                from = today.clone().add(offset, 'months').startOf('month');
                 to = from.clone().endOf('month');
+            } else if (mode == 'years') {
+                from = today.clone().add(offset, 'years').startOf('year');
+                to = from.clone().endOf('year');
             } else {
                 return;
             }
-            var dateFrom = from.format('YYYY-MM-DD');
-            var dateTo = to.format('YYYY-MM-DD');
-            $('#date').html(dateFrom == dateTo ? dateFrom : (dateFrom + '到' + dateTo));
-            console.log(dateFrom);
-            console.log(dateTo);
+            if (to.isAfter(today)) to = today.clone();
+            var dateRangeTitle = dateRangeToString(mode, from, to);
             WF.ajax.req({
                 url: 'data',
-                data: { type: type, group: group, from: dateFrom, to: dateTo },
-                success: function(result) {
-                    renderCharts(result.data);
+                data: {type: type, group: group, from: from.format('YYYY-MM-DD'), to: to.format('YYYY-MM-DD')},
+                success: function (result) {
+                    renderCharts(dateRangeTitle, result.data);
                 }
             });
+        }
+        function dateRangeToString(mode, from, to) {
+            var today = moment(), formattedDate = {}, _MAP = {
+                days: {
+                    type: 'day',
+                    prefix: [{offset: 0, text: '今天'}, {offset: -1, text: '昨天'}, {offset: -2, text: '前天'}]
+                },
+                weeks: {
+                    type: 'week',
+                    prefix: [{offset: 0, text: '本周'}, {offset: -1, text: '上周'}]
+                },
+                months: {
+                    type: 'month',
+                    prefix: [{offset: 0, text: '本月'}, {offset: -1, text: '上月'}]
+                },
+                years: {
+                    type: 'year',
+                    prefix: [{offset: 0, text: '今年'}, {offset: -1, text: '去年'}, {offset: -2, text: '前年'}]
+                }
+            };
+            if (mode == 'days') {
+                formattedDate.from = 'YYYY年M月D日星期' + ('日_一_二_三_四_五_六'.split('_')[from.day()]);
+            } else if (mode == 'weeks') {
+                formattedDate.from = 'YYYY年M月D日';
+                if (from.isSame(to, 'month')) {
+                    formattedDate.to = '至D日';
+                } else {
+                    formattedDate.to = '至M月D日';
+                }
+            } else if (mode == 'months') {
+                formattedDate.from = 'YYYY年M月1日';
+                formattedDate.to = '至D日';
+            } else if (mode == 'years') {
+                formattedDate.from = 'YYYY年1月1日';
+                if (from.isSame(to, 'month')) {
+                    formattedDate.to = '至D日';
+                } else {
+                    formattedDate.to = '至M月D日';
+                }
+            } else {
+                return '';
+            }
+            var map = _MAP[mode];
+            for (var i in map.prefix) {
+                var prefix = map.prefix[i];
+                if (from.clone().subtract(prefix.offset, mode).isSame(today, map.type)) {
+                    formattedDate.from = prefix.text + ' - ' + formattedDate.from;
+                }
+            }
+            return from.format(formattedDate.from) + (formattedDate.to ? to.format(formattedDate.to) : '');
         }
         function addModeOffset(val) {
             var $mode = $('#mode');
             var offset = parseInt($mode.attr('data-offset')) || 0;
-            $mode.attr({'data-offset': (offset + val)});
+            var newVar = (offset + val);
+            if (newVar > 0) newVar = 0;
+            $mode.attr({'data-offset': newVar});
             loadBillingStatistics();
         }
-        function renderCharts(records) {
+        function renderCharts(title, records) {
             var group = $('#group').find('option:selected').val();
             console.log(group);
             var data = [];
@@ -59,7 +111,7 @@
             }
             for (var i in records) {
                 var record = records[i];
-                data.push({name: record[group], y: (record.amount/total*100), amount: record.amount});
+                data.push({name: record[group], y: (record.amount / total * 100), amount: record.amount});
             }
             $('#billing-statistics').highcharts({
                 chart: {
@@ -68,7 +120,7 @@
                     plotShadow: false
                 },
                 title: {
-                    text: 'Billing statistics'
+                    text: title
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br/>金额: <b>{point.amount} 元</b>'
@@ -100,6 +152,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">账单统计 <span id="date"></span></h3>
+
             <div class="form-inline" style="margin-top: 10px;">
                 <select id="type" class="form-control" onchange="loadBillingStatistics()">
                     <c:forEach items="${types}" var="type">
@@ -108,13 +161,16 @@
                 </select>
                 <select id="group" class="form-control" onchange="loadBillingStatistics()">
                     <option value="category">分类</option>
-                    <option selected value="subcategory">子分类</option>
+                    <option value="subcategory" selected>子分类</option>
                 </select>
-                <select id="mode" class="form-control" onchange="loadBillingStatistics()" data-offset="0">
+                <select id="mode" class="form-control"
+                        onchange="$(this).attr({'data-offset':0});loadBillingStatistics()" data-offset="0">
                     <option value="days">按天</option>
                     <option value="weeks">按周</option>
-                    <option value="months">按月</option>
+                    <option value="months" selected>按月</option>
+                    <option value="years">按年</option>
                 </select>
+
                 <div class="btn-group">
                     <button class="btn btn-default" onclick="addModeOffset(-1)">&lt;</button>
                     <button class="btn btn-default" onclick="addModeOffset(1)">&gt;</button>

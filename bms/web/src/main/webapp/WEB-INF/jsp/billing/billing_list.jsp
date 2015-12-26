@@ -32,10 +32,10 @@
         </div>
         <div class="form-group form-more" style="display: none;">
             <label class="control-label" for="type">类型/分类</label>
-            <select id="type" class="form-control" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
+            <select id="type" name="type" class="form-control" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
                 <option value="">请选择</option>
                 <c:forEach items="${types}" var="type">
-                    <option value="${type.value}">${type.label}</option>
+                    <option value="${type.value}" ${type.value eq param.type ? 'selected':''}>${type.label}</option>
                 </c:forEach>
             </select>
             <select id="categoryGuid" class="form-control" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid" default-value="${param.categoryGuid}">
