@@ -19,6 +19,7 @@
                 WF.billing.categories(type);
             });
             WF.billing.categories($('#type'));
+            WF.util.datePicker('occurredTime');
         });
     </script>
 </head>

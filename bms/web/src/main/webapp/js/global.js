@@ -120,6 +120,10 @@ var WF = {
                 $("#" + from).datetimepicker("setEndDate", ev.date);
             });
         },
+        datePicker: function(id) {
+            var options = {language:  'zh-CN', format: 'yyyy-mm-dd', weekStart: 1, todayBtn: 1, autoclose: 1, todayHighlight: 1, startView: 2, minView: 2, forceParse: 0};
+            $("#" + id).datetimepicker(options);
+        },
         checkAll: function(field) {
             var all = $(field);
             var checkbox = $('input:checkbox[name="' + all.attr('data-name') + '"]');
