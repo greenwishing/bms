@@ -226,7 +226,7 @@ var WF = {
         },
         templates: function(box, callback) {
             var container = $(box);
-            container.addClass('btn-group');
+            container.addClass('label-wrapper');
             WF.ajax.req({
                 type: 'post',
                 url: 'templates',
@@ -235,12 +235,11 @@ var WF = {
                     var templates = result.templates;
                     for (var i in templates) {
                         var template = templates[i];
-                        var label = template.name + ' ' + template.categoryName + ' ' + template.subcategoryName + ' ' + template.amount;
-                        var item = $('<button class="btn btn-success"></button>').html(label).attr(template);
+                        var item = $('<li><a href="javascript:void(0)">' + template.name + '&nbsp;<span class="badge">' + template.amount + '</span></a></li>').attr(template);
                         container.append(item);
                     }
                     if (callback && typeof callback == 'function') {
-                        container.find('button').bind('click', function(){
+                        container.find('li').bind('click', function(){
                             callback(this);
                         });
                     }

@@ -6,6 +6,7 @@ import cn.greenwishing.bms.domain.billing.BillingTemplate;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.utils.NumberUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class BillingTemplateDTO {
     private String subcategoryName;
     private String amount;
 
+    // json show
+    private Float amountFloat = 0F;
+
     public BillingTemplateDTO() {
     }
 
@@ -43,7 +47,9 @@ public class BillingTemplateDTO {
             this.subcategoryGuid = subcategory.guid();
             this.subcategoryName = subcategory.name();
         }
-        this.amount = NumberUtils.priceFormat(template.amount());
+        BigDecimal amount = template.amount();
+        this.amount = NumberUtils.priceFormat(amount);
+        this.amountFloat = amount.floatValue();
     }
 
     public static List<BillingTemplateDTO> toDTOs(List<BillingTemplate> templates) {
@@ -117,5 +123,9 @@ public class BillingTemplateDTO {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public Float getAmountFloat() {
+        return amountFloat;
     }
 }

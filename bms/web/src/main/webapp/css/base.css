@@ -8,3 +8,7 @@ body { padding-top: 70px;}
 .price.EXPEND:before { content: '-';}
 
 .help-block-danger { color: red;}
+
+.search-form-wrapper .form-group { margin-bottom: 5px;}
+.label-wrapper .label { display: inline-block; margin-bottom: 5px; margin-right: 5px;}
+.label-wrapper .label.label-lg { padding: 8px 15px;}

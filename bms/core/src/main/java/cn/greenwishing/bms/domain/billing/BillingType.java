@@ -1,16 +1,16 @@
 package cn.greenwishing.bms.domain.billing;
 
 public enum BillingType {
-    EXPEND("支出", true),
-    INCOME("收入", false),
-    BALANCE("余额", false);
+    EXPEND("支出"),
+    INCOME("收入"),
+    ACCOUNT_RECEIVABLE("应收AR"),
+    ACCOUNT_PAYABLE("应付AP"),
+    BALANCE("余额");
 
 	private String label;
-	private boolean expend;
-	
-	BillingType(String label, boolean expend) {
+
+	BillingType(String label) {
 		this.label = label;
-		this.expend = expend;
 	}
 	
 	public String getValue() {
@@ -20,8 +20,4 @@ public enum BillingType {
     public String getLabel() {
         return label;
     }
-
-    public boolean isExpend() {
-		return expend;
-	}
 } 

@@ -7,12 +7,16 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<blockquote>
-    <a class="btn btn-success" href="add">添加分类</a>
-    <a class="btn btn-default" href="/system/article/list">返回</a>
-</blockquote>
 <table class="table table-hover">
     <thead>
+    <tr>
+        <th colspan="2" class="text-right">
+            <div class="btn-group">
+                <a class="btn btn-success" href="add">添加分类</a>
+                <a class="btn btn-default" href="/system/article/list">返回</a>
+            </div>
+        </th>
+    </tr>
     <tr>
         <th>名称</th>
         <th>操作</th>

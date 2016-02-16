@@ -54,6 +54,6 @@ public class BillingCategoryFormController {
             return new ModelAndView(FORM_VIEW);
         }
         billingService.saveOrUpdateBillingCategory(categoryDTO);
-        return new ModelAndView("redirect:list");
+        return new ModelAndView("redirect:categories");
     }
 }

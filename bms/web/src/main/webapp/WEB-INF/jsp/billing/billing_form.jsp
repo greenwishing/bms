@@ -13,7 +13,7 @@
                 $('#categoryGuid').attr({'default-value': template.attr('categoryGuid')});
                 $('#subcategoryGuid').attr({'default-value': template.attr('subcategoryGuid')});
                 $('#name').val(template.attr('name'));
-                $('#amount').val(template.attr('amount'));
+                $('#amount').val(template.attr('amountFloat'));
                 var type = $('#type');
                 type.val(template.attr('type'));
                 WF.billing.categories(type);
@@ -26,8 +26,20 @@
 <body>
 <form class="form-horizontal" id="data-form" action="add" method="post" onsubmit="return false;">
     <div class="form-group">
-        <div class="col-sm-12">
-            <div class="template-container"></div>
+        <div class="col-sm-10 col-sm-offset-2">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="name">名称</label>
+        <div class="col-sm-10">
+            <div class="input-group">
+                <input type="text" class="form-control" name="name" id="name" placeholder="名称" value="${billingDTO.name}"/>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" title="从模板快速添加"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right template-container"></ul>
+                </div>
+            </div>
         </div>
     </div>
     <div class="form-group">
@@ -54,12 +66,6 @@
             <select id="subcategoryGuid" class="form-control" name="subcategoryGuid" default-value="${billingDTO.subcategoryGuid}">
                 <option value="">请选择</option>
             </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="name">名称</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" name="name" id="name" placeholder="名称" value="${billingDTO.name}"/>
         </div>
     </div>
     <div class="form-group">

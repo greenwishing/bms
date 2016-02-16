@@ -8,12 +8,16 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<blockquote>
-    <a class="btn btn-success" href="add">添加</a>
-    <a class="btn btn-default" href="list">返回</a>
-</blockquote>
 <table class="table table-hover">
     <thead>
+    <tr>
+        <th colspan="3" class="text-right">
+            <div class="btn-group">
+                <a class="btn btn-success" href="add_category">添加</a>
+                <a class="btn btn-default" href="list">返回</a>
+            </div>
+        </th>
+    </tr>
     <tr>
         <th>类型</th>
         <th>名称</th>
@@ -26,7 +30,7 @@
             <td>${category.type.label}</td>
             <td>${category.name}</td>
             <td>
-                <a href="edit?guid=${category.guid}">编辑</a>
+                <a href="edit_category?guid=${category.guid}">编辑</a>
                 <a href="subcategories?categoryGuid=${category.guid}">子分类</a>
             </td>
         </tr>

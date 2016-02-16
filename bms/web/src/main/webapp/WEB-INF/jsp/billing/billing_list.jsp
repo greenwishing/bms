@@ -14,43 +14,49 @@
     </script>
 </head>
 <body>
-<blockquote>
-    <form id="search-form" action="list" class="form-inline" onsubmit="return false;">
-        <a class="btn btn-success" href="add">添加</a>
-        <a class="btn btn-primary" href="categories">分类管理</a>
-        <a class="btn btn-primary" href="templates">模板管理</a>
-        <div class="form-group">
-            <label class="control-label" for="key">关键字</label>
-            <input id="key" name="key" type="text" class="form-control" value="${pagingDTO.key}" placeholder="关键字"/>
-        </div>
-        <div class="form-group">
-        </div>
-        <div class="form-group form-more" style="display: none;">
-            <label class="control-label" for="dateFrom">时间</label>
-            <input class="form-control" type="text" id="dateFrom" name="dateFrom" value="${pagingDTO.dateFrom}" placeholder="开始时间"/>
-            <input class="form-control" type="text" id="dateTo" name="dateTo" value="${pagingDTO.dateTo}" placeholder="结束时间"/>
-        </div>
-        <div class="form-group form-more" style="display: none;">
-            <label class="control-label" for="type">类型/分类</label>
-            <select id="type" name="type" class="form-control" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
-                <option value="">请选择</option>
-                <c:forEach items="${types}" var="type">
-                    <option value="${type.value}" ${type.value eq param.type ? 'selected':''}>${type.label}</option>
-                </c:forEach>
-            </select>
-            <select id="categoryGuid" class="form-control" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid" default-value="${param.categoryGuid}">
-                <option value="">请选择</option>
-            </select>
-            <select id="subcategoryGuid" class="form-control" name="subcategoryGuid" default-value="${param.subcategoryGuid}">
-                <option value="">请选择</option>
-            </select>
-        </div>
+<form id="search-form" action="list" class="form-inline search-form-wrapper" onsubmit="return false;">
+    <div class="form-group">
+        <label class="control-label" for="key">关键字</label>
+        <input id="key" name="key" type="text" class="form-control" value="${pagingDTO.key}" placeholder="关键字"/>
+    </div>
+    <div class="form-group">
+    </div>
+    <div class="form-group form-more" style="display: none;">
+        <label class="control-label" for="dateFrom">时间</label>
+        <input class="form-control" type="text" id="dateFrom" name="dateFrom" value="${pagingDTO.dateFrom}" placeholder="开始时间"/>
+        <input class="form-control" type="text" id="dateTo" name="dateTo" value="${pagingDTO.dateTo}" placeholder="结束时间"/>
+    </div>
+    <div class="form-group form-more" style="display: none;">
+        <label class="control-label" for="type">类型/分类</label>
+        <select id="type" name="type" class="form-control" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
+            <option value="">请选择</option>
+            <c:forEach items="${types}" var="type">
+                <option value="${type.value}" ${type.value eq param.type ? 'selected':''}>${type.label}</option>
+            </c:forEach>
+        </select>
+        <select id="categoryGuid" class="form-control" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid" default-value="${param.categoryGuid}">
+            <option value="">请选择</option>
+        </select>
+        <select id="subcategoryGuid" class="form-control" name="subcategoryGuid" default-value="${param.subcategoryGuid}">
+            <option value="">请选择</option>
+        </select>
+    </div>
+    <div class="form-group">
         <button type="button" class="btn btn-default" onclick="$('.form-more').toggle()">&gt;</button>
         <button type="button" class="btn btn-default" onclick="WF.paging.GO($('#search-form'), 1)">查询</button>
-    </form>
-</blockquote>
+    </div>
+</form>
 <table class="table table-hover">
     <thead>
+    <tr>
+        <th colspan="5" class="text-right">
+            <div class="btn-group">
+                <a class="btn btn-success" href="add">添加</a>
+                <a class="btn btn-default" href="categories">分类管理</a>
+                <a class="btn btn-default" href="templates">模板管理</a>
+            </div>
+        </th>
+    </tr>
     <tr>
         <th>名称</th>
         <th>类型</th>

@@ -8,11 +8,15 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<blockquote>
-    <a class="btn btn-success" href="reg">注册客户端</a>
-</blockquote>
 <table class="table table-hover">
     <thead>
+    <tr>
+        <th colspan="3" class="text-right">
+            <div class="btn-group">
+                <a class="btn btn-success" href="reg">注册客户端</a>
+            </div>
+        </th>
+    </tr>
     <tr>
         <th>客户端ID</th>
         <th>认证类型</th>

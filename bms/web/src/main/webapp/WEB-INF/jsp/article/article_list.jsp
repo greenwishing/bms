@@ -8,19 +8,25 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<blockquote>
-    <form id="search-form" action="list" class="form-inline">
-        <a class="btn btn-success" href="add">写文章</a>
-        <a class="btn btn-primary" href="categories">文章分类</a>
-        <div class="form-group">
-            <label class="control-label" for="key">关键字</label>
-            <input class="form-control" id="key" name="key" type="text" value="${pagingDTO.key}" placeholder="关键字"/>
-        </div>
+<form id="search-form" action="list" class="form-inline search-form-wrapper">
+    <div class="form-group">
+        <label class="control-label" for="key">关键字</label>
+        <input class="form-control" id="key" name="key" type="text" value="${pagingDTO.key}" placeholder="关键字"/>
+    </div>
+    <div class="form-group">
         <button type="button" class="btn btn-default" onclick="WF.paging.GO($('#search-form'), 1)">查询</button>
-    </form>
-</blockquote>
+    </div>
+</form>
 <table class="table table-hover">
     <thead>
+    <tr>
+        <th colspan="4" class="text-right">
+            <div class="btn-group">
+                <a class="btn btn-success" href="add">写文章</a>
+                <a class="btn btn-default" href="categories">文章分类</a>
+            </div>
+        </th>
+    </tr>
     <tr>
         <th>标题</th>
         <th>分类</th>

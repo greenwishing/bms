@@ -52,6 +52,6 @@ public class BillingSubcategoryFormController {
             return new ModelAndView(FORM_VIEW);
         }
         billingService.saveOrUpdateBillingSubcategory(subcategoryDTO);
-        return new ModelAndView("redirect:list?categoryGuid=" + categoryGuid);
+        return new ModelAndView("redirect:subcategories?categoryGuid=" + categoryGuid);
     }
 }
