@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html lang="zh-CN">
 <head>
     <title><decorator:title default="bms"/></title>
@@ -37,10 +38,11 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="${pageContext.request.contextPath}/system/billing/list">账单</a></li>
-                    <li><a href="${pageContext.request.contextPath}/system/billing/statistics">账单统计</a></li>
-                    <li><a href="${pageContext.request.contextPath}/system/article/list">文章</a></li>
-                    <li><a href="${pageContext.request.contextPath}/system/client/list">客户端</a></li>
+                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/billing/list') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/billing/list">账单</a></li>
+                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/billing/statistics') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/billing/statistics">账单统计</a></li>
+                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/article/list') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/article/list">文章</a></li>
+                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/metro/list') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/metro/list">Metro</a></li>
+                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/client/list') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/client/list">Client</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="${pageContext.request.contextPath}/logout">退出</a></li>

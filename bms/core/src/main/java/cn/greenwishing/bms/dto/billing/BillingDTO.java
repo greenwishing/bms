@@ -48,7 +48,7 @@ public class BillingDTO {
             this.subcategoryGuid = subcategory.guid();
             this.subcategoryName = subcategory.name();
         }
-        this.amount = NumberUtils.priceFormat(billing.amount());
+        this.amount = NumberUtils.toString(billing.amount());
         this.description = billing.description();
         this.occurredTime = billing.occurredTime().toString();
     }

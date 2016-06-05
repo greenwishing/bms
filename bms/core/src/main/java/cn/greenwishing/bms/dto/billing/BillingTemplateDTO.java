@@ -48,7 +48,7 @@ public class BillingTemplateDTO {
             this.subcategoryName = subcategory.name();
         }
         BigDecimal amount = template.amount();
-        this.amount = NumberUtils.priceFormat(amount);
+        this.amount = NumberUtils.toString(amount);
         this.amountFloat = amount.floatValue();
     }
 

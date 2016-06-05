@@ -2,19 +2,23 @@ package cn.greenwishing.bms.utils;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.util.Locale;
 
 /**
  * @author Wu Fan
  */
 public class NumberUtils {
 
-    public static String priceFormat(Number number) {
+    public static String toString(Number number) {
+        return toString(number, 2);
+    }
+
+    public static String toString(Number number, int digits) {
         if (number == null) return "";
-        NumberFormat format = NumberFormat.getInstance(Locale.CHINESE);
+        NumberFormat format = NumberFormat.getNumberInstance();
+        format.setMinimumFractionDigits(0);
+        format.setMaximumFractionDigits(digits);
+        format.setGroupingUsed(false);
         format.setRoundingMode(RoundingMode.HALF_UP);
-        format.setMinimumFractionDigits(2);
-        format.setMaximumFractionDigits(2);
         return format.format(number);
     }
 }
