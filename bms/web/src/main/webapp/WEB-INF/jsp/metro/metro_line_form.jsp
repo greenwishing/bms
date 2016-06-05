@@ -20,12 +20,18 @@
         .metro-line-station > li:not(.active) {
             cursor: pointer;
         }
-        .metro-line-station .label { font-weight: normal;}
+        .metro-line-station .label { font-weight: normal; }
         .metro-line-station > li + li:before {
             padding: 0 5px;
             color: #ccc;
             content: "→";
         }
+        <c:if test="${metroLineDTO.guid != null}">
+        .metro-line-station .label { border: 1px solid ${metroLineDTO.color}; transition: background .3s; -moz-transition: background .3s; -webkit-transition: background .3s; -o-transition: background .3s; }
+        .metro-line-station .label { background-color: ${metroLineDTO.color}; color: #ffffff; }
+        .metro-line-station .label[href]:hover,
+        .metro-line-station .label[href]:focus { background-color: #ffffff; color: ${metroLineDTO.color}; }
+        </c:if>
     </style>
 </head>
 <body>
@@ -61,7 +67,7 @@
                     <c:forEach items="${metroLineStations}" var="metroLineStation">
                         <c:choose>
                             <c:when test="${metroLineStation.running}">
-                                <li title="${metroLineStation.status.label}"><a class="label label-primary" style="background-color: ${metroLineDTO.color};" href="#${metroLineStation.guid}">${metroLineStation.station.name}</a></li>
+                                <li title="${metroLineStation.status.label}"><a class="label label-primary" href="#${metroLineStation.guid}">${metroLineStation.station.name}</a></li>
                             </c:when>
                             <c:otherwise>
                                 <li title="${metroLineStation.status.label}" class="active">${metroLineStation.station.name}</li>
