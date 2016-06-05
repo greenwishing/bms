@@ -35,6 +35,6 @@ public class ArticlePagingDTO extends AbstractPagingDTO<ArticleDTO, ArticlePagin
     }
 
     public void setKey(String key) {
-        this.key = StringDecoder.decode(key);
+        this.key = key;
     }
 }

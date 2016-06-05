@@ -41,7 +41,7 @@ public class BillingPagingDTO extends AbstractPagingDTO<BillingDTO, BillingPagin
     }
 
     public void setKey(String key) {
-        this.key = StringDecoder.decode(key);
+        this.key = key;
     }
 
     public BillingType getType() {
