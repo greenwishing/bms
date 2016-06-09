@@ -1,7 +1,7 @@
 package cn.greenwishing.bms.service;
 
 import cn.greenwishing.bms.dto.metro.MetroLineDTO;
-import cn.greenwishing.bms.dto.metro.MetroLineStationDTO;
+import cn.greenwishing.bms.dto.metro.SimpleMetroLineStation;
 import cn.greenwishing.bms.dto.metro.StationDTO;
 
 import java.util.List;
@@ -25,5 +25,5 @@ public interface MetroService {
 
     boolean checkStationNameExists(String name);
 
-    List<MetroLineStationDTO> loadMetroLineStations(String metroLineGuid);
+    List<SimpleMetroLineStation> loadSimpleStationByMetroLine(Integer metroLineId);
 }

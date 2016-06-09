@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class MetroLineDTO {
 
+    private Integer id;
     private String guid;
     private String name;
     private String color;
@@ -20,10 +21,15 @@ public class MetroLineDTO {
     }
 
     public MetroLineDTO(MetroLine line) {
+        this.id = line.id();
         this.guid = line.guid();
         this.name = line.name();
         this.color = line.color();
         this.loop = line.loop();
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getGuid() {

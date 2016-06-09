@@ -73,4 +73,14 @@ public class JodaUtils {
         LocalDate today = JodaUtils.today();
         return new DateTime(today.getYear(), today.getMonthOfYear(), day, 0, 0, 0, 0);
     }
+
+    public static String localDateToString(LocalDate localDate) {
+        if (localDate == null) return "";
+        return localDate.toString(DATE_FORMAT);
+    }
+
+    public static String dateTimeToString(DateTime dateTime) {
+        if (dateTime == null) return "";
+        return dateTime.toString(DATE_TIME_FORMAT);
+    }
 }

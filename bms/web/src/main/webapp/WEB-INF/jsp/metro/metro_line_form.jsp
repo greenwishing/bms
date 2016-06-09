@@ -7,32 +7,72 @@
     <title>Metro</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <style type="text/css">
-        .metro-line-station {
-            padding: 8px 15px;
-            margin-bottom: 20px;
-            list-style: none;
-        }
-        .metro-line-station > li {
-            display: inline-block;
-            line-height: 1.5em;
-            margin-bottom: .6em;
-        }
-        .metro-line-station > li:not(.active) {
-            cursor: pointer;
-        }
-        .metro-line-station .label { font-weight: normal; }
-        .metro-line-station > li + li:before {
-            padding: 0 5px;
-            color: #ccc;
-            content: "→";
-        }
         <c:if test="${metroLineDTO.guid != null}">
-        .metro-line-station .label { border: 1px solid ${metroLineDTO.color}; transition: background .3s; -moz-transition: background .3s; -webkit-transition: background .3s; -o-transition: background .3s; }
-        .metro-line-station .label { background-color: ${metroLineDTO.color}; color: #ffffff; }
-        .metro-line-station .label[href]:hover,
-        .metro-line-station .label[href]:focus { background-color: #ffffff; color: ${metroLineDTO.color}; }
+        .metro-line-station { padding: 8px 15px; margin-bottom: 20px; list-style: none; }
+        .metro-line-station .station { display: inline-block; position: relative; line-height: 1.5em; margin-bottom: .6em; padding: 2px 8px; border-radius: 3px; background-color: #ddd;}
+        .metro-line-station .station { transition: background .3s; -moz-transition: background .3s; -webkit-transition: background .3s; -o-transition: background .3s; cursor: pointer; text-decoration: none;}
+        .metro-line-station .station.running { background-color: ${metroLineDTO.color}; color: #fff; }
+        .metro-line-station .station.running:hover,
+        .metro-line-station .station.running:focus { background-color: ${metroLineDTO.color}; box-shadow: 0 0 5px ${metroLineDTO.color}; }
+        .metro-line-station > .station + .station { margin-left: 1.5em;}
+        .metro-line-station > .station + .station:before { content: "→"; position: absolute; left: -1.6em; padding: 0 5px; color: #ccc;}
+
+        .metro-map-container { position: relative; width: 720px; height: 360px; background: #f3f3f3;}
+        .metro-map-container .metro-map { position: absolute; width: 720px; height: 360px; top: 50%; left: 50%;}
+        .metro-map-container .metro-map .station-marker { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #ccc;}
+        .metro-map-container .metro-map .station-marker.running { background-color: ${metroLineDTO.color};}
         </c:if>
     </style>
+    <script type="text/javascript">
+        $(function(){
+            var mlId = '${metroLineDTO.id}';
+            if (WF.validation.isEmpty(mlId)) return;
+            WF.ajax.req({
+                url: 'metro_line_stations',
+                data: {metroLineId: mlId},
+                success: function(result) {
+                    renderMetroLineStations(result.metroLineStations);
+                }
+            });
+        });
+        function renderMetroLineStations(mls) {
+            var $el = $('.metro-line-station');
+            var $map = $('.metro-map');
+            var total = {x: 0, y: 0}, size = 0;
+            $.each(mls, function (idx, ml) {
+                if (ml.longitude > 0 && ml.latitude > 0) {
+                    total.x += ml.longitude;
+                    total.y += ml.latitude;
+                    size ++;
+                }
+            });
+            var avg = {x: total.x / size, y: total.y / size};
+            console.log('avg: ');
+            console.log(avg);
+            $.each(mls, function(idx, ml){
+                var $li = $('<li></li>').attr({'data-url': 'edit_station?guid=' + ml.stationGuid}).html(ml.stationName).addClass('station');
+                $li.toggleClass('running', ml.running);
+                $el.append($li);
+
+                console.log('lng: ' + ml.longitude + ', lat: ' + ml.latitude);
+                if (ml.longitude > 0 && ml.latitude > 0) {
+                    var styles = {
+                        top: (avg.y - ml.latitude) * 1000,
+                        left: -(avg.x - ml.longitude) * 1000
+                    };
+                    console.log(ml.stationName + ': ');
+                    console.log(styles);
+                    var $p = $('<div></div>').addClass('station-marker').attr({title: ml.stationName}).css(styles);
+                    $p.toggleClass('running', ml.running);
+                    $map.append($p);
+                }
+            });
+            $el.find('.station').bind('click', function(){
+                var url = $(this).attr('data-url');
+                WF.page.forward(url);
+            });
+        }
+    </script>
 </head>
 <body>
 <form class="form-horizontal" id="data-form" action="add" method="post" onsubmit="return false;">
@@ -63,18 +103,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Stations</label>
             <div class="col-sm-10">
-                <ol class="metro-line-station">
-                    <c:forEach items="${metroLineStations}" var="metroLineStation">
-                        <c:choose>
-                            <c:when test="${metroLineStation.running}">
-                                <li title="${metroLineStation.status.label}"><a class="label label-primary" href="#${metroLineStation.guid}">${metroLineStation.station.name}</a></li>
-                            </c:when>
-                            <c:otherwise>
-                                <li title="${metroLineStation.status.label}" class="active">${metroLineStation.station.name}</li>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-                </ol>
+                <ol class="metro-line-station"></ol>
             </div>
         </div>
     </c:if>
@@ -84,6 +113,11 @@
             <input class="btn btn-default" type="button" value="返回" onclick="WF.page.forward('list')"/>
         </div>
     </div>
+    <c:if test="${metroLineDTO.guid != null}">
+        <div class="metro-map-container">
+            <div class="metro-map"></div>
+        </div>
+    </c:if>
 </form>
 </body>
 </html>

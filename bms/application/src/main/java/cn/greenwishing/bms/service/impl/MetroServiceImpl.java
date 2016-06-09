@@ -1,14 +1,14 @@
 package cn.greenwishing.bms.service.impl;
 
 import cn.greenwishing.bms.domain.metro.MetroLine;
-import cn.greenwishing.bms.domain.metro.MetroLineStation;
 import cn.greenwishing.bms.domain.metro.MetroRepository;
 import cn.greenwishing.bms.domain.metro.Station;
 import cn.greenwishing.bms.dto.metro.MetroLineDTO;
-import cn.greenwishing.bms.dto.metro.MetroLineStationDTO;
+import cn.greenwishing.bms.dto.metro.SimpleMetroLineStation;
 import cn.greenwishing.bms.dto.metro.StationDTO;
 import cn.greenwishing.bms.service.MetroService;
 import cn.greenwishing.bms.utils.ValidationUtils;
+import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -96,8 +96,8 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public List<MetroLineStationDTO> loadMetroLineStations(String metroLineGuid) {
-        List<MetroLineStation> metroLineStations = metroRepository.findMetroLineStations(metroLineGuid);
-        return MetroLineStationDTO.toDTOs(metroLineStations);
+    public List<SimpleMetroLineStation> loadSimpleStationByMetroLine(Integer metroLineId) {
+        List<SqlResultParser> parsers = metroRepository.findSimpleMetroLineStations(metroLineId);
+        return SimpleMetroLineStation.valueOf(parsers);
     }
 }

@@ -25,8 +25,8 @@ public class StationDTO {
         this.guid = station.guid();
         this.name = station.name();
         this.pinyin = station.pinyin();
-        this.longitude = NumberUtils.toString(station.longitude());
-        this.latitude = NumberUtils.toString(station.latitude());
+        this.longitude = NumberUtils.toString(station.longitude(), 13, "0");
+        this.latitude = NumberUtils.toString(station.latitude(), 13, "0");
     }
 
     public String getGuid() {

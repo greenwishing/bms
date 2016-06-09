@@ -15,8 +15,18 @@ public class NumberUtils {
         return DEFAULT_NUMBER_FORMAT.format(number);
     }
 
+    public static String toString(Number number, String defaultVal) {
+        if (number == null) return defaultVal;
+        return DEFAULT_NUMBER_FORMAT.format(number);
+    }
+
     public static String toString(Number number, int digits) {
         if (number == null) return "";
+        return buildNumberFormat(digits).format(number);
+    }
+
+    public static String toString(Number number, int digits, String defaultVal) {
+        if (number == null) return defaultVal;
         return buildNumberFormat(digits).format(number);
     }
 

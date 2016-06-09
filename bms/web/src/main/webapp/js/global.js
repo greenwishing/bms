@@ -100,6 +100,8 @@ var WF = {
                     if (result.success) {
                         if (result.redirectUrl) {
                             WF.page.forward(result.redirectUrl);
+                        } else if (result.back) {
+                            history.back();
                         } else {
                             location.reload();
                         }

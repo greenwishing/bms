@@ -37,6 +37,7 @@ public class StationFormController {
             stationDTO = metroService.loadStationByGuid(guid);
         }
         model.put("stationDTO", stationDTO);
+        model.put("hasBaiduMap", true);
         return "metro/station_form";
     }
 
@@ -53,8 +54,8 @@ public class StationFormController {
                 if (ValidationUtils.isEmpty(guid)) {
                     errors.rejectValue("name", "name", "名称[" + name + "]已存在");
                 } else {
-                    MetroLineDTO metroLineDTO = metroService.loadMetroLineByGuid(guid);
-                    if (!name.equals(metroLineDTO.getName())) {
+                    StationDTO thisStation = metroService.loadStationByGuid(guid);
+                    if (!name.equals(thisStation.getName())) {
                         errors.rejectValue("name", "name", "名称[" + name + "]已存在");
                     }
                 }
@@ -75,7 +76,7 @@ public class StationFormController {
         } else {
             metroService.saveOrUpdateStation(stationDTO);
             model.put("success", true);
-            model.put("redirectUrl", "stations");
+            model.put("back", true);
         }
         return new ModelAndView(new MappingJacksonJsonView(), model);
     }

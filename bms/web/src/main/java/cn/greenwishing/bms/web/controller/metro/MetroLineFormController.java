@@ -1,8 +1,6 @@
 package cn.greenwishing.bms.web.controller.metro;
 
 import cn.greenwishing.bms.dto.metro.MetroLineDTO;
-import cn.greenwishing.bms.dto.metro.MetroLineStationDTO;
-import cn.greenwishing.bms.dto.metro.StationDTO;
 import cn.greenwishing.bms.service.MetroService;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,8 +34,6 @@ public class MetroLineFormController {
             metroLineDTO = new MetroLineDTO();
         } else {
             metroLineDTO = metroService.loadMetroLineByGuid(guid);
-            List<MetroLineStationDTO> metroLineStations = metroService.loadMetroLineStations(guid);
-            model.put("metroLineStations", metroLineStations);
         }
         model.put("metroLineDTO", metroLineDTO);
         return "metro/metro_line_form";
