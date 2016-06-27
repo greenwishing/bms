@@ -1,7 +1,10 @@
 package cn.greenwishing.bms.utils;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
 
 /**
  * @author Wu Fan
@@ -37,5 +40,22 @@ public class NumberUtils {
         format.setGroupingUsed(false);
         format.setRoundingMode(RoundingMode.HALF_UP);
         return format;
+    }
+
+    public static BigDecimal parseDecimal(String numberString) {
+        NumberFormat numberFormat = buildNumberFormat(2);
+        numberFormat.setGroupingUsed(true);
+        try {
+            Number parse = numberFormat.parse(numberString);
+            return new BigDecimal(parse.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    public static BigDecimal parseDecimal(String numberString, BigDecimal defaultValue) {
+        BigDecimal decimal = parseDecimal(numberString);
+        if (decimal == null) return defaultValue;
+        return decimal;
     }
 }

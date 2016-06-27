@@ -9,6 +9,7 @@ import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.shared.EnumUtils;
 import cn.greenwishing.bms.utils.JodaUtils;
+import cn.greenwishing.bms.utils.NumberUtils;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
@@ -41,16 +42,22 @@ public class BillingServiceImpl implements BillingService {
     @Override
     public void saveOrUpdateBilling(BillingDTO billingDTO) {
         String amountStr = billingDTO.getAmount();
-        BigDecimal amount = new BigDecimal(amountStr);
-        BillingCategory category = null;
-        BillingSubcategory subcategory = null;
+        BigDecimal amount = NumberUtils.parseDecimal(amountStr);
         String categoryGuid = billingDTO.getCategoryGuid();
         String subcategoryGuid = billingDTO.getSubcategoryGuid();
-        if (ValidationUtils.isNotEmpty(categoryGuid)) {
-            category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);
-            if (ValidationUtils.isNotEmpty(subcategoryGuid)) {
-                subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);
-            }
+        BillingCategory category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);
+        BillingSubcategory subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);
+        BillingStatus status;
+        BillingType billingType = category.type();
+        switch (billingType) {
+            case ACCOUNT_RECEIVABLE:
+                status = BillingStatus.RECEIVABLE;
+                break;
+            case ACCOUNT_PAYABLE:
+                status = BillingStatus.PAYABLE;
+                break;
+            default:
+                status = BillingStatus.NORMAL;
         }
         String guid = SecurityHolder.getUserGuid();
         User occurredUser = userRepository.findByGuid(User.class, guid);
@@ -64,6 +71,7 @@ public class BillingServiceImpl implements BillingService {
         String name = billingDTO.getName();
         BillingType type = billingDTO.getType();
         Billing billing = new Billing(name, type, category, subcategory, amount, billingDTO.getDescription(), occurredTime, occurredUser, occurredUser);
+        billing.updateStatus(status);
         billingRepository.saveOrUpdate(billing);
 
         if (billingDTO.isCreateTemplate()) {
@@ -220,5 +228,14 @@ public class BillingServiceImpl implements BillingService {
         }
         String userGuid = SecurityHolder.getUserGuid();
         return billingRepository.loadBillingStatistics(userGuid, billingType, startDate, endDate, group);
+    }
+
+    @Override
+    public void changeStatus(String guid, BillingStatus status) {
+        Billing billing = billingRepository.findByGuid(Billing.class, guid);
+        if (billing != null) {
+            billing.updateStatus(status);
+            billingRepository.saveOrUpdate(billing);
+        }
     }
 }

@@ -69,6 +69,9 @@ var WF = {
         },
         list: function(params) {
             WF.page.forward('list' + (params ? params : ''));
+        },
+        reload: function(forceget) {
+            location.reload(forceget || false);
         }
     },
     editor: {
@@ -247,6 +250,18 @@ var WF = {
                     }
                 }
             });
+        },
+        changeStatus: function(guid, status) {
+            if (confirm('确定要执行该操作？')) {
+                WF.ajax.req({
+                    type: 'post',
+                    url: 'status',
+                    data: {guid: guid, status: status},
+                    success: function(result) {
+                        WF.page.reload();
+                    }
+                });
+            }
         }
     }
 };

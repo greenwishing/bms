@@ -52,6 +52,14 @@ public class BillingFormController {
         if (!ValidationUtils.isEmpty(occurredTime) && !ValidationUtils.isValidDate(occurredTime)) {
             errors.rejectValue("occurredTime", "occurredTime", "时间格式不正确");
         }
+        String categoryGuid = billingDTO.getCategoryGuid();
+        if (ValidationUtils.isEmpty(categoryGuid)) {
+            errors.rejectValue("categoryGuid", "categoryGuid", "请选择分类");
+        }
+        String subcategoryGuid = billingDTO.getSubcategoryGuid();
+        if (ValidationUtils.isEmpty(subcategoryGuid)) {
+            errors.rejectValue("subcategoryGuid", "subcategoryGuid", "请选择子分类");
+        }
         if (errors.hasErrors()) {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());

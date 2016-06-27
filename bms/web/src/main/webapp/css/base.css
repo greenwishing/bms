@@ -3,10 +3,6 @@
 * { font-family: '微软雅黑', '黑体', serif;}
 body { padding-top: 70px;}
 
-.price.INCOME { color: green;}
-.price.EXPEND { color: red;}
-.price.EXPEND:before { content: '-';}
-
 .help-block-danger { color: red;}
 
 .search-form-wrapper .form-group { margin-bottom: 5px;}

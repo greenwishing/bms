@@ -12,6 +12,19 @@
             WF.billing.categories($('#type'));
         });
     </script>
+    <style type="text/css">
+        .status.RECEIVABLE,
+        .status.PAYABLE { color: red;}
+        .status.RECEIVED,
+        .status.PAYED { color: green;}
+
+        .price.ACCOUNT_RECEIVABLE,
+        .price.ACCOUNT_PAYABLE { color: grey;}
+        .price.EXPEND { color: red;}
+        .price.EXPEND:before { content: '-';}
+        .price.INCOME:before { content: '+';}
+        .settled { text-decoration: line-through;}
+    </style>
 </head>
 <body>
 <form id="search-form" action="list" class="form-inline search-form-wrapper" onsubmit="return false;">
@@ -49,7 +62,7 @@
 <table class="table table-hover">
     <thead>
     <tr>
-        <th colspan="5" class="text-right">
+        <th colspan="6" class="text-right">
             <div class="btn-group">
                 <a class="btn btn-success" href="add">添加</a>
                 <a class="btn btn-default" href="categories">分类管理</a>
@@ -63,16 +76,29 @@
         <th>分类</th>
         <th>金额</th>
         <th>时间</th>
+        <th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${pagingDTO.list}" var="billing" varStatus="i">
-        <tr>
+        <tr data-id="${billing.guid}" title="${billing.settleTime} ${billing.status.label}">
             <td>${billing.name}</td>
             <td>${billing.type.label}</td>
             <td title="${billing.description}">${billing.categoryName} ${billing.subcategoryName}</td>
-            <td><span class="price ${billing.type}">${billing.amount}</span></td>
+            <td>
+                <span class="price ${billing.type} ${'RECEIVED'==billing.status or 'PAYED'==billing.status ? 'settled':''}">${billing.amount}</span>
+            </td>
             <td>${billing.occurredTime}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${'ACCOUNT_RECEIVABLE'==billing.type and 'RECEIVED' != billing.status}">
+                        <a href="javascript:void(0)" onclick="WF.billing.changeStatus('${billing.guid}','RECEIVED')">标记为已还</a>
+                    </c:when>
+                    <c:when test="${'ACCOUNT_PAYABLE'==billing.type and 'PAYED' != billing.status}">
+                        <a href="javascript:void(0)" onclick="WF.billing.changeStatus('${billing.guid}','PAYED')">标记为已付</a>
+                    </c:when>
+                </c:choose>
+            </td>
         </tr>
     </c:forEach>
     </tbody>

@@ -1,5 +1,6 @@
 package cn.greenwishing.bms.web.controller.billing;
 
+import cn.greenwishing.bms.domain.billing.BillingStatus;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.dto.billing.BillingCategoryDTO;
@@ -41,6 +42,12 @@ public class BillingController {
     @RequestMapping("delete")
     public String delete(String guid) {
         billingService.deleteBillingByGuid(guid);
+        return "redirect:list";
+    }
+
+    @RequestMapping("status")
+    public String status(String guid, BillingStatus status) {
+        billingService.changeStatus(guid, status);
         return "redirect:list";
     }
 

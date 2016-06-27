@@ -2,7 +2,9 @@ package cn.greenwishing.bms.domain.billing;
 
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.user.User;
+import cn.greenwishing.bms.utils.JodaUtils;
 import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -45,6 +47,14 @@ public class Billing extends AbstractDomain {
     @ManyToOne(targetEntity = User.class)
 	private User operator;
 
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+	private BillingStatus status = BillingStatus.NORMAL;
+
+    @Column(name = "settle_time")
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    private DateTime settleTime;
+
     public Billing() {
     }
 
@@ -64,6 +74,13 @@ public class Billing extends AbstractDomain {
         this.type = type;
         this.category = category;
         this.subcategory = subcategory;
+    }
+
+    public void updateStatus(BillingStatus status) {
+        this.status = status;
+        if (BillingStatus.PAYED == status || BillingStatus.RECEIVED == status) {
+            this.settleTime = JodaUtils.now();
+        }
     }
 
     public BillingType type() {
@@ -100,5 +117,13 @@ public class Billing extends AbstractDomain {
 
     public User operator() {
         return operator;
+    }
+
+    public BillingStatus status() {
+        return status;
+    }
+
+    public DateTime settleTime() {
+        return settleTime;
     }
 }

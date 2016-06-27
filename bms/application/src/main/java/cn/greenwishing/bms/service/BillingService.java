@@ -1,5 +1,6 @@
 package cn.greenwishing.bms.service;
 
+import cn.greenwishing.bms.domain.billing.BillingStatus;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.dto.billing.*;
@@ -42,4 +43,6 @@ public interface BillingService {
     List<BillingCategoryDTO> loadBillingCategoryByType(BillingType billingType);
 
     List<BillingStatistics> loadBillingStatistics(String type, String group, String fromDateStr, String toDateStr);
+
+    void changeStatus(String guid, BillingStatus status);
 }

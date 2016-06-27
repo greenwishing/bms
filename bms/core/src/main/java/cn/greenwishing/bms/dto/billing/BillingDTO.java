@@ -1,9 +1,6 @@
 package cn.greenwishing.bms.dto.billing;
 
-import cn.greenwishing.bms.domain.billing.Billing;
-import cn.greenwishing.bms.domain.billing.BillingCategory;
-import cn.greenwishing.bms.domain.billing.BillingSubcategory;
-import cn.greenwishing.bms.domain.billing.BillingType;
+import cn.greenwishing.bms.domain.billing.*;
 import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.NumberUtils;
 import org.springframework.stereotype.Component;
@@ -28,6 +25,8 @@ public class BillingDTO {
     private String amount;
     private String occurredTime = JodaUtils.today().toString(JodaUtils.DATE_FORMAT);
     private String occurredUserGuid;
+    private BillingStatus status;
+    private String settleTime;
 
     private boolean createTemplate;
 
@@ -50,7 +49,9 @@ public class BillingDTO {
         }
         this.amount = NumberUtils.toString(billing.amount());
         this.description = billing.description();
-        this.occurredTime = billing.occurredTime().toString();
+        this.occurredTime = JodaUtils.localDateToString(billing.occurredTime());
+        this.settleTime = JodaUtils.dateTimeToString(billing.settleTime());
+        this.status = billing.status();
     }
 
     public static List<BillingDTO> toDTOs(List<Billing> billings) {
@@ -142,12 +143,19 @@ public class BillingDTO {
         this.occurredUserGuid = occurredUserGuid;
     }
 
-
     public boolean isCreateTemplate() {
         return createTemplate;
     }
 
     public void setCreateTemplate(boolean createTemplate) {
         this.createTemplate = createTemplate;
+    }
+
+    public BillingStatus getStatus() {
+        return status;
+    }
+
+    public String getSettleTime() {
+        return settleTime;
     }
 }
