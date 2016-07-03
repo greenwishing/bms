@@ -9,50 +9,66 @@
     <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection"/>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/js/bootstrap/3.3.2/css/bootstrap.min.css">
-    <script src="${pageContext.request.contextPath}/js/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css">
-    <script src="${pageContext.request.contextPath}/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css">
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
     <decorator:head/>
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">BMS</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/billing/list') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/billing/list">账单</a></li>
-                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/billing/statistics') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/billing/statistics">账单统计</a></li>
-                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/article/list') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/article/list">文章</a></li>
-                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/metro/list') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/metro/list">Metro</a></li>
-                    <li ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/client/list') ? 'class="active"': ''}><a href="${pageContext.request.contextPath}/system/client/list">Client</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="${pageContext.request.contextPath}/logout">退出</a></li>
-                </ul>
-            </div>
+<div class="container">
+    <div class="weui_tab">
+        <div class="weui_tab_bd">
+            <decorator:body/>
         </div>
-    </nav>
-    <div class="container">
-        <h3 class="page-header"><decorator:title default="bms"/></h3>
-        <decorator:body/>
+        <div class="weui_tabbar">
+            <a href="${pageContext.request.contextPath}/system/billing/list"
+               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/billing/list') ? 'weui_bar_item_on': ''}">
+                <div class="weui_tabbar_icon">
+                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_cell.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">账单</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/system/billing/statistics"
+               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/billing/statistics') ? 'weui_bar_item_on': ''}">
+                <div class="weui_tabbar_icon">
+                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_msg.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">账单统计</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/system/article/list"
+               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/article/list') ? 'weui_bar_item_on': ''}">
+                <div class="weui_tabbar_icon">
+                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_article.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">文章</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/system/metro/list"
+               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/metro/list') ? 'weui_bar_item_on': ''}">
+                <div class="weui_tabbar_icon">
+                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_tab.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">Metro</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/system/client/list"
+               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/client/list') ? 'weui_bar_item_on': ''}">
+                <div class="weui_tabbar_icon">
+                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_button.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">Client</p>
+            </a>
+            <a href="${pageContext.request.contextPath}/logout" class="weui_tabbar_item">
+                <p class="weui_tabbar_label">退出</p>
+            </a>
+        </div>
     </div>
+</div>
 </body>
 </html>

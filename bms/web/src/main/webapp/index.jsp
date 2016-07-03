@@ -1,16 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>欢迎</title>
+    <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection"/>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/js/bootstrap/3.3.2/css/bootstrap.min.css">
-    <script src="${pageContext.request.contextPath}/js/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/highcharts/4.0.3/highcharts.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
 
     <script type="text/javascript">
         $(function(){
@@ -61,37 +67,33 @@
             });
         }
     </script>
-    <style type="text/css">
-        html, body, h1, h2, h3, h4, h5, h6 { font-family: "microsoft yahei",serif;}
-    </style>
 </head>
 <body>
-<div class="container">
-    <div class="nearest row"></div>
-    <form action="${pageContext.request.contextPath}/account_check" class="form-horizontal" method="post">
-        <div class="form-group form-group-lg">
-            <div class="col-lg-3"><label for="account" class="form-control-static">帐号</label></div>
-            <div class="col-lg-9">
-                <input id="account" type="text" class="form-control" name="account" />
+    <form action="${pageContext.request.contextPath}/account_check" method="post">
+        <div class="weui_cells_title">登录</div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">帐号</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="account" type="text" class="weui_input" name="account" placeholder="请输入帐号" />
+                </div>
             </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">密码</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="password" type="password" class="weui_input" name="password" placeholder="请输入密码" />
+                </div>
+            </div>
+            <c:choose>
+                <c:when test="${param.action==1}"><div class="weui_cells_tips">帐号或密码错误</div></c:when>
+                <c:when test="${param.action==2}"><div class="weui_cells_tips">登录超时</div></c:when>
+                <c:when test="${param.action==1}"><div class="weui_cells_tips">已退出</div></c:when>
+            </c:choose>
         </div>
-        <div class="form-group form-group-lg">
-            <div class="col-lg-3"><label for="password" class="form-control-static">密码</label></div>
-            <div class="col-lg-9">
-                <input id="password" type="password" class="form-control" name="password" />
-            </div>
-        </div>
-        <div class="form-group form-group-lg">
-            <div class="col-lg-offset-3 col-lg-9">
-                <input type="submit" class="btn btn-primary btn-block btn-lg" value="登录"/>
-                <c:choose>
-                    <c:when test="${param.action==1}"><div class="help-block help-block-danger">帐号或密码错误</div></c:when>
-                    <c:when test="${param.action==2}"><div class="help-block help-block-danger">登录超时</div></c:when>
-                    <c:when test="${param.action==1}"><div class="help-block">已退出</div></c:when>
-                </c:choose>
-            </div>
+        <div class="weui_btn_area">
+            <button class="weui_btn weui_btn_primary" type="submit">登录</button>
         </div>
     </form>
-</div>
+    <div class="nearest row"></div>
 </body>
 </html>

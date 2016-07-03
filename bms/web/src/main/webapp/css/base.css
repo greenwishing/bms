@@ -1,9 +1,19 @@
 @charset "utf-8";
 
-* { font-family: '微软雅黑', '黑体', serif;}
-body { padding-top: 70px;}
+* { font-family: "microsoft yahei",serif;}
+html, body { height: 100%;}
+body { background: #fbf9fe;-webkit-tap-highlight-color: transparent;}
 
-.help-block-danger { color: red;}
+.container { height: 100%; overflow-y: auto;}
+
+.color-red {color:#ff3b30}
+.color-orange {color:#ff9500}
+.color-yellow {color:#fc0}
+.color-green {color:#4cd964}
+.color-teal-blue {color:#5ac8fa}
+.color-blue {color:#007aff}
+.color-purple {color:#5856d6}
+.color-pink {color:#ff2d55}
 
 .search-form-wrapper .form-group { margin-bottom: 5px;}
 .label-wrapper .label { display: inline-block; margin-bottom: 5px; margin-right: 5px;}
