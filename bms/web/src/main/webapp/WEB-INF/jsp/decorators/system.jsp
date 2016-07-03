@@ -65,6 +65,9 @@
                 <p class="weui_tabbar_label">Client</p>
             </a>
             <a href="${pageContext.request.contextPath}/logout" class="weui_tabbar_item">
+                <div class="weui_tabbar_icon">
+                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_cancel.png" alt="">
+                </div>
                 <p class="weui_tabbar_label">退出</p>
             </a>
         </div>
