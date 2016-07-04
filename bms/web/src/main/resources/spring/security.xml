@@ -132,7 +132,7 @@
         <intercept-url pattern="/system/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <form-login login-page="/" login-processing-url="/account_check"
-                    default-target-url="/system/billing/list" authentication-failure-url="/?action=1"
+                    default-target-url="/system/index" authentication-failure-url="/?action=1"
                     username-parameter="account" password-parameter="password"/>
         <session-management invalid-session-url="/?action=2" />
         <logout logout-url="/logout" logout-success-url="/?action=3"/>

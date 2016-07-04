@@ -3,7 +3,7 @@
 <%@ attribute name="simple" type="java.lang.Boolean" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:if test="${ not empty paging.list and paging.pageCount > 1}">
-    <div class="button_sp_area">
+    <div class="weui_btn_area weui_btn_area_inline">
         <c:if test="${!simple}">
             <c:choose>
                 <c:when test="${paging.currentPage == 1}">

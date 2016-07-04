@@ -24,54 +24,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="weui_tab">
-        <div class="weui_tab_bd">
-            <decorator:body/>
-        </div>
-        <div class="weui_tabbar">
-            <a href="${pageContext.request.contextPath}/system/billing/list"
-               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/billing/list') ? 'weui_bar_item_on': ''}">
-                <div class="weui_tabbar_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_cell.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">账单</p>
-            </a>
-            <a href="${pageContext.request.contextPath}/system/billing/statistics"
-               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/billing/statistics') ? 'weui_bar_item_on': ''}">
-                <div class="weui_tabbar_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_msg.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">账单统计</p>
-            </a>
-            <a href="${pageContext.request.contextPath}/system/article/list"
-               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/article/list') ? 'weui_bar_item_on': ''}">
-                <div class="weui_tabbar_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_article.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">文章</p>
-            </a>
-            <a href="${pageContext.request.contextPath}/system/metro/list"
-               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/metro/list') ? 'weui_bar_item_on': ''}">
-                <div class="weui_tabbar_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_tab.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">Metro</p>
-            </a>
-            <a href="${pageContext.request.contextPath}/system/client/list"
-               class="weui_tabbar_item ${fn:containsIgnoreCase(pageContext.request.requestURI, '/system/client/list') ? 'weui_bar_item_on': ''}">
-                <div class="weui_tabbar_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_button.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">Client</p>
-            </a>
-            <a href="${pageContext.request.contextPath}/logout" class="weui_tabbar_item">
-                <div class="weui_tabbar_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_cancel.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">退出</p>
-            </a>
-        </div>
-    </div>
+    <decorator:body/>
 </div>
 </body>
 </html>

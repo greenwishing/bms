@@ -15,6 +15,9 @@ body { background: #fbf9fe;-webkit-tap-highlight-color: transparent;}
 .color-purple {color:#5856d6}
 .color-pink {color:#ff2d55}
 
+.weui_dialog.weui_dialog_form .weui_dialog_bd { padding: 0;}
+.weui_btn_area:last-child { margin-bottom: 15px; }
+
 .search-form-wrapper .form-group { margin-bottom: 5px;}
 .label-wrapper .label { display: inline-block; margin-bottom: 5px; margin-right: 5px;}
 .label-wrapper .label.label-lg { padding: 8px 15px;}

@@ -12,9 +12,7 @@
             // WF.util.datePicker('occurredTime');
 
             (function(){
-                var $mask = $('#mask');
-                var $list = $('#weui_actionsheet');
-                var $menu = $list.find('.weui_actionsheet_menu');
+                var $selection = $('#template_selection');
                 WF.ajax.req({
                     type: 'post',
                     url: 'templates',
@@ -23,65 +21,34 @@
                         var templates = result.templates;
                         for (var i in templates) {
                             var template = templates[i];
-                            var item = $('<div class="weui_actionsheet_cell"></div>').html(template.name + ' ' + template.amount).attr(template);
-                            $menu.append(item);
+                            var $option = $('<option></option>').html(template.name + ' ' + template.amount).attr(template);
+                            $selection.append($option);
                         }
-                        $menu.find('.weui_actionsheet_cell').bind('click', function(){
-                            applyTemplate(this);
-                            hideActionSheet($list, $mask);
-                        });
                     }
                 });
-
-                $('#add_from_template').bind('click', function () {
-                    $list.addClass('weui_actionsheet_toggle');
-                    $mask.show()
-                            .focus()
-                            .addClass('weui_fade_toggle').bind('click', function () {
-                                hideActionSheet($list, $mask);
-                            });
-                    $('#actionsheet_cancel').bind('click', function () {
-                        hideActionSheet($list, $mask);
-                    });
-                    $mask.unbind('transitionend').unbind('webkitTransitionEnd');
-                });
-
-                function hideActionSheet(weuiActionsheet, mask) {
-                    weuiActionsheet.removeClass('weui_actionsheet_toggle');
-                    mask.removeClass('weui_fade_toggle');
-                    mask.on('transitionend', function () {
-                        mask.hide();
-                    }).on('webkitTransitionEnd', function () {
-                        mask.hide();
-                    })
-                }
-
             })();
         });
 
         function applyTemplate(elem) {
-            var template = $(elem);
-            $('#categoryGuid').attr({'default-value': template.attr('categoryGuid')});
-            $('#subcategoryGuid').attr({'default-value': template.attr('subcategoryGuid')});
-            $('#name').val(template.attr('name'));
-            $('#amount').val(template.attr('amountFloat'));
+            var $option = $(elem).find('option:selected');
+            $('#categoryGuid').attr({'default-value': $option.attr('categoryGuid')});
+            $('#subcategoryGuid').attr({'default-value': $option.attr('subcategoryGuid')});
+            $('#name').val($option.attr('name'));
+            $('#amount').val($option.attr('amountFloat'));
             var type = $('#type');
-            type.val(template.attr('type'));
+            type.val($option.attr('type'));
             WF.billing.categories(type);
         }
     </script>
 </head>
 <body>
 <form id="data-form" action="add" method="post" onsubmit="return false;">
-    <div class="weui_btn_area">
-        <a class="weui_btn weui_btn_primary" href="javascript:void(0)" id="add_from_template">从模板添加</a>
-    </div>
-    <div id="actionSheet_wrap">
-        <div class="weui_mask_transition" id="mask"></div>
-        <div class="weui_actionsheet" id="weui_actionsheet">
-            <div class="weui_actionsheet_menu"></div>
-            <div class="weui_actionsheet_action">
-                <div class="weui_actionsheet_cell" id="actionsheet_cancel">取消</div>
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell weui_cell_select">
+            <div class="weui_cell_bd weui_cell_primary">
+                <select id="template_selection" class="weui_select" onchange="applyTemplate(this);">
+                    <option>从模板快速添加</option>
+                </select>
             </div>
         </div>
     </div>
@@ -146,26 +113,13 @@
             </div>
         </div>
     </div>
-    <div class="weui_cells_title">创建模板</div>
-    <div class="weui_cells weui_cells_radio">
-        <label class="weui_cell weui_check_label" for="createTemplate_true">
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>是</p>
-            </div>
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell weui_cell_switch">
+            <div class="weui_cell_hd weui_cell_primary">创建模板</div>
             <div class="weui_cell_ft">
-                <input type="radio" name="createTemplate" class="weui_check" id="createTemplate_true" value="true" />
-                <span class="weui_icon_checked"></span>
+                <input class="weui_switch" name="createTemplate" type="checkbox" value="true"/>
             </div>
-        </label>
-        <label class="weui_cell weui_check_label" for="createTemplate_false">
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>否</p>
-            </div>
-            <div class="weui_cell_ft">
-                <input type="radio" name="createTemplate" class="weui_check" id="createTemplate_false" value="false" checked="checked" />
-                <span class="weui_icon_checked"></span>
-            </div>
-        </label>
+        </div>
     </div>
     <div class="weui_btn_area">
         <a class="weui_btn weui_btn_primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
