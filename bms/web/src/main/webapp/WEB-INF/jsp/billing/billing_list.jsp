@@ -49,10 +49,10 @@
             <div class="weui_panel_bd">
                 <c:forEach items="${pagingDTO.list}" var="billing">
                     <div class="weui_media_box weui_media_text" data-id="${billing.guid}" title="${billing.settleTime} ${billing.status.label}">
-                        <h4 class="weui_media_title"><span class="price ${billing.type} ${'RECEIVED'==billing.status or 'PAYED'==billing.status ? 'settled':''}">${billing.amount}</span></h4>
-                        <p class="weui_media_desc">${billing.name}</p>
+                        <h4 class="weui_media_title"><span class="price ${billing.type} ${'RECEIVED'==billing.status or 'PAYED'==billing.status ? 'settled':''}">${billing.amount}</span> ${billing.name}</h4>
+                        <p class="weui_media_desc">${billing.type.label}</p>
                         <ul class="weui_media_info">
-                            <li class="weui_media_info_meta">${billing.type.label}</li>
+                            <li class="weui_media_info_meta"></li>
                             <li class="weui_media_info_meta">${billing.categoryName} ${billing.subcategoryName}</li>
                             <li class="weui_media_info_meta weui_media_info_meta_extra">${billing.occurredTime}</li>
                         </ul>
