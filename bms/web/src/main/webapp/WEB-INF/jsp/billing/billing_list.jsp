@@ -71,11 +71,11 @@
         </div>
     </div>
     <div class="weui_tabbar">
-        <a class="weui_tabbar_item" href="${pageContext.request.contextPath}/system/index">
+        <a class="weui_tabbar_item" href="add">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
             </div>
-            <p class="weui_tabbar_label">首页</p>
+            <p class="weui_tabbar_label">添加</p>
         </a>
         <a class="weui_tabbar_item" href="categories">
             <div class="weui_tabbar_icon">
@@ -94,6 +94,12 @@
                 <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_panel.png" alt="">
             </div>
             <p class="weui_tabbar_label">查询</p>
+        </a>
+        <a class="weui_tabbar_item" href="${pageContext.request.contextPath}/system/index">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
         </a>
     </div>
 </div>

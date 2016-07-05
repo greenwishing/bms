@@ -8,34 +8,36 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th colspan="3" class="text-right">
-            <div class="btn-group">
-                <a class="btn btn-success" href="add_category">添加</a>
-                <a class="btn btn-default" href="list">返回</a>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <div class="weui_panel weui_panel_access">
+            <div class="weui_panel_hd">账单分类</div>
+            <div class="weui_panel_bd">
+                <c:forEach items="${categories}" var="category">
+                    <a href="edit_category?guid=${category.guid}" class="weui_media_box weui_media_appmsg">
+                        <div class="weui_media_bd">
+                            <h4 class="weui_media_title">${category.name}</h4>
+                            <p class="weui_media_desc">${category.type.label}</p>
+                        </div>
+                    </a>
+                </c:forEach>
             </div>
-        </th>
-    </tr>
-    <tr>
-        <th>类型</th>
-        <th>名称</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${categories}" var="category">
-        <tr>
-            <td>${category.type.label}</td>
-            <td>${category.name}</td>
-            <td>
-                <a href="edit_category?guid=${category.guid}">编辑</a>
-                <a href="subcategories?categoryGuid=${category.guid}">子分类</a>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </div>
+    </div>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="add_category">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_button.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">添加</p>
+        </a>
+        <a class="weui_tabbar_item" href="list">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_cell.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
+    </div>
+</div>
 </body>
 </html>

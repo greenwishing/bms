@@ -8,20 +8,33 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<spring-form:form cssClass="form-horizontal" commandName="billingSubcategoryDTO" method="post" id="data-form" onsubmit="return false;">
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="name">名称</label>
-        <div class="col-sm-10">
-            <spring-form:input cssClass="form-control" path="name" id="name" placeholder="名称"/>
-            <spring-form:errors path="name" cssClass="help-block help-block-danger"/>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <spring-form:form cssClass="form-horizontal" commandName="billingSubcategoryDTO" method="post" id="data-form" onsubmit="return false;">
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">名称</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <spring-form:input cssClass="weui_input" path="name" id="name" placeholder="名称"/>
+                </div>
+            </div>
         </div>
+        </spring-form:form>
     </div>
-    <div class="form-group">
-        <div class="col-sm-10 col-sm-offset-2">
-            <input class="btn btn-success" type="button" value="保存" onclick="WF.form.submit($('#data-form'))"/>
-            <input class="btn btn-default" type="button" value="返回" onclick="WF.page.list('subcategories?categoryGuid=${param.categoryGuid}')"/>
-        </div>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.submit($('#data-form'))">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">保存</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.page.forward('subcategories?categoryGuid=${param.categoryGuid}')">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
     </div>
-</spring-form:form>
+</div>
 </body>
 </html>

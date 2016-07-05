@@ -8,27 +8,47 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<spring-form:form cssClass="form-horizontal" commandName="billingCategoryDTO" method="post" id="data-form" onsubmit="return false;">
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="type">类型</label>
-        <div class="col-sm-10">
-            <spring-form:select id="type" cssClass="form-control" path="type" items="${types}" itemValue="value" itemLabel="label"/>
-            <spring-form:errors path="type" cssClass="help-block help-block-danger"/>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <spring-form:form commandName="billingCategoryDTO" method="post" id="data-form" onsubmit="return false;">
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell weui_cell_select weui_select_after">
+                <div class="weui_cell_hd"><label class="weui_label">类型</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <spring-form:select id="type" cssClass="weui_select" path="type" items="${types}" itemValue="value" itemLabel="label"/>
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">名称</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <spring-form:input cssClass="weui_input" path="name" id="name" placeholder="名称"/>
+                </div>
+            </div>
         </div>
+        </spring-form:form>
     </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="name">名称</label>
-        <div class="col-sm-10">
-            <spring-form:input cssClass="form-control" path="name" id="name" placeholder="名称"/>
-            <spring-form:errors path="name" cssClass="help-block help-block-danger"/>
-        </div>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.submit($('#data-form'))">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">保存</p>
+        </a>
+        <c:if test="${param.guid!=null}">
+        <a class="weui_tabbar_item" href="subcategories?categoryGuid=${param.guid}">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">子分类</p>
+        </a>
+        </c:if>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.page.forward('categories')">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
     </div>
-    <div class="form-group">
-        <div class="col-sm-10 col-sm-offset-2">
-            <input class="btn btn-success" type="button" value="保存" onclick="WF.form.submit($('#data-form'))"/>
-            <input class="btn btn-default" type="button" value="返回" onclick="WF.page.forward('categories')"/>
-        </div>
-    </div>
-</spring-form:form>
+</div>
 </body>
 </html>

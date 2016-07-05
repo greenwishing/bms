@@ -171,37 +171,62 @@
     </script>
 </head>
 <body>
-<div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">账单统计 <span id="date"></span></h3>
-
-            <div class="form-inline" style="margin-top: 10px;">
-                <select id="type" class="form-control" onchange="onConditionChanged()">
-                    <c:forEach items="${types}" var="type">
-                        <option value="${type.value}">${type.label}</option>
-                    </c:forEach>
-                </select>
-                <select id="group" class="form-control" onchange="onConditionChanged()">
-                    <option value="category">分类</option>
-                    <option value="subcategory" selected>子分类</option>
-                </select>
-                <select id="mode" class="form-control" onchange="$(this).attr({'data-offset':0});onConditionChanged()" data-offset="0">
-                    <option value="days">按天</option>
-                    <option value="weeks">按周</option>
-                    <option value="months" selected>按月</option>
-                    <option value="years">按年</option>
-                </select>
-
-                <div class="btn-group">
-                    <button class="btn btn-default" onclick="addModeOffset(-1)">&lt;</button>
-                    <button class="btn btn-default" onclick="addModeOffset(1)">&gt;</button>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <div class="weui_panel">
+            <div class="weui_panel_hd">账单统计</div>
+            <div class="weui_panel_bd">
+                <div class="weui_media_box weui_media_small_appmsg">
+                        <div class="weui_cells weui_cells_form">
+                        <div class="weui_cell weui_cell_select weui_select_after">
+                            <div class="weui_cell_hd"><label class="weui_label">分类</label></div>
+                            <div class="weui_cell_bd weui_cell_primary">
+                                <select id="type" class="weui_select" onchange="onConditionChanged()">
+                                    <c:forEach items="${types}" var="type">
+                                        <option value="${type.value}">${type.label}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="weui_cell weui_cell_select weui_select_after">
+                            <div class="weui_cell_hd"><label class="weui_label">分类</label></div>
+                            <div class="weui_cell_bd weui_cell_primary">
+                                <select id="group" class="weui_select" onchange="onConditionChanged()">
+                                    <option value="category">分类</option>
+                                    <option value="subcategory" selected>子分类</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="weui_cell weui_cell_select weui_select_after">
+                            <div class="weui_cell_hd"><label class="weui_label">范围</label></div>
+                            <div class="weui_cell_bd weui_cell_primary">
+                                <select id="mode" class="weui_select" onchange="$(this).attr({'data-offset':0});onConditionChanged()" data-offset="0">
+                                    <option value="days">按天</option>
+                                    <option value="weeks">按周</option>
+                                    <option value="months" selected>按月</option>
+                                    <option value="years">按年</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div id="billing-statistics"></div>
             </div>
         </div>
-        <div class="panel-body">
-            <div id="billing-statistics"></div>
-        </div>
+    </div>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="addModeOffset(-1)">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">&lt;</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="addModeOffset(1)">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">&gt;</p>
+        </a>
     </div>
 </div>
 </body>
