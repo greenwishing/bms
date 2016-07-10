@@ -49,7 +49,7 @@
         </spring-form:form>
     </div>
     <div class="weui_tabbar">
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.submit($('#data-form'))">
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">
             <div class="weui_tabbar_icon">
                 <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
             </div>
