@@ -37,6 +37,7 @@
         .price.ACCOUNT_PAYABLE { color: grey;}
         .price.EXPEND { color: red;}
         .price.EXPEND:before { content: '-';}
+        .price.EXPEND_BACK:before { content: '+';}
         .price.INCOME:before { content: '+';}
         .settled { text-decoration: line-through;}
     </style>
@@ -49,7 +50,7 @@
             <div class="weui_panel_bd">
                 <c:forEach items="${pagingDTO.list}" var="billing">
                     <div class="weui_media_box weui_media_text" data-id="${billing.guid}" title="${billing.settleTime} ${billing.status.label}">
-                        <h4 class="weui_media_title"><span class="price ${billing.type} ${'RECEIVED'==billing.status or 'PAYED'==billing.status ? 'settled':''}">${billing.amount}</span> ${billing.name}</h4>
+                        <h4 class="weui_media_title"><span class="price ${billing.type}${billing.negate?'_BACK':''} ${'RECEIVED'==billing.status or 'PAYED'==billing.status ? 'settled':''}">${billing.amount}</span> ${billing.name}</h4>
                         <p class="weui_media_desc">${billing.categoryName} ${billing.subcategoryName}</p>
                         <ul class="weui_media_info">
                             <li class="weui_media_info_meta">${billing.type.label}</li>

@@ -5,6 +5,7 @@ import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.NumberUtils;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class BillingDTO {
     private String subcategoryGuid;
     private String subcategoryName;
     private String amount;
+    private BigDecimal _amount;
     private String occurredTime = JodaUtils.today().toString(JodaUtils.DATE_FORMAT);
     private String occurredUserGuid;
     private BillingStatus status;
@@ -47,6 +49,7 @@ public class BillingDTO {
             this.subcategoryGuid = subcategory.guid();
             this.subcategoryName = subcategory.name();
         }
+        this._amount = billing.amount();
         this.amount = NumberUtils.toString(billing.amount());
         this.description = billing.description();
         this.occurredTime = JodaUtils.localDateToString(billing.occurredTime());
@@ -157,5 +160,9 @@ public class BillingDTO {
 
     public String getSettleTime() {
         return settleTime;
+    }
+
+    public boolean isNegate() {
+        return _amount.compareTo(BigDecimal.ZERO) == -1;
     }
 }
