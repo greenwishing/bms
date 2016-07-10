@@ -45,7 +45,7 @@ public class BillingFormController {
         String amount = billingDTO.getAmount();
         if (ValidationUtils.isEmpty(amount)) {
             errors.rejectValue("amount", "amount", "金额不能为空");
-        } else if (!ValidationUtils.isPriceBigDecimal(amount)) {
+        } else if (!ValidationUtils.isAllNumber(amount)) {
             errors.rejectValue("amount", "amount", "金额格式不正确");
         }
         String occurredTime = billingDTO.getOccurredTime();
