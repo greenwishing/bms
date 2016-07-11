@@ -28,18 +28,11 @@
 
     </script>
     <style type="text/css">
-        .status.RECEIVABLE,
-        .status.PAYABLE { color: red;}
-        .status.RECEIVED,
-        .status.PAYED { color: green;}
-
-        .price.ACCOUNT_RECEIVABLE,
-        .price.ACCOUNT_PAYABLE { color: grey;}
-        .price.EXPEND { color: red;}
-        .price.EXPEND:before { content: '-';}
-        .price.EXPEND_BACK:before { content: '+';}
-        .price.INCOME:before { content: '+';}
-        .settled { text-decoration: line-through;}
+        .price.NEGATIVE { color: red;}
+        .price.NEGATIVE:before { content: '-';}
+        .price.POSITIVE { color: green;}
+        .price.POSITIVE:before { content: '+';}
+        .price.SETTLED { text-decoration: line-through;}
     </style>
 </head>
 <body>
@@ -50,7 +43,7 @@
             <div class="weui_panel_bd">
                 <c:forEach items="${pagingDTO.list}" var="billing">
                     <div class="weui_media_box weui_media_text" data-id="${billing.guid}" title="${billing.settleTime} ${billing.status.label}">
-                        <h4 class="weui_media_title"><span class="price ${billing.type}${billing.negate?'_BACK':''} ${'RECEIVED'==billing.status or 'PAYED'==billing.status ? 'settled':''}">${billing.amount}</span> ${billing.name}</h4>
+                        <h4 class="weui_media_title"><span class="price ${billing.className}">${billing.amount}</span> ${billing.name}</h4>
                         <p class="weui_media_desc">${billing.categoryName} ${billing.subcategoryName}</p>
                         <ul class="weui_media_info">
                             <li class="weui_media_info_meta">${billing.type.label}</li>

@@ -3,10 +3,12 @@ package cn.greenwishing.bms.dto.billing;
 import cn.greenwishing.bms.domain.billing.*;
 import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.NumberUtils;
+import cn.greenwishing.bms.utils.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ public class BillingDTO {
     private String subcategoryGuid;
     private String subcategoryName;
     private String amount;
-    private BigDecimal _amount;
+    private BigDecimal _amount = BigDecimal.ZERO;
     private String occurredTime = JodaUtils.today().toString(JodaUtils.DATE_FORMAT);
     private String occurredUserGuid;
     private BillingStatus status;
@@ -50,7 +52,7 @@ public class BillingDTO {
             this.subcategoryName = subcategory.name();
         }
         this._amount = billing.amount();
-        this.amount = NumberUtils.toString(billing.amount());
+        this.amount = NumberUtils.toString(billing.amount().abs());
         this.description = billing.description();
         this.occurredTime = JodaUtils.localDateToString(billing.occurredTime());
         this.settleTime = JodaUtils.dateTimeToString(billing.settleTime());
@@ -162,7 +164,24 @@ public class BillingDTO {
         return settleTime;
     }
 
-    public boolean isNegate() {
-        return _amount.compareTo(BigDecimal.ZERO) == -1;
+    public String getClassName() {
+        List<String> classes = new ArrayList<>();
+        if (Arrays.asList(BillingType.EXPEND, BillingType.ACCOUNT_RECEIVABLE).contains(type)) {
+            if (_amount.compareTo(BigDecimal.ZERO) < 0) {
+                classes.add("POSITIVE");
+            } else if (_amount.compareTo(BigDecimal.ZERO) > 0) {
+                classes.add("NEGATIVE");
+            }
+        } else {
+            if (_amount.compareTo(BigDecimal.ZERO) > 0) {
+                classes.add("POSITIVE");
+            } else if (_amount.compareTo(BigDecimal.ZERO) < 0) {
+                classes.add("NEGATIVE");
+            }
+        }
+        if (BillingStatus.RECEIVED == status || BillingStatus.PAYED == status) {
+            classes.add("SETTLED");
+        }
+        return StringUtils.join(classes, " ");
     }
 }
