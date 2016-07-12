@@ -166,18 +166,10 @@ public class BillingDTO {
 
     public String getClassName() {
         List<String> classes = new ArrayList<>();
-        if (Arrays.asList(BillingType.EXPEND, BillingType.ACCOUNT_RECEIVABLE).contains(type)) {
-            if (_amount.compareTo(BigDecimal.ZERO) < 0) {
-                classes.add("POSITIVE");
-            } else if (_amount.compareTo(BigDecimal.ZERO) > 0) {
-                classes.add("NEGATIVE");
-            }
-        } else {
-            if (_amount.compareTo(BigDecimal.ZERO) > 0) {
-                classes.add("POSITIVE");
-            } else if (_amount.compareTo(BigDecimal.ZERO) < 0) {
-                classes.add("NEGATIVE");
-            }
+        if (_amount.compareTo(BigDecimal.ZERO) > 0) {
+            classes.add("POSITIVE");
+        } else if (_amount.compareTo(BigDecimal.ZERO) < 0) {
+            classes.add("NEGATIVE");
         }
         if (BillingStatus.RECEIVED == status || BillingStatus.PAYED == status) {
             classes.add("SETTLED");

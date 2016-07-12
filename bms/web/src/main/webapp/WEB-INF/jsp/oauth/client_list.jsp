@@ -8,32 +8,36 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th colspan="3" class="text-right">
-            <div class="btn-group">
-                <a class="btn btn-success" href="reg">注册客户端</a>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <div class="weui_panel weui_panel_access">
+            <div class="weui_panel_hd">Station</div>
+            <div class="weui_panel_bd">
+                <c:forEach items="${clients}" var="client">
+                    <a class="weui_media_box weui_media_appmsg" href="edit?clientId=${station.guid}">
+                        <div class="weui_media_bd">
+                            <h4 class="weui_media_title">${client.clientId}</h4>
+                            <p class="weui_media_desc">${client.authorizedGrantTypes}</p>
+                        </div>
+                    </a>
+                </c:forEach>
             </div>
-        </th>
-    </tr>
-    <tr>
-        <th>客户端ID</th>
-        <th>认证类型</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${clients}" var="client">
-        <tr>
-            <td>${client.clientId}</td>
-            <td>${client.authorizedGrantTypes}</td>
-            <td>
-                <a href="edit?clientId=${client.clientId}">编辑</a>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </div>
+    </div>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="reg">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">注册</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
+    </div>
+</div>
 </body>
 </html>

@@ -7,36 +7,45 @@
     <title>Metro</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <style type="text/css">
-        .metro { display: inline-block; height: 1em; width: 1em; color: white;}
+        .weui_media_title { color: white;}
     </style>
 </head>
 <body>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th colspan="5" class="text-right">
-            <div class="btn-group">
-                <a class="btn btn-success" href="add">Add</a>
-                <a class="btn btn-default" href="stations">Stations</a>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <div class="weui_panel weui_panel_access">
+            <div class="weui_panel_hd">Metro line</div>
+            <div class="weui_panel_bd">
+                <c:forEach items="${lines}" var="line">
+                    <a class="weui_media_box weui_media_appmsg" data-id="${article.guid}" href="edit?guid=${line.guid}" style="background: ${line.color};">
+                        <div class="weui_media_bd">
+                            <h4 class="weui_media_title">${line.name}</h4>
+                        </div>
+                    </a>
+                </c:forEach>
             </div>
-        </th>
-    </tr>
-    <tr>
-        <th>Color/Name</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${lines}" var="line">
-        <tr>
-            <td>
-                <span class="metro" style="background: ${line.color};"></span>
-                <span>${line.name}</span>
-            </td>
-            <td><a href="edit?guid=${line.guid}">Edit</a></td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </div>
+    </div>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="add">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">Add</p>
+        </a>
+        <a class="weui_tabbar_item" href="stations">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_article.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">Stations</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
+    </div>
+</div>
 </body>
 </html>

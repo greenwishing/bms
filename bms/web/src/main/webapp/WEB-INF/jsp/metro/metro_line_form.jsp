@@ -82,49 +82,52 @@
     </script>
 </head>
 <body>
-<form class="form-horizontal" id="data-form" action="add" method="post" onsubmit="return false;">
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="name">Name</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" name="name" id="name" placeholder="Name" value="${metroLineDTO.name}"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="color">Color</label>
-        <div class="col-sm-10">
-            <input type="color" class="form-control" name="color" id="color" placeholder="Color" value="${metroLineDTO.color}"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2">Loop</label>
-        <div class="col-sm-10">
-            <label class="radio-inline">
-                <input type="radio" name="loop" value="true" ${metroLineDTO.loop?'checked':''} /> Yes
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="loop" value="false" ${metroLineDTO.loop?'':'checked'} /> No
-            </label>
-        </div>
-    </div>
-    <c:if test="${metroLineDTO.guid != null}">
-        <div class="form-group">
-            <label class="control-label col-sm-2">Stations</label>
-            <div class="col-sm-10">
-                <ol class="metro-line-station"></ol>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <form class="form-horizontal" id="data-form" action="add" method="post" onsubmit="return false;">
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">Name</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input type="text" class="weui_input" name="name" id="name" placeholder="Name" value="${metroLineDTO.name}"/>
+                    </div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">Color</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input type="color" class="weui_input" name="color" id="color" placeholder="Color" value="${metroLineDTO.color}"/>
+                    </div>
+                </div>
+                <div class="weui_cell weui_cell_switch">
+                    <div class="weui_cell_hd weui_cell_primary">Loop</div>
+                    <div class="weui_cell_ft">
+                        <input class="weui_switch" type="checkbox" value="true" ${metroLineDTO.loop?'checked':''}/>
+                    </div>
+                </div>
             </div>
-        </div>
-    </c:if>
-    <div class="form-group">
-        <div class="col-sm-10 col-sm-offset-2">
-            <input class="btn btn-success" type="button" value="保存" onclick="WF.form.ajaxSubmit($('#data-form'))"/>
-            <input class="btn btn-default" type="button" value="返回" onclick="WF.page.forward('list')"/>
-        </div>
+            <c:if test="${metroLineDTO.guid != null}">
+                <div class="weui_cells_title">Stations</div>
+                <ol class="metro-line-station"></ol>
+                <svg id="metro-map" class="metro-map" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                    <title>Metro line</title>
+                </svg>
+            </c:if>
+        </form>
     </div>
-    <c:if test="${metroLineDTO.guid != null}">
-        <svg id="metro-map" class="metro-map" xmlns="http://www.w3.org/2000/svg" version="1.1">
-            <title>Metro line</title>
-        </svg>
-    </c:if>
-</form>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">保存</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
+    </div>
+</div>
 </body>
 </html>

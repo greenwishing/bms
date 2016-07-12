@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
@@ -6,48 +6,83 @@
 <head>
     <title>文章</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script type="text/javascript">
+        (function(){
+            WF.article.initSearch = function() {
+                $('.weui_dialog_confirm').show();
+            };
+            WF.article.cancelSearch = function() {
+                $('.weui_dialog_confirm').hide();
+            };
+        })();
+    </script>
 </head>
 <body>
-<form id="search-form" action="list" class="form-inline search-form-wrapper">
-    <div class="form-group">
-        <label class="control-label" for="key">关键字</label>
-        <input class="form-control" id="key" name="key" type="text" value="${pagingDTO.key}" placeholder="关键字"/>
-    </div>
-    <div class="form-group">
-        <button type="button" class="btn btn-default" onclick="WF.paging.GO($('#search-form'), 1)">查询</button>
-    </div>
-</form>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th colspan="4" class="text-right">
-            <div class="btn-group">
-                <a class="btn btn-success" href="add">写文章</a>
-                <a class="btn btn-default" href="categories">文章分类</a>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <div class="weui_panel weui_panel_access">
+            <div class="weui_panel_hd">文章</div>
+            <div class="weui_panel_bd">
+                <c:forEach items="${pagingDTO.list}" var="article">
+                    <a class="weui_media_box weui_media_appmsg" data-id="${article.guid}" href="show?guid=${article.guid}">
+                        <div class="weui_media_bd">
+                            <h4 class="weui_media_title">${article.title}</h4>
+                            <p class="weui_media_desc">${article.categoryName} ${article.creationTime}</p>
+                        </div>
+                    </a>
+                </c:forEach>
             </div>
-        </th>
-    </tr>
-    <tr>
-        <th>标题</th>
-        <th>分类</th>
-        <th>发布时间</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${pagingDTO.list}" var="article">
-        <tr>
-            <td><div title="${article.title}">${article.title}</div></td>
-            <td>${article.categoryName}</td>
-            <td>${article.creationTime}</td>
-            <td>
-                <a href="edit?guid=${article.guid}">编辑</a>
-                <a href="show?guid=${article.guid}">查看</a>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
-<tags:paging formName="search-form" paging="${pagingDTO}"/>
+            <tags:paging formName="search-form" paging="${pagingDTO}"/>
+        </div>
+    </div>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="add">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">写文章</p>
+        </a>
+        <a class="weui_tabbar_item" href="categories">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_article.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">分类</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.article.initSearch()">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_panel.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">查询</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
+    </div>
+</div>
+<div class="weui_dialog_confirm" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog weui_dialog_form">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title">查询文章</strong></div>
+        <div class="weui_dialog_bd">
+            <form id="search-form" action="list" onsubmit="return false;">
+                <div class="weui_cells weui_cells_form">
+                    <div class="weui_cell">
+                        <div class="weui_cell_hd"><label class="weui_label">关键字</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input class="weui_input" type="text" name="key" value="${pagingDTO.key}" placeholder="请输入关键字">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:void(0);" class="weui_btn_dialog primary" onclick="WF.paging.GO($('#search-form'), 1);">确定</a>
+            <a href="javascript:void(0);" class="weui_btn_dialog default" onclick="WF.article.cancelSearch();">取消</a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

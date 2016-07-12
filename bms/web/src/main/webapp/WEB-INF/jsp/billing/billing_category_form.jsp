@@ -42,7 +42,7 @@
             <p class="weui_tabbar_label">子分类</p>
         </a>
         </c:if>
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.page.forward('categories')">
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
             <div class="weui_tabbar_icon">
                 <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
             </div>

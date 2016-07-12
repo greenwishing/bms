@@ -13,42 +13,58 @@
             WF.editor.init('article_content');
         });
         function articleFormSubmit() {
-            WF.form.submit($('#data-form'), {first: function(){
-                var content = WF.editor.getContent('article_content');
-                $('#content').val(content);
-            }});
+            var content = WF.editor.getContent('article_content');
+            $('#content').val(content);
+            WF.form.ajaxSubmit($('#data-form'))
         }
     </script>
 </head>
 <body>
-<spring-form:form id="data-form" cssClass="form-horizontal" commandName="articleDTO" method="post" onsubmit="return false;">
-    <spring-form:errors path="title" element="div" cssClass="alert alert-danger"/>
-    <spring-form:errors path="content" element="div" cssClass="alert alert-danger"/>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="title">标题</label>
-        <div class="col-sm-10">
-            <spring-form:input cssClass="form-control" path="title" id="title" placeholder="标题"/>
-        </div>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <spring-form:form id="data-form" cssClass="form-horizontal" commandName="articleDTO" method="post" onsubmit="return false;">
+            <div class="weui_cells_title">基本信息</div>
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">标题</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <spring-form:input cssClass="weui_input" path="title" id="title" placeholder="标题"/>
+                    </div>
+                </div>
+                <div class="weui_cell weui_cell_select weui_select_after">
+                    <div class="weui_cell_hd">
+                        <label class="weui_label">分类</label>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <spring-form:select cssClass="weui_select" id="categoryGuid" path="categoryGuid" items="${categoryDTOs}" itemValue="guid" itemLabel="name"/>
+                    </div>
+                </div>
+            </div>
+            <div class="weui_cells_title">内容</div>
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <script type="text/plain" id="article_content">${articleDTO.content}</script>
+                        <spring-form:textarea cssClass="weui_textarea" id="content" path="content" cssStyle="display: none;"/>
+                    </div>
+                </div>
+            </div>
+        </spring-form:form>
     </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="categoryGuid">分类</label>
-        <div class="col-sm-10">
-            <spring-form:select cssClass="form-control" id="categoryGuid" path="categoryGuid" items="${categoryDTOs}" itemValue="guid" itemLabel="name"/>
-        </div>
+    <div class="weui_tabbar" style="z-index: 1000;">
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="articleFormSubmit()">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">保存</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
     </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="title">内容</label>
-        <div class="col-sm-10">
-            <script type="text/plain" id="article_content">${articleDTO.content}</script>
-            <spring-form:textarea cssClass="form-control" id="content" path="content" cssStyle="display: none;"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-10 col-sm-offset-2">
-            <input type="button" class="btn btn-success" value="保存" onclick="articleFormSubmit();"/>
-            <input type="button" class="btn btn-default" value="返回" onclick="WF.page.list()"/>
-        </div>
-    </div>
-</spring-form:form>
+</div>
 </body>
 </html>

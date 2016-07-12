@@ -16,33 +16,35 @@
     </script>
 </head>
 <body>
-<form class="form-horizontal" id="data-form" action="add_station" method="post" onsubmit="return false;">
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="name">Name</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" name="name" id="name" placeholder="Name" value="${stationDTO.name}"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="pinyin">Pinyin</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" name="pinyin" id="pinyin" placeholder="Pinyin" value="${stationDTO.pinyin}"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="longitude">Longitude</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" name="longitude" id="longitude" placeholder="Longitude" value="${stationDTO.longitude}"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2" for="latitude">Latitude</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" name="latitude" id="latitude" placeholder="Latitude" value="${stationDTO.latitude}"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-10 col-sm-offset-2">
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <form class="form-horizontal" id="data-form" action="add_station" method="post" onsubmit="return false;">
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">Name</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input type="text" class="weui_input" name="name" id="name" placeholder="Name" value="${stationDTO.name}"/>
+                    </div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">Pinyin</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input type="text" class="weui_input" name="pinyin" id="pinyin" placeholder="Pinyin" value="${stationDTO.pinyin}"/>
+                    </div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">Longitude</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input type="text" class="weui_input" name="longitude" id="longitude" placeholder="Longitude" value="${stationDTO.longitude}"/>
+                    </div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">Latitude</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input type="text" class="weui_input" name="latitude" id="latitude" placeholder="Latitude" value="${stationDTO.latitude}"/>
+                    </div>
+                </div>
+            </div>
             <div id="baidu-map" style="width: 100%; height: 300px;"></div>
             <script type="text/javascript">
                 var lng = parseFloat('${stationDTO.longitude}'), lat = parseFloat('${stationDTO.latitude}');
@@ -102,14 +104,22 @@
                 }
                 $.baiduMap.init(options);
             </script>
-        </div>
+        </form>
     </div>
-    <div class="form-group">
-        <div class="col-sm-10 col-sm-offset-2">
-            <input class="btn btn-success" type="button" value="保存" onclick="WF.form.ajaxSubmit($('#data-form'))"/>
-            <input class="btn btn-default" type="button" value="返回" onclick="history.back()"/>
-        </div>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">保存</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
     </div>
-</form>
+</div>
 </body>
 </html>

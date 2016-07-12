@@ -8,28 +8,35 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
 </head>
 <body>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th colspan="5" class="text-right">
-            <div class="btn-group">
-                <a class="btn btn-success" href="add_station">Add</a>
+<div class="weui_tab">
+    <div class="weui_tab_bd">
+        <div class="weui_panel weui_panel_access">
+            <div class="weui_panel_hd">Station</div>
+            <div class="weui_panel_bd">
+                <c:forEach items="${stations}" var="station">
+                    <a class="weui_media_box weui_media_appmsg" href="edit_station?guid=${station.guid}">
+                        <div class="weui_media_bd">
+                            <h4 class="weui_media_title">${station.name}</h4>
+                        </div>
+                    </a>
+                </c:forEach>
             </div>
-        </th>
-    </tr>
-    <tr>
-        <th>Name</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${stations}" var="station">
-        <tr>
-            <td>${station.name}</td>
-            <td><a href="edit_station?guid=${station.guid}">Edit</a></td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </div>
+    </div>
+    <div class="weui_tabbar">
+        <a class="weui_tabbar_item" href="add_station">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">Add</p>
+        </a>
+        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
+            <div class="weui_tabbar_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">返回</p>
+        </a>
+    </div>
+</div>
 </body>
 </html>
