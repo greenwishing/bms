@@ -1,17 +1,12 @@
 package cn.greenwishing.bms.utils.query.helper;
 
 import cn.greenwishing.bms.domain.article.Article;
-import cn.greenwishing.bms.domain.billing.Billing;
-import cn.greenwishing.bms.domain.billing.BillingType;
-import cn.greenwishing.bms.utils.JodaUtils;
+import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.ArticlePaging;
-import cn.greenwishing.bms.utils.paging.BillingPaging;
 import org.hibernate.Query;
-import org.joda.time.LocalDate;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,13 +16,28 @@ import java.util.List;
 public class ArticleQueryHelper extends AbstractQueryHelper<Article, ArticlePaging> {
 
     public ArticleQueryHelper(HibernateTemplate hibernateTemplate, ArticlePaging paging) {
-        super(hibernateTemplate);
-        this.paging = paging;
+        super(hibernateTemplate, paging);
+
+        addFilter(userFilter());
 
         String key = paging.getKey();
         if (ValidationUtils.isNotEmpty(key)) {
             addFilter(keyFilter(key));
         }
+    }
+
+    private Filter userFilter() {
+        return new ParameterFilter() {
+            @Override
+            public void setParameter(Query query) {
+                query.setParameter("userGuid", SecurityHolder.getUserGuid());
+            }
+
+            @Override
+            public String getSubHql() {
+                return " and a.author.guid=:userGuid";
+            }
+        };
     }
 
     private Filter keyFilter(final String key) {

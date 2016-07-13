@@ -7,6 +7,7 @@ import cn.greenwishing.bms.dto.billing.BillingCategoryDTO;
 import cn.greenwishing.bms.dto.billing.BillingPagingDTO;
 import cn.greenwishing.bms.dto.billing.BillingSubcategoryDTO;
 import cn.greenwishing.bms.dto.billing.BillingTemplateDTO;
+import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.shared.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,18 @@ public class BillingController {
     public String statistics(ModelMap model) {
         model.put("types", BillingType.values());
         return "billing/billing_statistics";
+    }
+
+    @RequestMapping("nearest")
+    public String nearest(ModelMap model) {
+        model.put("types", BillingType.values());
+        return "billing/billing_nearest";
+    }
+
+    @RequestMapping("nearest_data")
+    public ModelAndView nearest_data(@RequestParam(defaultValue = "20") Integer size) {
+        List<SeriesObject> series = billingService.loadNearestStatistics(size);
+        return new ModelAndView(new MappingJacksonJsonView(), "series", series);
     }
 
     @RequestMapping("data")

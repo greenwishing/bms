@@ -72,7 +72,6 @@ public class StationFormController {
         if (errors.hasErrors()) {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
-            model.put("errors", errors.getModel());
         } else {
             metroService.saveOrUpdateStation(stationDTO);
             model.put("success", true);

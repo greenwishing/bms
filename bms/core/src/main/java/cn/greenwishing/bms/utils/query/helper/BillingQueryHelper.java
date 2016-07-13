@@ -3,6 +3,7 @@ package cn.greenwishing.bms.utils.query.helper;
 import cn.greenwishing.bms.domain.billing.Billing;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.utils.JodaUtils;
+import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import org.hibernate.Query;
@@ -15,8 +16,9 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPaging> {
 
     public BillingQueryHelper(HibernateTemplate hibernateTemplate, BillingPaging paging) {
-        super(hibernateTemplate);
-        this.paging = paging;
+        super(hibernateTemplate, paging);
+
+        addFilter(userFilter());
 
         String key = paging.getKey();
         if (ValidationUtils.isNotEmpty(key)) {
@@ -44,6 +46,20 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
             LocalDate to = JodaUtils.parseLocalDate(dateTo).plusDays(1);
             addFilter(dateRangeFilter(from, to));
         }
+    }
+
+    private Filter userFilter() {
+        return new ParameterFilter() {
+            @Override
+            public void setParameter(Query query) {
+                query.setParameter("userGuid", SecurityHolder.getUserGuid());
+            }
+
+            @Override
+            public String getSubHql() {
+                return " and b.operator.guid=:userGuid";
+            }
+        };
     }
 
     private Filter subcategoryFilter(final String subcategoryGuid) {

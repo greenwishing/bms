@@ -26,7 +26,7 @@ public class SeriesObjectData implements Comparable<SeriesObjectData> {
         }
         Object r1 = result[1];
         if (r1 != null) {
-            data.y = ((BigDecimal) r1).floatValue();
+            data.y = ((BigDecimal) r1).abs().floatValue();
         }
         return data;
     }

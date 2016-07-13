@@ -4,6 +4,7 @@ import cn.greenwishing.bms.domain.billing.*;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.persistence.hibernate.AbstractRepositoryHibernate;
+import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import cn.greenwishing.bms.utils.query.helper.BillingQueryHelper;
 import org.hibernate.HibernateException;
@@ -27,12 +28,15 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     @Override
     @SuppressWarnings("unchecked")
     public List<Object[]> loadNearestStatistics(final BillingType billingType, final Integer size) {
+        final String userGuid = SecurityHolder.getUserGuid();
         return getHibernateTemplate().execute(new HibernateCallback<List<Object[]>>() {
             @Override
             public List<Object[]> doInHibernate(Session session) throws HibernateException, SQLException {
-                String sql = "select date(b.occurred_time), sum(b.amount) from billing b where b.type=:type group by concat(year(b.occurred_time), month(b.occurred_time)) order by b.occurred_time desc, id desc";
+                String sql = "select date(b.occurred_time), sum(b.amount) from billing b join `user` u on b.operator_id=u.id" +
+                        " where u.guid=:userGuid and b.type=:type group by concat(year(b.occurred_time), month(b.occurred_time)) order by b.occurred_time desc";
                 Query query = session.createSQLQuery(sql);
                 query.setParameter("type", billingType.getValue());
+                query.setParameter("userGuid", userGuid);
                 return query.setMaxResults(size).list();
             }
         });

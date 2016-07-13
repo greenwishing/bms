@@ -31,11 +31,6 @@ public class BillingPagingDTO extends AbstractPagingDTO<BillingDTO, BillingPagin
         this.list = BillingDTO.toDTOs(list);
     }
 
-    @Override
-    public List<BillingDTO> getList() {
-        return list;
-    }
-
     public String getKey() {
         return key;
     }

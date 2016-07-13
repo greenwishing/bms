@@ -15,11 +15,11 @@ public class User extends AbstractDomain {
 
     public static final String ADMIN_GUID = "cd4b1012-e53f-47bf-b0db-91a7fe9fb09b";
 
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "account")
     private String account;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "password")
     private String password;
@@ -30,7 +30,23 @@ public class User extends AbstractDomain {
 
     @Column(name = "`status`")
     @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    private UserStatus status = UserStatus.ENABLED;
+
+    public User() {
+    }
+
+    public User(String account, String password) {
+        this.account = account;
+        this.password = password;
+    }
+
+    public void updateUsername(String username) {
+        this.username = username;
+    }
+
+    public void updateStatus(UserStatus status) {
+        this.status = status;
+    }
 
     public String username() {
         return username;

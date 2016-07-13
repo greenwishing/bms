@@ -50,6 +50,11 @@ public abstract class AbstractPagingDTO<T, P extends AbstractPaging> implements 
     protected abstract void convertList(P paging);
 
     @Override
+    public List<T> getList() {
+        return list;
+    }
+
+    @Override
     public int getPageSize() {
         return pageSize;
     }

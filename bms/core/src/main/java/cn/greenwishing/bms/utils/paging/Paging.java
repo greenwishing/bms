@@ -8,23 +8,23 @@ import java.util.List;
  */
 public interface Paging<T> {
 
-    public int getPageSize();
+    int getPageSize();
 
-    public int getCurrentPage();
+    int getCurrentPage();
 
-    public long getTotalCount();
+    long getTotalCount();
 
-    public int getPageCount();
+    int getPageCount();
 
-    public List<T> getList();
+    List<T> getList();
 
-    public boolean isHasPreviousPage();
+    boolean isHasPreviousPage();
 
-    public boolean isHasNextPage();
+    boolean isHasNextPage();
 
-    public int getPreviousPage();
+    int getPreviousPage();
 
-    public int getNextPage();
+    int getNextPage();
 
-    public int getLastPage();
+    int getLastPage();
 }

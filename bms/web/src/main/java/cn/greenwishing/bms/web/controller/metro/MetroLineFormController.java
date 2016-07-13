@@ -53,7 +53,6 @@ public class MetroLineFormController {
         if (errors.hasErrors()) {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
-            model.put("errors", errors.getModel());
         } else {
             metroService.saveOrUpdateMetroLine(metroLineDTO);
             model.put("success", true);

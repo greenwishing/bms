@@ -25,11 +25,6 @@ public class ArticlePagingDTO extends AbstractPagingDTO<ArticleDTO, ArticlePagin
         this.list = ArticleDTO.toDTOs(list);
     }
 
-    @Override
-    public List<ArticleDTO> getList() {
-        return list;
-    }
-
     public String getKey() {
         return key;
     }

@@ -264,5 +264,6 @@ var WF = {
             }
         }
     },
-    article: {}
+    article: {},
+    user: {},
 };

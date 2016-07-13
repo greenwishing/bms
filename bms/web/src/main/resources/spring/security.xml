@@ -128,9 +128,13 @@
 
 
     <!-- Web Configuration -->
-    <http access-denied-page="/403.jsp" disable-url-rewriting="true" authentication-manager-ref="authenticationManager">
-        <intercept-url pattern="/system/**" access="ROLE_ADMIN" />
-        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <http auto-config="false" access-denied-page="/403.jsp" disable-url-rewriting="true" authentication-manager-ref="authenticationManager">
+        <intercept-url pattern="/system/index" access="ROLE_SYSTEM" />
+        <intercept-url pattern="/system/user/**" access="ROLE_USER" />
+        <intercept-url pattern="/system/billing/**" access="ROLE_BILLING" />
+        <intercept-url pattern="/system/article/**" access="ROLE_ARTICLE" />
+        <intercept-url pattern="/system/metro/**" access="ROLE_METRO" />
+        <intercept-url pattern="/system/oauth/**" access="ROLE_OAUTH" />
         <form-login login-page="/" login-processing-url="/account_check"
                     default-target-url="/system/index" authentication-failure-url="/?action=1"
                     username-parameter="account" password-parameter="password"/>

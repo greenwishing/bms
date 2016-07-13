@@ -63,7 +63,6 @@ public class BillingFormController {
         if (errors.hasErrors()) {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
-            model.put("errors", errors.getModel());
         } else {
             billingService.saveOrUpdateBilling(billingDTO);
             model.put("success", true);

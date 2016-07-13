@@ -37,8 +37,14 @@ public class PublicUserDetails implements UserDetails {
         this.status = user.status();
 
         if (User.ADMIN_GUID.equals(this.guid)) {
-            addAuthority("ROLE_ADMIN");
+            addAuthority("ROLE_USER");
+            addAuthority("ROLE_METRO");
+            addAuthority("ROLE_OAUTH");
         }
+        addAuthority("ROLE_SYSTEM");
+        addAuthority("ROLE_BILLING");
+        addAuthority("ROLE_ARTICLE");
+
     }
 
     public void addAuthority(String authorityString) {
