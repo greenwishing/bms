@@ -42,12 +42,12 @@ public class BillingServiceImpl implements BillingService {
     @Override
     public void saveOrUpdateBilling(BillingDTO billingDTO) {
         String amountStr = billingDTO.getAmount();
-        BigDecimal amount = NumberUtils.parseDecimal(amountStr);
+        BigDecimal amount = NumberUtils.parseDecimal(amountStr, BigDecimal.ZERO);
         String categoryGuid = billingDTO.getCategoryGuid();
         String subcategoryGuid = billingDTO.getSubcategoryGuid();
         BillingCategory category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);
         BillingSubcategory subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);
-        BillingStatus status;
+        BillingStatus status = BillingStatus.NORMAL;
         BillingType billingType = category.type();
         switch (billingType) {
             case ACCOUNT_RECEIVABLE:
@@ -56,8 +56,9 @@ public class BillingServiceImpl implements BillingService {
             case ACCOUNT_PAYABLE:
                 status = BillingStatus.PAYABLE;
                 break;
-            default:
-                status = BillingStatus.NORMAL;
+            case EXPEND:
+                amount = amount.negate();
+                break;
         }
         String guid = SecurityHolder.getUserGuid();
         User occurredUser = userRepository.findByGuid(User.class, guid);
