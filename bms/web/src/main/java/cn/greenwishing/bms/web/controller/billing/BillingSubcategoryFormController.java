@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 /**
  * @author Wufan
@@ -48,10 +49,15 @@ public class BillingSubcategoryFormController {
         if (ValidationUtils.isEmpty(name)) {
             errors.rejectValue("name", "name", "请输入名称");
         }
+        ModelMap model = new ModelMap();
         if (errors.hasErrors()) {
-            return new ModelAndView(FORM_VIEW);
+            model.put("success", false);
+            model.put("message", errors.getFieldError().getDefaultMessage());
+        } else {
+            billingService.saveOrUpdateBillingSubcategory(subcategoryDTO);
+            model.put("success", true);
+            model.put("redirectUrl", "subcategories?categoryGuid=" + categoryGuid);
         }
-        billingService.saveOrUpdateBillingSubcategory(subcategoryDTO);
-        return new ModelAndView("redirect:subcategories?categoryGuid=" + categoryGuid);
+        return new ModelAndView(new MappingJacksonJsonView(), model);
     }
 }

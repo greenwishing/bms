@@ -13,77 +13,71 @@
     </style>
 </head>
 <body>
-    <div class="hd">
-        <div class="page_title">首页</div>
-        <div class="page_desc">记账管理系统</div>
-    </div>
-    <div class="bd">
-        <div class="weui_grids">
-            <security:authorize ifAnyGranted="ROLE_USER">
+<div class="hd">
+    <div class="page_title">首页</div>
+    <div class="page_desc">记账管理系统</div>
+</div>
+<div class="bd">
+    <div class="weui_grids">
+        <security:authorize ifAnyGranted="ROLE_USER">
             <a href="${pageContext.request.contextPath}/system/user/list" class="weui_grid">
                 <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_toast.png" alt="">
+                    <img src="${pageContext.request.contextPath}/images/icons/icon_user.png" alt="">
                 </div>
                 <p class="weui_grid_label">用户</p>
             </a>
-            </security:authorize>
-            <security:authorize ifAnyGranted="ROLE_BILLING">
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_BILLING">
             <a href="${pageContext.request.contextPath}/system/billing/list" class="weui_grid">
                 <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_cell.png" alt="">
+                    <img src="${pageContext.request.contextPath}/images/icons/icon_list.png" alt="">
                 </div>
                 <p class="weui_grid_label">账单</p>
             </a>
             <a href="${pageContext.request.contextPath}/system/billing/statistics" class="weui_grid">
                 <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_msg.png" alt="">
+                    <img src="${pageContext.request.contextPath}/images/icons/icon_chart.png" alt="">
                 </div>
                 <p class="weui_grid_label">统计</p>
             </a>
             <a href="${pageContext.request.contextPath}/system/billing/nearest" class="weui_grid">
                 <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_msg.png" alt="">
+                    <img src="${pageContext.request.contextPath}/images/icons/icon_line.png" alt="">
                 </div>
                 <p class="weui_grid_label">汇总</p>
             </a>
-            <a href="${pageContext.request.contextPath}/system/billing/statistics" class="weui_grid">
-                <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_msg.png" alt="">
-                </div>
-                <p class="weui_grid_label">统计</p>
-            </a>
-            </security:authorize>
-            <security:authorize ifAnyGranted="ROLE_ARTICLE">
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_ARTICLE">
             <a href="${pageContext.request.contextPath}/system/article/list" class="weui_grid">
                 <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_article.png" alt="">
+                    <img src="${pageContext.request.contextPath}/images/icons/icon_article.png" alt="">
                 </div>
                 <p class="weui_grid_label">文章</p>
             </a>
-            </security:authorize>
-            <security:authorize ifAnyGranted="ROLE_METRO">
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_METRO">
             <a href="${pageContext.request.contextPath}/system/metro/list" class="weui_grid">
                 <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_tab.png" alt="">
+                    <img src="${pageContext.request.contextPath}/images/icons/icon_metro.png" alt="">
                 </div>
                 <p class="weui_grid_label">Metro</p>
             </a>
-            </security:authorize>
-            <security:authorize ifAnyGranted="ROLE_OAUTH">
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_OAUTH">
             <a href="${pageContext.request.contextPath}/system/client/list" class="weui_grid">
                 <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_button.png" alt="">
+                    <img src="${pageContext.request.contextPath}/images/icons/icon_client.png" alt="">
                 </div>
                 <p class="weui_grid_label">Client</p>
             </a>
-            </security:authorize>
-            <a href="${pageContext.request.contextPath}/logout" class="weui_grid">
-                <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_cancel.png" alt="">
-                </div>
-                <p class="weui_grid_label">退出</p>
-            </a>
-        </div>
+        </security:authorize>
+        <a href="${pageContext.request.contextPath}/logout" class="weui_grid">
+            <div class="weui_grid_icon">
+                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_cancel.png" alt="">
+            </div>
+            <p class="weui_grid_label">退出</p>
+        </a>
     </div>
+</div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package cn.greenwishing.bms.web.controller.billing;
+package cn.greenwishing.bms.web.controller.user;
 
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.domain.user.UserStatus;

@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring-form" uri="http://www.springframework.org/tags/form" %>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <title>账单模板</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -17,6 +17,12 @@
     <div class="weui_tab_bd">
         <spring-form:form commandName="billingTemplateDTO" method="post" id="data-form" onsubmit="return false;">
             <div class="weui_cells weui_cells_form">
+                <div class="weui_cell weui_cell_select weui_select_after">
+                    <div class="weui_cell_hd"><label class="weui_label">类型</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <spring-form:select id="type" cssClass="weui_select" path="type" items="${types}" itemValue="value" itemLabel="label" onchange="WF.billing.categories(this)" targetId="categoryGuid"/>
+                    </div>
+                </div>
                 <div class="weui_cell weui_cell_select weui_select_after">
                     <div class="weui_cell_hd"><label class="weui_label">分类</label></div>
                     <div class="weui_cell_bd weui_cell_primary">

@@ -1,6 +1,5 @@
 package cn.greenwishing.bms.web.controller.user;
 
-import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.dto.user.UserPagingDTO;
 import cn.greenwishing.bms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

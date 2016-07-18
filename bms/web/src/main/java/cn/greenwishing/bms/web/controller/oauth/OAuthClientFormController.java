@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 /**
  * @author Wufan
@@ -48,7 +49,15 @@ public class OAuthClientFormController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView save(OAuthClientDetailsDTO clientDTO, BindingResult errors) {
-        oAuthService.saveOrUpdate(clientDTO);
-        return new ModelAndView("redirect:list");
+        ModelMap model = new ModelMap();
+        if (errors.hasErrors()) {
+            model.put("success", false);
+            model.put("message", errors.getFieldError().getDefaultMessage());
+        } else {
+            oAuthService.saveOrUpdate(clientDTO);
+            model.put("success", true);
+            model.put("redirectUrl", "list");
+        }
+        return new ModelAndView(new MappingJacksonJsonView(), model);
     }
 }

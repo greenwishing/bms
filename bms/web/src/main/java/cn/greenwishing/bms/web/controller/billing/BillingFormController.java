@@ -37,7 +37,6 @@ public class BillingFormController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView save(BillingDTO billingDTO, BindingResult errors) {
-        Map<String, Object> model = new HashMap<>();
         String name = billingDTO.getName();
         if (ValidationUtils.isEmpty(name)) {
             errors.rejectValue("name", "name", "名称不能为空");
@@ -60,6 +59,7 @@ public class BillingFormController {
         if (ValidationUtils.isEmpty(subcategoryGuid)) {
             errors.rejectValue("subcategoryGuid", "subcategoryGuid", "请选择子分类");
         }
+        ModelMap model = new ModelMap();
         if (errors.hasErrors()) {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
