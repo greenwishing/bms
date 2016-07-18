@@ -30,21 +30,21 @@
     <div class="weui_tabbar">
         <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_save.png" alt="">
             </div>
             <p class="weui_tabbar_label">保存</p>
         </a>
         <c:if test="${param.guid!=null}">
         <a class="weui_tabbar_item" href="subcategories?categoryGuid=${param.guid}">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_subcategory.png" alt="">
             </div>
             <p class="weui_tabbar_label">子分类</p>
         </a>
         </c:if>
         <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
             </div>
             <p class="weui_tabbar_label">返回</p>
         </a>

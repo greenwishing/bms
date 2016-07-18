@@ -38,19 +38,19 @@
     <div class="weui_tabbar">
         <a class="weui_tabbar_item" href="add">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" alt="">
             </div>
             <p class="weui_tabbar_label">添加</p>
         </a>
         <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.user.initSearch()">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_panel.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_search.png" alt="">
             </div>
             <p class="weui_tabbar_label">查询</p>
         </a>
         <a class="weui_tabbar_item" href="${pageContext.request.contextPath}/system/index">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
             </div>
             <p class="weui_tabbar_label">返回</p>
         </a>

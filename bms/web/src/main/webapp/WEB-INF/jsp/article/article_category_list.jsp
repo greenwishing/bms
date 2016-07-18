@@ -26,13 +26,13 @@
     <div class="weui_tabbar">
         <a class="weui_tabbar_item" href="add_category">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" alt="">
             </div>
             <p class="weui_tabbar_label">添加</p>
         </a>
         <a class="weui_tabbar_item" href="${pageContext.request.contextPath}/system/article/list">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
             </div>
             <p class="weui_tabbar_label">返回</p>
         </a>

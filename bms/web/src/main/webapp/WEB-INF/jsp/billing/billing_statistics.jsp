@@ -217,15 +217,15 @@
     <div class="weui_tabbar">
         <a class="weui_tabbar_item" href="javascript:void(0)" onclick="addModeOffset(-1)">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_arrow_left.png" alt="">
             </div>
-            <p class="weui_tabbar_label">&lt;</p>
+            <p class="weui_tabbar_label">向前</p>
         </a>
         <a class="weui_tabbar_item" href="javascript:void(0)" onclick="addModeOffset(1)">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_arrow_right.png" alt="">
             </div>
-            <p class="weui_tabbar_label">&gt;</p>
+            <p class="weui_tabbar_label">向后</p>
         </a>
     </div>
 </div>

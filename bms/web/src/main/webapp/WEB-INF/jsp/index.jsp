@@ -73,7 +73,7 @@
         </security:authorize>
         <a href="${pageContext.request.contextPath}/logout" class="weui_grid">
             <div class="weui_grid_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_cancel.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
             </div>
             <p class="weui_grid_label">退出</p>
         </a>

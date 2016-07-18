@@ -54,13 +54,13 @@
     <div class="weui_tabbar" style="z-index: 1000;">
         <a class="weui_tabbar_item" href="javascript:void(0)" onclick="articleFormSubmit()">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_icons.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_save.png" alt="">
             </div>
             <p class="weui_tabbar_label">保存</p>
         </a>
         <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/css/weui/images/icon_nav_dialog.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
             </div>
             <p class="weui_tabbar_label">返回</p>
         </a>
