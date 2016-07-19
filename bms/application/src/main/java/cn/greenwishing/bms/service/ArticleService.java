@@ -21,4 +21,6 @@ public interface ArticleService {
     ArticleCategoryDTO loadArticleCategoryByGuid(String guid);
 
     void saveOrUpdateArticleCategory(ArticleCategoryDTO categoryDTO);
+
+    void generateDefaultCategory();
 }

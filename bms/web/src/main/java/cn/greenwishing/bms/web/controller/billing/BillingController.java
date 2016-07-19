@@ -10,6 +10,7 @@ import cn.greenwishing.bms.dto.billing.BillingTemplateDTO;
 import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.shared.EnumUtils;
+import cn.greenwishing.bms.utils.SecurityHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -115,5 +116,14 @@ public class BillingController {
             return new ModelAndView(new MappingJacksonJsonView(), model);
         }
         return new ModelAndView("billing/billing_template_list", model);
+    }
+
+    @RequestMapping("gen")
+    public ModelAndView gen() {
+        List<BillingCategoryDTO> categoryDTOs = billingService.loadBillingCategory();
+        if (categoryDTOs.isEmpty()) {
+            billingService.generateDefaultCategory();
+        }
+        return null;
     }
 }

@@ -45,4 +45,6 @@ public interface BillingService {
     List<BillingStatistics> loadBillingStatistics(String type, String group, String fromDateStr, String toDateStr);
 
     void changeStatus(String guid, BillingStatus status);
+
+    void generateDefaultCategory();
 }

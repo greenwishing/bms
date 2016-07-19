@@ -1,8 +1,11 @@
 package cn.greenwishing.bms.service.impl;
 
+import cn.greenwishing.bms.domain.DefaultData;
 import cn.greenwishing.bms.domain.article.Article;
 import cn.greenwishing.bms.domain.article.ArticleCategory;
 import cn.greenwishing.bms.domain.article.ArticleRepository;
+import cn.greenwishing.bms.domain.billing.BillingCategory;
+import cn.greenwishing.bms.domain.billing.BillingSubcategory;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.domain.user.UserRepository;
 import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
@@ -92,5 +95,17 @@ public class ArticleServiceImpl implements ArticleService {
         }
         category.update(categoryDTO.getName());
         articleRepository.saveOrUpdate(category);
+    }
+
+    @Override
+    public void generateDefaultCategory() {
+        String userGuid = SecurityHolder.getUserGuid();
+        User user = userRepository.findByGuid(User.class, userGuid);
+        if (user == null) return;
+        for (DefaultData.DefaultArticleCategory defaultArticleCategory : DefaultData.DefaultArticleCategory.values()) {
+            ArticleCategory articleCategory = new ArticleCategory(user);
+            articleCategory.update(defaultArticleCategory.name);
+            userRepository.saveOrUpdate(articleCategory);
+        }
     }
 }

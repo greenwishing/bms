@@ -1,5 +1,6 @@
 package cn.greenwishing.bms.service.impl;
 
+import cn.greenwishing.bms.domain.DefaultData;
 import cn.greenwishing.bms.domain.billing.*;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
@@ -237,6 +238,24 @@ public class BillingServiceImpl implements BillingService {
         if (billing != null) {
             billing.updateStatus(status);
             billingRepository.saveOrUpdate(billing);
+        }
+    }
+
+    @Override
+    public void generateDefaultCategory() {
+        String userGuid = SecurityHolder.getUserGuid();
+        User user = userRepository.findByGuid(User.class, userGuid);
+        if (user == null) return;
+
+        for (DefaultData.DefaultBillingCategory defaultBillingCategory : DefaultData.DefaultBillingCategory.values()) {
+            BillingCategory billingCategory = new BillingCategory(user);
+            billingCategory.update(defaultBillingCategory.type, defaultBillingCategory.name);
+            userRepository.saveOrUpdate(billingCategory);
+            for (String defaultSubcategory : defaultBillingCategory.subcategories) {
+                BillingSubcategory billingSubcategory = new BillingSubcategory(billingCategory);
+                billingSubcategory.update(defaultSubcategory);
+                userRepository.saveOrUpdate(billingSubcategory);
+            }
         }
     }
 }
