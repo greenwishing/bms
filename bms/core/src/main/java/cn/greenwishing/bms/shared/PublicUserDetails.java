@@ -16,8 +16,8 @@ import java.util.List;
 public class PublicUserDetails implements UserDetails {
 
     private String guid;
-    private String account;
-    private String username;
+    private String username; // account
+    private String nickname; // username
     private String password;
     private UserStatus status;
 
@@ -31,8 +31,8 @@ public class PublicUserDetails implements UserDetails {
         this();
 
         this.guid = user.guid();
-        this.account = user.account();
-        this.username = user.username();
+        this.username = user.account();
+        this.nickname = user.username();
         this.password = user.password();
         this.status = user.status();
 
@@ -91,8 +91,8 @@ public class PublicUserDetails implements UserDetails {
         return guid;
     }
 
-    public String getAccount() {
-        return account;
+    public String getNickname() {
+        return nickname;
     }
 
     public UserStatus getStatus() {

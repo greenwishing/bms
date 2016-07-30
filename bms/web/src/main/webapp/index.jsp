@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <title>欢迎</title>
@@ -37,6 +38,14 @@
                 <div class="weui_cell_hd"><label class="weui_label">密码</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input id="password" type="password" class="weui_input" name="password" placeholder="请输入密码" />
+                </div>
+            </div>
+        </div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell weui_cell_switch">
+                <div class="weui_cell_hd weui_cell_primary">记住我</div>
+                <div class="weui_cell_ft">
+                    <input class="weui_switch" name="rememberMe" type="checkbox" value="true">
                 </div>
             </div>
         </div>

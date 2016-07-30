@@ -139,15 +139,28 @@
                     default-target-url="/system/index" authentication-failure-url="/?action=1"
                     username-parameter="account" password-parameter="password"/>
         <session-management invalid-session-url="/?action=2" />
+        <remember-me services-ref="tokenBasedRememberMeServices" />
         <logout logout-url="/logout" logout-success-url="/?action=3"/>
         <anonymous/>
     </http>
+
+    <beans:bean id="tokenBasedRememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+        <beans:constructor-arg value="BMS"/>
+        <beans:constructor-arg ref="userService"/>
+        <beans:property name="parameter" value="rememberMe"/>
+        <beans:property name="cookieName" value="REMEMBER_ME"/>
+    </beans:bean>
+
+    <beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+        <beans:constructor-arg value="BMS"/>
+    </beans:bean>
 
     <!-- Web认证 -->
     <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="userService">
             <password-encoder hash="md5"/>
         </authentication-provider>
+        <authentication-provider ref="rememberMeAuthenticationProvider"/>
     </authentication-manager>
 
 </beans:beans>
