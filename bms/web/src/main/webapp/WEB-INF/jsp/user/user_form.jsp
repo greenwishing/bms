@@ -73,7 +73,7 @@
     <div class="weui_tabbar">
         <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">
             <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_save.png" alt="">
             </div>
             <p class="weui_tabbar_label">保存</p>
         </a>

@@ -49,11 +49,14 @@
                 </div>
             </div>
         </div>
+        <div class="weui_cells_tips">
         <c:choose>
+            <c:when test="${SPRING_SECURITY_LAST_EXCEPTION!=null}">${SPRING_SECURITY_LAST_EXCEPTION.localizedMessage}!</c:when>
             <c:when test="${param.action==1}"><div class="weui_cells_tips">帐号或密码错误</div></c:when>
             <c:when test="${param.action==2}"><div class="weui_cells_tips">登录超时</div></c:when>
             <c:when test="${param.action==1}"><div class="weui_cells_tips">已退出</div></c:when>
         </c:choose>
+        </div>
         <div class="weui_btn_area">
             <button class="weui_btn weui_btn_primary" type="submit">登录</button>
         </div>
