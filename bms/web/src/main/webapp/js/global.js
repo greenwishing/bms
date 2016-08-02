@@ -109,7 +109,7 @@ var WF = {
                             location.reload();
                         }
                     } else {
-                        alert(result.message);
+                        $.weui.alert(result.message);
                     }
                 }
             });
@@ -167,7 +167,7 @@ var WF = {
                         errorMsg = e;
                     }
                 }
-                if (!WF.validation.isEmpty(errorMsg)) alert(errorMsg);
+                if (!WF.validation.isEmpty(errorMsg)) $.weui.alert(errorMsg);
             }
         }
     },

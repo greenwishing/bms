@@ -19,6 +19,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/weui/weui.js"></script>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
