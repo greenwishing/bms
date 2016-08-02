@@ -97,7 +97,7 @@
                 <div class="weui_cell">
                     <div class="weui_cell_hd"><label class="weui_label">日期</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input type="date" class="weui_input" name="dateFrom" placeholder="日期" value="${billingDTO.occurredTime}"/>
+                        <input type="date" class="weui_input" name="occurredTime" placeholder="日期" value="${billingDTO.occurredTime}"/>
                     </div>
                 </div>
                 <div class="weui_cell">
