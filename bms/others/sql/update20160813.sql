@@ -1,9 +1,4 @@
 
-
-alter table oauth_client_details change client_id app_id varchar(255);
-alter table oauth_client_details change client_secret app_secret varchar(255);
-
-
 drop table if exists user_app;
 create table user_app (
   id int auto_increment primary key,

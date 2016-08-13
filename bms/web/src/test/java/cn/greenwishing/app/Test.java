@@ -25,14 +25,14 @@ public class Test {
         String appSecret = "d25f622a6f0c4d34a27ac2864f9bb091";
         try {
             String requestUrl = String.format(TOKEN_URL, appId, appSecret);
-            String tokenResponse = 发送请求(requestUrl);
+            String tokenResponse = sendRequest(requestUrl);
             if (JSONUtils.mayBeJSON(tokenResponse)) {
                 JSONObject tokenJson = JSONObject.fromObject(tokenResponse);
                 if (tokenJson.has("access_token")) {
                     String accessToken = tokenJson.getString("access_token");
                     System.out.println("获取到Token：" + accessToken);
                     requestUrl = String.format(DATA_URL, accessToken);
-                    发送请求(requestUrl);
+                    sendRequest(requestUrl);
                 } else {
                     System.out.println("获取Token失败[" + tokenJson.get("error") + "]：" + tokenJson.get("error_description"));
                 }
@@ -43,7 +43,7 @@ public class Test {
         }
     }
 
-    public static String 发送请求(String requestUrl) {
+    public static String sendRequest(String requestUrl) {
         HttpPost request = new HttpPost(requestUrl);
         CloseableHttpClient client = HttpClientBuilder.create().build();
         try {

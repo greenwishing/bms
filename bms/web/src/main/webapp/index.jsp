@@ -45,7 +45,7 @@
             <div class="weui_cell weui_cell_switch">
                 <div class="weui_cell_hd weui_cell_primary">记住我</div>
                 <div class="weui_cell_ft">
-                    <input class="weui_switch" name="rememberMe" type="checkbox" value="true">
+                    <input class="weui_switch" name="rememberMe" type="checkbox" value="true" checked>
                 </div>
             </div>
         </div>
