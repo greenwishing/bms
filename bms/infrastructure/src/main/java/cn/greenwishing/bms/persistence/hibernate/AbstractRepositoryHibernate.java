@@ -25,6 +25,11 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
     private HibernateTemplate hibernateTemplate;
 
     @Override
+    public void save(Domain domain) {
+        getHibernateTemplate().save(domain);
+    }
+
+    @Override
     public void saveOrUpdate(Domain domain) {
         getHibernateTemplate().saveOrUpdate(domain);
     }

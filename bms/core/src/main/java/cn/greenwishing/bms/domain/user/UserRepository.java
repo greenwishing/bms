@@ -10,4 +10,6 @@ public interface UserRepository extends Repository {
     User findUserByAccount(String account);
 
     UserPaging findUserPaging(UserPaging paging);
+
+    String findUserGuidByAppId(String appId);
 }

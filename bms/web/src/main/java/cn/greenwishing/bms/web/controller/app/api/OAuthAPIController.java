@@ -1,4 +1,4 @@
-package cn.greenwishing.bms.web.controller.oauth.api;
+package cn.greenwishing.bms.web.controller.app.api;
 
 import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 import cn.greenwishing.bms.service.BillingService;

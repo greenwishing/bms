@@ -52,6 +52,16 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!-- public  -->
+    <!--<filter>
+        <filter-name>publicFilter</filter-name>
+        <filter-class>cn.greenwishing.bms.web.filter.PublicFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>publicFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>-->
+
     <!-- spring security 必须放在Sitemesh之前才能生效 -->
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>

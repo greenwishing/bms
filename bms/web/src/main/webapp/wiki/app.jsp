@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html lang="zh_CN">
+<head>
+    <title>客户端文档</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection"/>
+</head>
+<body>
+<div class="container">
+    <article class="weui_article">
+        <h1>客户端OAuth2.0授权</h1>
+        <section>
+            <h2 class="title">创建应用</h2>
+            <section>
+                <h3>1.1 在应用模块创建应用，每个用户最多可创建3个</h3>
+            </section>
+            <section>
+                <h3>1.2 获取access_token</h3>
+                <p>http://www.greenwishing.cn/oauth/token?client_id=应用ID&client_secret=应用密钥&grant_type=client_credentials</p>
+                <p>成功返回：</p>
+<pre>
+{
+    "access_token":"14e46b68-282e-45e3-b98e-4babbb142066",
+    "token_type":"bearer",
+    "expires_in":7200,
+    "scope":"read trust"
+}
+</pre>
+                <p>失败返回：</p>
+<pre>
+{
+    "error":"unauthorized",
+    "error_description":"No client with requested id: 应用ID"
+}
+</pre>
+            </section>
+            <section>
+                <h3>1.3 获取最近几个月的汇总数据</h3>
+                <p>http://www.greenwishing.cn/oauth/api/nearest?access_token=ACCESS_TOKEN&size=7</p>
+                <p>请求参数：1.2中获取的access_token，及需要返回汇总数据的大小size，size不传默认为20</p>
+                <p>返回数据格式：</p>
+<pre>
+{
+    "series":[
+        {
+            "name":"收入","data":[
+                {"name":"01月","y":6792.1},
+                {"name":"02月","y":10292.1},
+                {"name":"03月","y":5962.05},
+                {"name":"04月","y":5792.1},
+                {"name":"05月","y":5792.1}
+            ]},
+        {
+            "name":"支出","data":[
+                {"name":"03月","y":3931.71},
+                {"name":"04月","y":5089.4},
+                {"name":"05月","y":5259.4},
+                {"name":"06月","y":2467.5},
+                {"name":"07月","y":4478.0}
+            ]
+        }
+    ]
+}
+</pre>
+            </section>
+        </section>
+    </article>
+</div>
+</body>
+</html>

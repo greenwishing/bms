@@ -60,15 +60,15 @@
                 <div class="weui_grid_icon">
                     <img src="${pageContext.request.contextPath}/images/icons/icon_metro.png" alt="">
                 </div>
-                <p class="weui_grid_label">Metro</p>
+                <p class="weui_grid_label">地铁</p>
             </a>
         </security:authorize>
-        <security:authorize ifAnyGranted="ROLE_OAUTH">
-            <a href="${pageContext.request.contextPath}/system/client/list" class="weui_grid">
+        <security:authorize ifAnyGranted="ROLE_APP">
+            <a href="${pageContext.request.contextPath}/system/app/list" class="weui_grid">
                 <div class="weui_grid_icon">
-                    <img src="${pageContext.request.contextPath}/images/icons/icon_client.png" alt="">
+                    <img src="${pageContext.request.contextPath}/images/icons/icon_app.png" alt="">
                 </div>
-                <p class="weui_grid_label">Client</p>
+                <p class="weui_grid_label">应用</p>
             </a>
         </security:authorize>
         <a href="${pageContext.request.contextPath}/logout" class="weui_grid">

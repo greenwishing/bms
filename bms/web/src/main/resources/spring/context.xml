@@ -59,6 +59,8 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean class="cn.greenwishing.bms.spring.SpringBeanFactory"/>
+
     <!--<task:scheduled-tasks>
         <task:scheduled ref="taskService" method="testTask" cron="0 * * * * ?"/>
     </task:scheduled-tasks>

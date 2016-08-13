@@ -26,4 +26,10 @@ public class UserRepositoryHibernate extends AbstractRepositoryHibernate impleme
         UserQueryHelper helper = new UserQueryHelper(getHibernateTemplate(), paging);
         return helper.queryResult();
     }
+
+    @Override
+    public String findUserGuidByAppId(String appId) {
+        List list = getHibernateTemplate().find("select u.guid from UserApp uc join uc.user u join uc.app c where c.appId=?", appId);
+        return list.isEmpty() ? null : (String) list.get(0);
+    }
 }

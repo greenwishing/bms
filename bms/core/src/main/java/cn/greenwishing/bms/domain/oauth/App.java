@@ -16,19 +16,18 @@ import java.util.List;
  */
 @Entity
 @Table(name = "oauth_client_details")
-public class OAuthClientDetails implements Domain {
+public class App implements Domain {
 
-    public static final String CLIENT_ID_PREFIX = "bms";
-    public static final String PUBLIC_CLIENT_ID = "test888888";
-    public static final String PUBLIC_CLIENT_SECRET = "d25f622a6f0c4d34a27ac2864f9bb091";
+    public static final String APP_ID_PREFIX = "bms";
 
     @Id
     @Column(name = "client_id")
     @GeneratedValue(generator = "generator")
     @GenericGenerator(name = "generator", strategy = "assigned")
-    private String clientId = CLIENT_ID_PREFIX + GuidGenerator.generate(13);
+    private String appId = APP_ID_PREFIX + GuidGenerator.generate(13);
+
     @Column(name = "client_secret")
-    private String clientSecret = GuidGenerator.generate();
+    private String appSecret = GuidGenerator.generate();
     /**
      * {@link OAuthResourceId}
      */
@@ -112,12 +111,12 @@ public class OAuthClientDetails implements Domain {
         this.additionalInformation = additionalInformation;
     }
 
-    public String getClientId() {
-        return clientId;
+    public String getAppId() {
+        return appId;
     }
 
-    public String getClientSecret() {
-        return clientSecret;
+    public String getAppSecret() {
+        return appSecret;
     }
 
     public List<OAuthResourceId> getResourceIds() {
@@ -154,11 +153,11 @@ public class OAuthClientDetails implements Domain {
 
     @Override
     public Serializable getId() {
-        return clientId;
+        return appId;
     }
 
     @Override
     public String guid() {
-        return clientId;
+        return appId;
     }
 }

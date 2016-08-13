@@ -8,6 +8,8 @@ import java.util.List;
  */
 public interface Repository {
 
+    void save(Domain domain);
+
     void saveOrUpdate(Domain domain);
 
     <T extends Domain> T findByGuid(Class<T> clazz, String guid);

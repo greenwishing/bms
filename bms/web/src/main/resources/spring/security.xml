@@ -17,6 +17,7 @@
     <mvc:annotation-driven/>
     <mvc:default-servlet-handler/>
 
+    <http pattern="/wiki/" security="none"/>
     <http pattern="/js/**" security="none"/>
     <http pattern="/css/**" security="none"/>
     <http pattern="/images/**" security="none"/>
@@ -47,6 +48,7 @@
     <!-- 把验证类型、用户名密码都作为表单参数提交 -->
     <beans:bean id="clientCredentialsTokenEndpointFilter" class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
         <beans:property name="authenticationManager" ref="oauth2AuthenticationManager"/>
+        <beans:property name="authenticationEntryPoint" ref="oauth2AuthenticationEntryPoint"/>
     </beans:bean>
 
     <!-- 访问成功 -->
@@ -100,9 +102,9 @@
     </beans:bean>
 
     <!-- 客户端 -->
-    <!--<oauth2:client-details-service id="clientDetailsService">
-        <oauth2:client client-id="mobile_1" secret="secret_1" authorized-grant-types="password,authorization_code,refresh_token,implicit" scope="read,write,trust" />
-    </oauth2:client-details-service>-->
+    <!--<oauth2:app-details-service id="clientDetailsService">
+        <oauth2:app app-id="mobile_1" secret="secret_1" authorized-grant-types="password,authorization_code,refresh_token,implicit" scope="read,write,trust" />
+    </oauth2:app-details-service>-->
     <beans:bean id="clientDetailsService" class="org.springframework.security.oauth2.provider.JdbcClientDetailsService">
         <beans:constructor-arg ref="dataSource"/>
     </beans:bean>
@@ -134,7 +136,7 @@
         <intercept-url pattern="/system/billing/**" access="ROLE_BILLING" />
         <intercept-url pattern="/system/article/**" access="ROLE_ARTICLE" />
         <intercept-url pattern="/system/metro/**" access="ROLE_METRO" />
-        <intercept-url pattern="/system/oauth/**" access="ROLE_OAUTH" />
+        <intercept-url pattern="/system/app/**" access="ROLE_APP" />
         <form-login login-page="/" login-processing-url="/account_check"
                     default-target-url="/system/index" authentication-failure-url="/?action=1"
                     username-parameter="account" password-parameter="password"/>

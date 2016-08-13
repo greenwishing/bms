@@ -3,64 +3,69 @@ package cn.greenwishing.bms.dto.oauth;
 import cn.greenwishing.bms.domain.oauth.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Wufan
  * @date 2015/11/7.
  */
-public class OAuthClientDetailsDTO {
+public class OAuthAppDTO {
 
-    private String clientId;
-    private String clientSecret;
+    private String appId;
+    private String appSecret;
     private List<OAuthResourceId> resourceIds = new ArrayList<>();
     private List<OAuthScope> scope = new ArrayList<>();
     private List<OAuthGrantType> authorizedGrantTypes = new ArrayList<>();
     private String webServerRedirectURI;
     private List<OAuthAuthorities> authorities = new ArrayList<>();
-    private Integer accessTokenValidity;
-    private Integer refreshTokenValidity;
+    private Integer accessTokenValidity = 7200;
+    private Integer refreshTokenValidity = 7200;
     private String additionalInformation;
 
-    public OAuthClientDetailsDTO() {
+    public OAuthAppDTO() {
+        Collections.addAll(resourceIds, OAuthResourceId.values());
+        Collections.addAll(scope, OAuthScope.values());
+        Collections.addAll(authorizedGrantTypes, OAuthGrantType.values());
+        Collections.addAll(authorities, OAuthAuthorities.values());
     }
 
-    public OAuthClientDetailsDTO(OAuthClientDetails client) {
-        this.clientId = client.getClientId();
-        this.clientSecret = client.getClientSecret();
-        this.resourceIds = client.getResourceIds();
-        this.scope = client.getScope();
-        this.authorizedGrantTypes = client.getAuthorizedGrantTypes();
-        this.webServerRedirectURI = client.getWebServerRedirectURI();
-        this.authorities = client.getAuthorities();
-        this.accessTokenValidity = client.getAccessTokenValidity();
-        this.refreshTokenValidity = client.getRefreshTokenValidity();
-        this.additionalInformation = client.getAdditionalInformation();
+    public OAuthAppDTO(App app) {
+        this.appId = app.getAppId();
+        this.appSecret = app.getAppSecret();
+        this.resourceIds = app.getResourceIds();
+        this.scope = app.getScope();
+        this.authorizedGrantTypes = app.getAuthorizedGrantTypes();
+        this.webServerRedirectURI = app.getWebServerRedirectURI();
+        this.authorities = app.getAuthorities();
+        this.accessTokenValidity = app.getAccessTokenValidity();
+        this.refreshTokenValidity = app.getRefreshTokenValidity();
+        this.additionalInformation = app.getAdditionalInformation();
     }
 
-    public static List<OAuthClientDetailsDTO> toDTOs(List<OAuthClientDetails> clients) {
-        List<OAuthClientDetailsDTO> clientDTOs = new ArrayList<>();
-        for (OAuthClientDetails client : clients) {
-            OAuthClientDetailsDTO clientDTO = new OAuthClientDetailsDTO(client);
-            clientDTOs.add(clientDTO);
+    public static List<OAuthAppDTO> toDTOs(List<App> apps) {
+        List<OAuthAppDTO> appDTOs = new ArrayList<>();
+        for (App app : apps) {
+            OAuthAppDTO appDTO = new OAuthAppDTO(app);
+            appDTOs.add(appDTO);
         }
-        return clientDTOs;
+        return appDTOs;
     }
 
-    public String getClientId() {
-        return clientId;
+    public String getAppId() {
+        return appId;
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
-    public String getClientSecret() {
-        return clientSecret;
+    public String getAppSecret() {
+        return appSecret;
     }
 
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
     }
 
     public List<OAuthResourceId> getResourceIds() {
@@ -127,7 +132,7 @@ public class OAuthClientDetailsDTO {
         this.additionalInformation = additionalInformation;
     }
 
-    public OAuthClientDetails updateOAuthClientDetails(OAuthClientDetails details) {
+    public App update(App details) {
         details.update(resourceIds, scope, authorizedGrantTypes, webServerRedirectURI, authorities, accessTokenValidity, refreshTokenValidity, additionalInformation);
         return details;
     }

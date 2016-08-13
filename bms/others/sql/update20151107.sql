@@ -31,7 +31,7 @@ CREATE TABLE `oauth_client_details` (
   PRIMARY KEY  (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `oauth_client_details` VALUES ('test888888', 'd25f622a6f0c4d34a27ac2864f9bb091', 'oauth_api', 'read,white,trust', 'password,authorization_code,refresh_token,implicit,client_credentials', '/oauth/api/redirect', 'ROLE_USER,ROLE_API', '7200', '7200', '{\"additional_information\":\"test info\"}');
+INSERT INTO `oauth_client_details` VALUES ('test888888', 'd25f622a6f0c4d34a27ac2864f9bb091', 'oauth_api', 'read,white,trust', 'password,authorization_code,refresh_token,implicit,client_credentials', '/oauth/api/redirect', 'ROLE_API_BASE', '7200', '7200', '{\"additional_information\":\"test info\"}');
 
 DROP TABLE IF EXISTS `oauth_code`;
 CREATE TABLE `oauth_code` (
