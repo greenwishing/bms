@@ -99,6 +99,7 @@
     <beans:bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
         <beans:property name="tokenStore" ref="tokenStore"/>
         <beans:property name="supportRefreshToken" value="true"/>
+        <beans:property name="clientDetailsService" ref="clientDetailsService"/>
     </beans:bean>
 
     <!-- 客户端 -->
@@ -117,7 +118,6 @@
     <!-- 配置这个oauth2的server所能支持的请求类型 -->
     <oauth2:authorization-server client-details-service-ref="clientDetailsService" token-services-ref="tokenServices" user-approval-handler-ref="oauthUserApprovalHandler" >
         <oauth2:authorization-code authorization-code-services-ref="authorizationCodeServices" />
-        <oauth2:implicit />
         <oauth2:refresh-token />
         <oauth2:client-credentials />
         <oauth2:password />
