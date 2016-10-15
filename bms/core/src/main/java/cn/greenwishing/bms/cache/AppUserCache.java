@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Wufan
- * @date 2016/8/13
+ * User: Wufan
+ * Date: 2016/8/13
  */
 public class AppUserCache {
 

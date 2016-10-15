@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class SecurityHolder {
 

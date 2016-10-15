@@ -7,8 +7,8 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 /**
- * @author Wufan
- * @date 2015/6/23.
+ * User: Wufan
+ * Date: 2015/6/23.
  */
 public class SeriesObjectData implements Comparable<SeriesObjectData> {
 

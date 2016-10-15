@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public interface Repository {
 

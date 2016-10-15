@@ -11,7 +11,7 @@ import org.joda.time.LocalDate;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPaging> {
 

@@ -3,7 +3,7 @@ package cn.greenwishing.bms.utils;
 import java.util.UUID;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class GuidGenerator {
 

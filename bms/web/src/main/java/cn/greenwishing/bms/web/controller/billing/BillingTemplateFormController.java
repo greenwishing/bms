@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Controller
 @RequestMapping({"/system/billing/add_template", "/system/billing/edit_template"})

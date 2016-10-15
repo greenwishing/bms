@@ -6,7 +6,7 @@ import cn.greenwishing.bms.utils.paging.ArticlePaging;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public interface ArticleRepository extends Repository {
     List<ArticleCategory> findArticleCategoryByUserGuid(String userGuid);

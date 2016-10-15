@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
 import javax.persistence.*;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Entity
 @Table(name = "`user`")

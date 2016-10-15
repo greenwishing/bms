@@ -4,7 +4,7 @@ import com.baidu.inf.iis.bcs.BaiduBCS;
 import com.baidu.inf.iis.bcs.model.ObjectMetadata;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class BCSUtils {
 

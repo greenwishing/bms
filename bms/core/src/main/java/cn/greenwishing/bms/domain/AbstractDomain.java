@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @MappedSuperclass
 public abstract class AbstractDomain implements Domain {

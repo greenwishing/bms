@@ -1,5 +1,5 @@
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 
 String.prototype.format = function (args) {

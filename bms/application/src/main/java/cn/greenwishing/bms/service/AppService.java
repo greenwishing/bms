@@ -5,8 +5,8 @@ import cn.greenwishing.bms.dto.oauth.OAuthAppDTO;
 import java.util.List;
 
 /**
- * @author Wufan
- * @date 2015/11/7.
+ * User: Wufan
+ * Date: 2015/11/7.
  */
 public interface AppService {
     List<OAuthAppDTO> loadApps();

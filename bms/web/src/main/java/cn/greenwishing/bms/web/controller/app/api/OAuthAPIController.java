@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Wufan
- * @date 2015/11/7.
+ * User: Wufan
+ * Date: 2015/11/7.
  */
 @Controller
 @RequestMapping("/oauth/api/")

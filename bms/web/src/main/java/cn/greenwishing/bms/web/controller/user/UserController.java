@@ -8,8 +8,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @author Wufan
- * @date 2016/7/13
+ * User: Wufan
+ * Date: 2016/7/13
  */
 @Controller
 @RequestMapping("/system/user/")

@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Wufan
- * @date 2015/6/23.
+ * User: Wufan
+ * Date: 2015/6/23.
  */
 public class SeriesObject {
 

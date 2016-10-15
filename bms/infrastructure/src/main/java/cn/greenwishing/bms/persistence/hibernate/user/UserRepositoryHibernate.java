@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Repository("userRepository")
 public class UserRepositoryHibernate extends AbstractRepositoryHibernate implements UserRepository {

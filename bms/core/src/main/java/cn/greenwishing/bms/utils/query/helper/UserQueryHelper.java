@@ -7,8 +7,8 @@ import org.hibernate.Query;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
- * @author Wufan
- * @date 2016/7/13
+ * User: Wufan
+ * Date: 2016/7/13
  */
 public class UserQueryHelper extends AbstractQueryHelper<User, UserPaging> {
 

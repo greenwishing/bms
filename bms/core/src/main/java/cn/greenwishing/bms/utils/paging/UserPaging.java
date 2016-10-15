@@ -3,8 +3,8 @@ package cn.greenwishing.bms.utils.paging;
 import cn.greenwishing.bms.domain.user.User;
 
 /**
- * @author Wufan
- * @date 2016/7/13
+ * User: Wufan
+ * Date: 2016/7/13
  */
 public class UserPaging extends AbstractPaging<User> {
 

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @author Wufan
- * @date 2015/11/7.
+ * User: Wufan
+ * Date: 2015/11/7.
  */
 @Service("appService")
 public class AppServiceImpl implements AppService {

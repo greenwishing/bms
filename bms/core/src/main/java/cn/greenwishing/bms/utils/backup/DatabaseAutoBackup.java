@@ -10,7 +10,7 @@ import org.springframework.util.FileCopyUtils;
 import java.io.File;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class DatabaseAutoBackup {
     private static final Logger log = Logger.getLogger(DatabaseAutoBackup.class);

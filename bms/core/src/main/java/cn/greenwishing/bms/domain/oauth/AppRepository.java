@@ -5,8 +5,8 @@ import cn.greenwishing.bms.domain.Repository;
 import java.util.List;
 
 /**
- * @author Wufan
- * @date 2016/8/13
+ * User: Wufan
+ * Date: 2016/8/13
  */
 public interface AppRepository extends Repository {
     List<App> findUserApps(String userGuid);

@@ -3,7 +3,7 @@ package cn.greenwishing.bms.utils;
 import java.io.UnsupportedEncodingException;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class StringDecoder {
 

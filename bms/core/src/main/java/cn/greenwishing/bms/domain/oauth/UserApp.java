@@ -9,8 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * @author Wufan
- * @date 2016/8/13
+ * User: Wufan
+ * Date: 2016/8/13
  */
 @Entity
 @Table(name = "user_app")

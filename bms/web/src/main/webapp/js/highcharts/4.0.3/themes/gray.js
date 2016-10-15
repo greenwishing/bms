@@ -1,6 +1,6 @@
 /**
  * Gray theme for Highcharts JS
- * @author Torstein Honsi
+ * User: Torstein Honsi
  */
 
 Highcharts.theme = {

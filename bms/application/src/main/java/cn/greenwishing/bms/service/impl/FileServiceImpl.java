@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Service("fileService")
 public class FileServiceImpl implements FileService {

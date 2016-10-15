@@ -8,7 +8,7 @@ import cn.greenwishing.bms.utils.paging.ArticlePaging;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class ArticlePagingDTO extends AbstractPagingDTO<ArticleDTO, ArticlePaging> {
 

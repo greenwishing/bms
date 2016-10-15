@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Service("billService")
 public class BillingServiceImpl implements BillingService {

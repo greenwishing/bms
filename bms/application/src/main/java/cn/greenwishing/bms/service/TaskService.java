@@ -1,8 +1,8 @@
 package cn.greenwishing.bms.service;
 
 /**
- * @author Wufan
- * @date 2015/6/15.
+ * User: Wufan
+ * Date: 2015/6/15.
  */
 public interface TaskService {
 

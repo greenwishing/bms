@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class ArticleCategoryDTO {
 

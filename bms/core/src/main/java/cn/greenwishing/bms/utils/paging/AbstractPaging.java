@@ -5,7 +5,7 @@ import cn.greenwishing.bms.utils.ValidationUtils;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public abstract class AbstractPaging<T> implements Paging {
 

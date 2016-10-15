@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Controller
 @RequestMapping({"/system/user/add", "/system/user/edit"})

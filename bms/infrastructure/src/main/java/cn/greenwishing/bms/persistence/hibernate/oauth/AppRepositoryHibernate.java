@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @author Wufan
- * @date 2016/8/13
+ * User: Wufan
+ * Date: 2016/8/13
  */
 @Repository("oAuthRepository")
 public class AppRepositoryHibernate extends AbstractRepositoryHibernate implements AppRepository {

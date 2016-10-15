@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Controller
 @RequestMapping({"/system/article/add_category", "/system/article/edit_category"})

@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class AbstractRepositoryHibernate extends DaoSupport implements Repository {
 

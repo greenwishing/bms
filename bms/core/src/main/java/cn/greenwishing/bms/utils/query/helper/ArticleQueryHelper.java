@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class ArticleQueryHelper extends AbstractQueryHelper<Article, ArticlePaging> {
 

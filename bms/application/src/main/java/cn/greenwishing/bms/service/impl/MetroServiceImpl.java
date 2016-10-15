@@ -16,8 +16,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * @author Wufan
- * @date 2016/6/5
+ * User: Wufan
+ * Date: 2016/6/5
  */
 @Service("metroService")
 public class MetroServiceImpl implements MetroService {

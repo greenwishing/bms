@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService {

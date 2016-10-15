@@ -1,7 +1,7 @@
 package cn.greenwishing.bms.service;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public interface FileService {
 }

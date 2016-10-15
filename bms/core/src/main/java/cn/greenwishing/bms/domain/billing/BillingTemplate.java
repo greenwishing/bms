@@ -7,8 +7,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 /**
- * @author Wufan
- * @date 2015/3/7.
+ * User: Wufan
+ * Date: 2015/3/7.
  */
 @Entity
 @Table(name = "billing_template")

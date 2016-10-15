@@ -14,8 +14,8 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import java.util.List;
 
 /**
- * @author Wufan
- * @date 2016/6/5
+ * User: Wufan
+ * Date: 2016/6/5
  */
 @Controller
 @RequestMapping("/system/metro/")

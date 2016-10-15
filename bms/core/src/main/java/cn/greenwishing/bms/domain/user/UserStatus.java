@@ -1,7 +1,7 @@
 package cn.greenwishing.bms.domain.user;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public enum UserStatus {
     ENABLED("已启用"),

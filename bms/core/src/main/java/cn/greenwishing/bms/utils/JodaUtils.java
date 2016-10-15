@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class JodaUtils {
 

@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 /**
- * @author Wufan
- * @date 2015/3/7.
+ * User: Wufan
+ * Date: 2015/3/7.
  */
 @Controller
 @RequestMapping({"/system/billing/add_subcategory", "/system/billing/edit_subcategory"})

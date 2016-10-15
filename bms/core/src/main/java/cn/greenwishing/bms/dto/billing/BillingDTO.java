@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Component
 public class BillingDTO {

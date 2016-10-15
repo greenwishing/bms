@@ -17,8 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 /**
- * @author Wufan
- * @date 2016/8/13
+ * User: Wufan
+ * Date: 2016/8/13
  */
 @Controller
 @RequestMapping(value = {"/system/app/reg", "/system/app/edit"})

@@ -6,7 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 public class BCSFile {
 

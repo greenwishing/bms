@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Wu Fan
+ * User: Wu Fan
  */
 @Controller
 @RequestMapping("/system/billing/")

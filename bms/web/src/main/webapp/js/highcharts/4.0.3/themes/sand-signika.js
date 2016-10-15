@@ -1,6 +1,6 @@
 /**
  * Sand-Signika theme for Highcharts JS
- * @author Torstein Honsi
+ * User: Torstein Honsi
  */
 
 // Load the fonts
