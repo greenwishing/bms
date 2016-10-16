@@ -3,7 +3,7 @@
 <html lang="zh_CN">
 <head>
     <title>客户端文档</title>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes" />

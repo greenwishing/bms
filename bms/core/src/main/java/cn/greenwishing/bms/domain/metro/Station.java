@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
- * @author Wufan
- * @date 2016/6/5
+ * User: Wufan
+ * Date: 2016/6/5
  */
 @Entity
 @Table(name = "station")

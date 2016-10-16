@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>用户列表</title>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
     <script type="text/javascript">
         WF.user.initSearch = function() {
             $('.weui_dialog_confirm').show();
@@ -17,66 +17,41 @@
     </script>
 </head>
 <body>
-<div class="weui_tab">
-    <div class="weui_tab_bd">
-        <div class="weui_panel weui_panel_access">
-            <div class="weui_panel_hd">用户列表</div>
-            <div class="weui_panel_bd">
-                <c:forEach items="${pagingDTO.list}" var="user">
-                    <a href="edit?guid=${user.guid}" class="weui_media_box weui_media_appmsg">
-                        <div class="weui_media_bd">
-                            <h4 class="weui_media_title">${user.username}</h4>
-                            <p class="weui_media_desc">${user.account}</p>
-                            <p class="weui_media_desc">${user.status.label}</p>
-                        </div>
-                    </a>
-                </c:forEach>
-            </div>
-            <tags:paging formName="search-form" paging="${pagingDTO}"/>
+<div>
+    <form id="search-form" class="form-inline pull-left" action="list" onsubmit="return false;">
+        <div class="form-group">
+            <label class="form-control-static">关键字</label>
+            <input class="form-control" type="text" name="key" value="${pagingDTO.key}" placeholder="请输入关键字">
         </div>
-    </div>
-    <div class="weui_tabbar">
-        <a class="weui_tabbar_item" href="add">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">添加</p>
-        </a>
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.user.initSearch()">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_search.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">查询</p>
-        </a>
-        <a class="weui_tabbar_item" href="${pageContext.request.contextPath}/system/index">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">返回</p>
-        </a>
+        <div class="form-group">
+            <a href="javascript:void(0);" class="btn btn-primary" onclick="WF.paging.GO($('#search-form'), 1);">确定</a>
+        </div>
+    </form>
+    <div class="btn-group pull-right">
+        <a class="btn btn-primary" href="add">添加</a>
+        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back()">返回</a>
     </div>
 </div>
-<div class="weui_dialog_confirm" style="display: none;">
-    <div class="weui_mask"></div>
-    <div class="weui_dialog weui_dialog_form">
-        <div class="weui_dialog_hd"><strong class="weui_dialog_title">查询用户</strong></div>
-        <div class="weui_dialog_bd">
-            <form id="search-form" action="list" onsubmit="return false;">
-                <div class="weui_cells weui_cells_form">
-                    <div class="weui_cell">
-                        <div class="weui_cell_hd"><label class="weui_label">关键字</label></div>
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <input class="weui_input" type="text" name="key" value="${pagingDTO.key}" placeholder="请输入关键字">
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="weui_dialog_ft">
-            <a href="javascript:void(0);" class="weui_btn_dialog primary" onclick="WF.paging.GO($('#search-form'), 1);">确定</a>
-            <a href="javascript:void(0);" class="weui_btn_dialog default" onclick="WF.user.cancelSearch();">取消</a>
-        </div>
-    </div>
-</div>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>用户名</th>
+        <th>状态</th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${pagingDTO.list}" var="user">
+    <tr>
+        <td>${user.username}（${user.account}）</td>
+        <td>${user.status.label}</td>
+        <td>
+            <a href="edit?guid=${user.guid}">编辑</a>
+        </td>
+    </tr>
+    </c:forEach>
+    </tbody>
+</table>
+<tags:paging formName="search-form" paging="${pagingDTO}"/>
 </body>
 </html>

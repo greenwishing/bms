@@ -4,8 +4,7 @@
 <%@ taglib prefix="spring-form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title>Metro</title>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>地铁${metroLineDTO.name}</title>
     <style type="text/css">
         <c:if test="${metroLineDTO.guid != null}">
         .metro-line-station { padding: 8px 15px; margin-bottom: 20px; list-style: none; }
@@ -82,52 +81,31 @@
     </script>
 </head>
 <body>
-<div class="weui_tab">
-    <div class="weui_tab_bd">
-        <form class="form-horizontal" id="data-form" action="add" method="post" onsubmit="return false;">
-            <div class="weui_cells weui_cells_form">
-                <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label">Name</label></div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <input type="text" class="weui_input" name="name" id="name" placeholder="Name" value="${metroLineDTO.name}"/>
-                    </div>
-                </div>
-                <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label">Color</label></div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <input type="color" class="weui_input" name="color" id="color" placeholder="Color" value="${metroLineDTO.color}"/>
-                    </div>
-                </div>
-                <div class="weui_cell weui_cell_switch">
-                    <div class="weui_cell_hd weui_cell_primary">Loop</div>
-                    <div class="weui_cell_ft">
-                        <input class="weui_switch" type="checkbox" value="true" ${metroLineDTO.loop?'checked':''}/>
-                    </div>
-                </div>
-            </div>
-            <c:if test="${metroLineDTO.guid != null}">
-                <div class="weui_cells_title">Stations</div>
-                <ol class="metro-line-station"></ol>
-                <svg id="metro-map" class="metro-map" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                    <title>Metro line</title>
-                </svg>
-            </c:if>
-        </form>
-    </div>
-    <div class="weui_tabbar">
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_save.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">保存</p>
-        </a>
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">返回</p>
-        </a>
-    </div>
-</div>
+    <form class="form-horizontal" id="data-form" action="add" method="post" onsubmit="return false;">
+        <div class="form-group">
+            <label class="form-control-static">线路名称</label>
+            <input class="form-control" type="text" name="name" id="name" placeholder="线路名称" value="${metroLineDTO.name}"/>
+        </div>
+        <div class="form-group">
+            <label class="form-control-static">主题色</label>
+            <input class="form-control" type="color" name="color" id="color" placeholder="主题色" value="${metroLineDTO.color}"/>
+        </div>
+        <div class="form-group">
+            <label class="checkbox-inline"><input class="weui_switch" type="checkbox" value="true" ${metroLineDTO.loop?'checked':''}/> 是环线</label>
+        </div>
+        <c:if test="${metroLineDTO.guid != null}">
+        <div class="form-group">
+            <label class="form-control-static">${metroLineDTO.name}的站台</label>
+            <ol class="metro-line-station"></ol>
+            <svg id="metro-map" class="metro-map" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <title>${metroLineDTO.name}</title>
+            </svg>
+        </div>
+        </c:if>
+        <div class="form-group">
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="WF.form.submit($('#data-form'))">保存</a>
+            <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+        </div>
+    </form>
 </body>
 </html>

@@ -64,6 +64,16 @@ var WF = {
         }
     },
     page: {
+        menu: function($menu, requestURI) {
+            $menu.find('li').each(function(){
+                var $li = $(this);
+                var src = $li.find('a').attr('href');
+                if (requestURI.startsWith(src)) {
+                    $li.addClass('active');
+                    return false;
+                }
+            });
+        },
         forward: function(url) {
             location.href = url;
         },
@@ -109,7 +119,7 @@ var WF = {
                             location.reload();
                         }
                     } else {
-                        $.weui.alert(result.message);
+                        alert(result.message);
                     }
                 }
             });
@@ -167,7 +177,7 @@ var WF = {
                         errorMsg = e;
                     }
                 }
-                if (!WF.validation.isEmpty(errorMsg)) $.weui.alert(errorMsg);
+                if (!WF.validation.isEmpty(errorMsg)) alert(errorMsg);
             }
         }
     },

@@ -5,7 +5,6 @@
 <html>
 <head>
     <title>账单汇总</title>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/highcharts/4.0.3/highcharts.js"></script>
     <script type="text/javascript">
         $(function(){
@@ -56,25 +55,11 @@
     </script>
 </head>
 <body>
-<div class="weui_tab">
-    <div class="weui_tab_bd">
-        <div class="weui_panel">
-            <div class="weui_panel_hd">账单汇总</div>
-            <div class="weui_panel_bd">
-                <div>
-                    <div class="nearest row"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="weui_tabbar">
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back()">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">返回</p>
-        </a>
+<div>
+    <div class="btn-group pull-right">
+        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back()">返回</a>
     </div>
 </div>
+<div class="nearest"></div>
 </body>
 </html>

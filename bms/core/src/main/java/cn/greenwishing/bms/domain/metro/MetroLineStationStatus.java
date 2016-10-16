@@ -1,8 +1,8 @@
 package cn.greenwishing.bms.domain.metro;
 
 /**
- * @author Wufan
- * @date 2016/6/5
+ * User: Wufan
+ * Date: 2016/6/5
  */
 public enum MetroLineStationStatus {
     UNKNOWN("未知"),

@@ -5,7 +5,6 @@
 <html>
 <head>
     <title>账单模板</title>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <script type="text/javascript">
         $(function(){
             WF.billing.categories('#type');
@@ -14,60 +13,35 @@
 </head>
 <body>
 <div class="weui_tab">
-    <div class="weui_tab_bd">
-        <spring-form:form commandName="billingTemplateDTO" method="post" id="data-form" onsubmit="return false;">
-            <div class="weui_cells weui_cells_form">
-                <div class="weui_cell weui_cell_select weui_select_after">
-                    <div class="weui_cell_hd"><label class="weui_label">类型</label></div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <spring-form:select id="type" cssClass="weui_select" path="type" items="${types}" itemValue="value" itemLabel="label" onchange="WF.billing.categories(this)" targetId="categoryGuid"/>
-                    </div>
-                </div>
-                <div class="weui_cell weui_cell_select weui_select_after">
-                    <div class="weui_cell_hd"><label class="weui_label">分类</label></div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <select id="categoryGuid" class="weui_select" name="categoryGuid" onchange="WF.billing.subcategories(this)" default-value="${billingTemplateDTO.categoryGuid}" targetId="subcategoryGuid">
-                            <option value="">请选择</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="weui_cell weui_cell_select weui_select_after">
-                    <div class="weui_cell_hd"><label class="weui_label">子分类</label></div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <select id="subcategoryGuid" class="weui_select" name="subcategoryGuid" default-value="${billingTemplateDTO.subcategoryGuid}">
-                            <option value="">请选择</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label">名称</label></div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <spring-form:input cssClass="weui_input" path="name" id="name" placeholder="名称"/>
-                    </div>
-                </div>
-                <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label">金额</label></div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <spring-form:input cssClass="weui_input" path="amount" id="amount" placeholder="金额"/>
-                    </div>
-                </div>
-            </div>
-        </spring-form:form>
+<spring-form:form commandName="billingTemplateDTO" method="post" id="data-form" onsubmit="return false;">
+    <div class="form-group">
+        <label class="form-control-static">类型</label>
+        <spring-form:select cssClass="form-control" id="type" path="type" items="${types}" itemValue="value" itemLabel="label" onchange="WF.billing.categories(this)" targetId="categoryGuid"/>
     </div>
-    <div class="weui_tabbar">
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_save.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">保存</p>
-        </a>
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">返回</p>
-        </a>
+    <div class="form-group">
+        <label class="form-control-static">分类</label>
+        <select class="form-control" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" default-value="${billingTemplateDTO.categoryGuid}" targetId="subcategoryGuid">
+            <option value="">请选择</option>
+        </select>
     </div>
-</div>
+    <div class="form-group">
+        <label class="form-control-static">子分类</label>
+        <select class="form-control" id="subcategoryGuid" name="subcategoryGuid" default-value="${billingTemplateDTO.subcategoryGuid}">
+            <option value="">请选择</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="form-control-static">名称</label>
+        <spring-form:input cssClass="form-control" path="name" id="name" placeholder="名称"/>
+    </div>
+    <div class="form-group">
+        <label class="form-control-static">金额</label>
+        <spring-form:input cssClass="form-control" path="amount" id="amount" placeholder="金额"/>
+    </div>
+    <div class="form-group">
+        <a class="btn btn-primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
+        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+    </div>
+</spring-form:form>
 </body>
 </html>

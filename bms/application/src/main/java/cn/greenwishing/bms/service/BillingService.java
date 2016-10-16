@@ -47,4 +47,10 @@ public interface BillingService {
     void changeStatus(String guid, BillingStatus status);
 
     void generateDefaultCategory();
+
+    List<BillingAccountDTO> loadBillingAccounts();
+
+    BillingAccountDTO loadBillingAccountByGuid(String guid);
+
+    void saveOrUpdateBillingAccount(BillingAccountDTO accountDTO);
 }

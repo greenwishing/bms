@@ -44,7 +44,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<BillingCategory> findBillCategoryByUserGuid(String userGuid) {
+    public List<BillingCategory> findBillingCategoryByUserGuid(String userGuid) {
         return getHibernateTemplate().find("from BillingCategory c where c.user.guid=?", userGuid);
     }
 
@@ -62,7 +62,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<BillingCategory> findBillCategoryByType(BillingType billingType, String userGuid) {
+    public List<BillingCategory> findBillingCategoryByType(BillingType billingType, String userGuid) {
         return getHibernateTemplate().find("from BillingCategory c where c.type=? and c.user.guid=?", billingType, userGuid);
     }
 
@@ -83,5 +83,11 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
             queryString += " group by b.category.id";
         }
         return getHibernateTemplate().find(queryString, userGuid, billingType, startDate, endDate.plusDays(1));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<BillingAccount> findBillingAccounts(String userGuid) {
+        return getHibernateTemplate().find("from BillingAccount a where a.user.guid=?", userGuid);
     }
 }

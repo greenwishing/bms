@@ -4,33 +4,32 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
-    <title>我的应用</title>
+    <title>账户</title>
 </head>
 <body>
 <div>
     <div class="btn-group pull-right">
-        <a class="btn btn-primary" href="reg">添加</a>
-        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+        <a class="btn btn-primary" href="add_account">添加</a>
+        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back()">返回</a>
     </div>
 </div>
 <table class="table table-hover">
     <thead>
     <tr>
-        <th>应用</th>
+        <th>账户</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${apps}" var="app">
+    <c:forEach items="${accounts}" var="account">
         <tr>
-            <td>${app.appId}</td>
+            <td>${account.type.label} - ${account.name}</td>
             <td>
-                <a href="edit?appId=${app.appId}">编辑</a>
+                <a href="edit_account?guid=${account.guid}">编辑</a>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<p><a href="${pageContext.request.contextPath}/wiki/app.jsp">接入文档</a></p>
 </body>
 </html>

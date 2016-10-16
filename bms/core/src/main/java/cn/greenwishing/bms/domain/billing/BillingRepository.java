@@ -15,15 +15,17 @@ public interface BillingRepository extends Repository {
 
     List<Object[]> loadNearestStatistics(BillingType billingType, Integer size);
 
-    List<BillingCategory> findBillCategoryByUserGuid(String userGuid);
+    List<BillingCategory> findBillingCategoryByUserGuid(String userGuid);
 
     List<BillingSubcategory> findBillingSubcategory(String categoryGuid);
 
     List<BillingTemplate> findBillingTemplateByUserGuid(String userGuid);
 
-    List<BillingCategory> findBillCategoryByType(BillingType billingType, String userGuid);
+    List<BillingCategory> findBillingCategoryByType(BillingType billingType, String userGuid);
 
     BillingTemplate findBillTemplate(User user, BillingType type, BillingCategory category, BillingSubcategory subcategory);
 
     List<BillingStatistics> loadBillingStatistics(String userGuid, BillingType billingType, LocalDate startDate, LocalDate endDate, String group);
+
+    List<BillingAccount> findBillingAccounts(String userGuid);
 }

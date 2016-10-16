@@ -6,8 +6,8 @@ import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import java.util.List;
 
 /**
- * @author Wufan
- * @date 2016/6/5
+ * User: Wufan
+ * Date: 2016/6/5
  */
 public interface MetroRepository extends Repository {
     List<MetroLineStation> findMetroLineStations(String metroLineGuid);

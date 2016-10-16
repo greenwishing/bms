@@ -3,10 +3,7 @@ package cn.greenwishing.bms.web.controller.billing;
 import cn.greenwishing.bms.domain.billing.BillingStatus;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
-import cn.greenwishing.bms.dto.billing.BillingCategoryDTO;
-import cn.greenwishing.bms.dto.billing.BillingPagingDTO;
-import cn.greenwishing.bms.dto.billing.BillingSubcategoryDTO;
-import cn.greenwishing.bms.dto.billing.BillingTemplateDTO;
+import cn.greenwishing.bms.dto.billing.*;
 import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.shared.EnumUtils;
@@ -77,6 +74,17 @@ public class BillingController {
         Map<String, Object> model = new HashMap<>();
         model.put("data", data);
         return new ModelAndView(new MappingJacksonJsonView(), model);
+    }
+
+    @RequestMapping("accounts")
+    public ModelAndView accounts(String dataType) {
+        List<BillingAccountDTO> accounts = billingService.loadBillingAccounts();
+        Map<String, Object> model = new HashMap<>();
+        model.put("accounts", accounts);
+        if ("json".equals(dataType)) {
+            return new ModelAndView(new MappingJacksonJsonView(), model);
+        }
+        return new ModelAndView("billing/billing_account_list", model);
     }
 
     @RequestMapping("categories")

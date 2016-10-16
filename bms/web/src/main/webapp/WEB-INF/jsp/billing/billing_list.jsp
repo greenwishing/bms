@@ -6,7 +6,6 @@
 <html>
 <head>
     <title>账单列表</title>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <script type="text/javascript">
         $(function(){
             WF.billing.categories($('#type'));
@@ -27,132 +26,80 @@
     </style>
 </head>
 <body>
-<div class="weui_tab">
-    <div class="weui_tab_bd">
-        <div class="weui_panel weui_panel_access">
-            <div class="weui_panel_hd">账单列表</div>
-            <div class="weui_panel_bd">
-                <c:forEach items="${pagingDTO.list}" var="billing">
-                    <div class="weui_media_box weui_media_text" data-id="${billing.guid}" title="${billing.settleTime} ${billing.status.label}">
-                        <h4 class="weui_media_title"><span class="price ${billing.className}">${billing.amount}</span> ${billing.name}</h4>
-                        <p class="weui_media_desc">${billing.categoryName} ${billing.subcategoryName}</p>
-                        <ul class="weui_media_info">
-                            <li class="weui_media_info_meta">${billing.type.label}</li>
-                            <li class="weui_media_info_meta weui_media_info_meta_extra">${billing.occurredTime}</li>
-                        </ul>
-                        <c:choose>
-                            <c:when test="${'ACCOUNT_RECEIVABLE'==billing.type and 'RECEIVED' != billing.status}">
-                                <a href="javascript:void(0)" onclick="WF.billing.changeStatus('${billing.guid}','RECEIVED')">标记为已还</a>
-                            </c:when>
-                            <c:when test="${'ACCOUNT_PAYABLE'==billing.type and 'PAYED' != billing.status}">
-                                <a href="javascript:void(0)" onclick="WF.billing.changeStatus('${billing.guid}','PAYED')">标记为已付</a>
-                            </c:when>
-                        </c:choose>
-                    </div>
+<div>
+    <form id="search-form" class="form-inline pull-left" action="list" onsubmit="return false;">
+        <div class="form-group">
+            <label class="form-control-static">关键字</label>
+            <input class="form-control" type="text" name="key" value="${pagingDTO.key}" placeholder="请输入关键字">
+        </div>
+        <div class="form-group">
+            <label class="form-control-static">日期</label>
+            <input class="form-control" type="date" name="dateFrom" value="${pagingDTO.dateFrom}" placeholder="请选择开始日期">
+            <input class="form-control" type="date" name="dateTo" value="${pagingDTO.dateTo}" placeholder="请选择结束日期">
+        </div>
+        <div class="form-group">
+            <label class="form-control-static">类型</label>
+            <select class="form-control" name="type" id="type" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
+                <option value="">请选择</option>
+                <c:forEach items="${types}" var="type">
+                    <option value="${type.value}" ${type.value eq param.type ? 'selected':''}>${type.label}</option>
                 </c:forEach>
-            </div>
-            <tags:paging formName="search-form" paging="${pagingDTO}"/>
+            </select>
+            <select class="form-control" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid" default-value="${param.categoryGuid}">
+                <option value="">请选择</option>
+            </select>
+            <select class="form-control" id="subcategoryGuid" name="subcategoryGuid" default-value="${param.subcategoryGuid}">
+                <option value="">请选择</option>
+            </select>
         </div>
-    </div>
-    <div class="weui_tabbar">
-        <a class="weui_tabbar_item" href="add">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">添加</p>
-        </a>
-        <a class="weui_tabbar_item" href="categories">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_category.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">分类</p>
-        </a>
-        <a class="weui_tabbar_item" href="templates">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_template.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">模板</p>
-        </a>
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="WF.billing.initSearch()">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_search.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">查询</p>
-        </a>
-        <a class="weui_tabbar_item" href="${pageContext.request.contextPath}/system/index">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">返回</p>
-        </a>
+        <div class="form-group">
+            <a href="javascript:void(0);" class="btn btn-primary" onclick="WF.paging.GO($('#search-form'), 1);">确定</a>
+        </div>
+    </form>
+    <div class="btn-group pull-right">
+        <a class="btn btn-primary" href="add">添加</a>
+        <a class="btn btn-default" href="categories">分类</a>
+        <a class="btn btn-default" href="templates">模板</a>
+        <a class="btn btn-default" href="accounts">账户</a>
+        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back()">返回</a>
     </div>
 </div>
-<div class="weui_dialog_confirm" style="display: none;">
-    <div class="weui_mask"></div>
-    <div class="weui_dialog weui_dialog_form">
-        <div class="weui_dialog_hd"><strong class="weui_dialog_title">查询账单</strong></div>
-        <div class="weui_dialog_bd">
-            <form id="search-form" action="list" onsubmit="return false;">
-                <div class="weui_cells weui_cells_form">
-                    <div class="weui_cell">
-                        <div class="weui_cell_hd"><label class="weui_label">关键字</label></div>
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <input class="weui_input" type="text" name="key" value="${pagingDTO.key}" placeholder="请输入关键字">
-                        </div>
-                    </div>
-                    <div class="weui_cell">
-                        <div class="weui_cell_hd"><label class="weui_label">开始日期</label></div>
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <input class="weui_input" type="date" name="dateFrom" value="${pagingDTO.dateFrom}" placeholder="请选择开始日期">
-                        </div>
-                    </div>
-                    <div class="weui_cell">
-                        <div class="weui_cell_hd"><label class="weui_label">结束日期</label></div>
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <input class="weui_input" type="date" name="dateTo" value="${pagingDTO.dateTo}" placeholder="请选择结束日期">
-                        </div>
-                    </div>
-                    <div class="weui_cell weui_cell_select weui_select_after">
-                        <div class="weui_cell_hd">
-                            <label class="weui_label">类型</label>
-                        </div>
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <select class="weui_select" name="type" id="type" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
-                                <option value="">请选择</option>
-                                <c:forEach items="${types}" var="type">
-                                    <option value="${type.value}" ${type.value eq param.type ? 'selected':''}>${type.label}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="weui_cell weui_cell_select weui_select_after">
-                        <div class="weui_cell_hd">
-                            <label class="weui_label">分类</label>
-                        </div>
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <select id="categoryGuid" class="weui_select" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid" default-value="${param.categoryGuid}">
-                                <option value="">请选择</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="weui_cell weui_cell_select weui_select_after">
-                        <div class="weui_cell_hd">
-                            <label class="weui_label">子分类</label>
-                        </div>
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <select id="subcategoryGuid" class="weui_select" name="subcategoryGuid" default-value="${param.subcategoryGuid}">
-                                <option value="">请选择</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="weui_dialog_ft">
-            <a href="javascript:void(0);" class="weui_btn_dialog primary" onclick="WF.paging.GO($('#search-form'), 1);">确定</a>
-            <a href="javascript:void(0);" class="weui_btn_dialog default" onclick="WF.billing.cancelSearch();">取消</a>
-        </div>
-    </div>
-</div>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>金额</th>
+        <th>名称</th>
+        <th>分类</th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${pagingDTO.list}" var="billing">
+    <tr data-id="${billing.guid}" title="${billing.settleTime} ${billing.status.label}">
+        <td>
+            <span class="price ${billing.className}">${billing.amount}</span>
+        </td>
+        <td>
+            <div>${billing.name}</div>
+            <div>${billing.occurredTime}</div>
+        </td>
+        <td>
+            <div>${billing.type.label} - ${billing.categoryName} - ${billing.subcategoryName}</div>
+        </td>
+        <td>
+            <c:choose>
+                <c:when test="${'ACCOUNT_RECEIVABLE'==billing.type and 'RECEIVED' != billing.status}">
+                    <a href="javascript:void(0)" onclick="WF.billing.changeStatus('${billing.guid}','RECEIVED')">标记为已还</a>
+                </c:when>
+                <c:when test="${'ACCOUNT_PAYABLE'==billing.type and 'PAYED' != billing.status}">
+                    <a href="javascript:void(0)" onclick="WF.billing.changeStatus('${billing.guid}','PAYED')">标记为已付</a>
+                </c:when>
+            </c:choose>
+        </td>
+        </c:forEach>
+    </tr>
+    </tbody>
+</table>
+<tags:paging formName="search-form" paging="${pagingDTO}"/>
 </body>
 </html>

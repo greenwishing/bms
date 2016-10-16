@@ -6,7 +6,7 @@
 <head>
     <title>欢迎</title>
     <meta charset="utf-8">
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -15,51 +15,64 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
         $(function(){
             $(':input:first').focus();
         });
     </script>
+    <style type="text/css">
+        .login-form {
+            width: 450px;
+            margin: 35px auto;
+        }
+
+        .login-form .title {
+            margin-bottom: 35px;
+        }
+
+        .login-form .form-group .form-control {
+            width: 100%;
+            height: 46px;
+            padding: 10px 16px;
+            font-size: 18px;
+            line-height: 1.3333333;
+        }
+
+        .login-form .form-group .btn {
+            width: 100%;
+            padding: 10px 16px;
+            font-size: 18px;
+            line-height: 1.3333333;
+        }
+    </style>
 </head>
 <body>
-    <form action="${pageContext.request.contextPath}/account_check" method="post">
-        <div class="weui_cells_title">登录</div>
-        <div class="weui_cells weui_cells_form">
-            <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label">帐号</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input id="account" type="text" class="weui_input" name="account" placeholder="请输入帐号" />
-                </div>
-            </div>
-            <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label">密码</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input id="password" type="password" class="weui_input" name="password" placeholder="请输入密码" />
-                </div>
-            </div>
+<div class="container">
+    <form class="login-form" action="${pageContext.request.contextPath}/account_check" method="post">
+        <h3 class="title">登录</h3>
+        <div class="form-group">
+            <input id="account" type="text" class="form-control" name="account" placeholder="帐号" />
         </div>
-        <div class="weui_cells weui_cells_form">
-            <div class="weui_cell weui_cell_switch">
-                <div class="weui_cell_hd weui_cell_primary">记住我</div>
-                <div class="weui_cell_ft">
-                    <input class="weui_switch" name="rememberMe" type="checkbox" value="true" checked>
-                </div>
-            </div>
+        <div class="form-group">
+            <input id="password" type="password" class="form-control" name="password" placeholder="密码" />
         </div>
-        <div class="weui_cells_tips">
-        <c:choose>
-            <c:when test="${SPRING_SECURITY_LAST_EXCEPTION!=null}">${SPRING_SECURITY_LAST_EXCEPTION.localizedMessage}!</c:when>
-            <c:when test="${param.action==1}"><div class="weui_cells_tips">帐号或密码错误</div></c:when>
-            <c:when test="${param.action==2}"><div class="weui_cells_tips">登录超时</div></c:when>
-            <c:when test="${param.action==1}"><div class="weui_cells_tips">已退出</div></c:when>
-        </c:choose>
+        <div class="form-group">
+            <label class="checkbox-inline"><input class="weui_switch" name="rememberMe" type="checkbox" value="true" checked> 记住我</label>
         </div>
-        <div class="weui_btn_area">
-            <button class="weui_btn weui_btn_primary" type="submit">登录</button>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">登录</button>
+        </div>
+        <div class="form-group">
+            <c:choose>
+                <c:when test="${SPRING_SECURITY_LAST_EXCEPTION!=null}">${SPRING_SECURITY_LAST_EXCEPTION.localizedMessage}!</c:when>
+                <c:when test="${param.action==1}"><p>帐号或密码错误</p></c:when>
+                <c:when test="${param.action==2}"><p>登录超时</p></c:when>
+                <c:when test="${param.action==1}"><p>已退出</p></c:when>
+            </c:choose>
         </div>
     </form>
+</div>
 </body>
 </html>

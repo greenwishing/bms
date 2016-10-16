@@ -18,15 +18,35 @@
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/weui/weui.js"></script>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            WF.page.menu($('#nav-bar'), '${pageContext.request.requestURI}');
+        });
+    </script>
     <decorator:head/>
 </head>
 <body>
-<div class="container">
+<header>
+    <div class="container">
+        <ul id="nav-bar" class="nav-bar">
+            <li><a href="/system/billing/list">账单</a></li>
+            <li><a href="/system/billing/statistics">统计</a></li>
+            <li><a href="/system/billing/nearest">汇总</a></li>
+            <li><a href="/system/article/list">文章</a></li>
+            <li><a href="/system/metro/list">地铁</a></li>
+            <li><a href="/system/user/list">用户</a></li>
+            <li><a href="/system/app/list">应用</a></li>
+        </ul>
+        <ul class="nav-bar pull-right">
+            <li><a href="/logout">退出</a></li>
+        </ul>
+    </div>
+</header>
+<div class="container" style="padding-top: 60px;">
     <decorator:body/>
 </div>
 </body>

@@ -111,7 +111,7 @@ public class BillingServiceImpl implements BillingService {
     @Override
     public List<BillingCategoryDTO> loadBillingCategory() {
         String userGuid = SecurityHolder.getUserGuid();
-        List<BillingCategory> categories = billingRepository.findBillCategoryByUserGuid(userGuid);
+        List<BillingCategory> categories = billingRepository.findBillingCategoryByUserGuid(userGuid);
         return BillingCategoryDTO.toDTOs(categories);
     }
 
@@ -209,7 +209,7 @@ public class BillingServiceImpl implements BillingService {
     @Override
     public List<BillingCategoryDTO> loadBillingCategoryByType(BillingType billingType) {
         String userGuid = SecurityHolder.getUserGuid();
-        List<BillingCategory> categories = billingRepository.findBillCategoryByType(billingType, userGuid);
+        List<BillingCategory> categories = billingRepository.findBillingCategoryByType(billingType, userGuid);
         return BillingCategoryDTO.toDTOs(categories);
     }
 
@@ -257,5 +257,39 @@ public class BillingServiceImpl implements BillingService {
                 userRepository.saveOrUpdate(billingSubcategory);
             }
         }
+    }
+
+    @Override
+    public List<BillingAccountDTO> loadBillingAccounts() {
+        String userGuid = SecurityHolder.getUserGuid();
+        List<BillingAccount> accounts = billingRepository.findBillingAccounts(userGuid);
+        return BillingAccountDTO.toDTOs(accounts);
+    }
+
+    @Override
+    public BillingAccountDTO loadBillingAccountByGuid(String guid) {
+        BillingAccount billingAccount = billingRepository.findByGuid(BillingAccount.class, guid);
+        return new BillingAccountDTO(billingAccount);
+    }
+
+    @Override
+    public void saveOrUpdateBillingAccount(BillingAccountDTO accountDTO) {
+        String guid = accountDTO.getGuid();
+        BillingAccount account;
+        if (ValidationUtils.isNotEmpty(guid)) {
+            account = billingRepository.findByGuid(BillingAccount.class, guid);
+        } else {
+            String userGuid = SecurityHolder.getUserGuid();
+            User user = userRepository.findByGuid(User.class, userGuid);
+            account = new BillingAccount(user);
+        }
+        BillingAccountType type = accountDTO.getType();
+        String name = accountDTO.getName();
+        BigDecimal balance = BigDecimal.ZERO;
+        if (ValidationUtils.isPositiveBigDecimal(accountDTO.getBalance())) {
+            balance = new BigDecimal(accountDTO.getBalance());
+        }
+        account.update(type, name, balance);
+        userRepository.saveOrUpdate(account);
     }
 }

@@ -4,39 +4,32 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
-    <title>Station</title>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>站台</title>
 </head>
 <body>
-<div class="weui_tab">
-    <div class="weui_tab_bd">
-        <div class="weui_panel weui_panel_access">
-            <div class="weui_panel_hd">Station</div>
-            <div class="weui_panel_bd">
-                <c:forEach items="${stations}" var="station">
-                    <a class="weui_media_box weui_media_appmsg" href="edit_station?guid=${station.guid}">
-                        <div class="weui_media_bd">
-                            <h4 class="weui_media_title">${station.name}</h4>
-                        </div>
-                    </a>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
-    <div class="weui_tabbar">
-        <a class="weui_tabbar_item" href="add_station">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">Add</p>
-        </a>
-        <a class="weui_tabbar_item" href="javascript:void(0)" onclick="history.back();">
-            <div class="weui_tabbar_icon">
-                <img src="${pageContext.request.contextPath}/images/icons/icon_back.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">返回</p>
-        </a>
+<div>
+    <div class="btn-group pull-right">
+        <a class="btn btn-primary" href="add_station">添加</a>
+        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
     </div>
 </div>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>站台</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${stations}" var="station">
+        <tr>
+            <td>${station.name}</td>
+            <td>
+                <a href="edit_station?guid=${station.guid}">编辑</a>
+            </td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
 </body>
 </html>
