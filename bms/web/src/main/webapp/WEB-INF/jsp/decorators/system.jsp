@@ -18,8 +18,6 @@
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/weui/weui.js"></script>
-
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
     <script type="text/javascript">
@@ -33,6 +31,7 @@
 <header>
     <div class="container">
         <ul id="nav-bar" class="nav-bar">
+            <li><a href="/system/billing/main">记账</a></li>
             <li><a href="/system/billing/list">账单</a></li>
             <li><a href="/system/billing/statistics">统计</a></li>
             <li><a href="/system/billing/nearest">汇总</a></li>

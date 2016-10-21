@@ -2,7 +2,6 @@ package cn.greenwishing.bms.utils.parser;
 
 import cn.greenwishing.bms.shared.EnumUtils;
 import cn.greenwishing.bms.utils.JodaUtils;
-import cn.greenwishing.bms.utils.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
@@ -17,6 +16,7 @@ import java.util.*;
 public class SqlResultParser {
 
     private Object[] result;
+    private int index = 0;
 
     public SqlResultParser(Object[] result) {
         this.result = result;
@@ -36,9 +36,17 @@ public class SqlResultParser {
         return result;
     }
 
+    public Object next() {
+        return get(index++);
+    }
+
     public Object get(int index) {
         if (!check(index)) return null;
         return result[index];
+    }
+
+    public Number nextNumber() {
+        return getNumber(index++);
     }
 
     public Number getNumber(int index) {
@@ -50,8 +58,12 @@ public class SqlResultParser {
         return null;
     }
 
-    public String getNumberAsString(int index) {
-        return NumberUtils.toString(getNumber(index), 2);
+    public Integer nextInt() {
+        return getInt(index++);
+    }
+
+    public Integer nextInt(Integer defaultValue) {
+        return getInt(index++, defaultValue);
     }
 
     public Integer getInt(int index, Integer defaultVal) {
@@ -69,6 +81,14 @@ public class SqlResultParser {
             return ((Number) val).intValue();
         }
         return null;
+    }
+
+    public BigDecimal nextDecimal() {
+        return getDecimal(index++);
+    }
+
+    public BigDecimal nextDecimal(BigDecimal defaultValue) {
+        return getDecimal(index++, defaultValue);
     }
 
     public BigDecimal getDecimal(int index, BigDecimal defaultVal) {
@@ -89,6 +109,10 @@ public class SqlResultParser {
         return null;
     }
 
+    public BigInteger nextBigInt() {
+        return getBigInt(index++);
+    }
+
     public BigInteger getBigInt(int index) {
         if (!check(index)) return null;
         Object val = result[index];
@@ -99,6 +123,14 @@ public class SqlResultParser {
             return BigInteger.valueOf(longVal);
         }
         return null;
+    }
+
+    public String nextString() {
+        return getString(index++);
+    }
+
+    public String nextString(String defaultValue) {
+        return getString(index++, defaultValue);
     }
 
     public String getString(int index, String defaultValue) {
@@ -115,37 +147,65 @@ public class SqlResultParser {
         return val.toString();
     }
 
+    public Date nextDate() {
+        return getDate(index++);
+    }
+
     public Date getDate(int index) {
+        DateTime dateTime = getDateTime(index);
+        if (dateTime != null) return dateTime.toDate();
+        return null;
+    }
+
+    public DateTime nextDateTime() {
+        return getDateTime(index++);
+    }
+
+    public DateTime getDateTime(int index) {
         if (!check(index)) return null;
         Object val = result[index];
-        if (val instanceof Date) {
-            return (Date) val;
+        if (val instanceof DateTime) {
+            return (DateTime) val;
+        } else if (val instanceof LocalDate) {
+            return ((LocalDate) val).toDateTimeAtStartOfDay();
+        } else if (val instanceof Date) {
+            return new DateTime(((Date) val).getTime());
         }
         return null;
     }
 
-    public DateTime getDateTime(int index) {
-        Date date = getDate(index);
-        if (date != null) return new DateTime(date.getTime());
-        return null;
+    public LocalDate nextLocalDate() {
+        return getLocalDate(index++);
     }
 
     public LocalDate getLocalDate(int index) {
-        Date date = getDate(index);
-        if (date != null) return new LocalDate(date.getTime());
+        DateTime dateTime = getDateTime(index);
+        if (dateTime != null) return dateTime.toLocalDate();
         return null;
     }
 
-    private boolean check(int index) {
-        return result != null && result.length > index && result[index] != null;
+    public String nextLocalDateAsString() {
+        return getLocalDateAsString(index++);
     }
 
     public String getLocalDateAsString(int index) {
         return JodaUtils.localDateToString(getLocalDate(index));
     }
 
+    public String nextDateTimeAsString() {
+        return getDateTimeAsString(index++);
+    }
+
     public String getDateTimeAsString(int index) {
         return JodaUtils.dateTimeToString(getDateTime(index));
+    }
+
+    public List<String> nextStringList() {
+        return getStringList(index++);
+    }
+
+    public List<String> nextStringList(String sp) {
+        return getStringList(index++, sp);
     }
 
     public List<String> getStringList(int index, String sp) {
@@ -162,6 +222,14 @@ public class SqlResultParser {
         return getStringList(index, ",");
     }
 
+    public List<Integer> nextIntList() {
+        return getIntList(index++);
+    }
+
+    public List<Integer> nextIntList(String sp) {
+        return getIntList(index++, sp);
+    }
+
     public List<Integer> getIntList(int index) {
         return getIntList(index, ",");
     }
@@ -169,13 +237,21 @@ public class SqlResultParser {
     public List<Integer> getIntList(int index, String sp) {
         if (!check(index)) return Collections.emptyList();
         Integer intVal = getInt(index);
-        if (intVal != null) return Collections.singletonList(intVal);
+        if (intVal != null) return Arrays.asList(intVal);
         List<String> intStrList = getStringList(index, sp);
         List<Integer> intList = new ArrayList<>();
         for (String intStr : intStrList) {
             intList.add(Integer.valueOf(intStr));
         }
         return intList;
+    }
+
+    public <E extends Enum> E nextEnumWithOrdinal(Class<E> enumClass) {
+        return getEnumWithOrdinal(index++, enumClass);
+    }
+
+    public <E extends Enum> E nextEnumWithOrdinal(Class<E> enumClass, E defaultValue) {
+        return getEnumWithOrdinal(index++, enumClass, defaultValue);
     }
 
     public <E extends Enum> E getEnumWithOrdinal(int index, Class<E> enumClass) {
@@ -191,10 +267,22 @@ public class SqlResultParser {
         return enumVal == null ? defaultValue : enumVal;
     }
 
+    public <E extends Enum> E nextEnumWithName(Class<E> enumClass) {
+        return getEnumWithName(index++, enumClass);
+    }
+
     public <E extends Enum> E getEnumWithName(int index, Class<E> enumClass) {
         if (!check(index)) return null;
         String name = getString(index);
         return EnumUtils.nameOf(enumClass, name);
+    }
+
+    public Long nextLong() {
+        return getLong(index++);
+    }
+
+    public Long nextLong(Long defaultValue) {
+        return getLong(index++, defaultValue);
     }
 
     public Long getLong(int index) {
@@ -208,9 +296,13 @@ public class SqlResultParser {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return Arrays.toString(result);
+    public Long getLong(int index, Long defaultValue) {
+        Long value = getLong(index);
+        return value == null ? defaultValue : value;
+    }
+
+    public boolean nextBoolean() {
+        return getBoolean(index++);
     }
 
     public boolean getBoolean(int index) {
@@ -218,10 +310,21 @@ public class SqlResultParser {
         Object val = result[index];
         if (val instanceof Boolean) {
             return (Boolean) val;
+        } else if (val instanceof Integer) {
+            Integer valInt = (Integer) val;
+            return valInt == 1;
         } else {
             String strVal = val.toString();
             return Boolean.valueOf(strVal);
         }
+    }
+
+    public Float nextFloat() {
+        return getFloat(index++);
+    }
+
+    public Float nextFloat(Float defaultValue) {
+        return getFloat(index++, defaultValue);
     }
 
     public Float getFloat(int index) {
@@ -237,6 +340,24 @@ public class SqlResultParser {
 
     public Float getFloat(int index, float defaultValue) {
         Float value = getFloat(index);
-        return value == null ? defaultValue: value;
+        return value == null ? defaultValue : value;
+    }
+
+    private boolean check(int index) {
+        return result != null && result.length > index && result[index] != null;
+    }
+
+    private SqlResultParser resetIndex() {
+        return setIndex(0);
+    }
+
+    private SqlResultParser setIndex(int index) {
+        this.index = index;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(result);
     }
 }

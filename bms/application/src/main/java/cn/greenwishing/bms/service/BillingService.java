@@ -5,7 +5,6 @@ import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.dto.billing.*;
 import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -53,4 +52,6 @@ public interface BillingService {
     BillingAccountDTO loadBillingAccountByGuid(String guid);
 
     void saveOrUpdateBillingAccount(BillingAccountDTO accountDTO);
+
+    List<SuggestTemplateDTO> loadSuggestTemplate(BillingType type, Integer size);
 }

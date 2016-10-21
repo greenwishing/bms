@@ -23,7 +23,10 @@
     <tbody>
     <c:forEach items="${accounts}" var="account">
         <tr>
-            <td>${account.type.label} - ${account.name}</td>
+            <td>
+                <div>${account.type.label} - ${account.name}</div>
+                <div>${account.balance}</div>
+            </td>
             <td>
                 <a href="edit_account?guid=${account.guid}">编辑</a>
             </td>

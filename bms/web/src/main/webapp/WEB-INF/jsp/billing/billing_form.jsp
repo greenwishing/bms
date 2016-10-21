@@ -7,20 +7,31 @@
     <title>记账</title>
     <script type="text/javascript">
         $(function(){
-            WF.billing.categories($('#type'));
+            <c:if test="${'EXPEND' eq param.type or 'INCOME' eq param.type}">
+            WF.billing.categories('${param.type}');
             // WF.util.datePicker('occurredTime');
-
+            </c:if>
             (function(){
                 var $selection = $('#template_selection');
                 WF.ajax.req({
                     type: 'post',
-                    url: 'templates',
-                    data: {dataType: 'json'},
+                    url: 'suggest_tpl',
+                    data: {type: '${param.type}', size: 10},
                     success: function(result) {
-                        var templates = result.templates;
+                        var templates = result.tplList;
                         for (var i in templates) {
                             var template = templates[i];
-                            var $option = $('<option></option>').html(template.name + ' ' + template.amount).attr(template);
+                            var $option = $('<option></option>')
+                                    .html(template.name + ' ' + template.amount)
+                                    .attr({
+                                        'data-name': template.name,
+                                        'data-type': template.type,
+                                        'data-amount': template.amount,
+                                        'data-categoryGuid': template.categoryGuid,
+                                        'data-subcategoryGuid': template.subcategoryGuid,
+                                        'data-srcAccountGuid': template.srcAccountGuid,
+                                        'data-targetAccountGuid': template.targetAccountGuid
+                                    });
                             $selection.append($option);
                         }
                     }
@@ -30,50 +41,237 @@
 
         function applyTemplate(elem) {
             var $option = $(elem).find('option:selected');
-            $('#categoryGuid').attr({'default-value': $option.attr('categoryGuid')});
-            $('#subcategoryGuid').attr({'default-value': $option.attr('subcategoryGuid')});
-            $('#name').val($option.attr('name'));
-            $('#amount').val($option.attr('amountFloat'));
-            var type = $('#type');
-            type.val($option.attr('type'));
-            WF.billing.categories(type);
+            $('#categoryGuid').attr({'default-value': $option.attr('data-categoryGuid')});
+            $('#subcategoryGuid').attr({'default-value': $option.attr('data-subcategoryGuid')});
+            WF.billing.defaultValue($(':input[name=srcAccountGuid]'), $option.attr('data-srcAccountGuid'));
+            WF.billing.defaultValue($(':input[name=targetAccountGuid]'), $option.attr('data-targetAccountGuid'));
+            $('#name').val($option.attr('data-name'));
+            $('#amount').val($option.attr('data-amount'));
+
+            var type = $option.attr('data-type');
+            if ('INCOME' == type || 'EXPEND' == type) {
+                WF.billing.categories(type);
+            }
+        }
+
+        function buildName() {
+            var category = $('#categoryGuid').find('option:selected').text();
+            var subcategory = $('#subcategoryGuid').find('option:selected').text();
+            $('#name').val(category + ' ' + subcategory);
         }
     </script>
 </head>
 <body>
-    <form id="data-form" action="add" method="post" onsubmit="return false;">
+    <form id="data-form" action="add?type=${param.type}" method="post" onsubmit="return false;">
         <div class="form-group">
             <label class="form-control-static">从模板快速添加</label>
             <select class="form-control" id="template_selection" onchange="applyTemplate(this);">
                 <option>选择模板</option>
             </select>
         </div>
+        <c:if test="${'EXPEND' eq param.type or 'INCOME' eq param.type}">
+        <div class="form-group">
+            <label class="form-control-static">分类</label>
+            <div class="input-group">
+                <select class="form-control" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid">
+                    <option value="">请选择</option>
+                </select>
+                <select class="form-control" id="subcategoryGuid" name="subcategoryGuid" onchange="buildName()">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+        </div>
+        </c:if>
         <div class="form-group">
             <label class="form-control-static">名称</label>
             <div class="weui_cell_bd weui_cell_primary">
                 <input class="form-control" type="text" name="name" id="name" placeholder="名称" value="${billingDTO.name}">
             </div>
         </div>
-        <div class="form-group">
-            <label class="form-control-static">类型</label>
-            <select class="form-control" id="type" name="type" onchange="WF.billing.categories(this)" targetId="categoryGuid">
-                <c:forEach items="${types}" var="type">
-                    <option value="${type.value}" ${type==billingDTO.type?'selected':''}>${type.label}</option>
-                </c:forEach>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="form-control-static">分类</label>
-            <select class="form-control" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" default-value="${billingDTO.categoryGuid}" targetId="subcategoryGuid">
-                <option value="">请选择</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="form-control-static">子分类</label>
-            <select class="form-control" id="subcategoryGuid" name="subcategoryGuid" default-value="${billingDTO.subcategoryGuid}">
-                <option value="">请选择</option>
-            </select>
-        </div>
+        <c:choose>
+            <c:when test="${'EXPEND' eq param.type}">
+                <div class="form-group">
+                    <label class="form-control-static">支出账户</label>
+                    <div class="input-group">
+                        <select class="form-control" name="srcAccountGuid">
+                            <c:forEach items="${accountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </c:when>
+            <c:when test="${'INCOME' eq param.type}">
+                <div class="form-group">
+                    <label class="form-control-static">收入账户</label>
+                    <div class="input-group">
+                        <select class="form-control" name="srcAccountGuid">
+                            <c:forEach items="${accountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </c:when>
+            <c:when test="${'TRANSFER' eq param.type}">
+                <div class="form-group">
+                    <label class="form-control-static">转出账户</label>
+                    <div class="input-group">
+                        <select class="form-control" name="srcAccountGuid">
+                            <c:forEach items="${accountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-static">转入账户</label>
+                    <div class="input-group">
+                        <select class="form-control" name="targetAccountGuid">
+                            <c:forEach items="${accountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </c:when>
+            <c:when test="${'BORROW' eq param.type}">
+                <div class="form-group">
+                    <label class="form-control-static">借入账户</label>
+                    <div class="input-group">
+                        <select class="form-control" name="srcAccountGuid">
+                            <c:forEach items="${accountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-static">债权人</label>
+                    <div class="input-group">
+                        <select class="form-control" name="targetAccountGuid">
+                            <c:forEach items="${loanAccountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </c:when>
+            <c:when test="${'LOAN' eq param.type}">
+                <div class="form-group">
+                    <label class="form-control-static">借出账户</label>
+                    <div class="input-group">
+                        <select class="form-control" name="srcAccountGuid">
+                            <c:forEach items="${accountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-static">债务人</label>
+                    <div class="input-group">
+                        <select class="form-control" name="targetAccountGuid">
+                            <c:forEach items="${loanAccountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </c:when>
+            <c:when test="${'RECEIVE' eq param.type}">
+                <div class="form-group">
+                    <label class="form-control-static">收款账户</label>
+                    <div class="input-group">
+                        <select class="form-control" name="srcAccountGuid">
+                            <c:forEach items="${accountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-static">债务人</label>
+                    <div class="input-group">
+                        <select class="form-control" name="targetAccountGuid">
+                            <c:forEach items="${loanAccountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </c:when>
+            <c:when test="${'PAYBACK' eq param.type}">
+                <div class="form-group">
+                    <label class="form-control-static">还款账户</label>
+                    <div class="input-group">
+                        <select class="form-control" name="srcAccountGuid">
+                            <c:forEach items="${accountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-static">债权人</label>
+                    <div class="input-group">
+                        <select class="form-control" name="targetAccountGuid">
+                            <c:forEach items="${loanAccountMap}" var="group">
+                                <optgroup label="${group.key.label}">
+                                    <c:forEach items="${group.value}" var="account">
+                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                    </c:forEach>
+                                </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </c:when>
+        </c:choose>
         <div class="form-group">
             <div class="weui_cell_hd"><label class="form-control-static">日期</label></div>
             <input class="form-control" type="date" name="occurredTime" placeholder="日期" value="${billingDTO.occurredTime}"/>

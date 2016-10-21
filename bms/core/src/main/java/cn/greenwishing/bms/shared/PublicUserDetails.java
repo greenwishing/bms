@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class PublicUserDetails implements UserDetails {
 
+    private Integer id;
     private String guid;
     private String username; // account
     private String nickname; // username
@@ -30,6 +31,7 @@ public class PublicUserDetails implements UserDetails {
     public PublicUserDetails(User user) {
         this();
 
+        this.id = user.id();
         this.guid = user.guid();
         this.username = user.account();
         this.nickname = user.username();
@@ -85,6 +87,10 @@ public class PublicUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserStatus.ENABLED == status;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getGuid() {

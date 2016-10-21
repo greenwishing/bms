@@ -30,4 +30,13 @@ public class SecurityHolder {
         }
         return null;
     }
+
+    public static Integer getUserId() {
+        Object principal = get().getPrincipal();
+        if (principal instanceof PublicUserDetails) {
+            PublicUserDetails user = (PublicUserDetails) principal;
+            return user.getId();
+        }
+        return null;
+    }
 }

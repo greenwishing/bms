@@ -25,6 +25,10 @@ public class BillingDTO {
     private String categoryName;
     private String subcategoryGuid;
     private String subcategoryName;
+    private String srcAccountGuid;
+    private String srcAccountName;
+    private String targetAccountGuid;
+    private String targetAccountName;
     private String amount;
     private BigDecimal _amount = BigDecimal.ZERO;
     private String occurredTime = JodaUtils.today().toString(JodaUtils.DATE_FORMAT);
@@ -50,6 +54,16 @@ public class BillingDTO {
         if (subcategory != null) {
             this.subcategoryGuid = subcategory.guid();
             this.subcategoryName = subcategory.name();
+        }
+        BillingAccount srcAccount = billing.srcAccount();
+        if (srcAccount != null) {
+            this.srcAccountGuid = srcAccount.guid();
+            this.srcAccountName = srcAccount.name();
+        }
+        BillingAccount targetAccount = billing.targetAccount();
+        if (targetAccount != null) {
+            this.targetAccountGuid = targetAccount.guid();
+            this.targetAccountName = targetAccount.name();
         }
         this._amount = billing.amount();
         this.amount = NumberUtils.toString(billing.amount().abs());
@@ -122,6 +136,30 @@ public class BillingDTO {
 
     public String getSubcategoryName() {
         return subcategoryName;
+    }
+
+    public String getSrcAccountGuid() {
+        return srcAccountGuid;
+    }
+
+    public void setSrcAccountGuid(String srcAccountGuid) {
+        this.srcAccountGuid = srcAccountGuid;
+    }
+
+    public String getSrcAccountName() {
+        return srcAccountName;
+    }
+
+    public String getTargetAccountGuid() {
+        return targetAccountGuid;
+    }
+
+    public void setTargetAccountGuid(String targetAccountGuid) {
+        this.targetAccountGuid = targetAccountGuid;
+    }
+
+    public String getTargetAccountName() {
+        return targetAccountName;
     }
 
     public String getAmount() {

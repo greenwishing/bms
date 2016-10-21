@@ -14,6 +14,7 @@ import cn.greenwishing.bms.utils.NumberUtils;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
+import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,23 +45,57 @@ public class BillingServiceImpl implements BillingService {
     public void saveOrUpdateBilling(BillingDTO billingDTO) {
         String amountStr = billingDTO.getAmount();
         BigDecimal amount = NumberUtils.parseDecimal(amountStr, BigDecimal.ZERO);
+
+        BillingType billingType = billingDTO.getType();
         String categoryGuid = billingDTO.getCategoryGuid();
         String subcategoryGuid = billingDTO.getSubcategoryGuid();
-        BillingCategory category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);
-        BillingSubcategory subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);
-        BillingStatus status = BillingStatus.NORMAL;
-        BillingType billingType = category.type();
+        String srcAccountGuid = billingDTO.getSrcAccountGuid();
+        String targetAccountGuid = billingDTO.getTargetAccountGuid();
+
+        BillingCategory category = null;
+        BillingSubcategory subcategory = null;
+        BillingAccount srcAccount = null;
+        BillingAccount targetAccount = null;
         switch (billingType) {
-            case ACCOUNT_RECEIVABLE:
-                status = BillingStatus.RECEIVABLE;
+            case EXPEND: // 支出
+                category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);
+                subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);
+                srcAccount = accountSubtractAmount(srcAccountGuid, amount);
                 break;
-            case ACCOUNT_PAYABLE:
-                status = BillingStatus.PAYABLE;
+            case INCOME: // 收入
+                category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);
+                subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);
+                srcAccount = accountAddAmount(srcAccountGuid, amount);
                 break;
-            case EXPEND:
-                amount = amount.negate();
+            case TRANSFER: // 转账
+                srcAccount = accountSubtractAmount(srcAccountGuid, amount);
+                targetAccount = accountAddAmount(targetAccountGuid, amount);
                 break;
+            case BORROW: // 借入
+                srcAccount = accountAddAmount(srcAccountGuid, amount);
+                targetAccount = accountSubtractAmount(targetAccountGuid, amount);
+                break;
+            case LOAN: // 借出/代付
+                srcAccount = accountSubtractAmount(srcAccountGuid, amount);
+                targetAccount = accountAddAmount(targetAccountGuid, amount);
+                break;
+            case RECEIVE: // 收款
+                srcAccount = accountAddAmount(srcAccountGuid, amount);
+                targetAccount = accountSubtractAmount(targetAccountGuid, amount);
+                break;
+            case PAYBACK: // 还款
+                srcAccount = accountSubtractAmount(srcAccountGuid, amount);
+                targetAccount = accountAddAmount(targetAccountGuid, amount);
+                break;
+            default:
+                throw new RuntimeException("不支持的类型：" + billingType.getLabel());
         }
+        billingRepository.saveOrUpdate(srcAccount);
+        if (targetAccount != null) {
+            billingRepository.saveOrUpdate(targetAccount);
+        }
+
+        BillingStatus status = BillingStatus.NORMAL;
         String guid = SecurityHolder.getUserGuid();
         User occurredUser = userRepository.findByGuid(User.class, guid);
 
@@ -72,7 +107,8 @@ public class BillingServiceImpl implements BillingService {
 
         String name = billingDTO.getName();
         BillingType type = billingDTO.getType();
-        Billing billing = new Billing(name, type, category, subcategory, amount, billingDTO.getDescription(), occurredTime, occurredUser, occurredUser);
+        Billing billing = new Billing(name, type, category, subcategory, srcAccount, targetAccount, amount,
+                billingDTO.getDescription(), occurredTime, occurredUser, occurredUser);
         billing.updateStatus(status);
         billingRepository.saveOrUpdate(billing);
 
@@ -84,6 +120,20 @@ public class BillingServiceImpl implements BillingService {
             template.update(name, type, category, subcategory, amount);
             billingRepository.saveOrUpdate(template);
         }
+    }
+
+    private BillingAccount accountAddAmount(String accountGuid, BigDecimal amount) {
+        BillingAccount billingAccount = billingRepository.findByGuid(BillingAccount.class, accountGuid);
+        billingAccount.addAmount(amount);
+        billingRepository.saveOrUpdate(billingAccount);
+        return billingAccount;
+    }
+
+    private BillingAccount accountSubtractAmount(String accountGuid, BigDecimal amount) {
+        BillingAccount billingAccount = billingRepository.findByGuid(BillingAccount.class, accountGuid);
+        billingAccount.subtractAmount(amount);
+        billingRepository.saveOrUpdate(billingAccount);
+        return billingAccount;
     }
 
     @Override
@@ -286,10 +336,17 @@ public class BillingServiceImpl implements BillingService {
         BillingAccountType type = accountDTO.getType();
         String name = accountDTO.getName();
         BigDecimal balance = BigDecimal.ZERO;
-        if (ValidationUtils.isPositiveBigDecimal(accountDTO.getBalance())) {
+        if (ValidationUtils.isAllNumber(accountDTO.getBalance())) {
             balance = new BigDecimal(accountDTO.getBalance());
         }
         account.update(type, name, balance);
         userRepository.saveOrUpdate(account);
+    }
+
+    @Override
+    public List<SuggestTemplateDTO> loadSuggestTemplate(BillingType type, Integer size) {
+        Integer userId = SecurityHolder.getUserId();
+        List<SqlResultParser> parsers = billingRepository.findSuggestTemplate(type, userId, size);
+        return SuggestTemplateDTO.valueOf(parsers);
     }
 }

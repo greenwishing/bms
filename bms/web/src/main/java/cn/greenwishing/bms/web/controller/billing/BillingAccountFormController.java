@@ -54,8 +54,8 @@ public class BillingAccountFormController {
             errors.rejectValue("name", "name", "请输入名称");
         }
         String balance = accountDTO.getBalance();
-        if (ValidationUtils.isNotEmpty(balance) && !ValidationUtils.isPositiveBigDecimal(balance)) {
-            errors.rejectValue("balance", "balance", "余额必须是大于0的数字");
+        if (ValidationUtils.isNotEmpty(balance) && !ValidationUtils.isAllNumber(balance)) {
+            errors.rejectValue("balance", "balance", "余额必须是数字");
         }
         ModelMap model = new ModelMap();
         if (errors.hasErrors()) {

@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class BillingAccountDTO {
 
+    private Integer id;
     private String guid;
     private String name;
     private BillingAccountType type;
@@ -22,6 +23,7 @@ public class BillingAccountDTO {
     }
 
     public BillingAccountDTO(BillingAccount account) {
+        this.id = account.id();
         this.guid = account.guid();
         this.name = account.name();
         this.type = account.type();
@@ -35,6 +37,14 @@ public class BillingAccountDTO {
             accountDTOs.add(accountDTO);
         }
         return accountDTOs;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getGuid() {

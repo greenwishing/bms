@@ -29,6 +29,14 @@ public class Billing extends AbstractDomain {
     @ManyToOne(targetEntity = BillingSubcategory.class)
     private BillingSubcategory subcategory;
 
+    @JoinColumn(name = "src_account_id")
+    @ManyToOne(targetEntity = BillingAccount.class)
+    private BillingAccount srcAccount;
+
+    @JoinColumn(name = "target_account_id")
+    @ManyToOne(targetEntity = BillingAccount.class)
+    private BillingAccount targetAccount;
+
     @Column(name = "amount")
 	private BigDecimal amount;
 
@@ -58,22 +66,20 @@ public class Billing extends AbstractDomain {
     public Billing() {
     }
 
-    public Billing(String name, BillingType type, BillingCategory category, BillingSubcategory subcategory, BigDecimal amount, String description, LocalDate occurredTime, User occurredUser, User operator) {
+    public Billing(String name, BillingType type, BillingCategory category, BillingSubcategory subcategory,
+                   BillingAccount srcAccount, BillingAccount targetAccount, BigDecimal amount, String description,
+                   LocalDate occurredTime, User occurredUser, User operator) {
         this.name = name;
         this.type = type;
         this.category = category;
         this.subcategory = subcategory;
+        this.srcAccount = srcAccount;
+        this.targetAccount = targetAccount;
         this.amount = amount;
         this.description = description;
         this.occurredTime = occurredTime;
         this.occurredUser = occurredUser;
         this.operator = operator;
-    }
-
-    public void update(BillingType type, BillingCategory category, BillingSubcategory subcategory) {
-        this.type = type;
-        this.category = category;
-        this.subcategory = subcategory;
     }
 
     public void updateStatus(BillingStatus status) {
@@ -93,6 +99,14 @@ public class Billing extends AbstractDomain {
 
     public BillingSubcategory subcategory() {
         return subcategory;
+    }
+
+    public BillingAccount srcAccount() {
+        return srcAccount;
+    }
+
+    public BillingAccount targetAccount() {
+        return targetAccount;
     }
 
     public String name() {

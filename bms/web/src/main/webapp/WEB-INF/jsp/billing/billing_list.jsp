@@ -17,13 +17,6 @@
             $('.weui_dialog_confirm').hide();
         };
     </script>
-    <style type="text/css">
-        .price.NEGATIVE { color: red;}
-        .price.NEGATIVE:before { content: '-';}
-        .price.POSITIVE { color: green;}
-        .price.POSITIVE:before { content: '+';}
-        .price.SETTLED { text-decoration: line-through;}
-    </style>
 </head>
 <body>
 <div>
@@ -57,7 +50,7 @@
         </div>
     </form>
     <div class="btn-group pull-right">
-        <a class="btn btn-primary" href="add">添加</a>
+        <a class="btn btn-primary" href="add?type=${param.type}">创建</a>
         <a class="btn btn-default" href="categories">分类</a>
         <a class="btn btn-default" href="templates">模板</a>
         <a class="btn btn-default" href="accounts">账户</a>
@@ -70,14 +63,13 @@
         <th>金额</th>
         <th>名称</th>
         <th>分类</th>
-        <th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${pagingDTO.list}" var="billing">
     <tr data-id="${billing.guid}" title="${billing.settleTime} ${billing.status.label}">
         <td>
-            <span class="price ${billing.className}">${billing.amount}</span>
+            <span class="price">${billing.amount}</span>
         </td>
         <td>
             <div>${billing.name}</div>
@@ -85,16 +77,6 @@
         </td>
         <td>
             <div>${billing.type.label} - ${billing.categoryName} - ${billing.subcategoryName}</div>
-        </td>
-        <td>
-            <c:choose>
-                <c:when test="${'ACCOUNT_RECEIVABLE'==billing.type and 'RECEIVED' != billing.status}">
-                    <a href="javascript:void(0)" onclick="WF.billing.changeStatus('${billing.guid}','RECEIVED')">标记为已还</a>
-                </c:when>
-                <c:when test="${'ACCOUNT_PAYABLE'==billing.type and 'PAYED' != billing.status}">
-                    <a href="javascript:void(0)" onclick="WF.billing.changeStatus('${billing.guid}','PAYED')">标记为已付</a>
-                </c:when>
-            </c:choose>
         </td>
         </c:forEach>
     </tr>

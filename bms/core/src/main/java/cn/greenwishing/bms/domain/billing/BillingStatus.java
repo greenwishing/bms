@@ -6,11 +6,16 @@ package cn.greenwishing.bms.domain.billing;
  */
 public enum BillingStatus {
     NORMAL(""),
+    DESTROYED("已作废"),
 
+    @Deprecated
     RECEIVABLE("未还"),
+    @Deprecated
     RECEIVED("已还"),
 
+    @Deprecated
     PAYABLE("未付"),
+    @Deprecated
     PAYED("已付"),
     ;
 

@@ -68,7 +68,7 @@ var WF = {
             $menu.find('li').each(function(){
                 var $li = $(this);
                 var src = $li.find('a').attr('href');
-                if (requestURI.startsWith(src)) {
+                if (src.startsWith(requestURI)) {
                     $li.addClass('active');
                     return false;
                 }
@@ -191,12 +191,11 @@ var WF = {
     },
     billing: {
         categories: function (_this) {
-            var select = $(_this);
-            var target = $('#' + select.attr('targetId'));
-            var defaultValue = target.attr('default-value');
-            target.html(WF.resources.emptyOption);
+            var billingType = (typeof _this == 'object') ? $(_this).val() : _this;
+            var $target = $('#categoryGuid');
+            var defaultValue = $target.attr('default-value');
+            $target.html(WF.resources.emptyOption);
 
-            var billingType = select.val();
             if (WF.validation.isEmpty(billingType)) return;
 
             WF.ajax.req({
@@ -207,22 +206,22 @@ var WF = {
                     var categories = result.categories;
                     for (var i in categories) {
                         var category = categories[i];
-                        target.append('<option value="' + category.guid + '">' + category.name + '</option>');
+                        var $option = $('<option>' + category.name + '</option>').attr({value: category.guid, 'data-id': category.id}).html(category.name);
+                        $target.append($option);
                     }
                     if (!WF.validation.isEmpty(defaultValue)) {
-                        target.val(defaultValue);
-                        WF.billing.subcategories(target);
+                        WF.billing.defaultValue($target, defaultValue);
+                        WF.billing.subcategories($target);
                     }
                 }
             });
         },
         subcategories: function (_this) {
-            var select = $(_this);
-            var target = $('#' + select.attr('targetId'));
-            var defaultValue = target.attr('default-value');
-            target.html(WF.resources.emptyOption);
+            var categoryGuid = (typeof _this == 'object') ? $(_this).val() : _this;
+            var $target = $('#subcategoryGuid');
+            var defaultValue = $target.attr('default-value');
+            $target.html(WF.resources.emptyOption);
 
-            var categoryGuid = select.val();
             if (WF.validation.isEmpty(categoryGuid)) return;
 
             WF.ajax.req({
@@ -233,9 +232,10 @@ var WF = {
                     var subcategories = result.subcategories;
                     for (var i in subcategories) {
                         var subcategory = subcategories[i];
-                        target.append('<option value="' + subcategory.guid + '">' + subcategory.name + '</option>');
+                        var $option = $('<option>' + subcategory.name + '</option>').attr({value: subcategory.guid, 'data-id': subcategory.id}).html(subcategory.name);
+                        $target.append($option);
                     }
-                    target.val(defaultValue);
+                    WF.billing.defaultValue($target, defaultValue);
                 }
             });
         },
@@ -271,6 +271,14 @@ var WF = {
                         WF.page.reload();
                     }
                 });
+            }
+        },
+        defaultValue: function($select, defaultValue) {
+            var attrFind = $select.find('option[data-id=' + defaultValue + ']');
+            if (attrFind.length) {
+                attrFind.attr({'selected': 'selected'});
+            } else {
+                $select.val(defaultValue);
             }
         }
     },

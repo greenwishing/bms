@@ -6,15 +6,18 @@ import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.persistence.hibernate.AbstractRepositoryHibernate;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
+import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import cn.greenwishing.bms.utils.query.helper.BillingQueryHelper;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.joda.time.LocalDate;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 @Repository("billingRepository")
 public class BillingRepositoryHibernate extends AbstractRepositoryHibernate implements BillingRepository {
@@ -89,5 +92,22 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     @SuppressWarnings("unchecked")
     public List<BillingAccount> findBillingAccounts(String userGuid) {
         return getHibernateTemplate().find("from BillingAccount a where a.user.guid=?", userGuid);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<SqlResultParser> findSuggestTemplate(final BillingType type, final Integer userId, final Integer size) {
+        return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<SqlResultParser>>() {
+            @Override
+            public List<SqlResultParser> doInHibernate(Session session) throws HibernateException, SQLException {
+                Query query = session.createSQLQuery("select b.id,b.guid,b.name,b.type,b.category_id,b.subcategory_id,b.src_account_id,b.target_account_id,b.amount from billing b join (" +
+                        "SELECT max(id) id FROM billing WHERE type = :type AND occurred_user_id = :userId GROUP BY category_id, subcategory_id ORDER BY count(*) DESC" +
+                        ") t on b.id= t.id");
+                query.setParameter("type", type.getValue());
+                query.setParameter("userId", userId);
+                List<Object[]> results = query.setMaxResults(size).list();
+                return SqlResultParser.valueOf(results);
+            }
+        });
     }
 }

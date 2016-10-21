@@ -16,5 +16,9 @@
         <pattern>/403.jsp*</pattern>
         <pattern>/404.jsp*</pattern>
         <pattern>/exception.jsp*</pattern>
+
+        <pattern>/system/billing/add*</pattern>
+
+
     </excludes>
 </decorators>

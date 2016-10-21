@@ -42,6 +42,14 @@ public class BillingAccount extends AbstractDomain {
         this.balance = balance;
     }
 
+    public void subtractAmount(BigDecimal amount) {
+        this.balance = this.balance.subtract(amount);
+    }
+
+    public void addAmount(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
+    }
+
     public BillingAccountType type() {
         return type;
     }

@@ -7,7 +7,6 @@ import cn.greenwishing.bms.dto.billing.*;
 import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.shared.EnumUtils;
-import cn.greenwishing.bms.utils.SecurityHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,6 +28,19 @@ public class BillingController {
 
     @Autowired
     private BillingService billingService;
+
+    @RequestMapping("main")
+    public String main(ModelMap model) {
+        model.put("types", BillingType.values());
+        return "billing/main";
+    }
+
+    @RequestMapping("suggest_tpl")
+    public ModelAndView suggest_tpl(BillingType type, Integer size) {
+        if (size == null) size = 10;
+        List<SuggestTemplateDTO> tplList = billingService.loadSuggestTemplate(type, size);
+        return new ModelAndView(new MappingJacksonJsonView(), new ModelMap("tplList", tplList));
+    }
 
     @RequestMapping("list")
     public String list(BillingPagingDTO pagingDTO, ModelMap model) {
