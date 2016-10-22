@@ -36,16 +36,21 @@ public class BillingFormController {
         Map<BillingAccountType, List<BillingAccountDTO>> loanAccountMap = new TreeMap<>();
         for (BillingAccountDTO account : accounts) {
             BillingAccountType type = account.getType();
-            List<BillingAccountDTO> accountList = accountMap.get(type);
-            if (accountList == null) {
-                accountList = new ArrayList<>();
-                if (type.isLoan()) {
-                    loanAccountMap.put(type, accountList);
-                } else {
+            if (type.isLoan()) {
+                List<BillingAccountDTO> loanAccountList = loanAccountMap.get(type);
+                if (loanAccountList == null) {
+                    loanAccountList = new ArrayList<>();
+                    loanAccountMap.put(type, loanAccountList);
+                }
+                loanAccountList.add(account);
+            } else {
+                List<BillingAccountDTO> accountList = accountMap.get(type);
+                if (accountList == null) {
+                    accountList = new ArrayList<>();
                     accountMap.put(type, accountList);
                 }
+                accountList.add(account);
             }
-            accountList.add(account);
         }
         model.put("accountMap", accountMap);
         model.put("loanAccountMap", loanAccountMap);
