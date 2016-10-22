@@ -149,6 +149,31 @@ var WF = {
                     checkbox.removeAttr('checked');
                 }
             });
+        },
+        dropdown: function(callback){
+            var $dropdown = $('.dropdown-toggle');
+            var $parent = $dropdown.parent();
+            var $menu = $parent.find('.dropdown-menu');
+            $dropdown.bind('click', function(){
+                toggleOpen();
+            });
+            $menu.delegate('li:not(.divider):visible', 'click', function(){
+                toggleOpen();
+                (typeof callback == 'function') && callback($(this));
+            });
+            $parent.delegate('.dropdown-backdrop', 'click', function(){
+                toggleOpen();
+            });
+
+            function toggleOpen() {
+                var isActive = $parent.hasClass('open');
+                $parent.toggleClass('open', !isActive);
+                if (isActive) {
+                    $('.dropdown-backdrop').remove();
+                } else {
+                    $('<div class="dropdown-backdrop"/>').insertAfter($menu);
+                }
+            }
         }
     },
     ajax: {
