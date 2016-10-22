@@ -65,7 +65,7 @@
     </script>
 </head>
 <body>
-    <form id="data-form" action="add?type=${param.type}" method="post" onsubmit="return false;">
+    <form id="data-form" action="record?type=${param.type}" method="post" onsubmit="return false;">
         <div class="form-group">
             <a class="btn btn-default dropdown-toggle">从模板快速添加 <span class="caret"></span></a>
             <ul id="tpl-list" class="dropdown-menu"></ul>
@@ -289,10 +289,9 @@
             <label class="checkbox-inline"><input name="createTemplate" type="checkbox" value="true"/> 创建模板</label>
         </div>
         <div class="form-group">
-            <a class="btn btn-primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="saveContinue()">保存</a>
             <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
         </div>
     </form>
-</div>
 </body>
 </html>

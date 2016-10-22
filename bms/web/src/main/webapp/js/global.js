@@ -103,15 +103,16 @@ var WF = {
             }
             $(form)[0].submit();
         },
-        ajaxSubmit: function(form) {
+        ajaxSubmit: function(form, callback) {
             WF.ajax.req({
                 url: $(form).attr('action'),
                 type: $(form).attr('method') || 'POST',
                 data: $(form).serialize(),
                 success: function(result) {
-                    console.log(result);
                     if (result.success) {
-                        if (result.redirectUrl) {
+                        if (callback && typeof callback == 'function') {
+                            callback(result);
+                        } else if (result.redirectUrl) {
                             WF.page.forward(result.redirectUrl);
                         } else if (result.back) {
                             history.back();
@@ -174,6 +175,26 @@ var WF = {
                     $('<div class="dropdown-backdrop"/>').insertAfter($menu);
                 }
             }
+        },
+        topTip: function(message, opts){
+            opts = $.extend({}, {timeout: 2000, type: 'success', callback: function(){}}, opts || {});
+            var $tip = $('<div class="top-tip"></div>').html(message).addClass('top-tip-' + opts.type).appendTo($('body'));
+            setTimeout(function(){
+                $tip.addClass('open');
+            }, 100);
+            setTimeout(function(){
+                if ($tip[0].style['WebkitTransition'] !== undefined) {
+                    $tip.one('transitionend', function(){
+                        $tip.remove();
+                        (typeof opts.callback == 'function') && opts.callback();
+                    });
+                    $tip.removeClass('open');
+                } else {
+                    $tip.removeClass('open');
+                    $tip.remove();
+                    (typeof opts.callback == 'function') && opts.callback();
+                }
+            }, opts.timeout);
         }
     },
     ajax: {

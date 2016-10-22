@@ -1146,6 +1146,36 @@ fieldset[disabled] .btn-primary.active {
     font-size: 104px;
 }
 
+.top-tip {
+    z-index: 3000;
+    display: block;
+    position: fixed;
+    top: -50px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    padding: 10px 15px;
+    text-align: center;
+    opacity: 0;
+    -webkit-transition: top ease-in-out .15s, opacity ease-in-out .15s;
+    -o-transition: top ease-in-out .15s, opacity ease-in-out .15s;
+    transition: top ease-in-out .15s, opacity ease-in-out .15s;
+}
+.top-tip.top-tip-success {
+    background: rgba(245, 255, 245, .9);
+    border: 1px solid rgba(200, 235, 200, .9);
+    color: #4cd964;
+}
+.top-tip.top-tip-warning {
+    background: rgba(255, 255, 245, .9);
+    border: 1px solid rgba(235, 235, 200, .9);
+    color: #ff3b30;
+}
+.top-tip.open {
+    top: 0;
+    opacity: 1;
+}
+
 .color-red {color:#ff3b30}
 .color-orange {color:#ff9500}
 .color-yellow {color:#fc0}

@@ -50,10 +50,6 @@
         </div>
     </form>
     <div class="btn-group pull-right">
-        <a class="btn btn-primary" href="add?type=${param.type}">创建</a>
-        <a class="btn btn-default" href="categories">分类</a>
-        <a class="btn btn-default" href="templates">模板</a>
-        <a class="btn btn-default" href="accounts">账户</a>
         <a class="btn btn-default" href="javascript:void(0)" onclick="history.back()">返回</a>
     </div>
 </div>

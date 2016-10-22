@@ -33,8 +33,8 @@
         <ul id="nav-bar" class="nav-bar">
             <li><a href="/system/billing/main">记账</a></li>
             <li><a href="/system/billing/list">账单</a></li>
-            <li><a href="/system/billing/statistics">统计</a></li>
-            <li><a href="/system/billing/nearest">汇总</a></li>
+            <li><a href="/system/billing/accounts">账户</a></li>
+            <li><a href="/system/billing/categories">分类</a></li>
             <li><a href="/system/article/list">文章</a></li>
             <li><a href="/system/metro/list">地铁</a></li>
             <li><a href="/system/user/list">用户</a></li>

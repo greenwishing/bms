@@ -22,7 +22,7 @@ import java.util.*;
  * User: Wu Fan
  */
 @Controller
-@RequestMapping("/system/billing/add")
+@RequestMapping("/system/billing/record")
 @SessionAttributes("billingDTO")
 public class BillingFormController {
 
@@ -102,7 +102,6 @@ public class BillingFormController {
         } else {
             billingService.saveOrUpdateBilling(billingDTO);
             model.put("success", true);
-            model.put("redirectUrl", "list?type=" + billingDTO.getType());
         }
         return new ModelAndView(new MappingJacksonJsonView(), model);
     }
