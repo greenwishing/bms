@@ -29,10 +29,18 @@ public class BillingController {
     @Autowired
     private BillingService billingService;
 
+    @RequestMapping("overview")
+    public String overview(ModelMap model) {
+        AssetDTO asset =  billingService.loadAsset();
+        model.put("types", BillingType.values());
+        model.put("asset", asset);
+        return "billing/billing_overview";
+    }
+
     @RequestMapping("main")
     public String main(ModelMap model) {
         model.put("types", BillingType.values());
-        return "billing/main";
+        return "billing/billing_main";
     }
 
     @RequestMapping("suggest_tpl")
@@ -60,18 +68,6 @@ public class BillingController {
     public String status(String guid, BillingStatus status) {
         billingService.changeStatus(guid, status);
         return "redirect:list";
-    }
-
-    @RequestMapping("statistics")
-    public String statistics(ModelMap model) {
-        model.put("types", BillingType.values());
-        return "billing/billing_statistics";
-    }
-
-    @RequestMapping("nearest")
-    public String nearest(ModelMap model) {
-        model.put("types", BillingType.values());
-        return "billing/billing_nearest";
     }
 
     @RequestMapping("nearest_data")

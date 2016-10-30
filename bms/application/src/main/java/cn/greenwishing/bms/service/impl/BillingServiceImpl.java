@@ -145,9 +145,9 @@ public class BillingServiceImpl implements BillingService {
     public List<SeriesObject> loadNearestStatistics(Integer size) {
         List<SeriesObject> series = new ArrayList<>();
 
-        SeriesObject income = loadSeriesObject(BillingType.INCOME, size);
+        //SeriesObject income = loadSeriesObject(BillingType.INCOME, size);
         SeriesObject expend = loadSeriesObject(BillingType.EXPEND, size);
-        series.add(income);
+        //series.add(income);
         series.add(expend);
 
         return series;
@@ -348,5 +348,12 @@ public class BillingServiceImpl implements BillingService {
         Integer userId = SecurityHolder.getUserId();
         List<SqlResultParser> parsers = billingRepository.findSuggestTemplate(type, userId, size);
         return SuggestTemplateDTO.valueOf(parsers);
+    }
+
+    @Override
+    public AssetDTO loadAsset() {
+        Integer userId = SecurityHolder.getUserId();
+        SqlResultParser parser = billingRepository.findAssertData(userId);
+        return new AssetDTO(parser);
     }
 }

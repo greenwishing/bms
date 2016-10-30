@@ -2,15 +2,59 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <title>账单统计</title>
+    <title>账务概览</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/moment.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/highcharts/4.0.3/highcharts.js"></script>
     <script type="text/javascript">
-        $(function () {
+        $(function(){
+            $.ajax({
+                type: 'post',
+                url: 'nearest_data',
+                data: { size: 12},
+                success: function(result){
+                    for (var i in result.series)
+                        renderHighcharts(result.series[i]);
+                }
+            });
             onConditionChanged();
         });
+        function renderHighcharts(series) {
+            var div = $('<div class="col-lg-6"></div>');
+            $('.nearest').append(div);
+            var data = [];
+            data.push(series);
+            var categories = [];
+            for (var i in series.data) {
+                categories.push(series.data[i].name);
+            }
+            var color = (series.name == '收入' ? 'green' : 'red');
+            div.highcharts({
+                chart: { height: 220, type: 'areaspline' },
+                title: { text: series.name },
+                tooltip: {
+                    headerFormat: '',
+                    pointFormat: '{point.name}{series.name} {point.y}元'
+                },
+                plotOptions: {
+                    areaspline: { borderWidth: 0, lineWidth: 1, lineColor: color, fillOpacity: 0.1, states: { hover: { enabled: false } }, marker: { radius: 2} }
+                },
+                xAxis: {
+                    title: { text: ''},
+                    categories: categories,
+                    labels: { rotation: -45}
+                },
+                yAxis: {
+                    title: {text: '金额'},
+                    min: 0
+                },
+                series: data,
+                legend: { enabled: false, verticalAlign: 'top' },
+                credits: { enabled: false}
+            });
+        }
 
         function onConditionChanged(opts) {
             var $type = $('#type'), $group = $('#group');
@@ -170,6 +214,36 @@
     </script>
 </head>
 <body>
+<div class="accounts">
+    <div class="col-6">
+        <div class="account">
+            <p>账户总余额</p>
+            <h3 class="signum signum_${asset.asset.signum}">${asset.asset}</h3>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="account">
+            <p>债权</p>
+            <h3 class="signum signum_${asset.credit.signum}">${asset.credit}</h3>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="account">
+            <p>债务</p>
+            <h3 class="signum signum_${asset.debt.signum}">${asset.debt}</h3>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="account">
+            <p>净资产</p>
+            <h3 class="signum signum_${asset.netAsset.signum}">${asset.netAsset}</h3>
+        </div>
+    </div>
+</div>
+<div>
+    <a href="accounts">查看账户余额</a>
+</div>
+<div class="nearest"></div>
 <div>
     <div class="form-inline pull-left">
         <div class="form-group">

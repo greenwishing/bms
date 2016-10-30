@@ -7,32 +7,21 @@
     <title>账户</title>
 </head>
 <body>
-<div>
-    <div class="btn-group pull-right">
-        <a class="btn btn-primary" href="add_account">添加</a>
-        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back()">返回</a>
+<div class="accounts">
+    <c:forEach items="${accounts}" var="account">
+    <div class="col-6">
+        <div class="account">
+            <p>${account.type.label} - ${account.name}</p>
+            <h3 class="signum signum_${account.signum}">${account.balance}</h3>
+            <a href="edit_account?guid=${account.guid}">编辑</a>
+        </div>
+    </div>
+    </c:forEach>
+    <div class="col-6">
+        <div class="account">
+            <a href="add_account">添加</a>
+        </div>
     </div>
 </div>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>账户</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${accounts}" var="account">
-        <tr>
-            <td>
-                <div>${account.type.label} - ${account.name}</div>
-                <div>${account.balance}</div>
-            </td>
-            <td>
-                <a href="edit_account?guid=${account.guid}">编辑</a>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
 </body>
 </html>

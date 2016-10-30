@@ -1,5 +1,6 @@
 package cn.greenwishing.bms.utils.parser;
 
+import cn.greenwishing.bms.dto.BmsNumber;
 import cn.greenwishing.bms.shared.EnumUtils;
 import cn.greenwishing.bms.utils.JodaUtils;
 import org.joda.time.DateTime;
@@ -85,6 +86,10 @@ public class SqlResultParser {
 
     public BigDecimal nextDecimal() {
         return getDecimal(index++);
+    }
+
+    public BmsNumber nextBmsNumber() {
+        return new BmsNumber(getDecimal(index++, BigDecimal.ZERO));
     }
 
     public BigDecimal nextDecimal(BigDecimal defaultValue) {

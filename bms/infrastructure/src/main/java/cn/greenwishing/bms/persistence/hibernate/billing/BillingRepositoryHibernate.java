@@ -110,4 +110,22 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
             }
         });
     }
+
+    @Override
+    public SqlResultParser findAssertData(final Integer userId) {
+        return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<SqlResultParser>() {
+            @Override
+            public SqlResultParser doInHibernate(Session session) throws HibernateException, SQLException {
+                Query query = session.createQuery("select " +
+                        " sum(case when (a.type='CASH' or a.type='VIRTUAL' or a.type='DEPOSIT_CARD') then a.balance else 0 end)," +
+                        " sum(case when (a.type='LOAN') then a.balance else 0 end)," +
+                        " sum(case when (a.type='INDEBTED' or a.type='INDEBTED' or a.type='CREDIT_CARD') then a.balance else 0 end)," +
+                        " sum(a.balance)" +
+                        " from BillingAccount a where a.user.id=:userId");
+                query.setParameter("userId", userId);
+                Object[] result = (Object[]) query.uniqueResult();
+                return new SqlResultParser(result);
+            }
+        });
+    }
 }

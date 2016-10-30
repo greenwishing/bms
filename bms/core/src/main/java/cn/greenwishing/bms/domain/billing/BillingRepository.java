@@ -30,4 +30,6 @@ public interface BillingRepository extends Repository {
     List<BillingAccount> findBillingAccounts(String userGuid);
 
     List<SqlResultParser> findSuggestTemplate(BillingType type, Integer userId, Integer size);
+
+    SqlResultParser findAssertData(Integer userId);
 }

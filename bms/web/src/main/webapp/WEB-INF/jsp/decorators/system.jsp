@@ -31,6 +31,7 @@
 <header>
     <div class="container">
         <ul id="nav-bar" class="nav-bar">
+            <li><a href="/system/billing/overview">概览</a></li>
             <li><a href="/system/billing/main">记账</a></li>
             <li><a href="/system/billing/list">账单</a></li>
             <li><a href="/system/billing/accounts">账户</a></li>

@@ -4,6 +4,7 @@ import cn.greenwishing.bms.domain.billing.BillingAccount;
 import cn.greenwishing.bms.domain.billing.BillingAccountType;
 import cn.greenwishing.bms.utils.NumberUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class BillingAccountDTO {
     private String name;
     private BillingAccountType type;
     private String balance;
+    private int signum;
 
     public BillingAccountDTO() {
     }
@@ -27,7 +29,9 @@ public class BillingAccountDTO {
         this.guid = account.guid();
         this.name = account.name();
         this.type = account.type();
-        this.balance = NumberUtils.toString(account.balance());
+        BigDecimal balance = account.balance();
+        this.balance = NumberUtils.toString(balance);
+        this.signum = balance.signum();
     }
 
     public static List<BillingAccountDTO> toDTOs(List<BillingAccount> accounts) {
@@ -77,5 +81,9 @@ public class BillingAccountDTO {
 
     public void setBalance(String balance) {
         this.balance = balance;
+    }
+
+    public int getSignum() {
+        return signum;
     }
 }
