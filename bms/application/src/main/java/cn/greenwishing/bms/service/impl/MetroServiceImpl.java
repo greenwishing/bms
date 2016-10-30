@@ -1,9 +1,8 @@
 package cn.greenwishing.bms.service.impl;
 
-import cn.greenwishing.bms.domain.metro.MetroLine;
-import cn.greenwishing.bms.domain.metro.MetroRepository;
-import cn.greenwishing.bms.domain.metro.Station;
+import cn.greenwishing.bms.domain.metro.*;
 import cn.greenwishing.bms.dto.metro.MetroLineDTO;
+import cn.greenwishing.bms.dto.metro.MetroLineStationDTO;
 import cn.greenwishing.bms.dto.metro.SimpleMetroLineStation;
 import cn.greenwishing.bms.dto.metro.StationDTO;
 import cn.greenwishing.bms.service.MetroService;
@@ -81,6 +80,15 @@ public class MetroServiceImpl implements MetroService {
             latitude = new BigDecimal(latitudeStr);
         }
         station.update(name, pinyin, longitude, latitude);
+        metroRepository.saveOrUpdate(station);
+
+        String lineStationGuid = stationDTO.getLineStationGuid();
+        MetroLineStationStatus status = stationDTO.getStatus();
+        if (ValidationUtils.isNotEmpty(lineStationGuid) && status != null) {
+            MetroLineStation metroLineStation = metroRepository.findByGuid(MetroLineStation.class, lineStationGuid);
+            metroLineStation.update(status);
+            metroRepository.saveOrUpdate(metroLineStation);
+        }
     }
 
     @Override
@@ -99,5 +107,11 @@ public class MetroServiceImpl implements MetroService {
     public List<SimpleMetroLineStation> loadSimpleStationByMetroLine(Integer metroLineId) {
         List<SqlResultParser> parsers = metroRepository.findSimpleMetroLineStations(metroLineId);
         return SimpleMetroLineStation.valueOf(parsers);
+    }
+
+    @Override
+    public MetroLineStationDTO loadMetroLineStationByGuid(String lineStationGuid) {
+        MetroLineStation lineStation = metroRepository.findByGuid(MetroLineStation.class, lineStationGuid);
+        return new MetroLineStationDTO(lineStation);
     }
 }

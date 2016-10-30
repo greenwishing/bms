@@ -2,7 +2,6 @@ package cn.greenwishing.bms.persistence.hibernate.metro;
 
 import cn.greenwishing.bms.domain.metro.MetroLineStation;
 import cn.greenwishing.bms.domain.metro.MetroRepository;
-import cn.greenwishing.bms.domain.metro.Station;
 import cn.greenwishing.bms.persistence.hibernate.AbstractRepositoryHibernate;
 import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import org.hibernate.HibernateException;

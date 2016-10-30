@@ -32,6 +32,17 @@
             <label class="form-control-static">纬度</label>
             <input class="form-control" type="text" name="latitude" id="latitude" placeholder="纬度" value="${stationDTO.latitude}"/>
         </div>
+        <c:if test="${stationDTO.editWithMetroLine}">
+            <div class="form-group">
+                <label class="form-control-static">状态</label>
+                <select name="status" class="form-control">
+                    <c:forEach items="${lineStationStatusList}" var="lineStationStatus">
+                        <option value="${lineStationStatus.value}" ${stationDTO.status eq lineStationStatus ? 'selected' : ''}>${lineStationStatus.label}</option>
+                    </c:forEach>
+                </select>
+                <input type="hidden" name="editWithMetroLine" value="${stationDTO.editWithMetroLine}"/>
+            </div>
+        </c:if>
         <div class="form-group">
             <a class="btn btn-primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
             <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>

@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.web.controller.metro;
 
-import cn.greenwishing.bms.dto.metro.MetroLineDTO;
+import cn.greenwishing.bms.domain.metro.MetroLineStationStatus;
+import cn.greenwishing.bms.dto.metro.MetroLineStationDTO;
 import cn.greenwishing.bms.dto.metro.StationDTO;
 import cn.greenwishing.bms.service.MetroService;
 import cn.greenwishing.bms.utils.ValidationUtils;
@@ -29,12 +30,21 @@ public class StationFormController {
     private MetroService metroService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String form(String guid, ModelMap model) {
+    public String form(String guid, String lineStationGuid, ModelMap model) {
         StationDTO stationDTO;
         if (ValidationUtils.isEmpty(guid)) {
             stationDTO = new StationDTO();
         } else {
             stationDTO = metroService.loadStationByGuid(guid);
+            if (ValidationUtils.isNotEmpty(lineStationGuid)) {
+                MetroLineStationDTO lineStationDTO = metroService.loadMetroLineStationByGuid(lineStationGuid);
+                if (lineStationDTO != null) {
+                    stationDTO.setEditWithMetroLine(true);
+                    stationDTO.setLineStationGuid(lineStationGuid);
+                    stationDTO.setStatus(lineStationDTO.getStatus());
+                    model.put("lineStationStatusList", MetroLineStationStatus.values());
+                }
+            }
         }
         model.put("stationDTO", stationDTO);
         model.put("hasBaiduMap", true);

@@ -1,5 +1,6 @@
 package cn.greenwishing.bms.dto.metro;
 
+import cn.greenwishing.bms.domain.metro.MetroLineStationStatus;
 import cn.greenwishing.bms.domain.metro.Station;
 import cn.greenwishing.bms.utils.NumberUtils;
 
@@ -17,6 +18,11 @@ public class StationDTO {
     private String pinyin;
     private String longitude;
     private String latitude;
+
+    // edit with metro_line
+    private boolean editWithMetroLine;
+    private String lineStationGuid;
+    private MetroLineStationStatus status;
 
     public StationDTO() {
     }
@@ -76,5 +82,29 @@ public class StationDTO {
             stationDTOs.add(stationDTO);
         }
         return stationDTOs;
+    }
+
+    public boolean isEditWithMetroLine() {
+        return editWithMetroLine;
+    }
+
+    public void setEditWithMetroLine(boolean editWithMetroLine) {
+        this.editWithMetroLine = editWithMetroLine;
+    }
+
+    public String getLineStationGuid() {
+        return lineStationGuid;
+    }
+
+    public void setLineStationGuid(String lineStationGuid) {
+        this.lineStationGuid = lineStationGuid;
+    }
+
+    public MetroLineStationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MetroLineStationStatus status) {
+        this.status = status;
     }
 }

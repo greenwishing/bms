@@ -52,7 +52,7 @@
             var avg = {x: total.x / size, y: total.y / size};
             var svgPoints = [];
             $.each(mls, function(idx, ml){
-                var $li = $('<li></li>').attr({'data-url': 'edit_station?guid=' + ml.stationGuid}).html(ml.stationName).addClass('station');
+                var $li = $('<li></li>').attr({'data-url': 'edit_station?guid=' + ml.stationGuid + '&lineStationGuid=' + ml.guid}).html(ml.stationName).addClass('station');
                 $li.toggleClass('running', ml.running);
                 $el.append($li);
                 if (ml.longitude > 0 && ml.latitude > 0) {

@@ -31,9 +31,12 @@ public class MetroLineStation extends AbstractDomain {
     public MetroLineStation() {
     }
 
-    public void update(MetroLine line, Station station, MetroLineStationStatus status) {
+    public MetroLineStation(MetroLine line, Station station) {
         this.line = line;
         this.station = station;
+    }
+
+    public void update(MetroLineStationStatus status) {
         this.status = status;
     }
 
