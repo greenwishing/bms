@@ -1,10 +1,16 @@
 package cn.greenwishing.bms.dto.statistics.highcharts;
 
 import cn.greenwishing.bms.utils.JodaUtils;
+import org.joda.time.Chronology;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.LocalDate;
+import org.joda.time.chrono.ISOChronology;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 
 /**
  * User: Wufan
@@ -22,7 +28,9 @@ public class SeriesObjectData implements Comparable<SeriesObjectData> {
         if (r0 != null) {
             Date date = (Date) r0;
             data.time = date.getTime();
-            data.name = new SimpleDateFormat(JodaUtils.MONTH_CN_FORMAT).format(date);
+            DateTime dateTime = new DateTime(data.time);
+            String year = dateTime.getMonthOfYear() == 1 ? "YY年" : "";
+            data.name = dateTime.toString(year + "MM月");
         }
         Object r1 = result[1];
         if (r1 != null) {
