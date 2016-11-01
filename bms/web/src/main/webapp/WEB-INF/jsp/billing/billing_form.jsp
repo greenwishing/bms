@@ -19,7 +19,7 @@
                 WF.ajax.req({
                     type: 'post',
                     url: 'suggest_tpl',
-                    data: {type: '${param.type}', size: 10},
+                    data: {type: '${param.type}', size: 30},
                     success: function(result) {
                         var tpl = result.tplList;
                         $tplList.empty();
@@ -63,6 +63,12 @@
             $('#name').val(category + ' ' + subcategory);
         }
     </script>
+    <style type="text/css">
+        .dropdown-menu {
+            max-height: 300px;
+            overflow: auto;
+        }
+    </style>
 </head>
 <body>
     <form id="data-form" action="record?type=${param.type}" method="post" onsubmit="return false;">
