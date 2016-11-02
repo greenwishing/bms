@@ -119,7 +119,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
                 Query query = session.createQuery("select " +
                         " sum(case when (a.type='CASH' or a.type='VIRTUAL' or a.type='DEPOSIT_CARD') then a.balance else 0 end)," +
                         " sum(case when (a.type='LOAN') then a.balance else 0 end)," +
-                        " sum(case when (a.type='INDEBTED' or a.type='INDEBTED' or a.type='CREDIT_CARD') then a.balance else 0 end)," +
+                        " sum(case when (a.type='INDEBTED' or a.type='CREDIT_CARD') then a.balance else 0 end)," +
                         " sum(a.balance)" +
                         " from BillingAccount a where a.user.id=:userId");
                 query.setParameter("userId", userId);
