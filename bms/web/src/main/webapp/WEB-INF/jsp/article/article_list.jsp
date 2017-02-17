@@ -21,7 +21,7 @@
 <div>
     <form class="form-inline pull-left" id="search-form" action="list" onsubmit="return false;">
         <div class="form-group">
-            <label class="form-control-static">关键字</label>
+            <label class="control-label">关键字</label>
             <input class="form-control" type="text" name="key" value="${pagingDTO.key}" placeholder="请输入关键字">
         </div>
         <div class="form-group">

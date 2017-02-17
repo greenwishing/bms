@@ -28,15 +28,15 @@
 <body>
     <spring-form:form id="data-form" commandName="articleDTO" method="post" onsubmit="return false;">
         <div class="form-group">
-            <label class="form-control-static">标题</label>
+            <label class="control-label">标题</label>
             <spring-form:input cssClass="form-control" path="title" id="title" placeholder="标题"/>
         </div>
         <div class="form-group">
-            <label class="form-control-static">分类</label>
+            <label class="control-label">分类</label>
             <spring-form:select cssClass="form-control" id="categoryGuid" path="categoryGuid" items="${categoryDTOs}" itemValue="guid" itemLabel="name"/>
         </div>
         <div class="form-group">
-            <label class="form-control-static">内容</label>
+            <label class="control-label">内容</label>
             <script type="text/plain" id="article_content">${articleDTO.content}</script>
             <spring-form:textarea cssClass="form-control" id="content" path="content" cssStyle="display: none;"/>
         </div>

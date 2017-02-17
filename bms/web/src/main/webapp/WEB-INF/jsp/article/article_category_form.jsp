@@ -9,7 +9,7 @@
 <body>
     <spring-form:form commandName="articleCategoryDTO" method="post" id="data-form" onsubmit="return false;">
         <div class="form-group">
-            <label class="form-control-static">名称</label>
+            <label class="control-label">名称</label>
             <spring-form:input cssClass="form-control" path="name" id="name" placeholder="名称"/>
         </div>
         <div class="form-group">

@@ -15,27 +15,27 @@
 <div class="weui_tab">
 <spring-form:form commandName="billingTemplateDTO" method="post" id="data-form" onsubmit="return false;">
     <div class="form-group">
-        <label class="form-control-static">类型</label>
+        <label class="control-label">类型</label>
         <spring-form:select cssClass="form-control" id="type" path="type" items="${types}" itemValue="value" itemLabel="label" onchange="WF.billing.categories(this)" targetId="categoryGuid"/>
     </div>
     <div class="form-group">
-        <label class="form-control-static">分类</label>
+        <label class="control-label">分类</label>
         <select class="form-control" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" default-value="${billingTemplateDTO.categoryGuid}" targetId="subcategoryGuid">
             <option value="">请选择</option>
         </select>
     </div>
     <div class="form-group">
-        <label class="form-control-static">子分类</label>
+        <label class="control-label">子分类</label>
         <select class="form-control" id="subcategoryGuid" name="subcategoryGuid" default-value="${billingTemplateDTO.subcategoryGuid}">
             <option value="">请选择</option>
         </select>
     </div>
     <div class="form-group">
-        <label class="form-control-static">名称</label>
+        <label class="control-label">名称</label>
         <spring-form:input cssClass="form-control" path="name" id="name" placeholder="名称"/>
     </div>
     <div class="form-group">
-        <label class="form-control-static">金额</label>
+        <label class="control-label">金额</label>
         <spring-form:input cssClass="form-control" path="amount" id="amount" placeholder="金额"/>
     </div>
     <div class="form-group">

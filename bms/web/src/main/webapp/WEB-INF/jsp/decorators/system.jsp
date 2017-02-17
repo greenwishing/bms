@@ -22,7 +22,18 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
     <script type="text/javascript">
         $(function(){
-            WF.page.menu($('#nav-bar'), '${pageContext.request.requestURI}');
+            WF.page.menu($('#navbar'), '${pageContext.request.requestURI}');
+            $('.navbar-toggle').bind('click', function(){
+                var $el = $(this);
+                var toggleClass = $el.attr('data-toggle');
+                var toggleTarget = $el.attr('data-target');
+                var $target = $(toggleTarget);
+                $target.toggleClass(toggleClass);
+                $('body').toggleClass('has-navbar-collapse', $target.is('.' + toggleClass));
+            });
+            if ($('.menubar').length) {
+                $('body').addClass('has-menubar');
+            }
         });
     </script>
     <decorator:head/>
@@ -30,20 +41,27 @@
 <body>
 <header>
     <div class="container">
-        <ul id="nav-bar" class="nav-bar">
-            <li><a href="/system/billing/overview">概览</a></li>
-            <li><a href="/system/billing/main">记账</a></li>
-            <li><a href="/system/billing/list">账单</a></li>
-            <li><a href="/system/billing/accounts">账户</a></li>
-            <li><a href="/system/billing/categories">分类</a></li>
-            <li><a href="/system/article/list">文章</a></li>
-            <li><a href="/system/metro/list">地铁</a></li>
-            <li><a href="/system/user/list">用户</a></li>
-            <li><a href="/system/app/list">应用</a></li>
-        </ul>
-        <ul class="nav-bar pull-right">
-            <li><a href="/logout">退出</a></li>
-        </ul>
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div id="navbar-collapse" class="navbar-collapse">
+            <ul class="navbar">
+                <li><a href="/system/billing/overview">概览</a></li>
+                <li><a href="/system/billing/main">记账</a></li>
+                <li><a href="/system/billing/list">账单</a></li>
+                <li><a href="/system/billing/accounts">账户</a></li>
+                <li><a href="/system/billing/categories">分类</a></li>
+                <li><a href="/system/article/list">文章</a></li>
+                <li><a href="/system/metro/list">地铁</a></li>
+                <li><a href="/system/user/list">用户</a></li>
+                <li><a href="/system/app/list">应用</a></li>
+            </ul>
+            <ul class="navbar navbar-right">
+                <li><a href="/logout">退出</a></li>
+            </ul>
+        </div>
     </div>
 </header>
 <div class="container" style="padding-top: 60px;">

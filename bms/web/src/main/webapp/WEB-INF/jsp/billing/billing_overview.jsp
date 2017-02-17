@@ -247,7 +247,7 @@
 <div>
     <div class="form-inline pull-left">
         <div class="form-group">
-            <label class="form-control-static">类型</label>
+            <label class="control-label">类型</label>
             <select class="form-control" id="type" onchange="onConditionChanged()">
                 <c:forEach items="${types}" var="type">
                     <option value="${type.value}">${type.label}</option>
@@ -255,14 +255,14 @@
             </select>
         </div>
         <div class="form-group">
-            <label class="form-control-static">分类</label>
+            <label class="control-label">分类</label>
             <select class="form-control" id="group" onchange="onConditionChanged()">
                 <option value="category">分类</option>
                 <option value="subcategory" selected>子分类</option>
             </select>
         </div>
         <div class="form-group">
-            <label class="form-control-static">范围</label>
+            <label class="control-label">范围</label>
             <select class="form-control" id="mode" onchange="$(this).attr({'data-offset':0});onConditionChanged()" data-offset="0">
                 <option value="days">按天</option>
                 <option value="weeks">按周</option>

@@ -60,6 +60,14 @@ public class BillingFormController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView save(BillingDTO billingDTO, BindingResult errors) {
+        String categoryGuid = billingDTO.getCategoryGuid();
+        if (ValidationUtils.isEmpty(categoryGuid)) {
+            errors.rejectValue("categoryGuid", "categoryGuid", "请选择分类");
+        }
+        String subcategoryGuid = billingDTO.getSubcategoryGuid();
+        if (ValidationUtils.isEmpty(subcategoryGuid)) {
+            errors.rejectValue("subcategoryGuid", "subcategoryGuid", "请选择子分类");
+        }
         String name = billingDTO.getName();
         if (ValidationUtils.isEmpty(name)) {
             errors.rejectValue("name", "name", "名称不能为空");
@@ -78,16 +86,6 @@ public class BillingFormController {
         if (type == null) {
             errors.rejectValue("type", "type", "缺少参数");
         } else {
-            if (BillingType.categoryNeeds().contains(type)) {
-                String categoryGuid = billingDTO.getCategoryGuid();
-                if (ValidationUtils.isEmpty(categoryGuid)) {
-                    errors.rejectValue("categoryGuid", "categoryGuid", "请选择分类");
-                }
-                String subcategoryGuid = billingDTO.getSubcategoryGuid();
-                if (ValidationUtils.isEmpty(subcategoryGuid)) {
-                    errors.rejectValue("subcategoryGuid", "subcategoryGuid", "请选择子分类");
-                }
-            }
             String srcAccountGuid = billingDTO.getSrcAccountGuid();
             if (ValidationUtils.isEmpty(srcAccountGuid)) {
                 errors.rejectValue("srcAccountGuid", "srcAccountGuid", "请选择账户");

@@ -22,16 +22,16 @@
 <div>
     <form id="search-form" class="form-inline pull-left" action="list" onsubmit="return false;">
         <div class="form-group">
-            <label class="form-control-static">关键字</label>
+            <label class="control-label">关键字</label>
             <input class="form-control" type="text" name="key" value="${pagingDTO.key}" placeholder="请输入关键字">
         </div>
         <div class="form-group">
-            <label class="form-control-static">日期</label>
+            <label class="control-label">日期</label>
             <input class="form-control" type="date" name="dateFrom" value="${pagingDTO.dateFrom}" placeholder="请选择开始日期">
             <input class="form-control" type="date" name="dateTo" value="${pagingDTO.dateTo}" placeholder="请选择结束日期">
         </div>
         <div class="form-group">
-            <label class="form-control-static">类型</label>
+            <label class="control-label">类型</label>
             <select class="form-control" name="type" id="type" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
                 <option value="">请选择</option>
                 <c:forEach items="${types}" var="type">
@@ -58,7 +58,7 @@
     <tr>
         <th>金额</th>
         <th>名称</th>
-        <th>分类</th>
+        <th class="hidden-sm">分类</th>
     </tr>
     </thead>
     <tbody>
@@ -71,7 +71,7 @@
             <div>${billing.name}</div>
             <div>${billing.occurredTime}</div>
         </td>
-        <td>
+        <td class="hidden-sm">
             <div>${billing.type.label} - ${billing.categoryName} - ${billing.subcategoryName}</div>
         </td>
         </c:forEach>

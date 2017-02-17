@@ -83,11 +83,11 @@
 <body>
     <form class="form-horizontal" id="data-form" action="add" method="post" onsubmit="return false;">
         <div class="form-group">
-            <label class="form-control-static">线路名称</label>
+            <label class="control-label">线路名称</label>
             <input class="form-control" type="text" name="name" id="name" placeholder="线路名称" value="${metroLineDTO.name}"/>
         </div>
         <div class="form-group">
-            <label class="form-control-static">主题色</label>
+            <label class="control-label">主题色</label>
             <input class="form-control" type="color" name="color" id="color" placeholder="主题色" value="${metroLineDTO.color}"/>
         </div>
         <div class="form-group">
@@ -95,7 +95,7 @@
         </div>
         <c:if test="${metroLineDTO.guid != null}">
         <div class="form-group">
-            <label class="form-control-static">${metroLineDTO.name}的站台</label>
+            <label class="control-label">${metroLineDTO.name}的站台</label>
             <ol class="metro-line-station"></ol>
             <svg id="metro-map" class="metro-map" xmlns="http://www.w3.org/2000/svg" version="1.1">
                 <title>${metroLineDTO.name}</title>

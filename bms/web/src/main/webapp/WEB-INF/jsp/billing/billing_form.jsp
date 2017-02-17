@@ -10,10 +10,7 @@
             WF.util.dropdown(function($menu){
                 applyTemplate($menu)
             });
-            <c:if test="${'EXPEND' eq param.type or 'INCOME' eq param.type}">
             WF.billing.categories('${param.type}');
-            // WF.util.datePicker('occurredTime');
-            </c:if>
             (function(){
                 var $tplList = $('#tpl-list');
                 WF.ajax.req({
@@ -46,21 +43,13 @@
 
         function applyTemplate($menu) {
             var type = $menu.attr('data-type');
-            if ('INCOME' == type || 'EXPEND' == type) {
-                $('#categoryGuid').attr({'default-value': $menu.attr('data-categoryGuid')});
-                $('#subcategoryGuid').attr({'default-value': $menu.attr('data-subcategoryGuid')});
-                WF.billing.categories(type);
-            }
+            $('#categoryGuid').attr({'default-value': $menu.attr('data-categoryGuid')});
+            $('#subcategoryGuid').attr({'default-value': $menu.attr('data-subcategoryGuid')});
+            WF.billing.categories(type);
             WF.billing.defaultValue($(':input[name=srcAccountGuid]'), $menu.attr('data-srcAccountGuid'));
             WF.billing.defaultValue($(':input[name=targetAccountGuid]'), $menu.attr('data-targetAccountGuid'));
             $('#name').val($menu.attr('data-name'));
             $('#amount').val($menu.attr('data-amount'));
-        }
-
-        function buildName() {
-            var category = $('#categoryGuid').find('option:selected').text();
-            var subcategory = $('#subcategoryGuid').find('option:selected').text();
-            $('#name').val(category + ' ' + subcategory);
         }
     </script>
     <style type="text/css">
@@ -76,21 +65,19 @@
             <a class="btn btn-default dropdown-toggle">从模板快速添加 <span class="caret"></span></a>
             <ul id="tpl-list" class="dropdown-menu"></ul>
         </div>
-        <c:if test="${'EXPEND' eq param.type or 'INCOME' eq param.type}">
         <div class="form-group">
-            <label class="form-control-static">分类</label>
+            <label class="control-label">分类</label>
             <div class="input-group">
                 <select class="form-control" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid">
                     <option value="">请选择</option>
                 </select>
-                <select class="form-control" id="subcategoryGuid" name="subcategoryGuid" onchange="buildName()">
+                <select class="form-control" id="subcategoryGuid" name="subcategoryGuid">
                     <option value="">请选择</option>
                 </select>
             </div>
         </div>
-        </c:if>
         <div class="form-group">
-            <label class="form-control-static">名称</label>
+            <label class="control-label">名称</label>
             <div class="weui_cell_bd weui_cell_primary">
                 <input class="form-control" type="text" name="name" id="name" placeholder="名称" value="${billingDTO.name}">
             </div>
@@ -98,7 +85,7 @@
         <c:choose>
             <c:when test="${'EXPEND' eq param.type}">
                 <div class="form-group">
-                    <label class="form-control-static">支出账户</label>
+                    <label class="control-label">支出账户</label>
                     <div class="input-group">
                         <select class="form-control" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
@@ -114,7 +101,7 @@
             </c:when>
             <c:when test="${'INCOME' eq param.type}">
                 <div class="form-group">
-                    <label class="form-control-static">收入账户</label>
+                    <label class="control-label">收入账户</label>
                     <div class="input-group">
                         <select class="form-control" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
@@ -130,7 +117,7 @@
             </c:when>
             <c:when test="${'TRANSFER' eq param.type}">
                 <div class="form-group">
-                    <label class="form-control-static">转出账户</label>
+                    <label class="control-label">转出账户</label>
                     <div class="input-group">
                         <select class="form-control" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
@@ -144,7 +131,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-static">转入账户</label>
+                    <label class="control-label">转入账户</label>
                     <div class="input-group">
                         <select class="form-control" name="targetAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
@@ -160,7 +147,7 @@
             </c:when>
             <c:when test="${'BORROW' eq param.type}">
                 <div class="form-group">
-                    <label class="form-control-static">借入账户</label>
+                    <label class="control-label">借入账户</label>
                     <div class="input-group">
                         <select class="form-control" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
@@ -174,7 +161,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-static">债权人</label>
+                    <label class="control-label">债权人</label>
                     <div class="input-group">
                         <select class="form-control" name="targetAccountGuid">
                             <c:forEach items="${loanAccountMap}" var="group">
@@ -190,7 +177,7 @@
             </c:when>
             <c:when test="${'LOAN' eq param.type}">
                 <div class="form-group">
-                    <label class="form-control-static">借出账户</label>
+                    <label class="control-label">借出账户</label>
                     <div class="input-group">
                         <select class="form-control" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
@@ -204,7 +191,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-static">债务人</label>
+                    <label class="control-label">债务人</label>
                     <div class="input-group">
                         <select class="form-control" name="targetAccountGuid">
                             <c:forEach items="${loanAccountMap}" var="group">
@@ -220,7 +207,7 @@
             </c:when>
             <c:when test="${'RECEIVE' eq param.type}">
                 <div class="form-group">
-                    <label class="form-control-static">收款账户</label>
+                    <label class="control-label">收款账户</label>
                     <div class="input-group">
                         <select class="form-control" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
@@ -234,7 +221,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-static">债务人</label>
+                    <label class="control-label">债务人</label>
                     <div class="input-group">
                         <select class="form-control" name="targetAccountGuid">
                             <c:forEach items="${loanAccountMap}" var="group">
@@ -250,7 +237,7 @@
             </c:when>
             <c:when test="${'PAYBACK' eq param.type}">
                 <div class="form-group">
-                    <label class="form-control-static">还款账户</label>
+                    <label class="control-label">还款账户</label>
                     <div class="input-group">
                         <select class="form-control" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
@@ -264,7 +251,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-static">债权人</label>
+                    <label class="control-label">债权人</label>
                     <div class="input-group">
                         <select class="form-control" name="targetAccountGuid">
                             <c:forEach items="${loanAccountMap}" var="group">
@@ -280,15 +267,15 @@
             </c:when>
         </c:choose>
         <div class="form-group">
-            <div class="weui_cell_hd"><label class="form-control-static">日期</label></div>
+            <label class="control-label">日期</label>
             <input class="form-control" type="date" name="occurredTime" placeholder="日期" value="${billingDTO.occurredTime}"/>
         </div>
         <div class="form-group">
-            <div class="weui_cell_hd"><label class="form-control-static">金额</label></div>
+            <label class="control-label">金额</label>
             <input class="form-control" type="number" name="amount" id="amount" placeholder="金额" value="${billingDTO.amount}"/>
         </div>
         <div class="form-group">
-            <label class="form-control-static">描述</label>
+            <label class="control-label">描述</label>
             <textarea class="form-control" placeholder="描述" rows="3">${billingDTO.description}</textarea>
         </div>
         <div class="form-group">

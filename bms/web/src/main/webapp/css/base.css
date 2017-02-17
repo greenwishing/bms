@@ -19,6 +19,14 @@ body {
     background-color: #fff;
 }
 
+body.has-navbar-collapse {
+    overflow: hidden;
+}
+
+body.has-menubar {
+    margin-left: 110px;
+}
+
 html {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
@@ -331,10 +339,13 @@ ol ol {
     margin-right: auto;
     margin-left: auto;
 }
-@media (min-width: 768px) {
-    .container {
-        width: 750px;
-    }
+
+.container:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden
 }
 
 header {
@@ -346,46 +357,74 @@ header {
     z-index: 1030;
 }
 
-.nav-bar {
-    float: left;
+.navbar {
     padding-left: 0;
     list-style: none;
     margin: 0;
 }
-.nav-bar > li {
+.navbar > li {
     position: relative;
     display: block;
-    float: left;
 }
 
-.nav-bar > li > a {
+.navbar > li > a {
     position: relative;
     display: block;
     padding: 15px;
     line-height: 20px;
 }
 
-.nav-bar > li > a:hover,
-.nav-bar > li > a:focus {
+.navbar > li > a:hover,
+.navbar > li > a:focus {
     background-color: transparent;
     text-decoration: none;
 }
-.nav-bar > li:hover > a,
-.nav-bar > li:hover > a:hover,
-.nav-bar > li:hover > a:focus {
+.navbar > li:hover > a,
+.navbar > li:hover > a:hover,
+.navbar > li:hover > a:focus {
     background-color: #f3f3f3;
 }
-.nav-bar > li.active > a,
-.nav-bar > li.active > a:hover,
-.nav-bar > li.active > a:focus {
+.navbar > li.active > a,
+.navbar > li.active > a:hover,
+.navbar > li.active > a:focus {
     color: #fff;
     background-color: #5cb85c;
 }
 
-.menu-bar {
+.navbar-toggle {
+    display: none;
+    float: left;
+    padding: 9px 10px;
+    margin-top: 8px;
+    margin-left: 15px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+}
+
+.navbar-toggle .icon-bar {
+    display: block;
+    width: 22px;
+    height: 1px;
+    border-radius: 1px;
+    background-color: #777;
+}
+
+.navbar-toggle .icon-bar + .icon-bar {
+    margin-top: 4px;
+}
+
+.navbar-collapse {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.menubar {
     position: fixed;
     border-right: 1px solid #e3e3e3;
     background: #fff;
+    width: 100px;
     padding-top: 50px;
     left: 0;
     top: 0;
@@ -393,14 +432,14 @@ header {
     z-index: 1029;
 }
 
-.menu-bar .nav-bar,
-.menu-bar .nav-bar > li {
+.menubar .navbar,
+.menubar .navbar > li {
     float: none;
 }
-.menu-bar .nav-bar > li {
+.menubar .navbar > li {
     border-bottom: 1px solid #e3e3e3;
 }
-.menu-bar .nav-bar > li.active:after {
+.menubar .navbar > li.active:after {
     content: ' ';
     position: absolute;
     top: 50%;
@@ -415,9 +454,9 @@ header {
     -moz-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
-.menu-bar .nav-bar > li.active > a,
-.menu-bar .nav-bar > li.active > a:hover,
-.menu-bar .nav-bar > li.active > a:focus {
+.menubar .navbar > li.active > a,
+.menubar .navbar > li.active > a:hover,
+.menubar .navbar > li.active > a:focus {
     background: #fff;
     color: #5cb85c;
 }
@@ -485,15 +524,26 @@ th {
     margin-bottom: 15px;
 }
 
-.form-control-static {
+.control-label {
     display: block;
+    margin-bottom: 0;
+    vertical-align: middle;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.form-control-static {
+    display: inline-block;
+    vertical-align: middle;
     padding-top: 7px;
     padding-bottom: 7px;
     margin-bottom: 0;
 }
 
 .form-control {
-    display: block;
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
     height: 34px;
     padding: 6px 12px;
     font-size: 14px;
@@ -536,22 +586,51 @@ textarea.form-control {
     min-width: 350px;
 }
 
+@media (max-width: 767px) {
+    header .container {
+        padding: 0;
+    }
 
-@media (min-width: 450px) {
+    .navbar-toggle {
+        display: block;
+    }
+
+    .navbar-collapse {
+        display: none;
+    }
+
+    .navbar-collapse.collapse {
+        display: block;
+        max-height: 300px;
+        width: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .hidden-sm {
+        display: none !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 750px;
+    }
+    .navbar {
+        padding-left: 0;
+    }
+    .navbar > li {
+        float: left;
+    }
+    .navbar-right {
+        float: right;
+    }
     .form-inline .form-group {
         display: inline-block;
         margin-bottom: 5px;
         vertical-align: middle;
     }
-    .form-inline .form-control {
-        display: inline-block;
-        width: auto;
-        vertical-align: middle;
-    }
-    .form-inline .form-control-static {
-        display: inline-block;
-    }
     .form-inline .control-label {
+        display: inline-block;
         margin-bottom: 0;
         vertical-align: middle;
     }

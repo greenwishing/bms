@@ -9,15 +9,15 @@
 <body>
     <spring-form:form commandName="billingAccountDTO" method="post" id="data-form" onsubmit="return false;">
         <div class="form-group">
-            <label class="form-control-static">类型</label>
+            <label class="control-label">类型</label>
             <spring-form:select cssClass="form-control" id="type" path="type" items="${types}" itemValue="value" itemLabel="label"/>
         </div>
         <div class="form-group">
-            <label class="form-control-static">名称</label>
+            <label class="control-label">名称</label>
             <spring-form:input cssClass="form-control" path="name" id="name" placeholder="名称"/>
         </div>
         <div class="form-group">
-            <label class="form-control-static">余额</label>
+            <label class="control-label">余额</label>
             <spring-form:input cssClass="form-control" path="balance" id="balance" placeholder="余额"/>
         </div>
         <div class="form-group">

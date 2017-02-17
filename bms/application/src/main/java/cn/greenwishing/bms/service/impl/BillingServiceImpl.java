@@ -52,19 +52,15 @@ public class BillingServiceImpl implements BillingService {
         String srcAccountGuid = billingDTO.getSrcAccountGuid();
         String targetAccountGuid = billingDTO.getTargetAccountGuid();
 
-        BillingCategory category = null;
-        BillingSubcategory subcategory = null;
+        BillingCategory category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);;
+        BillingSubcategory subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);;
         BillingAccount srcAccount = null;
         BillingAccount targetAccount = null;
         switch (billingType) {
             case EXPEND: // 支出
-                category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);
-                subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);
                 srcAccount = accountSubtractAmount(srcAccountGuid, amount);
                 break;
             case INCOME: // 收入
-                category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);
-                subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);
                 srcAccount = accountAddAmount(srcAccountGuid, amount);
                 break;
             case TRANSFER: // 转账

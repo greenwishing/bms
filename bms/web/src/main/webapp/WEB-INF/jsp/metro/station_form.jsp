@@ -17,24 +17,24 @@
 <body>
     <form id="data-form" action="add_station" method="post" onsubmit="return false;">
         <div class="form-group">
-            <label class="form-control-static">名称</label>
+            <label class="control-label">名称</label>
             <input class="form-control" type="text" name="name" id="name" placeholder="名称" value="${stationDTO.name}"/>
         </div>
         <div class="form-group">
-            <label class="form-control-static">拼音</label>
+            <label class="control-label">拼音</label>
             <input class="form-control" type="text" name="pinyin" id="pinyin" placeholder="拼音" value="${stationDTO.pinyin}"/>
         </div>
         <div class="form-group">
-            <label class="form-control-static">经度</label>
+            <label class="control-label">经度</label>
             <input class="form-control" type="text" name="longitude" id="longitude" placeholder="经度" value="${stationDTO.longitude}"/>
         </div>
         <div class="form-group">
-            <label class="form-control-static">纬度</label>
+            <label class="control-label">纬度</label>
             <input class="form-control" type="text" name="latitude" id="latitude" placeholder="纬度" value="${stationDTO.latitude}"/>
         </div>
         <c:if test="${stationDTO.editWithMetroLine}">
             <div class="form-group">
-                <label class="form-control-static">状态</label>
+                <label class="control-label">状态</label>
                 <select name="status" class="form-control">
                     <c:forEach items="${lineStationStatusList}" var="lineStationStatus">
                         <option value="${lineStationStatus.value}" ${stationDTO.status eq lineStationStatus ? 'selected' : ''}>${lineStationStatus.label}</option>
