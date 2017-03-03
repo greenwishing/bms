@@ -25,7 +25,7 @@ public interface BillingRepository extends Repository {
 
     BillingTemplate findBillTemplate(User user, BillingType type, BillingCategory category, BillingSubcategory subcategory);
 
-    List<BillingStatistics> loadBillingStatistics(String userGuid, BillingType billingType, LocalDate startDate, LocalDate endDate, String group);
+    List<BillingStatistics> loadBillingStatistics(String userGuid, BillingType billingType, LocalDate startDate, LocalDate endDate);
 
     List<BillingAccount> findBillingAccounts(String userGuid);
 

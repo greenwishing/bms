@@ -260,7 +260,7 @@ public class BillingServiceImpl implements BillingService {
     }
 
     @Override
-    public List<BillingStatistics> loadBillingStatistics(String type, String group, String fromDateStr, String toDateStr) {
+    public List<BillingStatistics> loadBillingStatistics(String type, String fromDateStr, String toDateStr) {
         BillingType billingType = EnumUtils.nameOf(BillingType.class, type);
         if (billingType == null) {
             billingType = BillingType.EXPEND;
@@ -275,7 +275,7 @@ public class BillingServiceImpl implements BillingService {
             return Collections.emptyList();
         }
         String userGuid = SecurityHolder.getUserGuid();
-        return billingRepository.loadBillingStatistics(userGuid, billingType, startDate, endDate, group);
+        return billingRepository.loadBillingStatistics(userGuid, billingType, startDate, endDate);
     }
 
     @Override

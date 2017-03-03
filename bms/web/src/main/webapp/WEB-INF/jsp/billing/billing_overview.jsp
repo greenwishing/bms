@@ -57,9 +57,9 @@
         }
 
         function onConditionChanged(opts) {
-            var $type = $('#type'), $group = $('#group');
+            var $type = $('#type');
             var today = moment(), from = today, to, offset = 0, mode = 'other';
-            var type = $type.val(), group = $group.val();
+            var type = $type.val();
             if (opts) {
                 from = moment(opts.from);
                 to = moment(opts.to);
@@ -82,14 +82,14 @@
                 }
             }
             if (to.isAfter(today)) to = today.clone();
-            return loadBillingStatistics(from, to, type, group, mode);
+            return loadBillingStatistics(from, to, type, mode);
         }
 
-        function loadBillingStatistics(from, to, type, group, mode) {
+        function loadBillingStatistics(from, to, type, mode) {
             var dateRangeTitle = dateRangeToString(mode, from, to);
             WF.ajax.req({
                 url: 'data',
-                data: {type: type, group: group, from: from.format('YYYY-MM-DD'), to: to.format('YYYY-MM-DD')},
+                data: {type: type, from: from.format('YYYY-MM-DD'), to: to.format('YYYY-MM-DD')},
                 success: function (result) {
                     renderCharts(dateRangeTitle, result.data);
                 }
@@ -168,17 +168,42 @@
         }
 
         function renderCharts(title, records) {
+            var total = 0, categories = {}, categoryData = [], subcategoryData = [];
+            $.each(records, function(i, record) {
+                var amount = record.amount, category = record.category, subcategory = record.subcategory;
+                if (!categories[category]) {
+                    categories[category] = {amount: 0, subcategories: {}};
+                }
+                categories[category].amount += amount;
+                if (!categories[category].subcategories[subcategory]) {
+                    categories[category].subcategories[subcategory] = amount;
+                }
+                categories[category].subcategories[subcategory] += amount;
+                total += amount;
+            });
+            var colors = Highcharts.getOptions().colors, i = 0, j = 0;
+            $.each(categories, function(name, category) {
+                var color = colors[i % colors.length];
+                categoryData.push({
+                    name: name,
+                    y: (category.amount / total * 100),
+                    amount: category.amount,
+                    color: color
+                });
+                var subcategories = category.subcategories, len = (function(obj){var i = 0;$.each(obj, function(){i++;}); return i;})(subcategories);
+                $.each(subcategories, function(name, amount) {
+                    subcategoryData.push({
+                        name: name,
+                        y: (amount / total * 100),
+                        amount: amount,
+                        color: Highcharts.Color(color).brighten(0.2 - (j / len) / 5).get()
+                    });
+                    j ++;
+                });
+                i ++;
+                j = 0;
+            });
             var group = $('#group').find('option:selected').val();
-            var data = [];
-            var total = 0;
-            for (var i in records) {
-                var record = records[i];
-                total += record.amount;
-            }
-            for (var i in records) {
-                var record = records[i];
-                data.push({name: record[group], y: (record.amount / total * 100), amount: record.amount});
-            }
             $('#billing-statistics').highcharts({
                 chart: {
                     plotBackgroundColor: null,
@@ -189,24 +214,41 @@
                     text: title
                 },
                 tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br/>金额: <b>{point.amount} 元</b>'
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br/>金额: <b>{point.amount:.1f} 元</b>'
                 },
                 plotOptions: {
                     pie: {
-                        allowPointSelect: true,
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            color: '#000000',
-                            connectorColor: '#000000',
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %<br/>金额: <b>{point.amount} 元</b>'
+                            format: '<b>{point.name}</b>: {point.percentage:.1f}%<br/>金额: <b>{point.amount:.1f} 元</b>'
                         }
                     }
                 },
                 series: [{
                     type: 'pie',
                     name: '占比',
-                    data: data
+                    size: '60%',
+                    data: categoryData,
+                    dataLabels: {
+                        enabled: false,
+                        formatter: function () {
+                            return this.y > 10 ? this.point.name : null;
+                        },
+                        color: 'white'
+                    }
+                },{
+                    type: 'pie',
+                    name: '占比',
+                    size: '90%',
+                    innerSize: '60%',
+                    data: subcategoryData,
+                    dataLabels: {
+                        formatter: function () {
+                            // display only if larger than 1
+                            return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + this.y + '%'  : null;
+                        }
+                    }
                 }],
                 credits: {enabled: false}
             });
@@ -252,13 +294,6 @@
                 <c:forEach items="${types}" var="type">
                     <option value="${type.value}">${type.label}</option>
                 </c:forEach>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="control-label">分类</label>
-            <select class="form-control" id="group" onchange="onConditionChanged()">
-                <option value="category">分类</option>
-                <option value="subcategory" selected>子分类</option>
             </select>
         </div>
         <div class="form-group">

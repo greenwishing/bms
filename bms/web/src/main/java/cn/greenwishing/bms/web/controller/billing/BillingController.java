@@ -77,8 +77,8 @@ public class BillingController {
     }
 
     @RequestMapping("data")
-    public ModelAndView data(String type, String group, String from, String to) {
-        List<BillingStatistics> data = billingService.loadBillingStatistics(type, group, from, to);
+    public ModelAndView data(String type, String from, String to) {
+        List<BillingStatistics> data = billingService.loadBillingStatistics(type, from, to);
         Map<String, Object> model = new HashMap<>();
         model.put("data", data);
         return new ModelAndView(new MappingJacksonJsonView(), model);
