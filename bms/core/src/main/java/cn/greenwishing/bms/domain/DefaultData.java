@@ -21,7 +21,13 @@ public class DefaultData {
         L6(BillingType.EXPEND, "个人护理", "理发", "护理饰品"),
         L7(BillingType.EXPEND, "金融保险", "房贷", "房贷"),
         L8(BillingType.EXPEND, "人情往来", "送礼"),
-        L9(BillingType.EXPEND, "工资", "工资"),
+
+        L9(BillingType.INCOME, "工资", "工资"),
+        L10(BillingType.TRANSFER, "现金", "现金"),
+        L11(BillingType.BORROW, "现金", "现金"),
+        L12(BillingType.LOAN, "现金", "现金"),
+        L13(BillingType.RECEIVE, "现金", "现金"),
+        L14(BillingType.PAYBACK, "现金", "现金"),
         ;
 
         public BillingType type;
@@ -49,6 +55,25 @@ public class DefaultData {
         public String name;
 
         DefaultArticleCategory(String name) {
+            this.name = name;
+        }
+    }
+
+    public enum DefaultMomentType {
+        L1("学习"),
+        L2("阅读"),
+        L3("运动"),
+        L4("睡眠"),
+        L5("交通"),
+        L6("工作"),
+        L7("用餐"),
+        L8("购物"),
+        L9("娱乐"),
+        ;
+
+        public String name;
+
+        DefaultMomentType(String name) {
             this.name = name;
         }
     }
