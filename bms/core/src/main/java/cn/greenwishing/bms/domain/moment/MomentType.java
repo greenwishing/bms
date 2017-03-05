@@ -3,9 +3,9 @@ package cn.greenwishing.bms.domain.moment;
 import cn.greenwishing.bms.domain.AbstractDomain;
 import cn.greenwishing.bms.domain.user.User;
 import org.hibernate.annotations.Type;
+import org.joda.time.Duration;
 
 import javax.persistence.*;
-import java.time.Duration;
 
 /**
  * 时间记账类型
