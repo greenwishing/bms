@@ -10,13 +10,18 @@ import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import cn.greenwishing.bms.utils.query.helper.BillingQueryHelper;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.joda.time.LocalDate;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Repository("billingRepository")
 public class BillingRepositoryHibernate extends AbstractRepositoryHibernate implements BillingRepository {
 
@@ -118,6 +123,31 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
                 query.setParameter("userId", userId);
                 Object[] result = (Object[]) query.uniqueResult();
                 return new SqlResultParser(result);
+            }
+        });
+    }
+
+    @Override
+    public Map<String, Float> findBillingMapData(final Integer userId, final BillingType billingType, final Integer year) {
+        return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Map<String, Float>>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public Map<String, Float> doInHibernate(Session session) throws HibernateException, SQLException {
+                SQLQuery query = session.createSQLQuery("select date(b.occurred_time), sum(b.amount) from billing b" +
+                        " where b.occurred_user_id=:userId and b.type=:type and year(b.occurred_time)=:year" +
+                        "  group by date(b.occurred_time) order by b.occurred_time");
+                query.setParameter("userId", userId);
+                query.setParameter("type", billingType.getValue());
+                query.setParameter("year", year);
+                List<Object[]> results = query.list();
+                List<SqlResultParser> parsers = SqlResultParser.valueOf(results);
+                Map<String, Float> map = new HashMap<>();
+                for (SqlResultParser parser : parsers) {
+                    String date = parser.nextLocalDateAsString();
+                    BigDecimal amount = parser.nextDecimal(BigDecimal.ZERO);
+                    map.put(date, amount.floatValue());
+                }
+                return map;
             }
         });
     }

@@ -7,6 +7,7 @@ import cn.greenwishing.bms.dto.billing.*;
 import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Wu Fan
@@ -56,4 +57,6 @@ public interface BillingService {
     List<SuggestTemplateDTO> loadSuggestTemplate(BillingType type, Integer size);
 
     AssetDTO loadAsset();
+
+    Map<String, Float> loadBillingMapData(String typeStr, String yearStr);
 }

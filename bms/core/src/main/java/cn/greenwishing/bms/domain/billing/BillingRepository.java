@@ -8,6 +8,7 @@ import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import org.joda.time.LocalDate;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BillingRepository extends Repository {
 
@@ -32,4 +33,6 @@ public interface BillingRepository extends Repository {
     List<SqlResultParser> findSuggestTemplate(BillingType type, Integer userId, Integer size);
 
     SqlResultParser findAssertData(Integer userId);
+
+    Map<String, Float> findBillingMapData(Integer userId, BillingType billingType, Integer year);
 }

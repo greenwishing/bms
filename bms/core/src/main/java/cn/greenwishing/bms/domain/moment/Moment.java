@@ -5,9 +5,9 @@ import cn.greenwishing.bms.domain.user.User;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 
 import javax.persistence.*;
-import java.time.LocalTime;
 
 /**
  * 时间记账

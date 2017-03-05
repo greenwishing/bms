@@ -84,6 +84,14 @@ public class BillingController {
         return new ModelAndView(new MappingJacksonJsonView(), model);
     }
 
+    @RequestMapping("map_data")
+    public ModelAndView map_data(String type, String year) {
+        Map<String, Float> data = billingService.loadBillingMapData(type, year);
+        Map<String, Object> model = new HashMap<>();
+        model.put("data", data);
+        return new ModelAndView(new MappingJacksonJsonView(), model);
+    }
+
     @RequestMapping("accounts")
     public ModelAndView accounts(String dataType) {
         List<BillingAccountDTO> accounts = billingService.loadBillingAccounts();

@@ -82,7 +82,8 @@
                 }
             }
             if (to.isAfter(today)) to = today.clone();
-            return loadBillingStatistics(from, to, type, mode);
+            loadBillingStatistics(from, to, type, mode);
+            loadBillingMap(from, type);
         }
 
         function loadBillingStatistics(from, to, type, mode) {
@@ -94,7 +95,50 @@
                     renderCharts(dateRangeTitle, result.data);
                 }
             });
-            return dateRangeTitle;
+        }
+
+        function loadBillingMap(date, type) {
+            WF.ajax.req({
+                url: 'map_data',
+                data: {type: type, year: date.year()},
+                success: function (result) {
+                    renderMap(date, result.data);
+                }
+            });
+        }
+
+        function renderMap(date, data) {
+            var $map = $('#billing-map');
+            $map.addClass('billing-map');
+            $map.empty();
+            var _MAX = 255, _DEFAULT_OVERFLOW = 255;
+            var max = (function(map){var max=0;$.each(map,function(date,amount){max=amount>max?amount:max});return max})(data);
+            var start = date.clone().startOf('year'), end = date.clone().endOf("year"), month = 0, $month = null;
+            while (start.isBefore(end)) {
+                var _date = start.format('YYYY-MM-DD'), title = '';
+                var colorInt = _MAX, overflow = null;
+                var amount = data[_date];
+                if (amount) {
+                    colorInt = _MAX - parseInt(amount * _MAX / (max > _MAX ? _MAX : max));
+                    title = _date + ': ' + amount;
+                    if (amount > _MAX) {
+                        overflow = parseInt((max - amount) * _MAX / max);
+                        console.log('max: ' + max + ', amount: ' + amount + ', overflow: ' + overflow)
+                    }
+                }
+                var colorHex = 'rgb(' + (overflow != null ? overflow : _DEFAULT_OVERFLOW) + ',' + colorInt + ',' + colorInt + ')';
+                var $date = $('<div class="billing-period"></div>').css('backgroundColor', colorHex).attr('title', title);
+                if ($month == null) {
+                    $month = $('<div class="billing-line"></div>');
+                }
+                $month.append($date);
+                start = start.add(1, 'days');
+                if (start.month() != month) {
+                    month = start.month();
+                    $map.append($month);
+                    $month = null
+                }
+            }
         }
 
         function dateRangeToString(mode, from, to) {
@@ -254,6 +298,26 @@
             });
         }
     </script>
+    <style type="text/css">
+        .billing-map {
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: -1px;
+            margin-bottom: 5px;
+        }
+        .billing-line {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-content: space-around;
+        }
+        .billing-line .billing-period {
+            color: white;
+            width: 3px;
+            height: 3px;
+        }
+    </style>
 </head>
 <body>
 <div class="accounts">
@@ -305,6 +369,7 @@
                 <option value="years">按年</option>
             </select>
         </div>
+        <div id="billing-map" class="billing-year" data-offset="0"></div>
     </div>
     <div class="btn-group pull-right">
         <a class="btn btn-default" href="javascript:void(0)" onclick="addModeOffset(-1)">向前</a>

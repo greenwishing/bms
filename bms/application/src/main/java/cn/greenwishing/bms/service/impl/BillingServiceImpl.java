@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Wu Fan
@@ -351,5 +352,19 @@ public class BillingServiceImpl implements BillingService {
         Integer userId = SecurityHolder.getUserId();
         SqlResultParser parser = billingRepository.findAssertData(userId);
         return new AssetDTO(parser);
+    }
+
+    @Override
+    public Map<String, Float> loadBillingMapData(String typeStr, String yearStr) {
+        BillingType billingType = EnumUtils.nameOf(BillingType.class, typeStr);
+        if (billingType == null) {
+            billingType = BillingType.EXPEND;
+        }
+        Integer year = JodaUtils.now().getYear();
+        if (ValidationUtils.isPositiveNumber(yearStr)) {
+            year = Integer.valueOf(yearStr);
+        }
+        Integer userId = SecurityHolder.getUserId();
+        return billingRepository.findBillingMapData(userId, billingType, year);
     }
 }
