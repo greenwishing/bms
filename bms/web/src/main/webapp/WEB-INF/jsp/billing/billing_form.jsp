@@ -276,7 +276,7 @@
         </div>
         <div class="form-group">
             <label class="control-label">描述</label>
-            <textarea class="form-control" placeholder="描述" rows="3">${billingDTO.description}</textarea>
+            <textarea class="form-control" name="description" placeholder="描述" rows="3">${billingDTO.description}</textarea>
         </div>
         <div class="form-group">
             <label class="checkbox-inline"><input name="createTemplate" type="checkbox" value="true"/> 创建模板</label>
