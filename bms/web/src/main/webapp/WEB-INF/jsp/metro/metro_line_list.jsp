@@ -18,30 +18,31 @@
     </style>
 </head>
 <body>
-<div>
-    <div class="btn-group pull-right">
-        <a class="btn btn-primary" href="add">添加</a>
-        <a class="btn btn-default" href="stations">站台</a>
-        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-article">
+            <h1>地铁</h1>
+        </div>
+        <div class="weui-cells">
+            <c:forEach items="${lines}" var="line">
+                <a class="weui-cell weui-cell_access" href="edit?guid=${line.guid}">
+                    <div class="weui-cell__hd"><span class="station" style="background: ${line.color};"></span></div>
+                    <div class="weui-cell__bd"><span style="color: ${line.color}">${line.name}</span></div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+            </c:forEach>
+        </div>
+    </div>
+    <div class="weui-tabbar">
+        <a href="add" class="weui-tabbar__item">
+            <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">添加</p>
+        </a>
+        <a href="stations" class="weui-tabbar__item">
+            <img src="${pageContext.request.contextPath}/images/icons/icon_metro.png" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">站台</p>
+        </a>
     </div>
 </div>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>地铁</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${lines}" var="line">
-    <tr>
-        <td><span class="station" style="background: ${line.color};"></span><span style="color: ${line.color}">${line.name}</span></td>
-        <td>
-            <a href="edit?guid=${line.guid}">编辑</a>
-        </td>
-    </tr>
-    </c:forEach>
-    </tbody>
-</table>
 </body>
 </html>

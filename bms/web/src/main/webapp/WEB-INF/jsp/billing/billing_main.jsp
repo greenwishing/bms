@@ -9,11 +9,10 @@
     <script type="text/javascript">
         $(function(){
             var $wrapper = $('#form-wrapper');
-            var $menu = $('.menubar').find('a[data-url]');
+            var $menu = $('.weui-tabbar').find('a[data-url]');
             $menu.bind('click', function(){
-                var $a = $(this), $li = $a.closest('li');
-                $li.siblings('li').removeClass('active');
-                $li.addClass('active');
+                var $a = $(this);
+                $a.addClass('weui-bar__item_on').siblings().removeClass('weui-bar__item_on');
                 WF.ajax.req({
                     url: $a.attr('data-url'),
                     type: 'GET',
@@ -28,25 +27,30 @@
         function saveContinue() {
             WF.form.ajaxSubmit($('#data-form'), function(){
                 // 保存并继续
-                WF.util.topTip('添加成功，添加下一单！', {
+                WF.util.topTip('添加成功', {
                     callback: function() {
                         $('body').scrollTop(0);
                     }
                 });
-                $('.menubar').find('li.active>a[data-url]').trigger('click');
+                $('.weui-tabbar').find('a.weui-bar__item_on[data-url]').trigger('click');
 
             });
         }
     </script>
 </head>
-<body>
-<div class="menubar">
-    <ul class="navbar">
+<body style="height: 100%;">
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div id="form-wrapper"></div>
+    </div>
+    <div class="weui-tabbar">
         <c:forEach items="${types}" var="type">
-            <li><a href="javascript:void(0)" data-type="${type.value}" data-url="record?type=${type.value}">${type.label}</a></li>
+            <a href="javascript:void(0);" class="weui-tabbar__item" data-type="${type.value}" data-url="record?type=${type.value}">
+                <img src="/images/icons/icon_add.png" class="weui-tabbar__icon">
+                <p class="weui-tabbar__label">${type.label}</p>
+            </a>
         </c:forEach>
-    </ul>
+    </div>
 </div>
-<div id="form-wrapper"></div>
 </body>
 </html>

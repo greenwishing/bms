@@ -38,11 +38,11 @@ public class UserQueryHelper extends AbstractQueryHelper<User, UserPaging> {
 
     @Override
     public String getResultHql() {
-        return "from User u where 1=1";
+        return "from User u where 1=1" + getSubHql();
     }
 
     @Override
     public String getTotalCountHql() {
-        return "select count(*) from User u where 1=1";
+        return "select count(*) from User u where 1=1" + getSubHql();
     }
 }

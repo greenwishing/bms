@@ -8,13 +8,18 @@
 </head>
 <body>
     <spring-form:form commandName="billingSubcategoryDTO" method="post" id="data-form" onsubmit="return false;">
-        <div class="form-group">
-            <label class="control-label">名称</label>
-            <spring-form:input cssClass="form-control" path="name" id="name" placeholder="名称"/>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">名称</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <spring-form:input cssClass="weui-input" path="name" id="name" placeholder="名称"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <a class="btn btn-primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
-            <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
         </div>
     </spring-form:form>
 </body>

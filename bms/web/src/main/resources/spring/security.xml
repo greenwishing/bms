@@ -138,7 +138,7 @@
         <intercept-url pattern="/system/metro/**" access="ROLE_METRO" />
         <intercept-url pattern="/system/app/**" access="ROLE_APP" />
         <form-login login-page="/" login-processing-url="/account_check"
-                    default-target-url="/system/billing/main" authentication-failure-url="/?action=1"
+                    default-target-url="/system/index" authentication-failure-url="/?action=1"
                     username-parameter="account" password-parameter="password"/>
         <session-management invalid-session-url="/?action=2" />
         <remember-me services-ref="tokenBasedRememberMeServices" />

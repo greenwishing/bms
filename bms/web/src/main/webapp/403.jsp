@@ -5,18 +5,18 @@
     <title>403</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css">
 </head>
 <body>
-<div class="msg">
-    <div class="msg_icon_area"><i class="msg_icon_warn msg_icon_msg"></i></div>
-    <div class="msg_text_area">
-        <h2 class="msg_title">403</h2>
-        <p class="msg_desc">你没有权限访问此页面</p>
+<div class="weui-msg">
+    <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
+    <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title">404</h2>
+        <p class="weui-msg__desc">你没有权限访问此页面</p>
     </div>
-    <div class="msg_opr_area">
-        <p class="msg_btn_area">
-            <a href="javascript:void(0);" class="btn btn-primary" onclick="history.back()">确定</a>
+    <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+            <a href="javascript:history.back();" class="weui-btn weui-btn_primary">确定</a>
         </p>
     </div>
 </div>

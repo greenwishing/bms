@@ -299,82 +299,105 @@
         }
     </script>
     <style type="text/css">
-        .billing-map {
-            display: inline-block;
-            vertical-align: middle;
-            margin-top: -1px;
-            margin-bottom: 5px;
+        .account {
+            padding: 10px;
+            background: #fff;
         }
-        .billing-line {
-            display: flex;
-            align-items: center;
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            align-content: space-around;
+
+        .weui-flex + .weui-flex {
+            margin-top: 10px;
         }
-        .billing-line .billing-period {
-            color: white;
-            width: 3px;
-            height: 3px;
+
+        .signum {
+            text-align: center;
+            font-size: 28px;
+            font-weight: normal;
+            margin: 10px 0;
+        }
+        .signum_0 {
+            color: #888;
+        }
+        .signum_-1 {
+            color:#ff3b30;
+        }
+        .signum_1 {
+            color:#4cd964;
+        }
+        .nearest, #billing-statistics {
+            margin-top: 10px;
+        }
+        .pull-right {
+            padding: 0 15px;
+            text-align: right;
         }
     </style>
 </head>
 <body>
-<div class="accounts">
-    <div class="col-6">
+<div class="weui-flex">
+    <div class="weui-flex__item">
         <div class="account">
-            <p>账户总余额</p>
+            <p class="placeholder">账户总余额</p>
             <h3 class="signum signum_${asset.asset.signum}">${asset.asset}</h3>
         </div>
     </div>
-    <div class="col-6">
+</div>
+<div class="weui-flex">
+    <div class="weui-flex__item">
         <div class="account">
-            <p>债权</p>
+            <p class="placeholder">债权</p>
             <h3 class="signum signum_${asset.credit.signum}">${asset.credit}</h3>
         </div>
     </div>
-    <div class="col-6">
+</div>
+<div class="weui-flex">
+    <div class="weui-flex__item">
         <div class="account">
-            <p>债务</p>
+            <p class="placeholder">债务</p>
             <h3 class="signum signum_${asset.debt.signum}">${asset.debt}</h3>
         </div>
     </div>
-    <div class="col-6">
+</div>
+<div class="weui-flex">
+    <div class="weui-flex__item">
         <div class="account">
-            <p>净资产</p>
+            <p class="placeholder">净资产</p>
             <h3 class="signum signum_${asset.netAsset.signum}">${asset.netAsset}</h3>
         </div>
     </div>
 </div>
-<div>
-    <a href="accounts">查看账户余额</a>
-</div>
+<div class="weui-cells__tips"><a class="weui-cell_link" href="accounts">查看账户余额</a></div>
 <div class="nearest"></div>
-<div>
-    <div class="form-inline pull-left">
-        <div class="form-group">
-            <label class="control-label">类型</label>
-            <select class="form-control" id="type" onchange="onConditionChanged()">
+<div class="weui-cells">
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+            <label for="type" class="weui-label">类型</label>
+        </div>
+        <div class="weui-cell__bd">
+            <select class="weui-select" id="type" onchange="onConditionChanged()">
                 <c:forEach items="${types}" var="type">
                     <option value="${type.value}">${type.label}</option>
                 </c:forEach>
             </select>
         </div>
-        <div class="form-group">
-            <label class="control-label">范围</label>
-            <select class="form-control" id="mode" onchange="$(this).attr({'data-offset':0});onConditionChanged()" data-offset="0">
+    </div>
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+            <label for="mode" class="weui-label">范围</label>
+        </div>
+        <div class="weui-cell__bd">
+            <select class="weui-select" id="mode" onchange="$(this).attr({'data-offset':0});onConditionChanged()" data-offset="0">
                 <option value="days">按天</option>
                 <option value="weeks">按周</option>
                 <option value="months" selected>按月</option>
                 <option value="years">按年</option>
             </select>
+            <div id="billing-map" class="billing-year" data-offset="0"></div>
         </div>
-        <div id="billing-map" class="billing-year" data-offset="0"></div>
     </div>
-    <div class="btn-group pull-right">
-        <a class="btn btn-default" href="javascript:void(0)" onclick="addModeOffset(-1)">向前</a>
-        <a class="btn btn-default" href="javascript:void(0)" onclick="addModeOffset(1)">向后</a>
-    </div>
+</div>
+<div class="button-sp-area text-center">
+    <a class="weui-btn weui-btn_mini weui-btn_default" href="javascript:void(0)" onclick="addModeOffset(-1)">向前</a>
+    <a class="weui-btn weui-btn_mini weui-btn_default" href="javascript:void(0)" onclick="addModeOffset(1)">向后</a>
 </div>
 <div id="billing-statistics"></div>
 </body>

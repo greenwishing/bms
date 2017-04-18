@@ -18,33 +18,32 @@
     </script>
 </head>
 <body>
-<div>
-    <div class="btn-group pull-right">
-        <a class="btn btn-primary" href="add_category">添加</a>
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-article">
+            <h1>账单分类</h1>
+        </div>
+        <div class="weui-cells">
+            <c:forEach items="${categories}" var="category">
+                <a class="weui-cell weui-cell_access" href="edit_category?guid=${category.guid}">
+                    <div class="weui-cell__bd">${category.type.label} - ${category.name}</div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+            </c:forEach>
+        </div>
+    </div>
+    <div class="weui-tabbar">
+        <a href="add_category" class="weui-tabbar__item">
+            <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">添加</p>
+        </a>
         <c:if test="${empty categories}">
-            <a class="btn btn-default" href="javascript:void(0)" onclick="gen()">生成默认分类</a>
+            <a href="javascript:void(0)" class="weui-tabbar__item" onclick="gen()">
+                <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
+                <p class="weui-tabbar__label">生成默认分类</p>
+            </a>
         </c:if>
-        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back()">返回</a>
     </div>
 </div>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>分类</th>
-        <th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-        <c:forEach items="${categories}" var="category">
-            <tr>
-                <td>${category.type.label} - ${category.name}</td>
-                <td>
-                    <a href="edit_category?guid=${category.guid}">编辑</a>
-                    <a href="subcategories?categoryGuid=${category.guid}">子分类</a>
-                </td>
-            </tr>
-        </c:forEach>
-    </tbody>
-</table>
 </body>
 </html>

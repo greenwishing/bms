@@ -4,7 +4,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
-    <title>欢迎</title>
+    <title>登录</title>
     <meta charset="utf-8">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,64 +15,58 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
         $(function(){
             $(':input:first').focus();
+            var $toptips = $('.weui-toptips');
+            $toptips.fadeIn();
+            setTimeout(function () {
+                $toptips.fadeOut();
+            }, 2000);
         });
     </script>
     <style type="text/css">
-        .login-form {
-            width: 450px;
-            margin: 35px auto;
+        body, html {
+            height: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
-
-        .login-form .title {
-            margin-bottom: 35px;
-        }
-
-        .login-form .form-group .form-control {
-            width: 100%;
-            height: 46px;
-            padding: 10px 16px;
-            font-size: 18px;
-            line-height: 1.3333333;
-        }
-
-        .login-form .form-group .btn {
-            width: 100%;
-            padding: 10px 16px;
-            font-size: 18px;
-            line-height: 1.3333333;
+        body {
+            background-color: #f8f8f8;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <form class="login-form" action="${pageContext.request.contextPath}/account_check" method="post">
-        <h3 class="title">登录</h3>
-        <div class="form-group">
-            <input id="account" type="text" class="form-control" name="account" placeholder="帐号" />
-        </div>
-        <div class="form-group">
-            <input id="password" type="password" class="form-control" name="password" placeholder="密码" />
-        </div>
-        <div class="form-group">
-            <label class="checkbox-inline"><input class="weui_switch" name="rememberMe" type="checkbox" value="true" checked> 记住我</label>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary" type="submit">登录</button>
-        </div>
-        <div class="form-group">
-            <c:choose>
-                <c:when test="${SPRING_SECURITY_LAST_EXCEPTION!=null}">${SPRING_SECURITY_LAST_EXCEPTION.localizedMessage}!</c:when>
-                <c:when test="${param.action==1}"><p>帐号或密码错误</p></c:when>
-                <c:when test="${param.action==2}"><p>登录超时</p></c:when>
-                <c:when test="${param.action==1}"><p>已退出</p></c:when>
-            </c:choose>
-        </div>
-    </form>
+<div class="weui-article">
+    <h1>登录</h1>
 </div>
+<form class="login-form" action="${pageContext.request.contextPath}/account_check" method="post">
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="account" placeholder="帐号">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="password" name="password" placeholder="密码">
+            </div>
+        </div>
+    </div>
+    <label for="rememberMe" class="weui-agree">
+        <input id="rememberMe" type="checkbox" class="weui-agree__checkbox" value="true" checked>
+        <span class="weui-agree__text">记住我</span>
+    </label>
+    <div class="weui-btn-area">
+        <button class="weui-btn weui-btn_primary" type="submit">登录</button>
+    </div>
+    <c:choose>
+        <c:when test="${SPRING_SECURITY_LAST_EXCEPTION!=null}"><div class="weui-toptips weui-toptips_warn">${SPRING_SECURITY_LAST_EXCEPTION.localizedMessage}!</div></c:when>
+        <c:when test="${param.action==1}"><div class="weui-toptips weui-toptips_warn">帐号或密码错误</div></c:when>
+        <c:when test="${param.action==2}"><div class="weui-toptips weui-toptips_warn">登录超时</div></c:when>
+        <c:when test="${param.action==1}"><div class="weui-toptips weui-toptips_warn">已退出</div></c:when>
+    </c:choose>
+</form>
 </body>
 </html>

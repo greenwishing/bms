@@ -6,7 +6,7 @@
     <title>${pageContext.exception}</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css">
 </head>
 <body>
     <div class="msg">

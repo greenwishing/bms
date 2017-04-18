@@ -5,32 +5,28 @@
 <html>
 <head>
     <title>账单子分类</title>
-
 </head>
 <body>
-<div>
-    <div class="btn-group pull-right">
-        <a class="btn btn-primary" href="edit_subcategory?categoryGuid=${param.categoryGuid}">添加</a>
-        <a class="btn btn-default" href="javasctip:void(0)" onclick="history.back()">返回</a>
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-article">
+            <h1>账单子分类</h1>
+        </div>
+        <div class="weui-cells">
+            <c:forEach items="${subcategories}" var="subcategory">
+                <a class="weui-cell weui-cell_access" href="edit_subcategory?categoryGuid=${param.categoryGuid}&guid=${subcategory.guid}">
+                    <div class="weui-cell__bd">${subcategory.name}</div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+            </c:forEach>
+        </div>
+    </div>
+    <div class="weui-tabbar">
+        <a href="edit_subcategory?categoryGuid=${param.categoryGuid}" class="weui-tabbar__item">
+            <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">添加</p>
+        </a>
     </div>
 </div>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>子分类</th>
-        <th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${subcategories}" var="subcategory">
-        <tr>
-            <td>${subcategory.name}</td>
-            <td>
-                <a href="edit_subcategory?categoryGuid=${param.categoryGuid}&guid=${subcategory.guid}">编辑</a>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
 </body>
 </html>

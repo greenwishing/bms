@@ -16,38 +16,57 @@
 </head>
 <body>
     <form id="data-form" action="add_station" method="post" onsubmit="return false;">
-        <div class="form-group">
-            <label class="control-label">名称</label>
-            <input class="form-control" type="text" name="name" id="name" placeholder="名称" value="${stationDTO.name}"/>
+        <div class="weui-cells__title">名称</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" name="name" id="name" placeholder="名称" value="${stationDTO.name}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">拼音</label>
-            <input class="form-control" type="text" name="pinyin" id="pinyin" placeholder="拼音" value="${stationDTO.pinyin}"/>
+        <div class="weui-cells__title">拼音</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" name="pinyin" id="pinyin" placeholder="拼音" value="${stationDTO.pinyin}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">经度</label>
-            <input class="form-control" type="text" name="longitude" id="longitude" placeholder="经度" value="${stationDTO.longitude}"/>
+        <div class="weui-cells__title">经度</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" name="longitude" id="longitude" placeholder="经度" value="${stationDTO.longitude}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">纬度</label>
-            <input class="form-control" type="text" name="latitude" id="latitude" placeholder="纬度" value="${stationDTO.latitude}"/>
+        <div class="weui-cells__title">纬度</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" name="latitude" id="latitude" placeholder="纬度" value="${stationDTO.latitude}"/>
+                </div>
+            </div>
         </div>
         <c:if test="${stationDTO.editWithMetroLine}">
-            <div class="form-group">
-                <label class="control-label">状态</label>
-                <select name="status" class="form-control">
-                    <c:forEach items="${lineStationStatusList}" var="lineStationStatus">
-                        <option value="${lineStationStatus.value}" ${stationDTO.status eq lineStationStatus ? 'selected' : ''}>${lineStationStatus.label}</option>
-                    </c:forEach>
-                </select>
-                <input type="hidden" name="editWithMetroLine" value="${stationDTO.editWithMetroLine}"/>
+            <div class="weui-cells__title">状态</div>
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell weui-cell_select">
+                    <div class="weui-cell__bd">
+                        <input type="hidden" name="editWithMetroLine" value="${stationDTO.editWithMetroLine}"/>
+                        <select name="status" class="weui-select">
+                            <c:forEach items="${lineStationStatusList}" var="lineStationStatus">
+                                <option value="${lineStationStatus.value}" ${stationDTO.status eq lineStationStatus ? 'selected' : ''}>${lineStationStatus.label}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
             </div>
         </c:if>
-        <div class="form-group">
-            <a class="btn btn-primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
-            <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
         </div>
-        <div id="baidu-map" style="width: 100%; height: 300px;"></div>
+        <div id="baidu-map" style="width: 100%; height: 300px;margin-top: 15px"></div>
         <script type="text/javascript">
             var lng = parseFloat('${stationDTO.longitude}'), lat = parseFloat('${stationDTO.latitude}');
             var alreadyLocated = !isNaN(lng) && !isNaN(lat) && lng > 0 && lat > 0;

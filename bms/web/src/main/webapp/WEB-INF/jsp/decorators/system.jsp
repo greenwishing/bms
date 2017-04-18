@@ -18,7 +18,8 @@
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css" />
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/weui/weui.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
     <script type="text/javascript">
         $(function(){
@@ -36,35 +37,29 @@
             }
         });
     </script>
+    <style type="text/css">
+        body, html {
+            height: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background-color: #f8f8f8;
+        }
+        .page {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+        .text-left { text-align: left;}
+        .text-center { text-align: center;}
+        .text-right { text-align: right;}
+    </style>
     <decorator:head/>
 </head>
 <body>
-<header>
-    <div class="container">
-        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <div id="navbar-collapse" class="navbar-collapse">
-            <ul class="navbar">
-                <li><a href="/system/billing/overview">概览</a></li>
-                <li><a href="/system/billing/main">记账</a></li>
-                <li><a href="/system/billing/list">账单</a></li>
-                <li><a href="/system/billing/accounts">账户</a></li>
-                <li><a href="/system/billing/categories">分类</a></li>
-                <li><a href="/system/article/list">文章</a></li>
-                <li><a href="/system/metro/list">地铁</a></li>
-                <li><a href="/system/user/list">用户</a></li>
-                <li><a href="/system/app/list">应用</a></li>
-            </ul>
-            <ul class="navbar navbar-right">
-                <li><a href="/logout">退出</a></li>
-            </ul>
-        </div>
-    </div>
-</header>
-<div class="container" style="padding-top: 60px;">
+<div class="page">
     <decorator:body/>
 </div>
 </body>

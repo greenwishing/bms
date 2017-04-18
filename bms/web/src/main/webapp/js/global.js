@@ -104,11 +104,13 @@ var WF = {
             $(form)[0].submit();
         },
         ajaxSubmit: function(form, callback) {
+            var loading = weui.loading('提交数据...');
             WF.ajax.req({
                 url: $(form).attr('action'),
                 type: $(form).attr('method') || 'POST',
                 data: $(form).serialize(),
                 success: function(result) {
+                    loading.hide();
                     if (result.success) {
                         if (callback && typeof callback == 'function') {
                             callback(result);
@@ -120,8 +122,11 @@ var WF = {
                             location.reload();
                         }
                     } else {
-                        alert(result.message);
+                        weui.alert(result.message);
                     }
+                },
+                error: function () {
+                    WF.ajax.defaults.error.apply(this, arguments);
                 }
             });
         }
@@ -177,24 +182,7 @@ var WF = {
             }
         },
         topTip: function(message, opts){
-            opts = $.extend({}, {timeout: 2000, type: 'success', callback: function(){}}, opts || {});
-            var $tip = $('<div class="top-tip"></div>').html(message).addClass('top-tip-' + opts.type).appendTo($('body'));
-            setTimeout(function(){
-                $tip.addClass('open');
-            }, 100);
-            setTimeout(function(){
-                if ($tip[0].style['WebkitTransition'] !== undefined) {
-                    $tip.one('transitionend', function(){
-                        $tip.remove();
-                        (typeof opts.callback == 'function') && opts.callback();
-                    });
-                    $tip.removeClass('open');
-                } else {
-                    $tip.removeClass('open');
-                    $tip.remove();
-                    (typeof opts.callback == 'function') && opts.callback();
-                }
-            }, opts.timeout);
+            weui.toast(message, opts);
         }
     },
     ajax: {
@@ -204,26 +192,7 @@ var WF = {
         },
         defaults: {
             error:  function(x, s, e){
-                var errorMsg = '';
-                if (s == 'timeout') {
-                    errorMsg = '连接超时';
-                } else {
-                    var errorCode = x.status;
-                    if (errorCode == '401') {
-                        errorMsg = '401 - 访问被拒绝';
-                    } else if (errorCode == '403') {
-                        errorMsg = '403 - 禁止访问';
-                    } else if (errorCode == '404') {
-                        errorMsg = '404 - 未找到';
-                    } else if (errorCode == '500') {
-                        errorMsg = '500 - 内部服务器错误';
-                    } else if (errorCode == '12029') {
-                        errorMsg = '无法建立HTTP连接';
-                    } else {
-                        errorMsg = e;
-                    }
-                }
-                if (!WF.validation.isEmpty(errorMsg)) alert(errorMsg);
+                weui.alert(e || s || x.status || '未知错误');
             }
         }
     },
@@ -308,7 +277,7 @@ var WF = {
             });
         },
         changeStatus: function(guid, status) {
-            if (confirm('确定要执行该操作？')) {
+            weui.confirm('确定要执行该操作？', function(){
                 WF.ajax.req({
                     type: 'post',
                     url: 'status',
@@ -317,7 +286,7 @@ var WF = {
                         WF.page.reload();
                     }
                 });
-            }
+            });
         },
         defaultValue: function($select, defaultValue) {
             var attrFind = $select.find('option[data-id=' + defaultValue + ']');

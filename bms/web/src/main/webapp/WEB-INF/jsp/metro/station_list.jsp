@@ -7,29 +7,26 @@
     <title>站台</title>
 </head>
 <body>
-<div>
-    <div class="btn-group pull-right">
-        <a class="btn btn-primary" href="add_station">添加</a>
-        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-article">
+            <h1>站台</h1>
+        </div>
+        <div class="weui-cells">
+            <c:forEach items="${stations}" var="station">
+                <a class="weui-cell weui-cell_access" href="edit_station?guid=${station.guid}">
+                    <div class="weui-cell__bd">${station.name}</div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+            </c:forEach>
+        </div>
+    </div>
+    <div class="weui-tabbar">
+        <a href="add_station" class="weui-tabbar__item">
+            <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">添加</p>
+        </a>
     </div>
 </div>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>站台</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${stations}" var="station">
-        <tr>
-            <td>${station.name}</td>
-            <td>
-                <a href="edit_station?guid=${station.guid}">编辑</a>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
 </body>
 </html>

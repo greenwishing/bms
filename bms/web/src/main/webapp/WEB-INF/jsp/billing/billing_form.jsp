@@ -7,8 +7,10 @@
     <title>记账</title>
     <script type="text/javascript">
         $(function(){
-            WF.util.dropdown(function($menu){
-                applyTemplate($menu)
+            var $tpl = $('#tpl-list');
+            $tpl.bind('change', function($el){
+                var $option = $tpl.find('option:selected');
+                applyTemplate($option)
             });
             WF.billing.categories('${param.type}');
             (function(){
@@ -22,7 +24,7 @@
                         $tplList.empty();
                         for (var i in tpl) {
                             var template = tpl[i];
-                            var $menu = $('<li/>').attr({
+                            var $menu = $('<option></option>').attr({
                                 'data-name': template.name,
                                 'data-type': template.type,
                                 'data-amount': template.amount,
@@ -30,10 +32,7 @@
                                 'data-subcategoryGuid': template.subcategoryGuid,
                                 'data-srcAccountGuid': template.srcAccountGuid,
                                 'data-targetAccountGuid': template.targetAccountGuid
-                            });
-                            $('<a href="javascript:void(0)"></a>')
-                                    .html(template.name + ' ' + template.amount)
-                                    .appendTo($menu);
+                            }).html(template.name + ' ' + template.amount);
                             $tplList.append($menu);
                         }
                     }
@@ -41,53 +40,65 @@
             })();
         });
 
-        function applyTemplate($menu) {
-            var type = $menu.attr('data-type');
-            $('#categoryGuid').attr({'default-value': $menu.attr('data-categoryGuid')});
-            $('#subcategoryGuid').attr({'default-value': $menu.attr('data-subcategoryGuid')});
+        function applyTemplate($option) {
+            var type = $option.attr('data-type');
+            $('#categoryGuid').attr({'default-value': $option.attr('data-categoryGuid')});
+            $('#subcategoryGuid').attr({'default-value': $option.attr('data-subcategoryGuid')});
             WF.billing.categories(type);
-            WF.billing.defaultValue($(':input[name=srcAccountGuid]'), $menu.attr('data-srcAccountGuid'));
-            WF.billing.defaultValue($(':input[name=targetAccountGuid]'), $menu.attr('data-targetAccountGuid'));
-            $('#name').val($menu.attr('data-name'));
-            $('#amount').val($menu.attr('data-amount'));
+            WF.billing.defaultValue($(':input[name=srcAccountGuid]'), $option.attr('data-srcAccountGuid'));
+            WF.billing.defaultValue($(':input[name=targetAccountGuid]'), $option.attr('data-targetAccountGuid'));
+            $('#name').val($option.attr('data-name'));
+            $('#amount').val($option.attr('data-amount'));
         }
     </script>
-    <style type="text/css">
-        .dropdown-menu {
-            max-height: 300px;
-            overflow: auto;
-        }
-    </style>
 </head>
 <body>
-    <form id="data-form" action="record?type=${param.type}" method="post" onsubmit="return false;">
-        <div class="form-group">
-            <a class="btn btn-default dropdown-toggle">从模板快速添加 <span class="caret"></span></a>
-            <ul id="tpl-list" class="dropdown-menu"></ul>
+<form id="data-form" action="record?type=${param.type}" method="post" onsubmit="return false;">
+    <div class="weui-cells__title">从模板添加</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_select">
+            <div class="weui-cell__bd">
+                <select class="weui-select" id="tpl-list"></select>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">分类</label>
-            <div class="input-group">
-                <select class="form-control" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid">
-                    <option value="">请选择</option>
-                </select>
-                <select class="form-control" id="subcategoryGuid" name="subcategoryGuid">
+    </div>
+    <div class="weui-cells__title">分类</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_select">
+            <div class="weui-cell__bd">
+                <select class="weui-select" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid">
                     <option value="">请选择</option>
                 </select>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">名称</label>
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="form-control" type="text" name="name" id="name" placeholder="名称" value="${billingDTO.name}">
+    </div>
+    <div class="weui-cells__title">子分类</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_select">
+            <div class="weui-cell__bd">
+                <select class="weui-select" id="subcategoryGuid" name="subcategoryGuid">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">名称</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" name="name" id="name" placeholder="名称" value="${billingDTO.name}">
             </div>
         </div>
         <c:choose>
             <c:when test="${'EXPEND' eq param.type}">
-                <div class="form-group">
-                    <label class="control-label">支出账户</label>
-                    <div class="input-group">
-                        <select class="form-control" name="srcAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">支出账户</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -100,10 +111,12 @@
                 </div>
             </c:when>
             <c:when test="${'INCOME' eq param.type}">
-                <div class="form-group">
-                    <label class="control-label">收入账户</label>
-                    <div class="input-group">
-                        <select class="form-control" name="srcAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">收入账户</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -116,10 +129,12 @@
                 </div>
             </c:when>
             <c:when test="${'TRANSFER' eq param.type}">
-                <div class="form-group">
-                    <label class="control-label">转出账户</label>
-                    <div class="input-group">
-                        <select class="form-control" name="srcAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">转出账户</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -130,10 +145,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">转入账户</label>
-                    <div class="input-group">
-                        <select class="form-control" name="targetAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">转入账户</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="targetAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -146,10 +163,12 @@
                 </div>
             </c:when>
             <c:when test="${'BORROW' eq param.type}">
-                <div class="form-group">
-                    <label class="control-label">借入账户</label>
-                    <div class="input-group">
-                        <select class="form-control" name="srcAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">借入账户</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -160,10 +179,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">债权人</label>
-                    <div class="input-group">
-                        <select class="form-control" name="targetAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">债权人</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="targetAccountGuid">
                             <c:forEach items="${loanAccountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -176,10 +197,12 @@
                 </div>
             </c:when>
             <c:when test="${'LOAN' eq param.type}">
-                <div class="form-group">
-                    <label class="control-label">借出账户</label>
-                    <div class="input-group">
-                        <select class="form-control" name="srcAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">借出账户</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -190,10 +213,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">债务人</label>
-                    <div class="input-group">
-                        <select class="form-control" name="targetAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">债务人</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="targetAccountGuid">
                             <c:forEach items="${loanAccountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -206,10 +231,12 @@
                 </div>
             </c:when>
             <c:when test="${'RECEIVE' eq param.type}">
-                <div class="form-group">
-                    <label class="control-label">收款账户</label>
-                    <div class="input-group">
-                        <select class="form-control" name="srcAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">收款账户</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -220,10 +247,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">债务人</label>
-                    <div class="input-group">
-                        <select class="form-control" name="targetAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">债务人</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="targetAccountGuid">
                             <c:forEach items="${loanAccountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -236,10 +265,12 @@
                 </div>
             </c:when>
             <c:when test="${'PAYBACK' eq param.type}">
-                <div class="form-group">
-                    <label class="control-label">还款账户</label>
-                    <div class="input-group">
-                        <select class="form-control" name="srcAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">还款账户</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="srcAccountGuid">
                             <c:forEach items="${accountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -250,10 +281,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">债权人</label>
-                    <div class="input-group">
-                        <select class="form-control" name="targetAccountGuid">
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">债权人</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" name="targetAccountGuid">
                             <c:forEach items="${loanAccountMap}" var="group">
                                 <optgroup label="${group.key.label}">
                                     <c:forEach items="${group.value}" var="account">
@@ -266,25 +299,38 @@
                 </div>
             </c:when>
         </c:choose>
-        <div class="form-group">
-            <label class="control-label">日期</label>
-            <input class="form-control" type="date" name="occurredTime" placeholder="日期" value="${billingDTO.occurredTime}"/>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">日期</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="date" name="occurredTime" placeholder="日期" value="${billingDTO.occurredTime}"/>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">金额</label>
-            <input class="form-control" type="number" name="amount" id="amount" placeholder="金额" value="${billingDTO.amount}"/>
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">金额</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" name="amount" placeholder="金额" value="${billingDTO.amount}"/>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">描述</label>
-            <textarea class="form-control" name="description" placeholder="描述" rows="3">${billingDTO.description}</textarea>
+    </div>
+    <div class="weui-cells__title">描述</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea" name="description" placeholder="描述" rows="3"></textarea>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="checkbox-inline"><input name="createTemplate" type="checkbox" value="true"/> 创建模板</label>
-        </div>
-        <div class="form-group">
-            <a class="btn btn-primary" href="javascript:void(0)" onclick="saveContinue()">保存</a>
-            <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
-        </div>
-    </form>
+    </div>
+    <%--<label for="createTemplate" class="weui-agree">
+        <input id="createTemplate" type="checkbox" class="weui-agree__checkbox" value="true">
+        <span class="weui-agree__text">创建模板</span>
+    </label>--%>
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="saveContinue()">保存</a>
+    </div>
+</form>
 </body>
 </html>

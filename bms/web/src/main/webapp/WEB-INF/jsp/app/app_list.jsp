@@ -7,30 +7,28 @@
     <title>我的应用</title>
 </head>
 <body>
-<div>
-    <div class="btn-group pull-right">
-        <a class="btn btn-primary" href="reg">添加</a>
-        <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-cells">
+            <c:forEach items="${apps}" var="app">
+                <a class="weui-cell weui-cell_access" href="edit?appId=${app.appId}">
+                    <div class="weui-cell__bd">${app.appId}</div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+            </c:forEach>
+        </div>
+        <div class="weui-cells__tips"><a class="weui-cell_link" href="${pageContext.request.contextPath}/wiki/app.jsp">接入文档</a></div>
+    </div>
+    <div class="weui-tabbar">
+        <a href="reg" class="weui-tabbar__item">
+            <img src="/images/icons/icon_add.png" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">添加</p>
+        </a>
+        <a href="javascript:void(0);" class="weui-tabbar__item" onclick="history.back();">
+            <img src="/images/icons/icon_back.png" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">返回</p>
+        </a>
     </div>
 </div>
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>应用</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${apps}" var="app">
-        <tr>
-            <td>${app.appId}</td>
-            <td>
-                <a href="edit?appId=${app.appId}">编辑</a>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
-<p><a href="${pageContext.request.contextPath}/wiki/app.jsp">接入文档</a></p>
 </body>
 </html>

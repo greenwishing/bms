@@ -4,6 +4,7 @@ import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.article.ArticleDTO;
 import cn.greenwishing.bms.dto.article.ArticlePagingDTO;
 import cn.greenwishing.bms.service.ArticleService;
+import cn.greenwishing.bms.utils.SecurityHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,6 +34,7 @@ public class ArticleController {
     public String show(String guid, ModelMap model) {
         ArticleDTO article = articleService.loadArticleByGuid(guid);
         model.put("article", article);
+        model.put("login", SecurityHolder.getUserId() != null);
         return "article/article_show";
     }
 

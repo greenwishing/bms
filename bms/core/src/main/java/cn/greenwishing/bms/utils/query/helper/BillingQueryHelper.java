@@ -135,7 +135,7 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
 
     @Override
     public String getResultHql() {
-        return "from Billing b where 1=1 " + getSubHql() + " order by b.occurredTime desc";
+        return "from Billing b where 1=1 " + getSubHql() + " order by b.occurredTime desc, b.id desc";
     }
 
     @Override

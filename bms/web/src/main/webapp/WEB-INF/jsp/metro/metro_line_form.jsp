@@ -16,7 +16,7 @@
         .metro-line-station > .station + .station { margin-left: 1.5em;}
         .metro-line-station > .station + .station:before { content: "→"; position: absolute; left: -1.6em; padding: 0 5px; color: #ccc;}
 
-        .metro-map { position: relative; width: 100%; height: 360px; background: #f3f3f3;}
+        .metro-map { position: relative; width: 100%; height: 360px; background: #ffffff;}
         .metro-map .station-marker { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #ccc;}
         .metro-map .station-marker.running { background-color: ${metroLineDTO.color};}
 
@@ -56,7 +56,7 @@
                 $li.toggleClass('running', ml.running);
                 $el.append($li);
                 if (ml.longitude > 0 && ml.latitude > 0) {
-                    svgPoints.push(parseInt(-(avg.x - ml.longitude) * 1500 + 300) + ',' + parseInt((avg.y - ml.latitude) * 1500 + 180));
+                    svgPoints.push(parseInt(-(avg.x - ml.longitude) * 1500 + 180) + ',' + parseInt((avg.y - ml.latitude) * 1500 + 180));
                 }
             });
             $el.find('.station').bind('click', function(){
@@ -82,29 +82,35 @@
 </head>
 <body>
     <form class="form-horizontal" id="data-form" action="add" method="post" onsubmit="return false;">
-        <div class="form-group">
-            <label class="control-label">线路名称</label>
-            <input class="form-control" type="text" name="name" id="name" placeholder="线路名称" value="${metroLineDTO.name}"/>
+        <div class="weui-cells__title">线路名称</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" name="name" id="name" placeholder="线路名称" value="${metroLineDTO.name}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">主题色</label>
-            <input class="form-control" type="color" name="color" id="color" placeholder="主题色" value="${metroLineDTO.color}"/>
+        <div class="weui-cells__title">线路名称</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="color" name="color" id="color" placeholder="主题色" value="${metroLineDTO.color}"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="checkbox-inline"><input class="weui_switch" type="checkbox" value="true" ${metroLineDTO.loop?'checked':''}/> 是环线</label>
-        </div>
+        <label for="loop" class="weui-agree">
+            <input id="loop" type="checkbox" class="weui-agree__checkbox" name="loop" value="true" ${metroLineDTO.loop?'checked':''}>
+            <span class="weui-agree__text">是环线</span>
+        </label>
         <c:if test="${metroLineDTO.guid != null}">
-        <div class="form-group">
-            <label class="control-label">${metroLineDTO.name}的站台</label>
+            <div class="weui-cells__title">${metroLineDTO.name}的站台</div>
             <ol class="metro-line-station"></ol>
             <svg id="metro-map" class="metro-map" xmlns="http://www.w3.org/2000/svg" version="1.1">
                 <title>${metroLineDTO.name}</title>
             </svg>
-        </div>
         </c:if>
-        <div class="form-group">
-            <a class="btn btn-primary" href="javascript:void(0)" onclick="WF.form.submit($('#data-form'))">保存</a>
-            <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="WF.form.submit($('#data-form'))">保存</a>
         </div>
     </form>
 </body>

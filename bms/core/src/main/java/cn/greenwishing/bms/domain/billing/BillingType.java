@@ -8,7 +8,7 @@ public enum BillingType {
     INCOME("收入"),
     TRANSFER("转账"),
     BORROW("借入"),
-    LOAN("借出/代付"),
+    LOAN("借出"),
     RECEIVE("收款"),
     PAYBACK("还款"),
     ;

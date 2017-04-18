@@ -27,22 +27,31 @@
 </head>
 <body>
     <spring-form:form id="data-form" commandName="articleDTO" method="post" onsubmit="return false;">
-        <div class="form-group">
-            <label class="control-label">标题</label>
-            <spring-form:input cssClass="form-control" path="title" id="title" placeholder="标题"/>
+        <div class="weui-cells__title">标题</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <spring-form:input cssClass="weui-input" path="title" id="title" placeholder="标题"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">分类</label>
-            <spring-form:select cssClass="form-control" id="categoryGuid" path="categoryGuid" items="${categoryDTOs}" itemValue="guid" itemLabel="name"/>
+        <div class="weui-cells__title">分类</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell weui-cell_select">
+                <div class="weui-cell__bd">
+                    <spring-form:select cssClass="weui-select" id="categoryGuid" path="categoryGuid" items="${categoryDTOs}" itemValue="guid" itemLabel="name"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">内容</label>
-            <script type="text/plain" id="article_content">${articleDTO.content}</script>
-            <spring-form:textarea cssClass="form-control" id="content" path="content" cssStyle="display: none;"/>
+        <div class="weui-cells__title">内容</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell__bd">
+                <script type="text/plain" id="article_content">${articleDTO.content}</script>
+                <spring-form:textarea cssClass="form-control" id="content" path="content" cssStyle="display: none;"/>
+            </div>
         </div>
-        <div class="form-group">
-            <a class="btn btn-primary" href="javascript:void(0)" onclick="articleFormSubmit()">保存</a>
-            <a class="btn btn-default" href="javascript:void(0)" onclick="history.back();">返回</a>
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="articleFormSubmit()">保存</a>
         </div>
     </spring-form:form>
 </body>

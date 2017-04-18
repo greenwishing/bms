@@ -6,21 +6,22 @@
     <title>${pageContext.exception}</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css">
 </head>
 <body>
-<div class="msg">
-    <div class="msg_icon_area"><i class="msg_icon_warn msg_icon_msg"></i></div>
-    <div class="msg_text_area">
-        <h2 class="msg_title">${pageContext.exception}</h2>
-        <div style="display: none;">
+<div class="weui-msg">
+    <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
+    <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title">${pageContext.exception}</h2>
+        <div class="stack-trace-list" style="display: none;">
             <c:forEach items="${pageContext.exception.stackTrace}" var="trace">
-                <p class="msg_desc">${trace}</p></c:forEach>
+                <p class="weui-msg__desc">${trace}</p></c:forEach>
         </div>
     </div>
-    <div class="msg_opr_area">
-        <p class="msg_btn_area">
-            <a href="javascript:void(0);" class="btn btn-primary" onclick="history.back()">确定</a>
+    <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+            <a href="javascript:history.back();" class="weui-btn weui-btn_primary">确定</a>
+            <a href="javascript:void(0);" class="weui-btn weui-btn_default" onclick="$('#stack-trace-list').toggle()">查看详情</a>
         </p>
     </div>
 </div>

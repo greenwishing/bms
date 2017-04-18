@@ -1,5 +1,6 @@
 package cn.greenwishing.bms.web.controller.app;
 
+import cn.greenwishing.bms.domain.oauth.OAuthAuthorities;
 import cn.greenwishing.bms.domain.oauth.OAuthGrantType;
 import cn.greenwishing.bms.domain.oauth.OAuthResourceId;
 import cn.greenwishing.bms.domain.oauth.OAuthScope;
@@ -47,6 +48,7 @@ public class AppFormController {
         model.put("resourceIdList", OAuthResourceId.values());
         model.put("scopeList", OAuthScope.values());
         model.put("grantTypeList", OAuthGrantType.values());
+        model.put("authorityList", OAuthAuthorities.values());
         return FORM_VIEW;
     }
 
