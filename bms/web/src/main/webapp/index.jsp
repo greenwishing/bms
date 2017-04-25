@@ -28,18 +28,19 @@
         });
     </script>
     <style type="text/css">
-        body, html {
-            height: 100%;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            background-color: #f8f8f8;
-        }
+        body, html { height: 100%; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #f8f8f8; }
+        .brand { display: flex; flex-direction: column; align-items: center; }
+        .brand-logo { width: 128px; height: 128px; margin: 20px; border-radius: 50%; box-shadow: 3px 3px 12px rgba(0,0,0,0.1);  }
+        .brand-text { color: #888; }
+        .brand-text_hide .brand-text { display: none; }
+        .weui-footer {  margin-top: 50px; }
     </style>
 </head>
 <body>
-<div class="weui-article">
-    <h1>登录</h1>
+<div class="brand brand-text_hide">
+    <img class="brand-logo" src="${pageContext.request.contextPath}/images/bms.png"/>
+    <p class="brand-text">BMS</p>
 </div>
 <form class="login-form" action="${pageContext.request.contextPath}/account_check" method="post">
     <div class="weui-cells weui-cells_form">
@@ -67,8 +68,8 @@
         <c:when test="${param.action==2}"><div class="weui-toptips weui-toptips_warn">登录超时</div></c:when>
         <c:when test="${param.action==1}"><div class="weui-toptips weui-toptips_warn">已退出</div></c:when>
     </c:choose>
-    <div class="weui-footer weui-footer_fixed-bottom">
-        <div class="weui-footer__text">wishing &copy; 2017 蜀ICP备17012081号</div>
+    <div class="weui-footer">
+        <div class="weui-footer__text">BMS &copy; 2017 蜀ICP备17012081号</div>
     </div>
 </form>
 </body>
