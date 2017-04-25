@@ -67,6 +67,9 @@
         <c:when test="${param.action==2}"><div class="weui-toptips weui-toptips_warn">登录超时</div></c:when>
         <c:when test="${param.action==1}"><div class="weui-toptips weui-toptips_warn">已退出</div></c:when>
     </c:choose>
+    <div class="weui-footer weui-footer_fixed-bottom">
+        <div class="weui-footer__text">wishing &copy; 2017 蜀ICP备17012081号</div>
+    </div>
 </form>
 </body>
 </html>
