@@ -7,11 +7,7 @@
     <title>记账</title>
     <script type="text/javascript">
         $(function(){
-            var $tpl = $('#tpl-list');
-            $tpl.bind('change', function($el){
-                var $option = $tpl.find('option:selected');
-                applyTemplate($option)
-            });
+            applyTemplate($('#tpl-list'));
             WF.billing.categories('${param.type}');
             (function(){
                 var $tplList = $('#tpl-list');
@@ -22,6 +18,7 @@
                     success: function(result) {
                         var tpl = result.tplList;
                         $tplList.empty();
+                        $tplList.append('<option value="">请选择</option>');
                         for (var i in tpl) {
                             var template = tpl[i];
                             var $menu = $('<option></option>').attr({
@@ -40,7 +37,8 @@
             })();
         });
 
-        function applyTemplate($option) {
+        function applyTemplate(el) {
+            var $option = $(el).find('option:selected');
             var type = $option.attr('data-type');
             $('#categoryGuid').attr({'default-value': $option.attr('data-categoryGuid')});
             $('#subcategoryGuid').attr({'default-value': $option.attr('data-subcategoryGuid')});
@@ -58,7 +56,9 @@
     <div class="weui-cells weui-cells_form">
         <div class="weui-cell weui-cell_select">
             <div class="weui-cell__bd">
-                <select class="weui-select" id="tpl-list"></select>
+                <select class="weui-select" id="tpl-list" onchange="applyTemplate(this)">
+                    <option value="">请选择</option>
+                </select>
             </div>
         </div>
     </div>
