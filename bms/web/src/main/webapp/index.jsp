@@ -66,7 +66,7 @@
         <c:when test="${SPRING_SECURITY_LAST_EXCEPTION!=null}"><div class="weui-toptips weui-toptips_warn">${SPRING_SECURITY_LAST_EXCEPTION.localizedMessage}!</div></c:when>
         <c:when test="${param.action==1}"><div class="weui-toptips weui-toptips_warn">帐号或密码错误</div></c:when>
         <c:when test="${param.action==2}"><div class="weui-toptips weui-toptips_warn">登录超时</div></c:when>
-        <c:when test="${param.action==1}"><div class="weui-toptips weui-toptips_warn">已退出</div></c:when>
+        <c:when test="${param.action==3}"><div class="weui-toptips weui-toptips_warn">已退出</div></c:when>
     </c:choose>
     <div class="weui-footer">
         <div class="weui-footer__text">BMS &copy; 2017 蜀ICP备17012081号</div>
