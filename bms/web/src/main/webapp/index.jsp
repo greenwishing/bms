@@ -56,7 +56,7 @@
         </div>
     </div>
     <label for="rememberMe" class="weui-agree">
-        <input id="rememberMe" type="checkbox" class="weui-agree__checkbox" value="true" checked>
+        <input id="rememberMe" name="rememberMe" type="checkbox" class="weui-agree__checkbox" value="true" checked>
         <span class="weui-agree__text">记住我</span>
     </label>
     <div class="weui-btn-area">
