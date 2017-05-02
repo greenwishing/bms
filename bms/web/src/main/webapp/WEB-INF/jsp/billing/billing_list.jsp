@@ -88,7 +88,7 @@
         <div class="weui-form-preview__hd">
             <div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">金额</label>
-                <em class="weui-form-preview__value">${billing.amount}</em>
+                <em class="weui-form-preview__value">￥${billing.amount}</em>
             </div>
         </div>
         <div class="weui-form-preview__bd">
