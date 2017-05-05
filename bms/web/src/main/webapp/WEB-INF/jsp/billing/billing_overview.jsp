@@ -220,7 +220,7 @@
                 }
                 categories[category].amount += amount;
                 if (!categories[category].subcategories[subcategory]) {
-                    categories[category].subcategories[subcategory] = amount;
+                    categories[category].subcategories[subcategory] = 0;
                 }
                 categories[category].subcategories[subcategory] += amount;
                 total += amount;
