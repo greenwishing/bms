@@ -34,12 +34,6 @@ public interface BillingService {
 
     List<BillingSubcategoryDTO> loadBillingSubcategory(String categoryGuid);
 
-    List<BillingTemplateDTO> loadBillingTemplate();
-
-    BillingTemplateDTO loadBillingTemplateByGuid(String guid);
-
-    void saveOrUpdateBillingTemplate(BillingTemplateDTO templateDTO);
-
     List<BillingCategoryDTO> loadBillingCategoryByType(BillingType billingType);
 
     List<BillingStatistics> loadBillingStatistics(String type, String fromDateStr, String toDateStr);

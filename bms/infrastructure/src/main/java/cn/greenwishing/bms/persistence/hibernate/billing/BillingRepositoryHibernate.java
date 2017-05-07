@@ -2,7 +2,6 @@ package cn.greenwishing.bms.persistence.hibernate.billing;
 
 import cn.greenwishing.bms.domain.billing.*;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
-import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.persistence.hibernate.AbstractRepositoryHibernate;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
@@ -62,20 +61,8 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<BillingTemplate> findBillingTemplateByUserGuid(String userGuid) {
-        return getHibernateTemplate().find("from BillingTemplate t where t.user.guid=?", userGuid);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
     public List<BillingCategory> findBillingCategoryByType(BillingType billingType, String userGuid) {
         return getHibernateTemplate().find("from BillingCategory c where c.type=? and c.user.guid=?", billingType, userGuid);
-    }
-
-    @Override
-    public BillingTemplate findBillTemplate(User user, BillingType type, BillingCategory category, BillingSubcategory subcategory) {
-        List list = getHibernateTemplate().find("from BillingTemplate t where t.user=? and t.type=? and t.category=? and t.subcategory=?", user, type, category, subcategory);
-        return list.isEmpty() ? null : (BillingTemplate) list.get(0);
     }
 
     @Override

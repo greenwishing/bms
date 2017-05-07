@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,8 +34,6 @@ public class BillingDTO {
     private String occurredUserGuid;
     private BillingStatus status;
     private String settleTime;
-
-    private boolean createTemplate;
 
     public BillingDTO(){
     }
@@ -184,14 +181,6 @@ public class BillingDTO {
 
     public void setOccurredUserGuid(String occurredUserGuid) {
         this.occurredUserGuid = occurredUserGuid;
-    }
-
-    public boolean isCreateTemplate() {
-        return createTemplate;
-    }
-
-    public void setCreateTemplate(boolean createTemplate) {
-        this.createTemplate = createTemplate;
     }
 
     public BillingStatus getStatus() {

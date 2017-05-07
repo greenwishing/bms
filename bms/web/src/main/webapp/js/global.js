@@ -254,28 +254,6 @@ var WF = {
                 }
             });
         },
-        templates: function(box, callback) {
-            var container = $(box);
-            container.addClass('label-wrapper');
-            WF.ajax.req({
-                type: 'post',
-                url: 'templates',
-                data: {dataType: 'json'},
-                success: function(result) {
-                    var templates = result.templates;
-                    for (var i in templates) {
-                        var template = templates[i];
-                        var item = $('<li><a href="javascript:void(0)">' + template.name + '&nbsp;<span class="badge">' + template.amount + '</span></a></li>').attr(template);
-                        container.append(item);
-                    }
-                    if (callback && typeof callback == 'function') {
-                        container.find('li').bind('click', function(){
-                            callback(this);
-                        });
-                    }
-                }
-            });
-        },
         changeStatus: function(guid, status) {
             weui.confirm('确定要执行该操作？', function(){
                 WF.ajax.req({

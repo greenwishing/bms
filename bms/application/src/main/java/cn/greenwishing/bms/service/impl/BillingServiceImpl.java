@@ -108,15 +108,6 @@ public class BillingServiceImpl implements BillingService {
                 billingDTO.getDescription(), occurredTime, user);
         billing.updateStatus(status);
         billingRepository.saveOrUpdate(billing);
-
-        if (billingDTO.isCreateTemplate()) {
-            BillingTemplate template = billingRepository.findBillTemplate(user, type, category, subcategory);
-            if (template == null) {
-                template = new BillingTemplate(user);
-            }
-            template.update(name, type, category, subcategory, amount);
-            billingRepository.saveOrUpdate(template);
-        }
     }
 
     private BillingAccount accountAddAmount(String accountGuid, BigDecimal amount) {
@@ -208,49 +199,6 @@ public class BillingServiceImpl implements BillingService {
     public List<BillingSubcategoryDTO> loadBillingSubcategory(String categoryGuid) {
         List<BillingSubcategory> subcategories = billingRepository.findBillingSubcategory(categoryGuid);
         return BillingSubcategoryDTO.toDTO(subcategories);
-    }
-
-    @Override
-    public List<BillingTemplateDTO> loadBillingTemplate() {
-        String userGuid = SecurityHolder.getUserGuid();
-        List<BillingTemplate> templates = billingRepository.findBillingTemplateByUserGuid(userGuid);
-        return BillingTemplateDTO.toDTOs(templates);
-    }
-
-    @Override
-    public BillingTemplateDTO loadBillingTemplateByGuid(String guid) {
-        BillingTemplate template = billingRepository.findByGuid(BillingTemplate.class, guid);
-        return new BillingTemplateDTO(template);
-    }
-
-    @Override
-    public void saveOrUpdateBillingTemplate(BillingTemplateDTO templateDTO) {
-        BillingTemplate template;
-        String guid = templateDTO.getGuid();
-        if (ValidationUtils.isNotEmpty(guid)) {
-            template = billingRepository.findByGuid(BillingTemplate.class, guid);
-        } else {
-            String userGuid = SecurityHolder.getUserGuid();
-            User user = userRepository.findByGuid(User.class, userGuid);
-            template = new BillingTemplate(user);
-        }
-        BillingCategory category = null;
-        BillingSubcategory subcategory = null;
-        String categoryGuid = templateDTO.getCategoryGuid();
-        String subcategoryGuid = templateDTO.getSubcategoryGuid();
-        if (ValidationUtils.isNotEmpty(categoryGuid)) {
-            category = billingRepository.findByGuid(BillingCategory.class, categoryGuid);
-            if (ValidationUtils.isNotEmpty(subcategoryGuid)) {
-                subcategory = billingRepository.findByGuid(BillingSubcategory.class, subcategoryGuid);
-            }
-        }
-        String amountStr = templateDTO.getAmount();
-        BigDecimal amount = BigDecimal.ZERO;
-        if (ValidationUtils.isPositiveBigDecimal(amountStr)) {
-            amount = new BigDecimal(amountStr);
-        }
-        template.update(templateDTO.getName(), templateDTO.getType(), category, subcategory, amount);
-        billingRepository.saveOrUpdate(template);
     }
 
     @Override

@@ -324,10 +324,6 @@
             </div>
         </div>
     </div>
-    <%--<label for="createTemplate" class="weui-agree">
-        <input id="createTemplate" type="checkbox" class="weui-agree__checkbox" value="true">
-        <span class="weui-agree__text">创建模板</span>
-    </label>--%>
     <div class="weui-btn-area">
         <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="saveContinue()">保存</a>
     </div>

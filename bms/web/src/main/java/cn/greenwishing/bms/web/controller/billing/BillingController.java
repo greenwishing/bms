@@ -131,17 +131,6 @@ public class BillingController {
         return new ModelAndView("billing/billing_subcategory_list", model);
     }
 
-    @RequestMapping("templates")
-    public ModelAndView templates(String dataType) {
-        List<BillingTemplateDTO> templates = billingService.loadBillingTemplate();
-        Map<String, Object> model = new HashMap<>();
-        model.put("templates", templates);
-        if ("json".equals(dataType)) {
-            return new ModelAndView(new MappingJacksonJsonView(), model);
-        }
-        return new ModelAndView("billing/billing_template_list", model);
-    }
-
     @RequestMapping("gen")
     public ModelAndView gen() {
         List<BillingCategoryDTO> categoryDTOs = billingService.loadBillingCategory();
