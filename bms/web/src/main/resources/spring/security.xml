@@ -25,6 +25,7 @@
     <http pattern="/login" security="none"/>
 
     <http pattern="/api/**" security="none" create-session="never"/>
+    <http pattern="/message/**" security="none" create-session="never"/>
 
     <!-- OAuth 2.0 Configuration -->
     <http pattern="/oauth/token" create-session="stateless" authentication-manager-ref="oauth2AuthenticationManager" entry-point-ref="oauth2AuthenticationEntryPoint">

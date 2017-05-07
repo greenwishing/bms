@@ -16,7 +16,7 @@ import java.util.List;
  * Date: 2013-11-18 22:35
  */
 @Controller
-@RequestMapping("/api/")
+@RequestMapping("/api")
 public class APIController {
 
     @Autowired
