@@ -19,10 +19,10 @@ public class SuggestTemplateDTO {
     private String guid;
     private String name;
     private BillingType type;
-    private String categoryGuid;
-    private String subcategoryGuid;
-    private String srcAccountGuid;
-    private String targetAccountGuid;
+    private Integer categoryId;
+    private Integer subcategoryId;
+    private Integer srcAccountId;
+    private Integer targetAccountId;
     private String amount;
 
     public SuggestTemplateDTO(){
@@ -33,10 +33,10 @@ public class SuggestTemplateDTO {
         this.guid = parser.nextString();
         this.name = parser.nextString();
         this.type = parser.nextEnumWithName(BillingType.class);
-        this.categoryGuid = parser.nextString();
-        this.subcategoryGuid = parser.nextString();
-        this.srcAccountGuid = parser.nextString();
-        this.targetAccountGuid = parser.nextString();
+        this.categoryId = parser.nextInt();
+        this.subcategoryId = parser.nextInt();
+        this.srcAccountId = parser.nextInt();
+        this.targetAccountId = parser.nextInt();
         this.amount = NumberUtils.toString(parser.nextDecimal());
     }
 
@@ -65,20 +65,20 @@ public class SuggestTemplateDTO {
         return type;
     }
 
-    public String getCategoryGuid() {
-        return categoryGuid;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public String getSubcategoryGuid() {
-        return subcategoryGuid;
+    public Integer getSubcategoryId() {
+        return subcategoryId;
     }
 
-    public String getSrcAccountGuid() {
-        return srcAccountGuid;
+    public Integer getSrcAccountId() {
+        return srcAccountId;
     }
 
-    public String getTargetAccountGuid() {
-        return targetAccountGuid;
+    public Integer getTargetAccountId() {
+        return targetAccountId;
     }
 
     public String getAmount() {

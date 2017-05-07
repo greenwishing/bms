@@ -96,16 +96,80 @@
                 <label class="weui-form-preview__label">类型</label>
                 <span class="weui-form-preview__value">${billing.type.label}</span>
             </div>
-            <div class="weui-form-preview__item">
-                <label class="weui-form-preview__label">项目</label>
-                <span class="weui-form-preview__value">${billing.name}</span>
-            </div>
             <c:if test="${not empty billing.categoryName}">
                 <div class="weui-form-preview__item">
                     <label class="weui-form-preview__label">分类</label>
                     <span class="weui-form-preview__value">${billing.categoryName} ${billing.subcategoryName}</span>
                 </div>
             </c:if>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">项目</label>
+                <span class="weui-form-preview__value">${billing.name}</span>
+            </div>
+            <c:choose>
+                <c:when test="${'EXPEND' eq billing.type}">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">支出账户</label>
+                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
+                    </div>
+                </c:when>
+                <c:when test="${'INCOME' eq billing.type}">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">收入账户</label>
+                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
+                    </div>
+                </c:when>
+                <c:when test="${'TRANSFER' eq billing.type}">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">转出账户</label>
+                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
+                    </div>
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">转入账户</label>
+                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
+                    </div>
+                </c:when>
+                <c:when test="${'BORROW' eq billing.type}">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">借入账户</label>
+                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
+                    </div>
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">债权人</label>
+                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
+                    </div>
+                </c:when>
+                <c:when test="${'LOAN' eq billing.type}">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">借出账户</label>
+                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
+                    </div>
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">债务人</label>
+                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
+                    </div>
+                </c:when>
+                <c:when test="${'RECEIVE' eq billing.type}">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">收款账户</label>
+                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
+                    </div>
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">债务人</label>
+                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
+                    </div>
+                </c:when>
+                <c:when test="${'PAYBACK' eq billing.type}">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">还款账户</label>
+                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
+                    </div>
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">债务人</label>
+                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
+                    </div>
+                </c:when>
+            </c:choose>
             <div class="weui-form-preview__item">
                 <label class="weui-form-preview__label">时间</label>
                 <span class="weui-form-preview__value">${billing.occurredTime}</span>

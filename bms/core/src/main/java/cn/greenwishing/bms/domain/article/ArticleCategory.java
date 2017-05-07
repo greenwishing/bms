@@ -16,14 +16,14 @@ public class ArticleCategory extends AbstractDomain {
     private String name;
 
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public ArticleCategory() {
     }
 
-    public ArticleCategory(User owner) {
-        this.owner = owner;
+    public ArticleCategory(User user) {
+        this.user = user;
     }
 
     public void update(String name) {
@@ -34,7 +34,7 @@ public class ArticleCategory extends AbstractDomain {
         return name;
     }
 
-    public User owner() {
-        return owner;
+    public User user() {
+        return user;
     }
 }

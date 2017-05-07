@@ -57,7 +57,7 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
 
             @Override
             public String getSubHql() {
-                return " and b.operator.guid=:userGuid";
+                return " and b.user.guid=:userGuid";
             }
         };
     }

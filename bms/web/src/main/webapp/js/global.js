@@ -289,9 +289,9 @@ var WF = {
             });
         },
         defaultValue: function($select, defaultValue) {
-            var attrFind = $select.find('option[data-id=' + defaultValue + ']');
-            if (attrFind.length) {
-                attrFind.attr({'selected': 'selected'});
+            var $option = $select.find('option[data-id=' + defaultValue + ']');
+            if ($option.length) {
+                $select.val($option.val());
             } else {
                 $select.val(defaultValue);
             }

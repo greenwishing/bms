@@ -47,8 +47,11 @@
                     labels: { rotation: -45}
                 },
                 yAxis: {
-                    title: {text: '金额'},
-                    min: 0
+                    title: {text: '金额（元）'},
+                    min: 0,
+                    labels: {
+                        format: '{value:.,0f}'
+                    }
                 },
                 series: data,
                 legend: { enabled: false, verticalAlign: 'top' },
@@ -123,7 +126,6 @@
                     title = _date + ': ' + amount;
                     if (amount > _MAX) {
                         overflow = parseInt((max - amount) * _MAX / max);
-                        console.log('max: ' + max + ', amount: ' + amount + ', overflow: ' + overflow)
                     }
                 }
                 var colorHex = 'rgb(' + (overflow != null ? overflow : _DEFAULT_OVERFLOW) + ',' + colorInt + ',' + colorInt + ')';
@@ -252,7 +254,8 @@
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
-                    plotShadow: false
+                    plotShadow: false,
+                    spacing: [15, 0, 40, 0]
                 },
                 title: {
                     text: title
@@ -303,32 +306,8 @@
             padding: 10px;
             background: #fff;
         }
-
-        .weui-flex + .weui-flex {
-            margin-top: 10px;
-        }
-
-        .signum {
-            text-align: center;
-            font-size: 28px;
-            font-weight: normal;
-            margin: 10px 0;
-        }
-        .signum_0 {
-            color: #888;
-        }
-        .signum_-1 {
-            color:#ff3b30;
-        }
-        .signum_1 {
-            color:#4cd964;
-        }
         .nearest, #billing-statistics {
             margin-top: 10px;
-        }
-        .pull-right {
-            padding: 0 15px;
-            text-align: right;
         }
     </style>
 </head>

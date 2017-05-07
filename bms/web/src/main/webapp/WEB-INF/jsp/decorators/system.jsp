@@ -19,6 +19,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
+
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/weui/weui.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/global.js"></script>
     <script type="text/javascript">
@@ -37,25 +39,6 @@
             }
         });
     </script>
-    <style type="text/css">
-        body, html {
-            height: 100%;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            background-color: #f8f8f8;
-        }
-        .page {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-        }
-        .text-left { text-align: left;}
-        .text-center { text-align: center;}
-        .text-right { text-align: right;}
-    </style>
     <decorator:head/>
 </head>
 <body>

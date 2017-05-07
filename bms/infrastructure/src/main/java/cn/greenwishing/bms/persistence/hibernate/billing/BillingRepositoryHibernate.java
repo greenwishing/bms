@@ -38,7 +38,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
         return getHibernateTemplate().execute(new HibernateCallback<List<Object[]>>() {
             @Override
             public List<Object[]> doInHibernate(Session session) throws HibernateException, SQLException {
-                String sql = "select date(b.occurred_time), sum(b.amount) from billing b join `user` u on b.operator_id=u.id" +
+                String sql = "select date(b.occurred_time), sum(b.amount) from billing b join `user` u on b.user_id=u.id" +
                         " where u.guid=:userGuid and b.type=:type group by concat(year(b.occurred_time), month(b.occurred_time)) order by b.occurred_time desc";
                 Query query = session.createSQLQuery(sql);
                 query.setParameter("type", billingType.getValue());
@@ -82,7 +82,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     @SuppressWarnings("unchecked")
     public List<BillingStatistics> loadBillingStatistics(String userGuid, BillingType billingType, LocalDate startDate, LocalDate endDate) {
         String queryString = "select new cn.greenwishing.bms.domain.statistics.BillingStatistics(b.type, b.category.name, b.subcategory.name, sum(b.amount))" +
-                " from Billing b where b.occurredUser.guid=? and b.type=? and b.occurredTime>=? and b.occurredTime<? group by b.category.id, b.subcategory.id";
+                " from Billing b where b.user.guid=? and b.type=? and b.occurredTime>=? and b.occurredTime<? group by b.category.id, b.subcategory.id";
         return getHibernateTemplate().find(queryString, userGuid, billingType, startDate, endDate.plusDays(1));
     }
 
@@ -99,7 +99,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
             @Override
             public List<SqlResultParser> doInHibernate(Session session) throws HibernateException, SQLException {
                 Query query = session.createSQLQuery("select b.id,b.guid,b.name,b.type,b.category_id,b.subcategory_id,b.src_account_id,b.target_account_id,b.amount from billing b join (" +
-                        "SELECT max(id) id FROM billing WHERE type = :type AND occurred_user_id = :userId GROUP BY category_id, subcategory_id ORDER BY count(*) DESC" +
+                        "SELECT max(id) id FROM billing b WHERE type = :type AND user_id = :userId GROUP BY category_id, subcategory_id,name ORDER BY count(*) DESC" +
                         ") t on b.id= t.id");
                 query.setParameter("type", type.getValue());
                 query.setParameter("userId", userId);
@@ -134,7 +134,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
             @SuppressWarnings("unchecked")
             public Map<String, Float> doInHibernate(Session session) throws HibernateException, SQLException {
                 SQLQuery query = session.createSQLQuery("select date(b.occurred_time), sum(b.amount) from billing b" +
-                        " where b.occurred_user_id=:userId and b.type=:type and year(b.occurred_time)=:year" +
+                        " where b.user_id=:userId and b.type=:type and year(b.occurred_time)=:year" +
                         "  group by date(b.occurred_time) order by b.occurred_time");
                 query.setParameter("userId", userId);
                 query.setParameter("type", billingType.getValue());

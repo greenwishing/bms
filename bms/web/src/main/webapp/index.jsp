@@ -31,14 +31,17 @@
         body, html { height: 100%; -webkit-tap-highlight-color: transparent; }
         body { background-color: #f8f8f8; }
         .brand { display: flex; flex-direction: column; align-items: center; }
-        .brand-logo { width: 128px; height: 128px; margin: 20px; border-radius: 50%; box-shadow: 3px 3px 12px rgba(0,0,0,0.1);  }
-        .brand-text { color: #888; }
+        .brand-logo { width: 128px; height: 128px; border-radius: 50%; box-shadow: 3px 3px 12px rgba(0,0,0,0.1);  }
+        .brand-text { color: #1aad19; font-size: 4.5em; font-weight: 300; text-shadow: 2px 2px 2px #fff }
         .brand-text_hide .brand-text { display: none; }
+        .brand-text_hide .brand-logo {  margin: 20px; }
+        .brand-logo_hide .brand-logo { display: none; }
+        .brand-logo_hide .brand-text { margin: 20px; }
         .weui-footer {  margin-top: 50px; }
     </style>
 </head>
 <body>
-<div class="brand brand-text_hide">
+<div class="brand brand-logo_hide">
     <img class="brand-logo" src="${pageContext.request.contextPath}/images/bms.png"/>
     <p class="brand-text">BMS</p>
 </div>

@@ -35,7 +35,7 @@ public class ArticleQueryHelper extends AbstractQueryHelper<Article, ArticlePagi
 
             @Override
             public String getSubHql() {
-                return " and a.author.guid=:userGuid";
+                return " and a.user.guid=:userGuid";
             }
         };
     }

@@ -47,13 +47,9 @@ public class Billing extends AbstractDomain {
     @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
 	private LocalDate occurredTime;
 
-    @JoinColumn(name = "occurred_user_id")
+    @JoinColumn(name = "user_id")
     @ManyToOne(targetEntity = User.class)
-	private User occurredUser;
-
-    @JoinColumn(name = "operator_id")
-    @ManyToOne(targetEntity = User.class)
-	private User operator;
+	private User user;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
@@ -68,7 +64,7 @@ public class Billing extends AbstractDomain {
 
     public Billing(String name, BillingType type, BillingCategory category, BillingSubcategory subcategory,
                    BillingAccount srcAccount, BillingAccount targetAccount, BigDecimal amount, String description,
-                   LocalDate occurredTime, User occurredUser, User operator) {
+                   LocalDate occurredTime, User user) {
         this.name = name;
         this.type = type;
         this.category = category;
@@ -78,8 +74,7 @@ public class Billing extends AbstractDomain {
         this.amount = amount;
         this.description = description;
         this.occurredTime = occurredTime;
-        this.occurredUser = occurredUser;
-        this.operator = operator;
+        this.user = user;
     }
 
     public void updateStatus(BillingStatus status) {
@@ -125,12 +120,8 @@ public class Billing extends AbstractDomain {
         return occurredTime;
     }
 
-    public User occurredUser() {
-        return occurredUser;
-    }
-
-    public User operator() {
-        return operator;
+    public User user() {
+        return user;
     }
 
     public BillingStatus status() {

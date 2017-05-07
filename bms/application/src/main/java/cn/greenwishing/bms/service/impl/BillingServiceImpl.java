@@ -94,7 +94,7 @@ public class BillingServiceImpl implements BillingService {
 
         BillingStatus status = BillingStatus.NORMAL;
         String guid = SecurityHolder.getUserGuid();
-        User occurredUser = userRepository.findByGuid(User.class, guid);
+        User user = userRepository.findByGuid(User.class, guid);
 
         LocalDate occurredTime = JodaUtils.today();
         String occurredTimeStr = billingDTO.getOccurredTime();
@@ -105,14 +105,14 @@ public class BillingServiceImpl implements BillingService {
         String name = billingDTO.getName();
         BillingType type = billingDTO.getType();
         Billing billing = new Billing(name, type, category, subcategory, srcAccount, targetAccount, amount,
-                billingDTO.getDescription(), occurredTime, occurredUser, occurredUser);
+                billingDTO.getDescription(), occurredTime, user);
         billing.updateStatus(status);
         billingRepository.saveOrUpdate(billing);
 
         if (billingDTO.isCreateTemplate()) {
-            BillingTemplate template = billingRepository.findBillTemplate(occurredUser, type, category, subcategory);
+            BillingTemplate template = billingRepository.findBillTemplate(user, type, category, subcategory);
             if (template == null) {
-                template = new BillingTemplate(occurredUser);
+                template = new BillingTemplate(user);
             }
             template.update(name, type, category, subcategory, amount);
             billingRepository.saveOrUpdate(template);

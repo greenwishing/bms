@@ -8,21 +8,19 @@
     <title>记账</title>
     <script type="text/javascript">
         $(function(){
-            var $wrapper = $('#form-wrapper');
-            var $menu = $('.weui-tabbar').find('a[data-url]');
-            $menu.bind('click', function(){
-                var $a = $(this);
-                $a.addClass('weui-bar__item_on').siblings().removeClass('weui-bar__item_on');
-                WF.ajax.req({
-                    url: $a.attr('data-url'),
-                    type: 'GET',
-                    success: function(result) {
-                        $wrapper.html(result);
-                    }
-                });
-            });
-            $($menu[0]).trigger('click');
+            changeType($('#type'));
         });
+
+        function changeType(el) {
+            var $option = $(el).find('option:selected');
+            WF.ajax.req({
+                url: $option.attr('data-url'),
+                type: 'GET',
+                success: function(result) {
+                    $('#form-wrapper').html(result);
+                }
+            });
+        }
 
         function saveContinue() {
             WF.form.ajaxSubmit($('#data-form'), function(){
@@ -32,25 +30,24 @@
                         $('body').scrollTop(0);
                     }
                 });
-                $('.weui-tabbar').find('a.weui-bar__item_on[data-url]').trigger('click');
-
+                changeType($('#type'));
             });
         }
     </script>
 </head>
-<body style="height: 100%;">
-<div class="weui-tab">
-    <div class="weui-tab__panel">
-        <div id="form-wrapper"></div>
+<body>
+    <div class="weui-cells__title">记账类型</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell weui-cell_select">
+            <div class="weui-cell__bd">
+                <select class="weui-select" id="type" onchange="changeType(this)">
+                    <c:forEach items="${types}" var="type">
+                        <option value="${type.value}" data-url="record?type=${type.value}">${type.label}</option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
     </div>
-    <div class="weui-tabbar">
-        <c:forEach items="${types}" var="type">
-            <a href="javascript:void(0);" class="weui-tabbar__item" data-type="${type.value}" data-url="record?type=${type.value}">
-                <img src="/images/icons/icon_add.png" class="weui-tabbar__icon">
-                <p class="weui-tabbar__label">${type.label}</p>
-            </a>
-        </c:forEach>
-    </div>
-</div>
+    <div id="form-wrapper"></div>
 </body>
 </html>

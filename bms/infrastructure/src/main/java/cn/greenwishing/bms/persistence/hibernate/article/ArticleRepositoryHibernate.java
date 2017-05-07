@@ -17,7 +17,7 @@ public class ArticleRepositoryHibernate extends AbstractRepositoryHibernate impl
     @Override
     @SuppressWarnings("unchecked")
     public List<ArticleCategory> findArticleCategoryByUserGuid(String userGuid) {
-        return getHibernateTemplate().find("from ArticleCategory ac where ac.owner.guid=?", userGuid);
+        return getHibernateTemplate().find("from ArticleCategory ac where ac.user.guid=?", userGuid);
     }
 
     @Override

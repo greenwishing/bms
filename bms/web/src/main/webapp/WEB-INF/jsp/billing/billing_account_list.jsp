@@ -13,26 +13,6 @@
         a {
             color: #888;
         }
-
-        .weui-flex + .weui-flex {
-            margin-top: 10px;
-        }
-
-        .signum {
-            text-align: center;
-            font-size: 28px;
-            font-weight: normal;
-            margin: 10px 0;
-        }
-        .signum_0 {
-            color: #888;
-        }
-        .signum_-1 {
-            color:#ff3b30;
-        }
-        .signum_1 {
-            color:#4cd964;
-        }
     </style>
 </head>
 <body>

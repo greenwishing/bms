@@ -25,10 +25,10 @@
                                 'data-name': template.name,
                                 'data-type': template.type,
                                 'data-amount': template.amount,
-                                'data-categoryGuid': template.categoryGuid,
-                                'data-subcategoryGuid': template.subcategoryGuid,
-                                'data-srcAccountGuid': template.srcAccountGuid,
-                                'data-targetAccountGuid': template.targetAccountGuid
+                                'data-categoryId': template.categoryId,
+                                'data-subcategoryId': template.subcategoryId,
+                                'data-srcAccountId': template.srcAccountId,
+                                'data-targetAccountId': template.targetAccountId
                             }).html(template.name + ' ' + template.amount);
                             $tplList.append($menu);
                         }
@@ -40,11 +40,11 @@
         function applyTemplate(el) {
             var $option = $(el).find('option:selected');
             var type = $option.attr('data-type');
-            $('#categoryGuid').attr({'default-value': $option.attr('data-categoryGuid')});
-            $('#subcategoryGuid').attr({'default-value': $option.attr('data-subcategoryGuid')});
+            $('#categoryGuid').attr({'default-value': $option.attr('data-categoryId')});
+            $('#subcategoryGuid').attr({'default-value': $option.attr('data-subcategoryId')});
             WF.billing.categories(type);
-            WF.billing.defaultValue($(':input[name=srcAccountGuid]'), $option.attr('data-srcAccountGuid'));
-            WF.billing.defaultValue($(':input[name=targetAccountGuid]'), $option.attr('data-targetAccountGuid'));
+            WF.billing.defaultValue($(':input[name=srcAccountGuid]'), $option.attr('data-srcAccountId'));
+            WF.billing.defaultValue($(':input[name=targetAccountGuid]'), $option.attr('data-targetAccountId'));
             $('#name').val($option.attr('data-name'));
             $('#amount').val($option.attr('data-amount'));
         }
