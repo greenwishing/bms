@@ -24,6 +24,7 @@ public class MomentType extends AbstractDomain {
     private String name;
 
     @Column(name = "goal_type")
+    @Enumerated(value = EnumType.STRING)
     private GoalType goalType = GoalType.NONE;
 
     @Column(name = "goal")

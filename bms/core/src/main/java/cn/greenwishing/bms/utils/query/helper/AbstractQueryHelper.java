@@ -21,9 +21,6 @@ public abstract class AbstractQueryHelper<T, P extends AbstractPaging<T>> implem
 
     protected P paging;
 
-    public AbstractQueryHelper() {
-    }
-
     protected AbstractQueryHelper(HibernateTemplate hibernateTemplate, P paging) {
         this.hibernateTemplate = hibernateTemplate;
         this.paging = paging;

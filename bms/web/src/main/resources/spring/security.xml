@@ -135,6 +135,8 @@
         <intercept-url pattern="/system/index" access="ROLE_SYSTEM" />
         <intercept-url pattern="/system/user/**" access="ROLE_USER" />
         <intercept-url pattern="/system/billing/**" access="ROLE_BILLING" />
+        <intercept-url pattern="/system/moment/**" access="ROLE_BILLING" />
+        <intercept-url pattern="/system/todo/**" access="ROLE_BILLING" />
         <intercept-url pattern="/system/article/**" access="ROLE_ARTICLE" />
         <intercept-url pattern="/system/metro/**" access="ROLE_METRO" />
         <intercept-url pattern="/system/app/**" access="ROLE_APP" />

@@ -36,7 +36,13 @@
     <div class="weui-grid__icon">
       <img src="${pageContext.request.contextPath}/images/icons/icon_category.png">
     </div>
-    <p class="weui-grid__label">分类</p>
+    <p class="weui-grid__label">账单分类</p>
+  </a>
+  <a href="${pageContext.request.contextPath}/system/moment/list" class="weui-grid">
+    <div class="weui-grid__icon">
+      <img src="${pageContext.request.contextPath}/images/icons/icon_category.png">
+    </div>
+    <p class="weui-grid__label">时间管理</p>
   </a>
   <a href="${pageContext.request.contextPath}/system/article/list" class="weui-grid">
     <div class="weui-grid__icon">

@@ -182,7 +182,7 @@
             </c:if>
             <c:if test="${not empty billing.settleTime}">
                 <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">描述</label>
+                    <label class="weui-form-preview__label">还款时间</label>
                     <span class="weui-form-preview__value">${billing.settleTime} ${billing.status.label}</span>
                 </div>
             </c:if>

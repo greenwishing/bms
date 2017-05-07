@@ -8,7 +8,9 @@ create table todo (
   content varchar(1000),
   done bit default 0,
   done_time datetime,
-  status varchar(32)
+  status varchar(32),
+  UNIQUE KEY `idx_guid` (`guid`) USING BTREE,
+  KEY `idx_user_id` (`user_id`)
 );
 
 
@@ -20,7 +22,9 @@ create table moment_type (
   user_id int,
   name varchar(255),
   goal_type varchar(255),
-  goal varchar(255)
+  goal varchar(255),
+  UNIQUE KEY `idx_guid` (`guid`) USING BTREE,
+  KEY `idx_user_id` (`user_id`)
 );
 
 
@@ -34,5 +38,7 @@ create table moment (
   date date,
   start_time time,
   end_time time,
-  description varchar(500)
+  description varchar(500),
+  UNIQUE KEY `idx_guid` (`guid`) USING BTREE,
+  KEY `idx_user_id` (`user_id`)
 );

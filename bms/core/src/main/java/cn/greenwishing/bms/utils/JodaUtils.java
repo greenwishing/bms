@@ -2,6 +2,7 @@ package cn.greenwishing.bms.utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.util.StringUtils;
 
@@ -17,6 +18,8 @@ public class JodaUtils {
     public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
+
+    public static final String TIME_FORMAT = "HH:mm";
 
     public static final String DATE_TIME_MS_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
 
@@ -82,5 +85,10 @@ public class JodaUtils {
     public static String dateTimeToString(DateTime dateTime) {
         if (dateTime == null) return "";
         return dateTime.toString(DATE_TIME_FORMAT);
+    }
+
+    public static String localTimeToString(LocalTime localTime) {
+        if (localTime == null) return "";
+        return localTime.toString(TIME_FORMAT);
     }
 }
