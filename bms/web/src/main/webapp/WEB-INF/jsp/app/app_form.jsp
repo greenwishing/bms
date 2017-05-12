@@ -117,7 +117,7 @@
         </div>
         <div class="weui-cells__tips">JSON格式的附加数据</div>
         <div class="weui-btn-area">
-            <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="articleFormSubmit()">保存</a>
+            <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
         </div>
     </spring-form:form>
 </body>
