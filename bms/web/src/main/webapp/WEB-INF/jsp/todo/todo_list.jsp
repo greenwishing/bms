@@ -68,7 +68,7 @@
             <p class="weui-tabbar__label">添加</p>
         </a>
         <a href="javascript:void(0)" class="weui-tabbar__item" onclick="operation()">
-            <img src="/images/icons/icon_more.png" class="weui-tabbar__icon">
+            <img src="${pageContext.request.contextPath}/images/icons/icon_more.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">操作</p>
         </a>
     </div>

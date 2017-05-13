@@ -112,14 +112,12 @@ var WF = {
                 success: function(result) {
                     loading.hide();
                     if (result.success) {
-                        if (callback && typeof callback == 'function') {
-                            callback(result);
-                        } else if (result.redirectUrl) {
-                            WF.page.forward(result.redirectUrl);
-                        } else if (result.back) {
-                            history.back();
+                        if (result.tips) {
+                            weui.topTips(result.tips, function(){
+                                WF.ajax.successHandler(result, callback);
+                            });
                         } else {
-                            location.reload();
+                            WF.ajax.successHandler(result, callback);
                         }
                     } else {
                         weui.alert(result.message);
@@ -218,6 +216,17 @@ var WF = {
         defaults: {
             error:  function(x, s, e){
                 weui.alert(e || s || x.status || '未知错误');
+            }
+        },
+        successHandler: function(result, callback) {
+            if (callback && typeof callback == 'function') {
+                callback(result);
+            } else if (result.redirectUrl) {
+                WF.page.forward(result.redirectUrl);
+            } else if (result.back) {
+                history.back();
+            } else {
+                location.reload();
             }
         }
     },

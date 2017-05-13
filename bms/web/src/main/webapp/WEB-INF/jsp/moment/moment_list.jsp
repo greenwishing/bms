@@ -31,7 +31,7 @@
             <p class="weui-tabbar__label">添加</p>
         </a>
         <a href="types" class="weui-tabbar__item">
-            <img src="/images/icons/icon_category.png" class="weui-tabbar__icon">
+            <img src="${pageContext.request.contextPath}/images/icons/icon_category.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">计划</p>
         </a>
     </div>

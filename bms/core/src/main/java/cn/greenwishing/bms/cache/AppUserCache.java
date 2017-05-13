@@ -23,8 +23,11 @@ public class AppUserCache {
         return userGuid;
     }
 
-    private static UserRepository instance = null;
+    public static void clear() {
+        appUserMap.clear();
+    }
 
+    private static UserRepository instance = null;
     private static UserRepository getUserRepository() {
         if (instance == null) instance = SpringBeanFactory.getBean(UserRepository.class);
         return instance;

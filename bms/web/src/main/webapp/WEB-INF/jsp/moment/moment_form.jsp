@@ -46,7 +46,7 @@
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                    <textarea class="weui-textarea" name="description" placeholder="描述" rows="3"></textarea>
+                    <textarea class="weui-textarea" name="description" placeholder="描述" rows="3">${momentDTO.description}</textarea>
                 </div>
             </div>
         </div>

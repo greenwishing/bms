@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/system/todo")
+@SessionAttributes("todoDTO")
 public class TodoController {
 
     @Autowired
@@ -50,7 +52,7 @@ public class TodoController {
     public ModelAndView todo_save(TodoDTO todoDTO, BindingResult errors) throws Exception {
         String content = todoDTO.getContent();
         if (ValidationUtils.isEmpty(content)) {
-            errors.rejectValue("date", "date", "请填写内容");
+            errors.rejectValue("content", "content", "请填写内容");
         }
         ModelMap model = new ModelMap();
         if (errors.hasErrors()) {
