@@ -33,7 +33,7 @@
                 <directory>src/main/resources</directory>
                 <excludes>
                     <!--exclude file list-->
-                    <!--<exclude>database.properties</exclude>-->
+                    <exclude>database.properties</exclude>
                     <!--<exclude>application.properties</exclude>-->
                 </excludes>
                 <includes>
