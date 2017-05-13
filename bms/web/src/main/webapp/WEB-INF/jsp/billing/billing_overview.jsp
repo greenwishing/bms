@@ -252,9 +252,7 @@
             var group = $('#group').find('option:selected').val();
             $('#billing-statistics').highcharts({
                 chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
+                    height: 220,
                     spacing: [15, 0, 40, 0]
                 },
                 title: {
