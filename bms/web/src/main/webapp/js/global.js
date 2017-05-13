@@ -126,6 +126,7 @@ var WF = {
                     }
                 },
                 error: function () {
+                    loading.hide();
                     WF.ajax.defaults.error.apply(this, arguments);
                 }
             });
@@ -189,6 +190,30 @@ var WF = {
         req: function(opts) {
             var params = $.extend({}, WF.ajax.defaults, opts || {});
             $.ajax(params);
+        },
+        doAjax: function(opts, ctx) {
+            var loading = weui.loading('提交数据...');
+            var customSuccess = opts.success;
+            opts = $.extend(opts, {success: function(result){
+                loading.hide();
+                if (result.success) {
+                    if (typeof customSuccess == 'function') {
+                        customSuccess.apply(ctx || this, arguments);
+                    } else if (result.redirectUrl) {
+                        WF.page.forward(result.redirectUrl);
+                    } else if (result.back) {
+                        history.back();
+                    } else {
+                        location.reload();
+                    }
+                } else {
+                    weui.alert(result.message);
+                }
+            }, error: function () {
+                loading.hide();
+                WF.ajax.defaults.error.apply(ctx || this, arguments);
+            }});
+            WF.ajax.req(opts);
         },
         defaults: {
             error:  function(x, s, e){

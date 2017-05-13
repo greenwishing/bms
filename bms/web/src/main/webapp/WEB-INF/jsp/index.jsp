@@ -22,13 +22,13 @@
   </a>
   <a href="${pageContext.request.contextPath}/system/billing/list" class="weui-grid">
     <div class="weui-grid__icon">
-      <img src="${pageContext.request.contextPath}/images/icons/icon_list.png">
+      <img src="${pageContext.request.contextPath}/images/icons/icon_billing.png">
     </div>
     <p class="weui-grid__label">账单</p>
   </a>
   <a href="${pageContext.request.contextPath}/system/billing/accounts" class="weui-grid">
     <div class="weui-grid__icon">
-      <img src="${pageContext.request.contextPath}/images/icons/icon_template.png">
+      <img src="${pageContext.request.contextPath}/images/icons/icon_account.png">
     </div>
     <p class="weui-grid__label">账户</p>
   </a>
@@ -40,9 +40,15 @@
   </a>
   <a href="${pageContext.request.contextPath}/system/moment/list" class="weui-grid">
     <div class="weui-grid__icon">
-      <img src="${pageContext.request.contextPath}/images/icons/icon_category.png">
+      <img src="${pageContext.request.contextPath}/images/icons/icon_clock.png">
     </div>
     <p class="weui-grid__label">时间管理</p>
+  </a>
+  <a href="${pageContext.request.contextPath}/system/todo/list" class="weui-grid">
+    <div class="weui-grid__icon">
+      <img src="${pageContext.request.contextPath}/images/icons/icon_todo.png">
+    </div>
+    <p class="weui-grid__label">待办事项</p>
   </a>
   <a href="${pageContext.request.contextPath}/system/article/list" class="weui-grid">
     <div class="weui-grid__icon">

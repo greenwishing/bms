@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/system/moment")
-@SessionAttributes({"momentDTO", "momentDTO"})
+@SessionAttributes({"momentDTO", "momentTypeDTO"})
 public class MomentController {
 
     @Autowired

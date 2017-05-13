@@ -3,6 +3,11 @@ package cn.greenwishing.bms.dto.moment;
 import cn.greenwishing.bms.domain.moment.Moment;
 import cn.greenwishing.bms.domain.moment.MomentType;
 import cn.greenwishing.bms.utils.JodaUtils;
+import org.joda.time.Duration;
+import org.joda.time.LocalTime;
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +26,8 @@ public class MomentDTO {
     private String endTime = JodaUtils.localTimeToString(JodaUtils.now().toLocalTime());
     private String description;
 
+    private String friendlyTime; // for display
+
     public MomentDTO() {
     }
 
@@ -32,8 +39,18 @@ public class MomentDTO {
             this.typeName = type.name();
         }
         this.date = JodaUtils.localDateToString(moment.date());
-        this.startTime = JodaUtils.localTimeToString(moment.startTime());
-        this.endTime = JodaUtils.localTimeToString(moment.endTime());
+        LocalTime startTime = moment.startTime();
+        LocalTime endTime = moment.endTime();
+        this.startTime = JodaUtils.localTimeToString(startTime);
+        this.endTime = JodaUtils.localTimeToString(endTime);
+        Period period = Period.fieldDifference(startTime, endTime);
+        int hours = period.getHours();
+        int minutes = period.getMinutes();
+        if (minutes < 0) {
+            minutes = 60 + minutes;
+            hours -= 1;
+        }
+        this.friendlyTime = hours > 0 ? hours + "小时" : minutes > 0 ? minutes + "分钟" : "";
         this.description = moment.description();
     }
 
@@ -87,6 +104,10 @@ public class MomentDTO {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getFriendlyTime() {
+        return friendlyTime;
     }
 
     public String getDescription() {

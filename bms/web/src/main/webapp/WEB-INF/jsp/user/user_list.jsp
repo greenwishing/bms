@@ -45,10 +45,6 @@
             <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">添加</p>
         </a>
-        <a href="categories" class="weui-tabbar__item">
-            <img src="${pageContext.request.contextPath}/images/icons/icon_category.png" class="weui-tabbar__icon">
-            <p class="weui-tabbar__label">文章分类</p>
-        </a>
     </div>
 </div>
 </body>

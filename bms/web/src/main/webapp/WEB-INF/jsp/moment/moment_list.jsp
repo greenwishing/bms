@@ -15,11 +15,15 @@
         <div class="weui-cells">
             <c:forEach items="${pagingDTO.list}" var="moment">
                 <a class="weui-cell weui-cell_access" href="edit_moment?guid=${moment.guid}">
-                    <div class="weui-cell__bd">${moment.typeName}</div>
-                    <div class="weui-cell__ft">${moment.date} ${moment.startTime}至${moment.endTime}</div>
+                    <div class="weui-cell__bd">
+                        <p>${moment.typeName}</p>
+                        <p class="color-grey text-small">${moment.date} ${moment.startTime} ${moment.friendlyTime}</p>
+                    </div>
+                    <div class="weui-cell__ft"></div>
                 </a>
             </c:forEach>
         </div>
+        <tags:paging formName="search-form" paging="${pagingDTO}"/>
     </div>
     <div class="weui-tabbar">
         <a href="add_moment" class="weui-tabbar__item">
