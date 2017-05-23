@@ -34,7 +34,7 @@
                 <excludes>
                     <!--exclude file list-->
                     <exclude>database.properties</exclude>
-                    <!--<exclude>application.properties</exclude>-->
+                    <exclude>application.properties</exclude>
                 </excludes>
                 <includes>
                     <include>**/*</include>
