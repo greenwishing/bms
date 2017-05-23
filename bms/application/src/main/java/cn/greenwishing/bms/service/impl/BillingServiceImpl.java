@@ -130,14 +130,11 @@ public class BillingServiceImpl implements BillingService {
     }
 
     @Override
-    public List<SeriesObject> loadNearestStatistics(Integer size) {
+    public List<SeriesObject> loadNearestStatistics(Integer size, BillingType billingType) {
         List<SeriesObject> series = new ArrayList<>();
 
-        BillingType[] values = BillingType.values();
-        for (BillingType type : values) {
-            SeriesObject result = loadSeriesObject(type, size);
-            series.add(result);
-        }
+        SeriesObject result = loadSeriesObject(billingType, size);
+        series.add(result);
 
         return series;
     }

@@ -71,8 +71,8 @@ public class BillingController {
     }
 
     @RequestMapping("nearest_data")
-    public ModelAndView nearest_data(@RequestParam(defaultValue = "20") Integer size) {
-        List<SeriesObject> series = billingService.loadNearestStatistics(size);
+    public ModelAndView nearest_data(@RequestParam(defaultValue = "20") Integer size, @RequestParam(defaultValue = "EXPEND") BillingType type) {
+        List<SeriesObject> series = billingService.loadNearestStatistics(size, type);
         return new ModelAndView(new MappingJacksonJsonView(), "series", series);
     }
 

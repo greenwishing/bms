@@ -10,20 +10,23 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/highcharts/4.0.3/highcharts.js"></script>
     <script type="text/javascript">
         $(function(){
+            onNearestTypeChanged();
+            onConditionChanged();
+        });
+        function onNearestTypeChanged() {
+            var type = $('#neriest-type').val();
             $.ajax({
                 type: 'post',
                 url: 'nearest_data',
-                data: { size: 12},
-                success: function(result){
-                    for (var i in result.series)
+                data: { size: 12, type: type},
+                success: function(result) {
+                    for (var i in result.series) {
                         renderHighcharts(result.series[i]);
+                    }
                 }
             });
-            onConditionChanged();
-        });
+        }
         function renderHighcharts(series) {
-            var div = $('<div class="col-lg-6"></div>');
-            $('.nearest').append(div);
             var data = [];
             data.push(series);
             var categories = [];
@@ -31,9 +34,9 @@
                 categories.push(series.data[i].name);
             }
             var color = (series.name == '收入' ? 'green' : 'red');
-            div.highcharts({
+            $('.nearest').highcharts({
                 chart: { height: 220, type: 'areaspline' },
-                title: { text: series.name },
+                title: { text: '' },
                 tooltip: {
                     headerFormat: '',
                     pointFormat: '{point.name}{series.name} {point.y}元'
@@ -252,7 +255,7 @@
             var group = $('#group').find('option:selected').val();
             $('#billing-statistics').highcharts({
                 chart: {
-                    height: 220,
+                    height: 320,
                     spacing: [15, 0, 40, 0]
                 },
                 title: {
@@ -343,7 +346,20 @@
     </div>
 </div>
 <div class="weui-cells__tips"><a class="weui-cell_link" href="accounts">查看账户余额</a></div>
-<div class="nearest"></div>
+<div class="weui-cells">
+    <div class="weui-cell weui-cell_select">
+        <div class="weui-cell__bd">
+            <select class="weui-select" id="neriest-type" onchange="onNearestTypeChanged()">
+                <c:forEach items="${types}" var="type">
+                    <option value="${type.value}">${type.label}</option>
+                </c:forEach>
+            </select>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd nearest"></div>
+    </div>
+</div>
 <div class="weui-cells">
     <div class="weui-cell weui-cell_select weui-cell_select-after">
         <div class="weui-cell__hd">

@@ -20,7 +20,7 @@ public interface BillingService {
 
     void deleteBillingByGuid(String guid);
 
-    List<SeriesObject> loadNearestStatistics(Integer size);
+    List<SeriesObject> loadNearestStatistics(Integer size, BillingType billingType);
 
     List<BillingCategoryDTO> loadBillingCategory();
 
