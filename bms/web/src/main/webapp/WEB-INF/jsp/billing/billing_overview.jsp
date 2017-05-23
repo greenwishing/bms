@@ -310,6 +310,19 @@
         .nearest, #billing-statistics {
             margin-top: 10px;
         }
+        .billing-line {
+            display: flex;
+        }
+        .billing-period {
+            width: 5px;
+            height: 2px;
+        }
+        .weui-cell_select-before.weui-cell_select-after .weui-cell__bd:after {
+            display: inline-block;
+        }
+        .weui-cell_select-before .weui-cell__bd .weui-select {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -361,9 +374,14 @@
     </div>
 </div>
 <div class="weui-cells">
-    <div class="weui-cell weui-cell_select weui-cell_select-after">
+    <div class="weui-cell weui-cell_select weui-cell_select-before weui-cell_select-after">
         <div class="weui-cell__hd">
-            <label for="type" class="weui-label">类型</label>
+            <select class="weui-select" id="mode" onchange="$(this).attr({'data-offset':0});onConditionChanged()" data-offset="0">
+                <option value="days">按天</option>
+                <option value="weeks">按周</option>
+                <option value="months" selected>按月</option>
+                <option value="years">按年</option>
+            </select>
         </div>
         <div class="weui-cell__bd">
             <select class="weui-select" id="type" onchange="onConditionChanged()">
@@ -372,26 +390,21 @@
                 </c:forEach>
             </select>
         </div>
+        <div class="weui-cell__ft"></div>
     </div>
-    <div class="weui-cell weui-cell_select weui-cell_select-after">
-        <div class="weui-cell__hd">
-            <label for="mode" class="weui-label">范围</label>
-        </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">年视图</label></div>
         <div class="weui-cell__bd">
-            <select class="weui-select" id="mode" onchange="$(this).attr({'data-offset':0});onConditionChanged()" data-offset="0">
-                <option value="days">按天</option>
-                <option value="weeks">按周</option>
-                <option value="months" selected>按月</option>
-                <option value="years">按年</option>
-            </select>
             <div id="billing-map" class="billing-year" data-offset="0"></div>
         </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd" id="billing-statistics"></div>
     </div>
 </div>
 <div class="button-sp-area text-center">
     <a class="weui-btn weui-btn_mini weui-btn_default" href="javascript:void(0)" onclick="addModeOffset(-1)">向前</a>
     <a class="weui-btn weui-btn_mini weui-btn_default" href="javascript:void(0)" onclick="addModeOffset(1)">向后</a>
 </div>
-<div id="billing-statistics"></div>
 </body>
 </html>
