@@ -42,7 +42,7 @@
 <body>
 <div class="page">
     <div class="brand brand-text_hide">
-        <img class="brand-logo" src="${pageContext.request.contextPath}/images/bms.png"/>
+        <img class="brand-logo" src="${pageContext.request.contextPath}/images/wishing.png"/>
         <p class="brand-text">BMS</p>
     </div>
     <form class="login-form" action="${pageContext.request.contextPath}/account_check" method="post">
