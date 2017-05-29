@@ -6,7 +6,7 @@ import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -38,8 +38,8 @@ public class ArticleCategoryFormController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView save(ArticleCategoryDTO categoryDTO, BindException errors) throws Exception {
-        String name = categoryDTO.getName();
+    public ModelAndView save(ArticleCategoryDTO articleCategoryDTO, BindingResult errors) {
+        String name = articleCategoryDTO.getName();
         if (ValidationUtils.isEmpty(name)) {
             errors.rejectValue("name", "name", "请输入分类名称");
         }
@@ -48,9 +48,9 @@ public class ArticleCategoryFormController {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
         } else {
-            articleService.saveOrUpdateArticleCategory(categoryDTO);
+            articleService.saveOrUpdateArticleCategory(articleCategoryDTO);
             model.put("success", true);
-            model.put("redirectUrl", "list");
+            model.put("redirectUrl", "categories");
         }
         return new ModelAndView(new MappingJacksonJsonView(), model);
     }

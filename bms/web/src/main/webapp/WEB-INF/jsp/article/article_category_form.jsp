@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="weui-btn-area">
-            <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="WF.form.submit($('#data-form'))">保存</a>
+            <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="WF.form.ajaxSubmit($('#data-form'))">保存</a>
         </div>
     </spring-form:form>
 </body>
