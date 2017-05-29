@@ -13,6 +13,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta content="telephone=no" name="format-detection"/>
+    <meta name="Keywords" content="个人记账系统,个人日记,个人记事,文章发布,记账统计,记账分析,时间记账,时间管理,时间分析,待办事项,TODO,GREENWISHING,GREEN,WISHING,BMS">
+    <meta name="Description" content="个人记账系统，用于个人记账，记账分析与统计，时间记账管理与分析，个人记事文章发布，待办事项提醒等">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/images/wishing.png" />
@@ -50,5 +52,6 @@
 <div class="page">
     <decorator:body/>
 </div>
+<div style="display: none;"><script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://tajs.qq.com/stats?sId=62361180";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script></div>
 </body>
 </html>

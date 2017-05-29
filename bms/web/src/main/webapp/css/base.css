@@ -47,6 +47,16 @@ body {
     font-size: 12px;
 }
 
+.brand { display: flex; flex-direction: column; align-items: center; }
+.brand-logo { width: 128px; height: 128px; border-radius: 50%; box-shadow: 3px 3px 12px rgba(0,0,0,0.1); background-color: rgba(255,255,255,.5)  }
+.brand-text { color: #1aad19; font-size: 4.5em; font-weight: 300; text-shadow: 2px 2px 2px #fff }
+.brand-text_hide .brand-text { display: none; }
+.brand-text_hide .brand-logo {  margin: 20px; }
+.brand-logo_hide .brand-logo { display: none; }
+.brand-logo_hide .brand-text { margin: 20px; }
+.weui-footer {  margin-top: 50px; }
+.weui-footer a { color: inherit;}
+
 .signum {
     text-align: center;
     font-size: 28px;

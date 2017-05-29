@@ -22,7 +22,7 @@
     <http pattern="/css/**" security="none"/>
     <http pattern="/images/**" security="none"/>
     <http pattern="/index.jsp*" security="none"/>
-    <http pattern="/login" security="none"/>
+    <http pattern="/system/login" security="none"/>
 
     <http pattern="/api/**" security="none" create-session="never"/>
     <http pattern="/message/**" security="none" create-session="never"/>
@@ -140,12 +140,12 @@
         <intercept-url pattern="/system/article/**" access="ROLE_ARTICLE" />
         <intercept-url pattern="/system/metro/**" access="ROLE_METRO" />
         <intercept-url pattern="/system/app/**" access="ROLE_APP" />
-        <form-login login-page="/" login-processing-url="/account_check"
-                    default-target-url="/system/index" authentication-failure-url="/?action=1"
+        <form-login login-page="/system/login" login-processing-url="/system/account_check"
+                    default-target-url="/system/index" authentication-failure-url="/system/login?action=1"
                     username-parameter="account" password-parameter="password"/>
-        <session-management invalid-session-url="/?action=2" />
+        <session-management invalid-session-url="/system/login?action=2" />
         <remember-me services-ref="tokenBasedRememberMeServices" />
-        <logout logout-url="/logout" logout-success-url="/?action=3"/>
+        <logout logout-url="/system/logout" logout-success-url="/system/login?action=3"/>
         <anonymous/>
     </http>
 

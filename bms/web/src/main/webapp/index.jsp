@@ -4,7 +4,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
-    <title>登录</title>
+    <title>欢迎</title>
     <meta charset="utf-8">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +12,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta content="telephone=no" name="format-detection"/>
+    <meta name="Keywords" content="个人记账系统,个人日记,个人记事,文章发布,记账统计,记账分析,时间记账,时间管理,时间分析,待办事项,TODO,GREENWISHING,GREEN,WISHING,BMS">
+    <meta name="Description" content="个人记账系统，用于个人记账，记账分析与统计，时间记账管理与分析，个人记事文章发布，待办事项提醒等">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/images/wishing.png" />
@@ -23,63 +25,21 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            $(':input:first').focus();
-            var $toptips = $('.weui-toptips');
-            $toptips.fadeIn();
-            setTimeout(function () {
-                $toptips.fadeOut();
-            }, 2000);
-        });
-    </script>
-    <style type="text/css">
-        .brand { display: flex; flex-direction: column; align-items: center; }
-        .brand-logo { width: 128px; height: 128px; border-radius: 50%; box-shadow: 3px 3px 12px rgba(0,0,0,0.1); background-color: rgba(255,255,255,.5)  }
-        .brand-text { color: #1aad19; font-size: 4.5em; font-weight: 300; text-shadow: 2px 2px 2px #fff }
-        .brand-text_hide .brand-text { display: none; }
-        .brand-text_hide .brand-logo {  margin: 20px; }
-        .brand-logo_hide .brand-logo { display: none; }
-        .brand-logo_hide .brand-text { margin: 20px; }
-        .weui-footer {  margin-top: 50px; }
-    </style>
 </head>
 <body>
 <div class="page">
     <div class="brand brand-text_hide">
         <img class="brand-logo" src="${pageContext.request.contextPath}/images/wishing.png"/>
-        <p class="brand-text">BMS</p>
+        <p class="brand-text">WISHING</p>
     </div>
-    <form class="login-form" action="${pageContext.request.contextPath}/account_check" method="post">
-        <div class="weui-cells weui-cells_form">
-            <div class="weui-cell">
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" name="account" placeholder="帐号">
-                </div>
-            </div>
-            <div class="weui-cell">
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="password" name="password" placeholder="密码">
-                </div>
-            </div>
-        </div>
-        <label for="rememberMe" class="weui-agree">
-            <input id="rememberMe" name="rememberMe" type="checkbox" class="weui-agree__checkbox" value="true" checked>
-            <span class="weui-agree__text">记住我</span>
-        </label>
-        <div class="weui-btn-area">
-            <button class="weui-btn weui-btn_primary" type="submit">登录</button>
-        </div>
-        <c:choose>
-            <c:when test="${SPRING_SECURITY_LAST_EXCEPTION!=null}"><div class="weui-toptips weui-toptips_warn">${SPRING_SECURITY_LAST_EXCEPTION.localizedMessage}!</div></c:when>
-            <c:when test="${param.action==1}"><div class="weui-toptips weui-toptips_warn">帐号或密码错误</div></c:when>
-            <c:when test="${param.action==2}"><div class="weui-toptips weui-toptips_warn">登录超时</div></c:when>
-            <c:when test="${param.action==3}"><div class="weui-toptips weui-toptips_warn">已退出</div></c:when>
-        </c:choose>
-        <div class="weui-footer">
-            <div class="weui-footer__text">BMS &copy; 2017 蜀ICP备17012081号</div>
-        </div>
-    </form>
+    <div class="weui-article" style="text-align: center;">
+        <h1>COMING SOON ...</h1>
+        <p>敬请期待！</p>
+    </div>
+    <div class="weui-footer">
+        <div class="weui-footer__text">GREEN WISHING &copy; 2017 <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备17012081号</a></div>
+    </div>
 </div>
+<div style="display: none;"><script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://tajs.qq.com/stats?sId=62361180";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script></div>
 </body>
 </html>

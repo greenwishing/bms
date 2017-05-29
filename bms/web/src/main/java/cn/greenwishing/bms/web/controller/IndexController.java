@@ -9,10 +9,14 @@ import org.springframework.web.servlet.ModelAndView;
  * Date: 2017/4/17
  */
 @Controller
-@RequestMapping("/system")
 public class IndexController {
 
-    @RequestMapping("index")
+    @RequestMapping("/system/login")
+    public ModelAndView login() {
+        return new ModelAndView("login");
+    }
+
+    @RequestMapping("/system/index")
     public ModelAndView index() {
         return new ModelAndView("index");
     }

@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 <html>
 <head>
-    <title>首页</title>
+  <title>首页</title>
 </head>
 <body>
 <div class="weui-article">
@@ -97,7 +97,7 @@
     <p class="weui-grid__label">系统配置</p>
   </a>
 </security:authorize>
-  <a href="${pageContext.request.contextPath}/logout" class="weui-grid">
+  <a href="${pageContext.request.contextPath}/system/logout" class="weui-grid">
     <div class="weui-grid__icon">
       <img src="${pageContext.request.contextPath}/images/icons/icon_back.png">
     </div>
