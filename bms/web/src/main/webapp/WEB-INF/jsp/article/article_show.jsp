@@ -13,6 +13,14 @@
             display: inline-block;
             color: #888;
         }
+        .weui-article {
+            position: relative;
+        }
+        .edit-btn {
+            position: absolute;
+            top: 20px;
+            right: 15px;
+        }
     </style>
 </head>
 <body>
@@ -20,9 +28,7 @@
     <h1>${article.title}</h1>
     <p class="desc">${article.categoryName} ${article.creationTime}</p>
     <c:if test="${login}">
-        <div class="weui-btn-area text-right">
-            <a class="weui-btn weui-btn_mini weui-btn_default" href="edit?guid=${article.guid}">编辑</a>
-        </div>
+        <a class="weui-btn weui-btn_mini weui-btn_default edit-btn" href="edit?guid=${article.guid}">编辑</a>
     </c:if>
     <section>
         <p>${article.content}</p>
