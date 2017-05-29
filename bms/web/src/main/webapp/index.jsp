@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta content="telephone=no" name="format-detection"/>
-    <meta name="Keywords" content="个人记账系统,个人日记,个人记事,文章发布,记账统计,记账分析,时间记账,时间管理,时间分析,待办事项,TODO,GREENWISHING,GREEN,WISHING,BMS">
+    <meta name="Keywords" content="个人记账,个人日记,个人记事,文章发布,记账统计,记账分析,时间记账,时间管理,时间分析,待办事项,TODO,GREENWISHING,GREEN,WISHING,BMS">
     <meta name="Description" content="个人记账系统，用于个人记账，记账分析与统计，时间记账管理与分析，个人记事文章发布，待办事项提醒等">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
