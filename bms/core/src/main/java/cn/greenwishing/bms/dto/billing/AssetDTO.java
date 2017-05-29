@@ -1,6 +1,6 @@
 package cn.greenwishing.bms.dto.billing;
 
-import cn.greenwishing.bms.dto.BmsNumber;
+import cn.greenwishing.bms.dto.SigNum;
 import cn.greenwishing.bms.utils.parser.SqlResultParser;
 
 /**
@@ -10,13 +10,13 @@ import cn.greenwishing.bms.utils.parser.SqlResultParser;
 public class AssetDTO {
 
     // 账户总余额
-    private BmsNumber asset;
+    private SigNum asset;
     // 债权
-    private BmsNumber credit;
+    private SigNum credit;
     // 负债
-    private BmsNumber debt;
+    private SigNum debt;
     // 净资产
-    private BmsNumber netAsset;
+    private SigNum netAsset;
 
     public AssetDTO(SqlResultParser parser) {
         this.asset = parser.nextBmsNumber();
@@ -25,19 +25,19 @@ public class AssetDTO {
         this.netAsset = parser.nextBmsNumber();
     }
 
-    public BmsNumber getAsset() {
+    public SigNum getAsset() {
         return asset;
     }
 
-    public BmsNumber getCredit() {
+    public SigNum getCredit() {
         return credit;
     }
 
-    public BmsNumber getDebt() {
+    public SigNum getDebt() {
         return debt;
     }
 
-    public BmsNumber getNetAsset() {
+    public SigNum getNetAsset() {
         return netAsset;
     }
 }

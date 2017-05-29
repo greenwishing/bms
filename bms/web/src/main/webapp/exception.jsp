@@ -7,6 +7,7 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 </head>
 <body>
 <div class="weui-msg">
@@ -21,7 +22,7 @@
     <div class="weui-msg__opr-area">
         <p class="weui-btn-area">
             <a href="javascript:history.back();" class="weui-btn weui-btn_primary">确定</a>
-            <a href="javascript:void(0);" class="weui-btn weui-btn_default" onclick="$('#stack-trace-list').toggle()">查看详情</a>
+            <a href="javascript:void(0);" class="weui-btn weui-btn_default" onclick="$('.stack-trace-list').toggle()">查看详情</a>
         </p>
     </div>
 </div>

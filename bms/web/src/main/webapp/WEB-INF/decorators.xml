@@ -3,6 +3,7 @@
 <decorators defaultdir="/WEB-INF/jsp/decorators">
     <decorator name="system" page="system.jsp">
         <pattern>/system/*</pattern>
+        <pattern>/article*</pattern>
     </decorator>
 
     <excludes>

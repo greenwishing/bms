@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.utils.query.helper;
 
 import cn.greenwishing.bms.domain.article.Article;
+import cn.greenwishing.bms.domain.article.ArticleAccess;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.ArticlePaging;
@@ -18,19 +19,41 @@ public class ArticleQueryHelper extends AbstractQueryHelper<Article, ArticlePagi
     public ArticleQueryHelper(HibernateTemplate hibernateTemplate, ArticlePaging paging) {
         super(hibernateTemplate, paging);
 
-        addFilter(userFilter());
+        String userGuid = paging.getUserGuid();
+        if (ValidationUtils.isNotEmpty(userGuid)) {
+            addFilter(userFilter(userGuid));
+        }
 
         String key = paging.getKey();
         if (ValidationUtils.isNotEmpty(key)) {
             addFilter(keyFilter(key));
         }
+
+        ArticleAccess access = paging.getAccess();
+        if (access != null) {
+            addFilter(accessFilter(access));
+        }
     }
 
-    private Filter userFilter() {
+    private Filter accessFilter(final ArticleAccess access) {
         return new ParameterFilter() {
             @Override
             public void setParameter(Query query) {
-                query.setParameter("userGuid", SecurityHolder.getUserGuid());
+                query.setParameter("access", access);
+            }
+
+            @Override
+            public String getSubHql() {
+                return " and a.access=:access";
+            }
+        };
+    }
+
+    private Filter userFilter(final String userGuid) {
+        return new ParameterFilter() {
+            @Override
+            public void setParameter(Query query) {
+                query.setParameter("userGuid", userGuid);
             }
 
             @Override

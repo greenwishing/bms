@@ -8,14 +8,14 @@ import java.math.BigDecimal;
  * User: Wufan
  * Date: 2016/10/30
  */
-public class BmsNumber {
+public class SigNum {
 
     private BigDecimal value = BigDecimal.ZERO;
 
-    public BmsNumber() {
+    public SigNum() {
     }
 
-    public BmsNumber(BigDecimal value) {
+    public SigNum(BigDecimal value) {
         this.value = value;
     }
 

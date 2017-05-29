@@ -18,10 +18,7 @@ public class SecurityHolder {
 
     public static String getUserGuid() {
         Object principal = get().getPrincipal();
-        if (principal instanceof String) { // is app
-            if (ANONYMOUS_USER.equals(principal)) {
-                throw new RuntimeException("Bad Credentials");
-            }
+        if (principal instanceof String && !ANONYMOUS_USER.equals(principal)) { // is app
             String appId = (String) principal;
             return AppUserCache.get(appId);
         } else if (principal instanceof PublicUserDetails) {

@@ -1,5 +1,6 @@
 package cn.greenwishing.bms.web.controller.article;
 
+import cn.greenwishing.bms.domain.article.ArticleAccess;
 import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.article.ArticleDTO;
 import cn.greenwishing.bms.service.ArticleService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -32,6 +34,7 @@ public class ArticleFormController {
     public String form(String guid, ModelMap model) {
         List<ArticleCategoryDTO> categoryDTOs = articleService.loadArticleCategories();
         model.put("categoryDTOs", categoryDTOs);
+        model.put("accessTypes", ArticleAccess.values());
         ArticleDTO articleDTO;
         if (ValidationUtils.isEmpty(guid)) {
             articleDTO = new ArticleDTO();

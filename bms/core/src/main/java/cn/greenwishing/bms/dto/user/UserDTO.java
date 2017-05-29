@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class UserDTO {
 
+    private Integer id;
     private String guid;
     private String username;
     private String account;
@@ -29,6 +30,7 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
+        this.id = user.id();
         this.guid = user.guid();
         this.username = user.username();
         this.account = user.account();
@@ -103,5 +105,9 @@ public class UserDTO {
 
     public boolean isAdmin() {
         return User.ADMIN_GUID.equals(guid);
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

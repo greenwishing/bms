@@ -28,13 +28,14 @@
 </head>
 <body>
 <div class="page">
-    <div class="brand brand-text_hide">
+    <a class="brand brand-text_hide" href="${pageContext.request.contextPath}/">
         <img class="brand-logo" src="${pageContext.request.contextPath}/images/wishing.png"/>
         <p class="brand-text">WISHING</p>
-    </div>
+    </a>
     <div class="weui-article" style="text-align: center;">
-        <h1>COMING SOON ...</h1>
-        <p>敬请期待！</p>
+        <h1>敬请期待 ...</h1>
+        <br/>
+        <a href="${pageContext.request.contextPath}/articles">到处看看</a>
     </div>
     <div class="weui-footer">
         <div class="weui-footer__text">GREEN WISHING &copy; 2017 <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备17012081号</a></div>

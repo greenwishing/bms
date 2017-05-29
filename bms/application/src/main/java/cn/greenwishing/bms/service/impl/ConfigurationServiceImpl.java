@@ -2,6 +2,7 @@ package cn.greenwishing.bms.service.impl;
 
 import cn.greenwishing.bms.cache.AppUserCache;
 import cn.greenwishing.bms.cache.ConfigurationCache;
+import cn.greenwishing.bms.cache.OSSClientFactory;
 import cn.greenwishing.bms.domain.config.Configuration;
 import cn.greenwishing.bms.domain.config.ConfigurationRepository;
 import cn.greenwishing.bms.dto.configuration.ConfigurationDTO;
@@ -57,6 +58,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         ConfigurationCache.clear();
         AppUserCache.clear();
         MailSender.refresh();
+        OSSClientFactory.reset();
     }
 
     @Override

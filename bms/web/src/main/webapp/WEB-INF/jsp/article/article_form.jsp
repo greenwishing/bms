@@ -5,12 +5,48 @@
 <html>
 <head>
     <title>写文章</title>
-
     <script type="text/javascript" src="/js/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" src="/js/ueditor/ueditor.all.min.js"></script>
     <script type="text/javascript">
         $(function(){
             WF.editor.init('article_content');
+            /* 图片自动上传 */
+            weui.uploader('#cover_uploader', {
+                url: '/common/upload/image',
+                auto: true,
+                type: 'file',
+                fileVal: 'file',
+                compress: {
+                    width: 800,
+                    height: 800,
+                    quality: .8
+                },
+                onBeforeQueued: function onBeforeQueued(files) {
+                    if (["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0) {
+                        weui.alert('请上传图片');
+                        return false;
+                    }
+                    if (this.size > 1024 * 1024) {
+                        weui.alert('请上传不超过1M的图片');
+                        return false;
+                    }
+                    var $files = $('.weui-uploader__file');
+                    if ($files.length) { // 仅保留当前上传的图片
+                        $files.remove();
+                    }
+                },
+                onSuccess: function onSuccess(result) {
+                    if (result.success) {
+                        $('#cover').val(result.key);
+                    } else {
+                        weui.alert(result.message);
+                    }
+                },
+                onError: function onError(err) {
+                    weui.alert('上传文件出错啦!');
+                }
+            });
+
         });
         function articleFormSubmit() {
             var content = WF.editor.getContent('article_content');
@@ -43,6 +79,25 @@
                 </div>
             </div>
         </div>
+        <div class="weui-cells weui-cells_form" id="cover_uploader">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">封面</p>
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <ul class="weui-uploader__files">
+                                <c:if test="${not empty articleDTO.cover.url}"><li class="weui-uploader__file" style="background-image:url(${articleDTO.cover.url})"></li></c:if>
+                            </ul>
+                            <div class="weui-uploader__input-box">
+                                <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="weui-cells__title">内容</div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell__bd">
@@ -50,7 +105,16 @@
                 <spring-form:textarea cssClass="form-control" id="content" path="content" cssStyle="display: none;"/>
             </div>
         </div>
+        <div class="weui-cells__title">权限</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell weui-cell_select">
+                <div class="weui-cell__bd">
+                    <spring-form:select cssClass="weui-select" id="access" path="access" items="${accessTypes}" itemValue="value" itemLabel="label"/>
+                </div>
+            </div>
+        </div>
         <div class="weui-btn-area">
+            <input type="hidden" id="cover" name="cover.key" value="${articleDTO.cover.key}"/>
             <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="articleFormSubmit()">保存</a>
         </div>
     </spring-form:form>

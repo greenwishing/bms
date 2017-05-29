@@ -23,6 +23,7 @@
     <http pattern="/images/**" security="none"/>
     <http pattern="/index.jsp*" security="none"/>
     <http pattern="/system/login" security="none"/>
+    <http pattern="/article*" security="none"/>
 
     <http pattern="/api/**" security="none" create-session="never"/>
     <http pattern="/message/**" security="none" create-session="never"/>
@@ -132,6 +133,7 @@
 
     <!-- Web Configuration -->
     <http auto-config="false" access-denied-page="/403.jsp" disable-url-rewriting="true" authentication-manager-ref="authenticationManager">
+        <intercept-url pattern="/common/**" access="ROLE_SYSTEM" />
         <intercept-url pattern="/system/index" access="ROLE_SYSTEM" />
         <intercept-url pattern="/system/user/**" access="ROLE_USER" />
         <intercept-url pattern="/system/billing/**" access="ROLE_BILLING" />

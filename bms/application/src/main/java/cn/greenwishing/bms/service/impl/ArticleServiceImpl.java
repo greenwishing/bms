@@ -2,15 +2,16 @@ package cn.greenwishing.bms.service.impl;
 
 import cn.greenwishing.bms.domain.DefaultData;
 import cn.greenwishing.bms.domain.article.Article;
+import cn.greenwishing.bms.domain.article.ArticleAccess;
 import cn.greenwishing.bms.domain.article.ArticleCategory;
 import cn.greenwishing.bms.domain.article.ArticleRepository;
-import cn.greenwishing.bms.domain.billing.BillingCategory;
-import cn.greenwishing.bms.domain.billing.BillingSubcategory;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.domain.user.UserRepository;
+import cn.greenwishing.bms.dto.OSSKey;
 import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.article.ArticleDTO;
 import cn.greenwishing.bms.dto.article.ArticlePagingDTO;
+import cn.greenwishing.bms.dto.user.UserDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.SecurityHolder;
@@ -66,13 +67,17 @@ public class ArticleServiceImpl implements ArticleService {
         if (ValidationUtils.isEmpty(title)) {
             title = JodaUtils.today().toString(JodaUtils.DATE_FORMAT);
         }
-        article.update(title, content, category);
+        OSSKey cover = articleDTO.getCover();
+        ArticleAccess access = articleDTO.getAccess();
+        article.update(title, cover.toString(), content, category);
+        article.updateAccess(access);
         articleRepository.saveOrUpdate(article);
     }
 
     @Override
     public ArticleDTO loadArticleByGuid(String guid) {
         Article article = articleRepository.findByGuid(Article.class, guid);
+        if (article == null) return null;
         return new ArticleDTO(article);
     }
 

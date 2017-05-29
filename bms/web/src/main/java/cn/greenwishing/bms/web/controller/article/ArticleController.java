@@ -25,6 +25,7 @@ public class ArticleController {
 
     @RequestMapping("list")
     public String list(ArticlePagingDTO pagingDTO, ModelMap model) {
+        pagingDTO.setUserGuid(SecurityHolder.getUserGuid());
         pagingDTO = articleService.loadArticlePaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
         return "article/article_list";

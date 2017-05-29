@@ -1,4 +1,4 @@
-package cn.greensihing.bms.mail;
+package cn.greenwishing.bms.mail;
 
 import cn.greenwishing.bms.handler.MailSender;
 import org.testng.annotations.Test;
