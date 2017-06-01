@@ -25,6 +25,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
+    <style type="text/css">
+        .color-red { color: #ff3b30}
+        .color-green { color: #4cd964 }
+    </style>
 </head>
 <body>
 <div class="page">
@@ -33,9 +37,9 @@
         <p class="brand-text">WISHING</p>
     </a>
     <div class="weui-article" style="text-align: center;">
-        <h1>敬请期待 ...</h1>
-        <br/>
-        <a href="${pageContext.request.contextPath}/articles">到处看看</a>
+        <p class="color-green">1.01<sup>365</sup> = 37.7834</p>
+        <p class="color-red">0.99<sup>365</sup> = 0.0255</p>
+        <p>积跬步以至千里，积怠惰以至深渊</p>
     </div>
     <div class="weui-footer">
         <div class="weui-footer__text">GREEN WISHING &copy; 2017 <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备17012081号</a></div>
