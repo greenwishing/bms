@@ -17,7 +17,7 @@
                 </a>
             </c:forEach>
         </div>
-        <div class="weui-cells__tips"><a class="weui-cell_link" href="${pageContext.request.contextPath}/wiki/app.jsp">接入文档</a></div>
+        <div class="weui-cells__tips"><a class="weui-cell_link" href="${pageContext.request.contextPath}/wiki/app.html">接入文档</a></div>
     </div>
     <div class="weui-tabbar">
         <a href="reg" class="weui-tabbar__item">

@@ -17,7 +17,8 @@
     <mvc:annotation-driven/>
     <mvc:default-servlet-handler/>
 
-    <http pattern="/wiki/" security="none"/>
+    <http pattern="/wiki/**" security="none"/>
+    <http pattern="/static/**" security="none"/>
     <http pattern="/js/**" security="none"/>
     <http pattern="/css/**" security="none"/>
     <http pattern="/images/**" security="none"/>
