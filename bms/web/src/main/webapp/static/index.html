@@ -9,33 +9,99 @@
     <link rel="stylesheet" type="text/css" href="/css/bms.css">
     <script type="text/javascript" src="/js/jquery/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="/js/moment.min.js"></script>
+    <script type="text/javascript" src="/js/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="/js/lunar.date.js"></script>
+    <script type="text/javascript" src="/js/global.js"></script>
     <script type="text/javascript">
         $(function () {
-            var in_love = moment('2015-08-15');
-            $('.time').html(in_love.fromNow(true));
+            moment.locale('zh-cn');
+            $('#activities').eventShow({
+                eventFormat: '还记得吗，{date}，我们一起{event}',
+                events: [
+                    {date: '2014-08-23', event: '去资阳爬字库山'},
+                    {date: '2015-08-15', event: '去锦绣天府塔俯视成都'},
+                    {date: '2015-09-04', event: '去上里古镇避暑'},
+                    {date: '2015-10-06', event: '去黄龙溪古镇游玩'},
+                    {date: '2015-10-24', event: '去神木垒看红叶'},
+                    {date: '2016-04-03', event: '去街子古镇踏青'},
+                    {date: '2016-05-01', event: '去武隆看天坑'},
+                    {date: '2017-05-01', event: '去海螺沟看冰川'}
+                ],
+                texts: '我们一起经历了多少个春夏秋冬_感谢一生有你'.split('_')
+            });
         });
+        (function($){
+            var defaults = {
+                seasonDayBefore: 345,
+                seasons: '春_夏_秋_冬'.split('_'),
+                steps: '初%_仲%_%末'.split('_'),
+                eventFormat: '{date}，{event}',
+                events: [],
+                texts: [],
+                dateFormat: 'YYYY-MM-DD'
+            };
+            function EventShow($el, options){
+                this.$el = $el;
+                this.options = $.extend({}, defaults, options || {});
+                this.appendEvents();
+                this.appendTexts();
+            }
+            EventShow.prototype.format = function(dateText) {
+                var opts = this.options;
+                var date = moment(dateText, opts.dateFormat);
+                var aYearAgo = moment().subtract(opts.seasonDayBefore, 'days');
+                var suffix = '';
+                if (date.isBefore(aYearAgo)) {
+                    var size = opts.steps.length;
+                    var lunarDate = $.lunar.convertSolarToLunar(date.toDate());
+                    var monthIndex = lunarDate.month - 1;
+                    var step = opts.steps[(monthIndex) % size];
+                    var season = opts.seasons[Math.floor((monthIndex) / size)];
+                    suffix = step.replaceAll('%', season);
+                }
+                return date.fromNow() + suffix;
+            };
+            EventShow.prototype.appendEvents = function() {
+                var _this = this;
+                $.each(this.options.events, function(i, activity){
+                    var $activity = $('<p/>');
+                    var eventText = _this.options.eventFormat;
+                    eventText = eventText.replaceAll('{date}', _this.format(activity.date));
+                    eventText = eventText.replaceAll('{event}', activity.event);
+                    $activity.html(eventText);
+                    _this.$el.append($activity);
+                });
+            };
+            EventShow.prototype.appendTexts = function () {
+                var _this = this;
+                $.each(this.options.texts, function(i, text){
+                    var $text = $('<p/>').html(text);
+                    _this.$el.append($text);
+                });
+            };
+
+            var old = $.fn.eventShow;
+            $.fn.eventShow = function(options){
+                return this.each(function(){
+                    var $el = $(this);
+                    var instance = $el.data('eventShow');
+                    if (!instance) $el.data('eventShow', (instance = new EventShow($el, options)));
+                });
+            };
+            $.fn.eventShow.Constructor = EventShow;
+            $.fn.eventShow.noConflict = function(){ $.fn.eventShow = old; return this};
+        })(jQuery);
     </script>
     <style>
         .container {
             color: rgb(255, 255, 255);
-            font-weight: bold;
             text-shadow: 0 2px 2px rgba(0, 0, 0, .5);
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <blockquote>
-        <p>好像全世界都在下雨！</p>
-        <p>很想问你有没有带伞，可是我忍住了。 </p>
-        <p>因为我怕你说没带，而我又无能为力。</p>
-        <p>就像是我爱你，却给不到你想要的陪伴。</p>
-    </blockquote>
-    <p class="time" style="text-align: right;"></p>
-</div>
-<div class="btn-area btn-area-fixed">
-    <a href="bms.html" class="btn">记账</a>
-    <div id="functions" class="pull-right"></div>
+    <blockquote id="activities"></blockquote>
 </div>
 <footer>
     <ul class="flex">
