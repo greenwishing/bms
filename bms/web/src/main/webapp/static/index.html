@@ -16,7 +16,7 @@
         $(function () {
             moment.locale('zh-cn');
             $('#activities').eventShow({
-                eventFormat: '还记得吗，{date}，我们一起{event}',
+                eventFormat: '还记得吗，{date}，我们{event}',
                 events: [
                     {date: '2014-08-23', event: '去资阳爬字库山'},
                     {date: '2015-08-15', event: '去锦绣天府塔俯视成都'},
@@ -96,6 +96,9 @@
         .container {
             color: rgb(255, 255, 255);
             text-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+        }
+        .container p {
+            font-size: 14px;
         }
     </style>
 </head>
