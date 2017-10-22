@@ -21,15 +21,7 @@
                         $tplList.append('<option value="">请选择</option>');
                         for (var i in tpl) {
                             var template = tpl[i];
-                            var $menu = $('<option></option>').attr({
-                                'data-name': template.name,
-                                'data-type': template.type,
-                                'data-amount': template.amount,
-                                'data-categoryId': template.categoryId,
-                                'data-subcategoryId': template.subcategoryId,
-                                'data-srcAccountId': template.srcAccountId,
-                                'data-targetAccountId': template.targetAccountId
-                            }).html(template.name + ' ' + template.amount);
+                            var $menu = $('<option></option>').data({template: template}).html(template.name + ' ' + template.amount);
                             $tplList.append($menu);
                         }
                     }
@@ -39,14 +31,16 @@
 
         function applyTemplate(el) {
             var $option = $(el).find('option:selected');
-            var type = $option.attr('data-type');
-            $('#categoryGuid').attr({'default-value': $option.attr('data-categoryId')});
-            $('#subcategoryGuid').attr({'default-value': $option.attr('data-subcategoryId')});
+            var template = $option.data('template');
+            if (!template) return;
+            var type = template.type;
+            $('#categoryGuid').attr({'default-value': template.categoryId});
+            $('#subcategoryGuid').attr({'default-value': template.subcategoryId});
             WF.billing.categories(type);
-            WF.billing.defaultValue($(':input[name=srcAccountGuid]'), $option.attr('data-srcAccountId'));
-            WF.billing.defaultValue($(':input[name=targetAccountGuid]'), $option.attr('data-targetAccountId'));
-            $('#name').val($option.attr('data-name'));
-            $('#amount').val($option.attr('data-amount'));
+            WF.billing.defaultValue($(':input[name=srcAccountGuid]'), template.srcAccountId);
+            WF.billing.defaultValue($(':input[name=targetAccountGuid]'), template.targetAccountId);
+            $('#name').val(template.name);
+            $('#amount').val(template.amount);
         }
     </script>
 </head>
@@ -312,7 +306,7 @@
                 <label class="weui-label">金额</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="number" name="amount" placeholder="金额" value="${billingDTO.amount}"/>
+                <input class="weui-input" type="number" id="amount" name="amount" placeholder="金额" value="${billingDTO.amount}"/>
             </div>
         </div>
     </div>

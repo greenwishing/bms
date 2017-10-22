@@ -85,7 +85,9 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<SqlResultParser>>() {
             @Override
             public List<SqlResultParser> doInHibernate(Session session) throws HibernateException, SQLException {
-                Query query = session.createSQLQuery("select b.id,b.guid,b.name,b.type,b.category_id,b.subcategory_id,b.src_account_id,b.target_account_id,b.amount from billing b join (" +
+                Query query = session.createSQLQuery("" +
+                        "select b.id,b.guid,b.name,b.type,b.category_id,b.subcategory_id,b.src_account_id,b.target_account_id,b.amount,b.description" +
+                        " from billing b join (" +
                         "SELECT max(id) id FROM billing b WHERE type = :type AND user_id = :userId GROUP BY category_id, subcategory_id,name ORDER BY count(*) DESC" +
                         ") t on b.id= t.id");
                 query.setParameter("type", type.getValue());

@@ -24,6 +24,7 @@ public class SuggestTemplateDTO {
     private Integer srcAccountId;
     private Integer targetAccountId;
     private String amount;
+    private String desc;
 
     public SuggestTemplateDTO(){
     }
@@ -38,6 +39,7 @@ public class SuggestTemplateDTO {
         this.srcAccountId = parser.nextInt();
         this.targetAccountId = parser.nextInt();
         this.amount = NumberUtils.toString(parser.nextDecimal());
+        this.desc = parser.nextString();
     }
 
     public static List<SuggestTemplateDTO> valueOf(List<SqlResultParser> parsers) {
@@ -83,5 +85,13 @@ public class SuggestTemplateDTO {
 
     public String getAmount() {
         return amount;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

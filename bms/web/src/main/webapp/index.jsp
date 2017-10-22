@@ -41,10 +41,10 @@
         <p class="color-red">0.99<sup>365</sup> = 0.0255</p>
         <p>积跬步以至千里，积怠惰以至深渊</p>
         <br/>
-        <p><a href="/static/index.html">&gt;&gt;</a></p>
+        <p><a href="/articles">进入 &gt;&gt;</a></p>
     </div>
     <div class="weui-footer">
-        <div class="weui-footer__text">GREEN WISHING &copy; 2017 <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备17012081号</a></div>
+        <div class="weui-footer__text">&copy; 2017 <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备17012081号</a></div>
     </div>
 </div>
 <div style="display: none;"><script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://tajs.qq.com/stats?sId=62361180";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script></div>
