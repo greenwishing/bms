@@ -5,6 +5,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
 
@@ -56,7 +57,7 @@ public class MailSender {
             JavaMailSender mailSender = get();
             MimeMessageHelper helper = new MimeMessageHelper(mailSender.createMimeMessage());
             helper.setSubject(subject);
-            helper.setText(content);
+            helper.setText(content, true);
             helper.setFrom(from);
             helper.setTo(to);
             helper.setSentDate(new Date());
