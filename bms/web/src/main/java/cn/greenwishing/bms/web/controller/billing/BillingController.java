@@ -30,30 +30,30 @@ public class BillingController {
     private BillingService billingService;
 
     @RequestMapping("overview")
-    public String overview(ModelMap model) {
+    public ModelAndView overview(ModelMap model) {
         AssetDTO asset =  billingService.loadAsset();
         model.put("types", BillingType.values());
         model.put("asset", asset);
-        return "billing/billing_overview";
+        return new ModelAndView("billing/billing_overview");
     }
 
     @RequestMapping("main")
-    public String main(ModelMap model) {
+    public ModelAndView main(ModelMap model) {
         model.put("types", BillingType.values());
-        return "billing/billing_main";
+        return new ModelAndView("billing/billing_main");
     }
 
     @RequestMapping("list")
-    public String list(BillingPagingDTO pagingDTO, ModelMap model) {
+    public ModelAndView list(BillingPagingDTO pagingDTO, ModelMap model) {
         pagingDTO = billingService.loadBillingPaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
         model.put("types", BillingType.values());
-        return "billing/billing_list";
+        return new ModelAndView("billing/billing_list");
     }
 
     @GetMapping("record")
     @ModelAttribute("billingDTO")
-    public String form(ModelMap model) {
+    public ModelAndView form(ModelMap model) {
         List<BillingAccountDTO> accounts = billingService.loadBillingAccounts();
         Map<BillingAccountType, List<BillingAccountDTO>> accountMap = new TreeMap<>();
         Map<BillingAccountType, List<BillingAccountDTO>> loanAccountMap = new TreeMap<>();
@@ -78,7 +78,7 @@ public class BillingController {
         model.put("accountMap", accountMap);
         model.put("loanAccountMap", loanAccountMap);
         model.put("billingDTO", new BillingDTO());
-        return "billing/billing_form";
+        return new ModelAndView("billing/billing_form");
     }
 
     @PostMapping("record")
@@ -134,7 +134,7 @@ public class BillingController {
 
     @GetMapping({"add_category", "edit_category"})
     @ModelAttribute("billingCategoryDTO")
-    public String categoryForm(String guid, ModelMap model) {
+    public ModelAndView categoryForm(String guid, ModelMap model) {
         model.put("types", BillingType.values());
         BillingCategoryDTO billingCategoryDTO;
         if (ValidationUtils.isEmpty(guid)) {
@@ -143,7 +143,7 @@ public class BillingController {
             billingCategoryDTO = billingService.loadBillingCategoryByGuid(guid);
         }
         model.put("billingCategoryDTO", billingCategoryDTO);
-        return "billing/billing_category_form";
+        return new ModelAndView("billing/billing_category_form");
     }
 
     @PostMapping({"add_category", "edit_category"})
@@ -170,7 +170,7 @@ public class BillingController {
 
     @GetMapping({"add_subcategory", "edit_subcategory"})
     @ModelAttribute("billingSubcategoryDTO")
-    public String subcategoryForm(String guid, ModelMap model) {
+    public ModelAndView subcategoryForm(String guid, ModelMap model) {
         BillingSubcategoryDTO billingSubcategoryDTO;
         if (ValidationUtils.isEmpty(guid)) {
             billingSubcategoryDTO = new BillingSubcategoryDTO();
@@ -178,7 +178,7 @@ public class BillingController {
             billingSubcategoryDTO = billingService.loadBillingSubcategoryByGuid(guid);
         }
         model.put("billingSubcategoryDTO", billingSubcategoryDTO);
-        return "billing/billing_subcategory_form";
+        return new ModelAndView("billing/billing_subcategory_form");
     }
 
     @PostMapping({"add_subcategory", "edit_subcategory"})
@@ -205,7 +205,7 @@ public class BillingController {
 
     @GetMapping({"add_account", "edit_account"})
     @ModelAttribute("billingAccountDTO")
-    public String accountForm(String guid, ModelMap model) {
+    public ModelAndView accountForm(String guid, ModelMap model) {
         model.put("types", BillingAccountType.values());
         BillingAccountDTO billingAccountDTO;
         if (ValidationUtils.isEmpty(guid)) {
@@ -214,7 +214,7 @@ public class BillingController {
             billingAccountDTO = billingService.loadBillingAccountByGuid(guid);
         }
         model.put("billingAccountDTO", billingAccountDTO);
-        return "billing/billing_account_form";
+        return new ModelAndView("billing/billing_account_form");
     }
 
     @PostMapping({"add_account", "edit_account"})
@@ -253,15 +253,15 @@ public class BillingController {
     }
 
     @RequestMapping("delete")
-    public String delete(String guid) {
+    public ModelAndView delete(String guid) {
         billingService.deleteBillingByGuid(guid);
-        return "redirect:list";
+        return new ModelAndView("redirect:list");
     }
 
     @RequestMapping("status")
-    public String status(String guid, BillingStatus status) {
+    public ModelAndView status(String guid, BillingStatus status) {
         billingService.changeStatus(guid, status);
-        return "redirect:list";
+        return new ModelAndView("redirect:list");
     }
 
     @RequestMapping("nearest_data")

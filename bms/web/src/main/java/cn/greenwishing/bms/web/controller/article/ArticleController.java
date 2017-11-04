@@ -31,16 +31,16 @@ public class ArticleController {
     private ArticleService articleService;
 
     @RequestMapping("list")
-    public String list(ArticlePagingDTO pagingDTO, ModelMap model) {
+    public ModelAndView list(ArticlePagingDTO pagingDTO, ModelMap model) {
         pagingDTO.setUserGuid(SecurityHolder.getUserGuid());
         pagingDTO = articleService.loadArticlePaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
-        return "article/article_list";
+        return new ModelAndView("article/article_list");
     }
 
     @GetMapping({"add", "edit"})
     @ModelAttribute("articleDTO")
-    public String articleForm(String guid, ModelMap model) {
+    public ModelAndView articleForm(String guid, ModelMap model) {
         List<ArticleCategoryDTO> categoryDTOs = articleService.loadArticleCategories();
         model.put("categoryDTOs", categoryDTOs);
         model.put("accessTypes", ArticleAccess.values());
@@ -51,7 +51,7 @@ public class ArticleController {
             articleDTO = articleService.loadArticleByGuid(guid);
         }
         model.put("articleDTO", articleDTO);
-        return "article/article_form";
+        return new ModelAndView("article/article_form");
     }
 
     @PostMapping({"add", "edit"})
@@ -74,7 +74,7 @@ public class ArticleController {
 
     @GetMapping({"add_category", "edit_category"})
     @ModelAttribute("articleCategoryDTO")
-    public String categoryForm(String guid, ModelMap model) {
+    public ModelAndView categoryForm(String guid, ModelMap model) {
         ArticleCategoryDTO articleCategoryDTO;
         if (ValidationUtils.isEmpty(guid)) {
             articleCategoryDTO = new ArticleCategoryDTO();
@@ -82,7 +82,7 @@ public class ArticleController {
             articleCategoryDTO = articleService.loadArticleCategoryByGuid(guid);
         }
         model.put("articleCategoryDTO", articleCategoryDTO);
-        return "article/article_category_form";
+        return new ModelAndView("article/article_category_form");
     }
 
     @PostMapping({"add_category", "edit_category"})
@@ -104,18 +104,18 @@ public class ArticleController {
     }
 
     @RequestMapping("show")
-    public String show(String guid, ModelMap model) {
+    public ModelAndView show(String guid, ModelMap model) {
         ArticleDTO article = articleService.loadArticleByGuid(guid);
         model.put("article", article);
         model.put("login", SecurityHolder.getUserId() != null);
-        return "article/article_show";
+        return new ModelAndView("article/article_show");
     }
 
     @RequestMapping("categories")
-    public String categories(ModelMap model) {
+    public ModelAndView categories(ModelMap model) {
         List<ArticleCategoryDTO> categoryDTOs = articleService.loadArticleCategories();
         model.put("categoryDTOs", categoryDTOs);
-        return "article/article_category_list";
+        return new ModelAndView("article/article_category_list");
     }
 
     @RequestMapping("gen")

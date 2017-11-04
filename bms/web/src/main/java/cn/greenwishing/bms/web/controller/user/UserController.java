@@ -30,15 +30,15 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("list")
-    public String list(UserPagingDTO pagingDTO, ModelMap model) {
+    public ModelAndView list(UserPagingDTO pagingDTO, ModelMap model) {
         pagingDTO = userService.loadUserPaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
-        return "user/user_list";
+        return new ModelAndView("user/user_list");
     }
 
     @GetMapping({"add", "edit"})
     @ModelAttribute("userDTO")
-    public String form(String guid, ModelMap model) {
+    public ModelAndView form(String guid, ModelMap model) {
         model.put("statusList", UserStatus.values());
         UserDTO userDTO;
         if (ValidationUtils.isEmpty(guid)) {
@@ -47,7 +47,7 @@ public class UserController {
             userDTO = userService.loadByGuid(guid);
         }
         model.put("userDTO", userDTO);
-        return "user/user_form";
+        return new ModelAndView("user/user_form");
     }
 
     @PostMapping({"add", "edit"})

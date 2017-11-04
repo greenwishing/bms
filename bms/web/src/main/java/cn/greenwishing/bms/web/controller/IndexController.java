@@ -28,13 +28,13 @@ public class IndexController {
     private ArticleService articleService;
 
     @RequestMapping("/system/login")
-    public String login() {
-        return "login";
+    public ModelAndView login() {
+        return new ModelAndView("login");
     }
 
     @RequestMapping("/system/index")
-    public String index() {
-        return "index";
+    public ModelAndView index() {
+        return new ModelAndView("index");
     }
 
     @RequestMapping("/weather")
@@ -44,27 +44,27 @@ public class IndexController {
     }
 
     @RequestMapping("/articles")
-    public String index(ArticlePagingDTO pagingDTO, ModelMap model) {
+    public ModelAndView index(ArticlePagingDTO pagingDTO, ModelMap model) {
         pagingDTO.setAccess(ArticleAccess.PUBLIC);
         pagingDTO = articleService.loadArticlePaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
-        return "public/article_list";
+        return new ModelAndView("public/article_list");
     }
 
     @RequestMapping("/articles/{userGuid}")
-    public String article(ArticlePagingDTO pagingDTO, ModelMap model, @PathVariable("userGuid") String userGuid) {
+    public ModelAndView article(ArticlePagingDTO pagingDTO, ModelMap model, @PathVariable("userGuid") String userGuid) {
         pagingDTO.setAccess(ArticleAccess.PUBLIC);
         pagingDTO.setUserGuid(userGuid);
         pagingDTO = articleService.loadArticlePaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
-        return "public/article_list";
+        return new ModelAndView("public/article_list");
     }
 
     @RequestMapping("/article/{articleGuid}")
-    public String article(@PathVariable("articleGuid") String articleGuid, ModelMap model) {
+    public ModelAndView article(@PathVariable("articleGuid") String articleGuid, ModelMap model) {
         ArticleDTO article = articleService.loadArticleByGuid(articleGuid);
         model.put("article", article);
         model.put("loginUserGuid", SecurityHolder.getUserGuid());
-        return "article/article_show";
+        return new ModelAndView("article/article_show");
     }
 }

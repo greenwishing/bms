@@ -29,15 +29,15 @@ public class TodoController {
     private TodoService todoService;
 
     @RequestMapping("list")
-    public String list(ModelMap model) throws Exception {
+    public ModelAndView list(ModelMap model) throws Exception {
         List<TodoDTO> todos = todoService.loadTodos();
         model.put("todos", todos);
-        return "todo/todo_list";
+        return new ModelAndView("todo/todo_list");
     }
 
     @GetMapping({"add", "edit"})
     @ModelAttribute("todoDTO")
-    public String todoForm(String guid, ModelMap model) throws Exception {
+    public ModelAndView todoForm(String guid, ModelMap model) throws Exception {
         TodoDTO todoDTO;
         if (ValidationUtils.isEmpty(guid)) {
             todoDTO = new TodoDTO();
@@ -45,7 +45,7 @@ public class TodoController {
             todoDTO = todoService.loadTodoByGuid(guid);
         }
         model.put("todoDTO", todoDTO);
-        return "todo/todo_form";
+        return new ModelAndView("todo/todo_form");
     }
 
     @PostMapping({"add", "edit"})

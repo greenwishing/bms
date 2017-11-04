@@ -31,24 +31,24 @@ public class MomentController {
     private MomentService momentService;
 
     @RequestMapping("list")
-    public String list(MomentPagingDTO pagingDTO, ModelMap model) throws Exception {
+    public ModelAndView list(MomentPagingDTO pagingDTO, ModelMap model) throws Exception {
         List<MomentTypeDTO> types = momentService.loadMomentTypes();
         model.put("types", types);
         pagingDTO = momentService.loadMomentPaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
-        return "moment/moment_list";
+        return new ModelAndView("moment/moment_list");
     }
 
     @GetMapping("types")
-    public String types(ModelMap model) throws Exception {
+    public ModelAndView types(ModelMap model) throws Exception {
         List<MomentTypeDTO> types = momentService.loadMomentTypes();
         model.put("types", types);
-        return "moment/moment_type_list";
+        return new ModelAndView("moment/moment_type_list");
     }
 
     @GetMapping({"add_moment", "edit_moment"})
     @ModelAttribute("momentDTO")
-    public String momentForm(String guid, ModelMap model) throws Exception {
+    public ModelAndView momentForm(String guid, ModelMap model) throws Exception {
         List<MomentTypeDTO> types = momentService.loadMomentTypes();
         model.put("types", types);
         MomentDTO momentDTO;
@@ -58,7 +58,7 @@ public class MomentController {
             momentDTO = momentService.loadMomentByGuid(guid);
         }
         model.put("momentDTO", momentDTO);
-        return "moment/moment_form";
+        return new ModelAndView("moment/moment_form");
     }
 
     @PostMapping({"add_moment", "edit_moment"})
@@ -93,7 +93,7 @@ public class MomentController {
 
     @GetMapping({"add_moment_type", "edit_moment_type"})
     @ModelAttribute("momentTypeDTO")
-    public String typeForm(String guid, ModelMap model) throws Exception {
+    public ModelAndView typeForm(String guid, ModelMap model) throws Exception {
         model.put("types", GoalType.values());
         MomentTypeDTO momentTypeDTO;
         if (ValidationUtils.isEmpty(guid)) {
@@ -102,7 +102,7 @@ public class MomentController {
             momentTypeDTO = momentService.loadMomentTypeByGuid(guid);
         }
         model.put("momentTypeDTO", momentTypeDTO);
-        return "moment/moment_type_form";
+        return new ModelAndView("moment/moment_type_form");
     }
 
     @PostMapping({"add_moment_type", "edit_moment_type"})

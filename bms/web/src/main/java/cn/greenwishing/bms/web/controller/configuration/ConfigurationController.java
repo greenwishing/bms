@@ -28,15 +28,15 @@ public class ConfigurationController {
     private ConfigurationService configurationService;
 
     @RequestMapping("list")
-    public String list(ModelMap model) throws Exception {
+    public ModelAndView list(ModelMap model) throws Exception {
         List<ConfigurationDTO> configurations = configurationService.loadConfigurations();
         model.put("configurations", configurations);
-        return "configuration/configuration_list";
+        return new ModelAndView("configuration/configuration_list");
     }
 
     @GetMapping({"add", "edit"})
     @ModelAttribute("configurationDTO")
-    public String configurationForm(String guid, ModelMap model) throws Exception {
+    public ModelAndView configurationForm(String guid, ModelMap model) throws Exception {
         ConfigurationDTO configurationDTO;
         if (ValidationUtils.isEmpty(guid)) {
             configurationDTO = new ConfigurationDTO();
@@ -44,7 +44,7 @@ public class ConfigurationController {
             configurationDTO = configurationService.loadConfigurationByGuid(guid);
         }
         model.put("configurationDTO", configurationDTO);
-        return "configuration/configuration_form";
+        return new ModelAndView("configuration/configuration_form");
     }
 
     @PostMapping({"add", "edit"})

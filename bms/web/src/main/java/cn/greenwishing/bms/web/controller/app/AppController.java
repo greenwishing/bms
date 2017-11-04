@@ -32,15 +32,15 @@ public class AppController {
     private AppService appService;
 
     @RequestMapping("list")
-    public String list(ModelMap model) {
+    public ModelAndView list(ModelMap model) {
         List<OAuthAppDTO> apps = appService.loadApps();
         model.put("apps", apps);
-        return "app/app_list";
+        return new ModelAndView("app/app_list");
     }
 
     @GetMapping({"reg", "edit"})
     @ModelAttribute("appDTO")
-    public String appForm(String appId, ModelMap model) {
+    public ModelAndView appForm(String appId, ModelMap model) {
         OAuthAppDTO appDTO;
         if (ValidationUtils.isEmpty(appId)) {
             Long appCount = appService.loadAppCount();
@@ -56,7 +56,7 @@ public class AppController {
         model.put("scopeList", OAuthScope.values());
         model.put("grantTypeList", OAuthGrantType.values());
         model.put("authorityList", OAuthAuthorities.values());
-        return "app/app_form";
+        return new ModelAndView("app/app_form");
     }
 
     @PostMapping({"reg", "edit"})

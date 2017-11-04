@@ -34,17 +34,17 @@ public class MetroController {
     private MetroService metroService;
 
     @RequestMapping("list")
-    public String list(ModelMap model) {
+    public ModelAndView list(ModelMap model) {
         List<MetroLineDTO> lines = metroService.loadMetroLines();
         model.put("lines", lines);
-        return "metro/metro_line_list";
+        return new ModelAndView("metro/metro_line_list");
     }
 
     @RequestMapping("stations")
-    public String stations(ModelMap model) {
+    public ModelAndView stations(ModelMap model) {
         List<StationDTO> stations = metroService.loadStations();
         model.put("stations", stations);
-        return "metro/station_list";
+        return new ModelAndView("metro/station_list");
     }
 
     @RequestMapping("metro_line_stations")
@@ -57,7 +57,7 @@ public class MetroController {
 
     @GetMapping({"add", "edit"})
     @ModelAttribute("metroLineDTO")
-    public String metroLineForm(String guid, ModelMap model) {
+    public ModelAndView metroLineForm(String guid, ModelMap model) {
         MetroLineDTO metroLineDTO;
         if (ValidationUtils.isEmpty(guid)) {
             metroLineDTO = new MetroLineDTO();
@@ -65,7 +65,7 @@ public class MetroController {
             metroLineDTO = metroService.loadMetroLineByGuid(guid);
         }
         model.put("metroLineDTO", metroLineDTO);
-        return "metro/metro_line_form";
+        return new ModelAndView("metro/metro_line_form");
     }
 
     @PostMapping({"add", "edit"})
@@ -92,7 +92,7 @@ public class MetroController {
 
     @GetMapping({"add_station", "edit_station"})
     @ModelAttribute("stationDTO")
-    public String stationForm(String guid, String lineStationGuid, ModelMap model) {
+    public ModelAndView stationForm(String guid, String lineStationGuid, ModelMap model) {
         StationDTO stationDTO;
         if (ValidationUtils.isEmpty(guid)) {
             stationDTO = new StationDTO();
@@ -110,7 +110,7 @@ public class MetroController {
         }
         model.put("stationDTO", stationDTO);
         model.put("hasBaiduMap", true);
-        return "metro/station_form";
+        return new ModelAndView("metro/station_form");
     }
 
     @PostMapping({"add_station", "edit_station"})
