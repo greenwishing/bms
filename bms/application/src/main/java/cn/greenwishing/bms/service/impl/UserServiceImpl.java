@@ -9,19 +9,20 @@ import cn.greenwishing.bms.shared.PublicUserDetails;
 import cn.greenwishing.bms.utils.MD5Utils;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.UserPaging;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @Service("userService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    @Autowired
+    @Resource
     private UserRepository userRepository;
 
     @Override

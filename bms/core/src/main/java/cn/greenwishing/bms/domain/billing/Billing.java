@@ -44,7 +44,7 @@ public class Billing extends AbstractDomain {
     private String description;
 
     @Column(name = "occurred_time")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate occurredTime;
 
     @JoinColumn(name = "user_id")
@@ -56,7 +56,7 @@ public class Billing extends AbstractDomain {
 	private BillingStatus status = BillingStatus.NORMAL;
 
     @Column(name = "settle_time")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime settleTime;
 
     public Billing() {

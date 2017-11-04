@@ -62,7 +62,7 @@
     </style>
 </head>
 <body>
-    <spring-form:form id="data-form" commandName="articleDTO" method="post" onsubmit="return false;">
+    <spring-form:form id="data-form" modelAttribute="articleDTO" method="post" onsubmit="return false;">
         <div class="weui-cells__title">标题</div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">

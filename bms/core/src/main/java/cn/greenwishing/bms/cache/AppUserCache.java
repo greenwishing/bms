@@ -7,29 +7,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: Wufan
- * Date: 2016/8/13
+ * @author Frank wu
+ * @date 2016/8/13
  */
 public class AppUserCache {
 
-    private static final Map<String, String> appUserMap = new HashMap<>();
+    private static final Map<String, String> APP_USER_MAP = new HashMap<>();
 
     public static String get(String appId) {
-        if (appUserMap.containsKey(appId)) {
-            return appUserMap.get(appId);
+        if (APP_USER_MAP.containsKey(appId)) {
+            return APP_USER_MAP.get(appId);
         }
         String userGuid = getUserRepository().findUserGuidByAppId(appId);
-        appUserMap.put(appId, userGuid);
+        APP_USER_MAP.put(appId, userGuid);
         return userGuid;
     }
 
     public static void clear() {
-        appUserMap.clear();
+        APP_USER_MAP.clear();
     }
 
     private static UserRepository instance = null;
     private static UserRepository getUserRepository() {
-        if (instance == null) instance = SpringBeanFactory.getBean(UserRepository.class);
+        if (instance == null) {
+            instance = SpringBeanFactory.getBean(UserRepository.class);
+        }
         return instance;
     }
 }

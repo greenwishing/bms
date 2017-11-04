@@ -1,6 +1,6 @@
 package cn.greenwishing.bms.utils.query.helper;
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 public abstract class ParameterFilter implements Filter {
 

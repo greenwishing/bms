@@ -5,14 +5,14 @@ import cn.greenwishing.bms.domain.article.ArticleAccess;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.ArticlePaging;
-import org.hibernate.Query;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.hibernate.query.Query;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public class ArticleQueryHelper extends AbstractQueryHelper<Article, ArticlePaging> {
 

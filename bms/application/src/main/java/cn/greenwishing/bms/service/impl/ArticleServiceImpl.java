@@ -11,26 +11,25 @@ import cn.greenwishing.bms.dto.OSSKey;
 import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.article.ArticleDTO;
 import cn.greenwishing.bms.dto.article.ArticlePagingDTO;
-import cn.greenwishing.bms.dto.user.UserDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.ArticlePaging;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
 
-    @Autowired
+    @Resource
     private ArticleRepository articleRepository;
-    @Autowired
+    @Resource
     private UserRepository userRepository;
 
     @Override

@@ -7,7 +7,7 @@ import cn.greenwishing.bms.dto.article.ArticlePagingDTO;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public interface ArticleService {
     ArticlePagingDTO loadArticlePaging(ArticlePagingDTO articlePagingDTO);

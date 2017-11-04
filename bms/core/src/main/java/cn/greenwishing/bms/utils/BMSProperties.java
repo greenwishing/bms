@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * User: WuFan
- * Date: 13-6-4
+ * @author Frank wu
+ * @date 13-6-4
  */
 public class BMSProperties extends PropertyPlaceholderConfigurer {
 

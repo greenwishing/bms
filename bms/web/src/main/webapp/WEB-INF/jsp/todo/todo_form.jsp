@@ -7,7 +7,7 @@
     <title>待办事项</title>
 </head>
 <body>
-    <spring-form:form commandName="todoDTO" method="post" id="data-form" onsubmit="return false;">
+    <spring-form:form modelAttribute="todoDTO" method="post" id="data-form" onsubmit="return false;">
         <div class="weui-cells__title">事项描述</div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">

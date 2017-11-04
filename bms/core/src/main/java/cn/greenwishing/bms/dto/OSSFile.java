@@ -4,8 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
- * User: Wufan
- * Date: 2017/5/29
+ * @author Frank wu
+ * @date 2017/5/29
  */
 public class OSSFile {
 

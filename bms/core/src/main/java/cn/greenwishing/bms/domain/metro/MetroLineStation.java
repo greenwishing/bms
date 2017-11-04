@@ -6,8 +6,8 @@ import cn.greenwishing.bms.domain.user.User;
 import javax.persistence.*;
 
 /**
- * User: Wufan
- * Date: 2016/6/5
+ * @author Frank wu
+ * @date 2016/6/5
  */
 @Entity
 @Table(name = "metro_line_station")

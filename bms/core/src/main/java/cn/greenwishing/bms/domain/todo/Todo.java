@@ -11,8 +11,8 @@ import javax.persistence.*;
 
 /**
  * 待办事项
- * User: Wufan
- * Date: 2017/3/4
+ * @author Frank wu
+ * @date 2017/3/4
  */
 @Entity
 @Table(name = "todo")
@@ -29,7 +29,7 @@ public class Todo extends AbstractDomain {
     private Boolean done = false;
 
     @Column(name = "done_time")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime doneTime;
 
     @Column(name = "status")

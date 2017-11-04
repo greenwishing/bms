@@ -1,26 +1,33 @@
 package cn.greenwishing.bms.web.controller.article;
 
+import cn.greenwishing.bms.domain.article.ArticleAccess;
 import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.article.ArticleDTO;
 import cn.greenwishing.bms.dto.article.ArticlePagingDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import cn.greenwishing.bms.utils.SecurityHolder;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @Controller
 @RequestMapping("/system/article/")
 public class ArticleController {
 
-    @Autowired
+    @Resource
     private ArticleService articleService;
 
     @RequestMapping("list")
@@ -29,6 +36,71 @@ public class ArticleController {
         pagingDTO = articleService.loadArticlePaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
         return "article/article_list";
+    }
+
+    @GetMapping({"add", "edit"})
+    @ModelAttribute("articleDTO")
+    public String articleForm(String guid, ModelMap model) {
+        List<ArticleCategoryDTO> categoryDTOs = articleService.loadArticleCategories();
+        model.put("categoryDTOs", categoryDTOs);
+        model.put("accessTypes", ArticleAccess.values());
+        ArticleDTO articleDTO;
+        if (ValidationUtils.isEmpty(guid)) {
+            articleDTO = new ArticleDTO();
+        } else {
+            articleDTO = articleService.loadArticleByGuid(guid);
+        }
+        model.put("articleDTO", articleDTO);
+        return "article/article_form";
+    }
+
+    @PostMapping({"add", "edit"})
+    public ModelAndView saveArticle(@ModelAttribute("articleDTO") ArticleDTO articleDTO, BindingResult errors) {
+        String content = articleDTO.getContent();
+        if (ValidationUtils.isEmpty(content)) {
+            errors.rejectValue("content", "content", "请输入文章内容");
+        }
+        ModelMap model = new ModelMap();
+        if (errors.hasErrors()) {
+            model.put("success", false);
+            model.put("message", errors.getFieldError().getDefaultMessage());
+        } else {
+            articleService.saveOrUpdateArticle(articleDTO);
+            model.put("success", true);
+            model.put("redirectUrl", "list");
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), model);
+    }
+
+    @GetMapping({"add_category", "edit_category"})
+    @ModelAttribute("articleCategoryDTO")
+    public String categoryForm(String guid, ModelMap model) {
+        ArticleCategoryDTO articleCategoryDTO;
+        if (ValidationUtils.isEmpty(guid)) {
+            articleCategoryDTO = new ArticleCategoryDTO();
+        } else {
+            articleCategoryDTO = articleService.loadArticleCategoryByGuid(guid);
+        }
+        model.put("articleCategoryDTO", articleCategoryDTO);
+        return "article/article_category_form";
+    }
+
+    @PostMapping({"add_category", "edit_category"})
+    public ModelAndView saveCategory(@ModelAttribute("articleCategoryDTO") ArticleCategoryDTO articleCategoryDTO, BindingResult errors) {
+        String name = articleCategoryDTO.getName();
+        if (ValidationUtils.isEmpty(name)) {
+            errors.rejectValue("name", "name", "请输入分类名称");
+        }
+        ModelMap model = new ModelMap();
+        if (errors.hasErrors()) {
+            model.put("success", false);
+            model.put("message", errors.getFieldError().getDefaultMessage());
+        } else {
+            articleService.saveOrUpdateArticleCategory(articleCategoryDTO);
+            model.put("success", true);
+            model.put("redirectUrl", "categories");
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), model);
     }
 
     @RequestMapping("show")

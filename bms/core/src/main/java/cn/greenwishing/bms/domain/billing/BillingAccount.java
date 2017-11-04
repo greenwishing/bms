@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 
 /**
  * 账户
- * User: Wufan
- * Date: 2016/10/15
+ * @author Frank wu
+ * @date 2016/10/15
  */
 @Entity
 @Table(name = "billing_account")

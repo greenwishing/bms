@@ -7,8 +7,8 @@ import cn.greenwishing.bms.dto.AbstractPagingDTO;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 public class MomentPagingDTO extends AbstractPagingDTO<MomentDTO, MomentPaging> {
 

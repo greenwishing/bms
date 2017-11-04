@@ -11,8 +11,8 @@ import javax.persistence.*;
 
 /**
  * 时间记账
- * User: Wufan
- * Date: 2017/3/4
+ * @author Frank wu
+ * @date 2017/3/4
  */
 @Entity
 @Table(name = "moment")
@@ -27,15 +27,15 @@ public class Moment extends AbstractDomain {
     private MomentType type;
 
     @Column(name = "date")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate date;
 
     @Column(name = "start_time")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalTimeAsTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
     private LocalTime startTime;
 
     @Column(name = "end_time")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalTimeAsTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
     private LocalTime endTime;
 
     @Column(name = "description")

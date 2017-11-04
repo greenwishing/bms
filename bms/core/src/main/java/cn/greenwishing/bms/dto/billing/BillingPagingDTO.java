@@ -9,7 +9,7 @@ import cn.greenwishing.bms.utils.paging.BillingPaging;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public class BillingPagingDTO extends AbstractPagingDTO<BillingDTO, BillingPaging> {
 

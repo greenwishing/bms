@@ -3,7 +3,7 @@ package cn.greenwishing.bms.domain;
 import java.io.Serializable;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public interface Domain extends Serializable {
 

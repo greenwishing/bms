@@ -5,7 +5,7 @@ import cn.greenwishing.bms.dto.user.UserDTO;
 import cn.greenwishing.bms.dto.user.UserPagingDTO;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public interface UserService {
     User findByAccount(String account);

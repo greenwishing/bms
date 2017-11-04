@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2016/7/13
+ * @author Frank wu
+ * @date 2016/7/13
  */
 public class UserDTO {
 

@@ -1,8 +1,8 @@
 package cn.greenwishing.bms.utils;
 
 /**
- * User: Wufan
- * Date: 2017/5/29
+ * @author Frank wu
+ * @date 2017/5/29
  */
 public class OSSUtils {
 

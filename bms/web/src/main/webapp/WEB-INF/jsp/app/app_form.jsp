@@ -8,7 +8,7 @@
     <title>应用设置</title>
 </head>
 <body>
-    <spring-form:form id="data-form" commandName="appDTO" method="post" onsubmit="return false;">
+    <spring-form:form id="data-form" modelAttribute="appDTO" method="post" onsubmit="return false;">
         <c:if test="${appDTO.appId!=null}">
             <div class="weui-cells__title">应用ID</div>
             <div class="weui-cells weui-cells_form">

@@ -8,21 +8,21 @@ import cn.greenwishing.bms.dto.todo.TodoDTO;
 import cn.greenwishing.bms.service.TodoService;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 @Service("todoService")
 public class TodoServiceImpl implements TodoService {
 
-    @Autowired
+    @Resource
     private TodoRepository todoRepository;
-    @Autowired
+    @Resource
     private UserRepository userRepository;
 
     @Override

@@ -2,26 +2,26 @@ package cn.greenwishing.bms.service.impl;
 
 import cn.greenwishing.bms.cache.AppUserCache;
 import cn.greenwishing.bms.cache.ConfigurationCache;
-import cn.greenwishing.bms.cache.OSSClientFactory;
 import cn.greenwishing.bms.domain.config.Configuration;
 import cn.greenwishing.bms.domain.config.ConfigurationRepository;
 import cn.greenwishing.bms.dto.configuration.ConfigurationDTO;
 import cn.greenwishing.bms.handler.MailSender;
+import cn.greenwishing.bms.oss.OSSClientFactory;
 import cn.greenwishing.bms.service.ConfigurationService;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/13
+ * @author Frank wu
+ * @date 2017/5/13
  */
 @Service("configurationService")
 public class ConfigurationServiceImpl implements ConfigurationService {
 
-    @Autowired
+    @Resource
     private ConfigurationRepository configurationRepository;
 
     @Override

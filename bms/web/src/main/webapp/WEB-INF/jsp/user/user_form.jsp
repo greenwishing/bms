@@ -7,7 +7,7 @@
     <title>添加/编辑用户</title>
 </head>
 <body>
-    <spring-form:form id="data-form" commandName="userDTO" method="post" onsubmit="return false;">
+    <spring-form:form id="data-form" modelAttribute="userDTO" method="post" onsubmit="return false;">
         <div class="weui-cells__title">姓名</div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">

@@ -3,8 +3,8 @@ package cn.greenwishing.bms.domain.oauth;
 import cn.greenwishing.bms.utils.BmsEnum;
 
 /**
- * User: Wufan
- * Date: 2015/11/7.
+ * @author Frank wu
+ * @date 2015/11/7.
  */
 public enum OAuthScope implements BmsEnum {
     read("Read"),

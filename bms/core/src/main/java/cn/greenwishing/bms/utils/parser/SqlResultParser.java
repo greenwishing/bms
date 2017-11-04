@@ -11,8 +11,8 @@ import java.math.BigInteger;
 import java.util.*;
 
 /**
- * User: WuFan
- * Date: 2016/02/03
+ * @author Frank wu
+ * @date 2016/02/03
  */
 public class SqlResultParser {
 

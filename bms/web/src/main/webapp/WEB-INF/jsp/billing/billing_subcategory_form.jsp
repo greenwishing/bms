@@ -7,7 +7,7 @@
     <title>账单子分类</title>
 </head>
 <body>
-    <spring-form:form commandName="billingSubcategoryDTO" method="post" id="data-form" onsubmit="return false;">
+    <spring-form:form modelAttribute="billingSubcategoryDTO" method="post" id="data-form" onsubmit="return false;">
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
                 <div class="weui-cell__hd">

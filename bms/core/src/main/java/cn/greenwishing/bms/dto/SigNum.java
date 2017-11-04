@@ -5,8 +5,8 @@ import cn.greenwishing.bms.utils.NumberUtils;
 import java.math.BigDecimal;
 
 /**
- * User: Wufan
- * Date: 2016/10/30
+ * @author Frank wu
+ * @date 2016/10/30
  */
 public class SigNum {
 

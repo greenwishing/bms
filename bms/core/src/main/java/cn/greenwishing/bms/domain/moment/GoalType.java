@@ -1,8 +1,8 @@
 package cn.greenwishing.bms.domain.moment;
 
 /**
- * User: Wufan
- * Date: 2017/3/4
+ * @author Frank wu
+ * @date 2017/3/4
  */
 public enum GoalType {
     NONE("无"),

@@ -3,33 +3,14 @@
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns:oauth2="http://www.springframework.org/schema/security/oauth2"
-             xmlns:mvc="http://www.springframework.org/schema/mvc"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
-            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/security
-            http://www.springframework.org/schema/security/spring-security-3.1.xsd
+            http://www.springframework.org/schema/security/spring-security.xsd
             http://www.springframework.org/schema/security/oauth2
-            http://www.springframework.org/schema/security/spring-security-oauth2.xsd
-            http://www.springframework.org/schema/mvc
-             http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
-            ">
+            http://www.springframework.org/schema/security/spring-security-oauth2.xsd">
 
-    <mvc:annotation-driven/>
-    <mvc:default-servlet-handler/>
-
-    <http pattern="/wiki/**" security="none"/>
-    <http pattern="/static/**" security="none"/>
-    <http pattern="/js/**" security="none"/>
-    <http pattern="/css/**" security="none"/>
-    <http pattern="/images/**" security="none"/>
-    <http pattern="/index.jsp*" security="none"/>
-    <http pattern="/system/login" security="none"/>
-    <http pattern="/article*" security="none"/>
-
-    <http pattern="/api/**" security="none" create-session="never"/>
-    <http pattern="/message/**" security="none" create-session="never"/>
-
-    <!-- OAuth 2.0 Configuration -->
+    <!-- 授权管理 -->
     <http pattern="/oauth/token" create-session="stateless" authentication-manager-ref="oauth2AuthenticationManager" entry-point-ref="oauth2AuthenticationEntryPoint">
         <intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
         <anonymous enabled="false"/>
@@ -38,12 +19,21 @@
         <access-denied-handler ref="oauth2AccessDeniedHandler"/>
     </http>
 
+    <!-- 接口权限管理 -->
     <http pattern="/oauth/api/**" create-session="never" access-decision-manager-ref="oauth2AccessDecisionManager" entry-point-ref="oauth2AuthenticationEntryPoint">
         <anonymous enabled="false" />
-        <intercept-url pattern="/oauth/api/**" access="ROLE_API_BASE" />
+        <intercept-url pattern="/oauth/api/**" access="hasRole('ROLE_API_BASE')" />
         <custom-filter ref="oauthAPIResourceServer" before="PRE_AUTH_FILTER" />
         <access-denied-handler ref="oauth2AccessDeniedHandler" />
     </http>
+
+    <!-- 配置这个oauth2的server所能支持的请求类型 -->
+    <oauth2:authorization-server client-details-service-ref="clientDetailsService" token-services-ref="tokenServices" user-approval-handler-ref="oauthUserApprovalHandler" >
+        <oauth2:authorization-code authorization-code-services-ref="authorizationCodeServices" />
+        <oauth2:refresh-token />
+        <oauth2:client-credentials />
+        <oauth2:password />
+    </oauth2:authorization-server>
 
     <!-- 定义服务器资源 -->
     <oauth2:resource-server id="oauthAPIResourceServer" resource-id="oauth_api" token-services-ref="tokenServices" entry-point-ref="oauth2AuthenticationEntryPoint" />
@@ -72,11 +62,17 @@
         </beans:property>
     </beans:bean>
     <!-- JSON 消息处理 -->
-    <beans:bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+    <beans:bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+
+    <beans:bean id="requestFactory" class="org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory">
+        <beans:constructor-arg ref="clientDetailsService"/>
+    </beans:bean>
 
     <!-- 认证点 -->
-    <beans:bean id="oauthUserApprovalHandler" class="org.springframework.security.oauth2.provider.approval.TokenServicesUserApprovalHandler">
-        <beans:property name="tokenServices" ref="tokenServices"/>
+    <beans:bean id="oauthUserApprovalHandler" class="org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler">
+        <beans:property name="tokenStore" ref="tokenStore"/>
+        <beans:property name="clientDetailsService" ref="clientDetailsService"/>
+        <beans:property name="requestFactory" ref="requestFactory"/>
     </beans:bean>
 
     <!-- 访问控制 -->
@@ -86,8 +82,10 @@
                 <beans:bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter"/>
                 <beans:bean class="org.springframework.security.access.vote.RoleVoter"/>
                 <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+                <beans:bean class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
             </beans:list>
         </beans:constructor-arg>
+        <beans:property name="allowIfAllAbstainDecisions" value="false"/>
     </beans:bean>
 
     <beans:bean id="oauth2ClientDetailsUserService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
@@ -96,7 +94,7 @@
 
     <!-- Token 管理器 -->
     <!--<beans:bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.InMemoryTokenStore"/>-->
-    <beans:bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.JdbcTokenStore">
+    <beans:bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
         <beans:constructor-arg ref="dataSource"/>
     </beans:bean>
     <beans:bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
@@ -106,69 +104,18 @@
     </beans:bean>
 
     <!-- 客户端 -->
-    <!--<oauth2:app-details-service id="clientDetailsService">
-        <oauth2:app app-id="mobile_1" secret="secret_1" authorized-grant-types="password,authorization_code,refresh_token,implicit" scope="read,write,trust" />
-    </oauth2:app-details-service>-->
-    <beans:bean id="clientDetailsService" class="org.springframework.security.oauth2.provider.JdbcClientDetailsService">
+    <beans:bean id="clientDetailsService" class="org.springframework.security.oauth2.provider.client.JdbcClientDetailsService">
         <beans:constructor-arg ref="dataSource"/>
     </beans:bean>
 
-    <!--<beans:bean class="org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices"/>-->
+    <!-- 授权码服务 -->
     <beans:bean id="authorizationCodeServices" class="org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices">
         <beans:constructor-arg ref="dataSource"/>
     </beans:bean>
 
-    <!-- 配置这个oauth2的server所能支持的请求类型 -->
-    <oauth2:authorization-server client-details-service-ref="clientDetailsService" token-services-ref="tokenServices" user-approval-handler-ref="oauthUserApprovalHandler" >
-        <oauth2:authorization-code authorization-code-services-ref="authorizationCodeServices" />
-        <oauth2:refresh-token />
-        <oauth2:client-credentials />
-        <oauth2:password />
-    </oauth2:authorization-server>
-
     <!-- OAuth2认证 -->
     <authentication-manager id="oauth2AuthenticationManager">
         <authentication-provider user-service-ref="oauth2ClientDetailsUserService"/>
-    </authentication-manager>
-
-
-    <!-- Web Configuration -->
-    <http auto-config="false" access-denied-page="/403.jsp" disable-url-rewriting="true" authentication-manager-ref="authenticationManager">
-        <intercept-url pattern="/common/**" access="ROLE_SYSTEM" />
-        <intercept-url pattern="/system/index" access="ROLE_SYSTEM" />
-        <intercept-url pattern="/system/user/**" access="ROLE_USER" />
-        <intercept-url pattern="/system/billing/**" access="ROLE_BILLING" />
-        <intercept-url pattern="/system/moment/**" access="ROLE_MOMENT" />
-        <intercept-url pattern="/system/todo/**" access="ROLE_TODO" />
-        <intercept-url pattern="/system/article/**" access="ROLE_ARTICLE" />
-        <intercept-url pattern="/system/metro/**" access="ROLE_METRO" />
-        <intercept-url pattern="/system/app/**" access="ROLE_APP" />
-        <form-login login-page="/system/login" login-processing-url="/system/account_check"
-                    default-target-url="/system/index" authentication-failure-url="/system/login?action=1"
-                    username-parameter="account" password-parameter="password"/>
-        <session-management invalid-session-url="/system/login?action=2" />
-        <remember-me services-ref="tokenBasedRememberMeServices" />
-        <logout logout-url="/system/logout" logout-success-url="/system/login?action=3"/>
-        <anonymous/>
-    </http>
-
-    <beans:bean id="tokenBasedRememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
-        <beans:constructor-arg value="BMS"/>
-        <beans:constructor-arg ref="userService"/>
-        <beans:property name="parameter" value="rememberMe"/>
-        <beans:property name="cookieName" value="REMEMBER_ME"/>
-    </beans:bean>
-
-    <beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
-        <beans:constructor-arg value="BMS"/>
-    </beans:bean>
-
-    <!-- Web认证 -->
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider user-service-ref="userService">
-            <password-encoder hash="md5"/>
-        </authentication-provider>
-        <authentication-provider ref="rememberMeAuthenticationProvider"/>
     </authentication-manager>
 
 </beans:beans>

@@ -6,7 +6,7 @@ import cn.greenwishing.bms.domain.user.User;
 import javax.persistence.*;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @Entity
 @Table(name = "article")

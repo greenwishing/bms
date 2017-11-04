@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @Repository("articleRepository")
 public class ArticleRepositoryHibernate extends AbstractRepositoryHibernate implements ArticleRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<ArticleCategory> findArticleCategoryByUserGuid(String userGuid) {
-        return getHibernateTemplate().find("from ArticleCategory ac where ac.user.guid=?", userGuid);
+        return (List<ArticleCategory>) getHibernateTemplate().find("from ArticleCategory ac where ac.user.guid=?", userGuid);
     }
 
     @Override

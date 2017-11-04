@@ -3,25 +3,23 @@ package cn.greenwishing.bms.persistence.hibernate;
 import cn.greenwishing.bms.domain.Domain;
 import cn.greenwishing.bms.domain.Repository;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.query.Query;
 import org.springframework.dao.support.DaoSupport;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
-import java.sql.SQLException;
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public class AbstractRepositoryHibernate extends DaoSupport implements Repository {
 
-    @Autowired
+    @Resource
     private HibernateTemplate hibernateTemplate;
 
     @Override
@@ -37,7 +35,7 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
     @Override
     @SuppressWarnings("unchecked")
     public <T extends Domain> T findByGuid(Class<T> clazz, String guid) {
-        List<T> list = getHibernateTemplate().find("select c from " + clazz.getSimpleName() + " as c where c.guid=?", guid);
+        List<T> list = (List<T>) getHibernateTemplate().find("select c from " + clazz.getSimpleName() + " as c where c.guid=?", guid);
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -49,7 +47,7 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
     @Override
     @SuppressWarnings("unchecked")
     public List<Object> find(String hql, Object... params) {
-        return getHibernateTemplate().find(hql, params);
+        return (List<Object>) getHibernateTemplate().find(hql, params);
     }
 
     @Override
@@ -57,7 +55,7 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
         return getHibernateTemplate().execute(new HibernateCallback<Object>() {
 
             @Override
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery(hql);
                 for (int i = 0; i < params.length; i++) {
                     query = query.setParameter(i, params[i]);
@@ -73,7 +71,7 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
         getHibernateTemplate().execute(new HibernateCallback() {
 
             @Override
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery(hql);
                 for (int i = 0; i < params.length; i++) {
                     query = query.setParameter(i, params[i]);
@@ -91,7 +89,9 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
 
     @Override
     public <T extends Domain> void saveAll(Collection<T> domains) {
-        getHibernateTemplate().saveOrUpdateAll(domains);
+        for (T domain : domains) {
+            getHibernateTemplate().save(domain);
+        }
     }
 
     @Override
@@ -114,9 +114,9 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
             return Collections.emptyList();
         }
         final String hql = "from " + clazz.getName() + " t  where t.guid  in (:guids)";
-        return getHibernateTemplate().executeFind(new HibernateCallback<List<T>>() {
+        return getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
             @Override
-            public List<T> doInHibernate(Session session) throws HibernateException, SQLException {
+            public List<T> doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery(hql).setParameterList("guids", guids);
                 return query.list();
             }
@@ -132,7 +132,7 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
         final String hql = "update " + clazz.getName() + " t set t.status=:status where t.guid in (:guids)";
         getHibernateTemplate().execute(new HibernateCallback<Object>() {
             @Override
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery(hql);
                 query.setParameter("status", status);
                 query.setParameterList("guids", guids);
@@ -149,7 +149,7 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
         final String hql = "delete from " + clazz.getName() + " t where t.guid in (:guids)";
         getHibernateTemplate().execute(new HibernateCallback<Object>() {
             @Override
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery(hql);
                 query.setParameterList("guids", guids);
                 return query.executeUpdate();
@@ -163,9 +163,9 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
     }
 
     public List find(final String hql, final Integer startIndex, final Integer pageCount, final Object... args) {
-        return getHibernateTemplate().executeFind(new HibernateCallback<List>() {
+        return getHibernateTemplate().execute(new HibernateCallback<List>() {
             @Override
-            public List doInHibernate(Session session) throws HibernateException, SQLException {
+            public List doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery(hql);
                 for (int i = 0; i < args.length; i++) {
                     query.setParameter(i, args[i]);

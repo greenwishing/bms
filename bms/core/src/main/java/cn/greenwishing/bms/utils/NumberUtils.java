@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public class NumberUtils {
 

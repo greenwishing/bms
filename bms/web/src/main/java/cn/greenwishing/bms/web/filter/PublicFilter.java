@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.Locale;
 
 /**
- * User: Wufan
- * Date: 2016/8/13
+ * @author Frank wu
+ * @date 2016/8/13
  */
 public class PublicFilter implements Filter {
     @Override

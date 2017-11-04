@@ -7,8 +7,8 @@ import cn.greenwishing.bms.dto.moment.MomentTypeDTO;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 public interface MomentService {
     List<MomentTypeDTO> loadMomentTypes();

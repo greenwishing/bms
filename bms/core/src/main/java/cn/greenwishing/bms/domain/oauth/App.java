@@ -11,8 +11,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2015/11/7.
+ * @author Frank wu
+ * @date 2015/11/7.
  */
 @Entity
 @Table(name = "oauth_client_details")

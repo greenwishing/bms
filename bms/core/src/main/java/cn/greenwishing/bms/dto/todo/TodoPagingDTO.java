@@ -4,8 +4,8 @@ import cn.greenwishing.bms.domain.todo.TodoPaging;
 import cn.greenwishing.bms.dto.AbstractPagingDTO;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 public class TodoPagingDTO extends AbstractPagingDTO<TodoDTO, TodoPaging> {
     @Override

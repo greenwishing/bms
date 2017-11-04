@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @MappedSuperclass
 public abstract class AbstractDomain implements Domain {
@@ -28,7 +28,7 @@ public abstract class AbstractDomain implements Domain {
     protected String guid = GuidGenerator.generate();
 
     @Column(name = "creation_time")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     protected DateTime creationTime = JodaUtils.now();
 
     protected AbstractDomain() {

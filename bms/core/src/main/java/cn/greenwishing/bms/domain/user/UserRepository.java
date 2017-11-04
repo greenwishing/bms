@@ -4,7 +4,7 @@ import cn.greenwishing.bms.domain.Repository;
 import cn.greenwishing.bms.utils.paging.UserPaging;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public interface UserRepository extends Repository {
     User findUserByAccount(String account);

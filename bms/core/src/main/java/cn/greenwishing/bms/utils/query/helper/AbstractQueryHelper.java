@@ -4,10 +4,10 @@ import cn.greenwishing.bms.utils.paging.AbstractPaging;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public abstract class AbstractQueryHelper<T, P extends AbstractPaging<T>> implem
 
         return this.hibernateTemplate.execute(new HibernateCallback<Integer>() {
             @Override
-            public Integer doInHibernate(Session session) throws HibernateException, SQLException {
+            public Integer doInHibernate(Session session) throws HibernateException {
                 Query query = createQuery(session, totalCountHql);
                 return ((Long) query.uniqueResult()).intValue();
             }
@@ -84,7 +84,7 @@ public abstract class AbstractQueryHelper<T, P extends AbstractPaging<T>> implem
 
         return this.hibernateTemplate.execute(new HibernateCallback<List<T>>() {
             @Override
-            public List<T> doInHibernate(Session session) throws HibernateException, SQLException {
+            public List<T> doInHibernate(Session session) throws HibernateException {
                 Query query = createQuery(session, resultHql);
                 int amountPerPage = getPageSize();
                 if (amountPerPage == 0) {

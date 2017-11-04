@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * User: Wufan
- * Date: 2016/6/5
+ * @author Frank wu
+ * @date 2016/6/5
  */
 @Entity
 @Table(name = "metro_line")

@@ -3,12 +3,12 @@ package cn.greenwishing.bms.utils.query.helper;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.UserPaging;
-import org.hibernate.Query;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.hibernate.query.Query;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
 /**
- * User: Wufan
- * Date: 2016/7/13
+ * @author Frank wu
+ * @date 2016/7/13
  */
 public class UserQueryHelper extends AbstractQueryHelper<User, UserPaging> {
 

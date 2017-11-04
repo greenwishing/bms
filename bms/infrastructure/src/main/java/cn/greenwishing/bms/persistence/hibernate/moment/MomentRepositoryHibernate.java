@@ -9,15 +9,14 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 @Repository("momentRepository")
 public class MomentRepositoryHibernate extends AbstractRepositoryHibernate implements MomentRepository {
@@ -26,7 +25,7 @@ public class MomentRepositoryHibernate extends AbstractRepositoryHibernate imple
     public List<MomentType> findMomentTypes(final Integer userId) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<MomentType>>() {
             @Override
-            public List<MomentType> doInHibernate(Session session) throws HibernateException, SQLException {
+            public List<MomentType> doInHibernate(Session session) throws HibernateException {
                 Criteria criteria = session.createCriteria(MomentType.class);
                 criteria.add(Restrictions.eq("user.id", userId));
                 return criteria.list();

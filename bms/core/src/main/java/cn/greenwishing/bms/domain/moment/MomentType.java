@@ -9,8 +9,8 @@ import javax.persistence.*;
 
 /**
  * 时间记账类型
- * User: Wufan
- * Date: 2017/3/4
+ * @author Frank wu
+ * @date 2017/3/4
  */
 @Entity
 @Table(name = "moment_type")
@@ -28,7 +28,7 @@ public class MomentType extends AbstractDomain {
     private GoalType goalType = GoalType.NONE;
 
     @Column(name = "goal")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDuration")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDurationAsString")
     private Duration goal;
 
     public MomentType() {

@@ -12,8 +12,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import java.io.InputStream;
 
 /**
- * User: Wufan
- * Date: 2016/8/13
+ * @author Frank wu
+ * @date 2016/8/13
  */
 public class Test {
 

@@ -7,7 +7,7 @@
     <title>时间记账</title>
 </head>
 <body>
-    <spring-form:form commandName="momentDTO" method="post" id="data-form" onsubmit="return false;">
+    <spring-form:form modelAttribute="momentDTO" method="post" id="data-form" onsubmit="return false;">
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell weui-cell_select weui-cell_select-after">
                 <div class="weui-cell__hd">

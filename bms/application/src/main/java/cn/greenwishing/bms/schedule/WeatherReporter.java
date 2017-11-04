@@ -32,13 +32,31 @@ public class WeatherReporter {
         String forecastUrl = String.format("http://forecast.weather.com.cn/town/api/v1/sk?lat=%s&lng=%s", lat, lng);
         String forecastResult = BmsClient.doGet(forecastUrl);
         JSONObject forecast = JSONObject.fromObject(forecastResult);
+        sb.append("实时天气：");
         if (forecast.has("weather")) {
             String weather = forecast.getString("weather");
-            sb.append("天气：").append(weather).append("\n");
+            sb.append(weather).append("，");
         }
         if (forecast.has("temp")) {
             String temp = forecast.getString("temp");
-            sb.append("温度：").append(temp).append("摄氏度").append("\n");
+            sb.append(temp).append("℃").append("\n");
+        }
+        String cityInfoUrl = String.format("http://www.weather.com.cn/data/cityinfo/%s.html", stationId);
+        String cityInfoResult = BmsClient.doGet(cityInfoUrl);
+        JSONObject cityInfo = JSONObject.fromObject(cityInfoResult);
+        if (cityInfo.has("weatherinfo")) {
+            JSONObject weatherInfo = cityInfo.getJSONObject("weatherinfo");
+            sb.append("今天：");
+            if (weatherInfo.has("weather")) {
+                sb.append(weatherInfo.getString("weather")).append("，");
+            }
+            if (weatherInfo.has("temp1")) {
+                sb.append("夜间").append(weatherInfo.getString("temp1")).append("，");
+            }
+            if (weatherInfo.has("temp2")) {
+                sb.append("白天").append(weatherInfo.getString("temp2"));
+            }
+            sb.append("\n");
         }
 
         // 下雨预报
@@ -49,6 +67,6 @@ public class WeatherReporter {
             String msg = rain.getString("msg");
             sb.append(msg).append("\n");
         }
-        MailSender.systemSend("greenwishing@msn.cn", "实时天气", sb.toString().replaceAll("\n", "<br/>"));
+        MailSender.systemSend("greenwishing@msn.cn", "天气预报", sb.toString().replaceAll("\n", "<br/>"));
     }
 }

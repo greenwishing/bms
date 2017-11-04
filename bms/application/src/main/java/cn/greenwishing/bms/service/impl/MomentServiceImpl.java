@@ -15,18 +15,19 @@ import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 @Service("momentService")
 public class MomentServiceImpl implements MomentService {
 
-    @Autowired
+    @Resource
     private MomentRepository momentRepository;
-    @Autowired
+    @Resource
     private UserRepository userRepository;
 
     @Override

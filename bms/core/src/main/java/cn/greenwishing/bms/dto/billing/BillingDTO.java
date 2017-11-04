@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @Component
 public class BillingDTO {

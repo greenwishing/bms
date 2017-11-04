@@ -5,8 +5,8 @@ import cn.greenwishing.bms.domain.billing.BillingType;
 import java.math.BigDecimal;
 
 /**
- * User: Wufan
- * Date: 2015/3/9.
+ * @author Frank wu
+ * @date 2015/3/9.
  */
 public class BillingStatistics {
 

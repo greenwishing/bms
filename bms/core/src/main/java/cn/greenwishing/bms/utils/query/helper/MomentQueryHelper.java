@@ -4,12 +4,12 @@ import cn.greenwishing.bms.domain.moment.Moment;
 import cn.greenwishing.bms.domain.moment.MomentPaging;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import org.hibernate.Query;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.hibernate.query.Query;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 public class MomentQueryHelper extends AbstractQueryHelper<Moment, MomentPaging> {
 

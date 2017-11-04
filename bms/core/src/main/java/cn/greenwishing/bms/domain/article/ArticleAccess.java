@@ -1,8 +1,8 @@
 package cn.greenwishing.bms.domain.article;
 
 /**
- * User: Wufan
- * Date: 2017/5/29
+ * @author Frank wu
+ * @date 2017/5/29
  */
 public enum ArticleAccess {
     PRIVATE("仅自己可见"),

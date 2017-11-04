@@ -4,8 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * User: WuFan
- * Date: 13-6-3
+ * @author Frank wu
+ * @date 13-6-3
  */
 public class MD5Utils {
     public static final String MD5 = "MD5";

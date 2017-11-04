@@ -3,37 +3,40 @@ package cn.greenwishing.bms.web.controller.configuration;
 import cn.greenwishing.bms.dto.configuration.ConfigurationDTO;
 import cn.greenwishing.bms.service.ConfigurationService;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/13
+ * @author Frank wu
+ * @date 2017/5/13
  */
 @Controller
 @RequestMapping("/system/configuration")
 public class ConfigurationController {
 
-    @Autowired
+    @Resource
     private ConfigurationService configurationService;
 
     @RequestMapping("list")
-    public ModelAndView list(ModelMap model) throws Exception {
+    public String list(ModelMap model) throws Exception {
         List<ConfigurationDTO> configurations = configurationService.loadConfigurations();
         model.put("configurations", configurations);
-        return new ModelAndView("configuration/configuration_list", model);
+        return "configuration/configuration_list";
     }
 
-    @RequestMapping(value = {"add", "edit"}, method = RequestMethod.GET)
-    public ModelAndView configuration_form(String guid, ModelMap model) throws Exception {
+    @GetMapping({"add", "edit"})
+    @ModelAttribute("configurationDTO")
+    public String configurationForm(String guid, ModelMap model) throws Exception {
         ConfigurationDTO configurationDTO;
         if (ValidationUtils.isEmpty(guid)) {
             configurationDTO = new ConfigurationDTO();
@@ -41,11 +44,11 @@ public class ConfigurationController {
             configurationDTO = configurationService.loadConfigurationByGuid(guid);
         }
         model.put("configurationDTO", configurationDTO);
-        return new ModelAndView("configuration/configuration_form");
+        return "configuration/configuration_form";
     }
 
-    @RequestMapping(value = {"add", "edit"}, method = RequestMethod.POST)
-    public ModelAndView configuration_save(ConfigurationDTO configurationDTO, BindingResult errors) throws Exception {
+    @PostMapping({"add", "edit"})
+    public ModelAndView saveConfiguration(@ModelAttribute("configurationDTO") ConfigurationDTO configurationDTO, BindingResult errors) throws Exception {
         String key = configurationDTO.getKey();
         if (ValidationUtils.isEmpty(key)) {
             errors.rejectValue("key", "key", "请填写键");
@@ -63,11 +66,11 @@ public class ConfigurationController {
             model.put("success", true);
             model.put("redirectUrl", "list");
         }
-        return new ModelAndView(new MappingJacksonJsonView(), model);
+        return new ModelAndView(new MappingJackson2JsonView(), model);
     }
 
     @RequestMapping("refresh_cache")
-    public ModelAndView refresh_cache() throws Exception {
+    public ModelAndView refreshCache() throws Exception {
         ModelMap model = new ModelMap();
         try {
             configurationService.refreshCache();
@@ -76,16 +79,16 @@ public class ConfigurationController {
             model.put("success", false);
             model.put("message", e.getMessage());
         }
-        return new ModelAndView(new MappingJacksonJsonView(), model);
+        return new ModelAndView(new MappingJackson2JsonView(), model);
     }
 
-    @RequestMapping(value = "send_mail", method = RequestMethod.GET)
-    public ModelAndView send_mail_form() throws Exception {
+    @GetMapping("send_mail")
+    public ModelAndView sendMailForm() throws Exception {
         return new ModelAndView("configuration/mail_send_form");
     }
 
-    @RequestMapping(value = "send_mail", method = RequestMethod.POST)
-    public ModelAndView send_mail(String email, String subject, String content) throws Exception {
+    @PostMapping("send_mail")
+    public ModelAndView sendMail(String email, String subject, String content) throws Exception {
         ModelMap model = new ModelMap();
         try {
             configurationService.sendMail(email, subject, content);
@@ -96,6 +99,6 @@ public class ConfigurationController {
             model.put("success", false);
             model.put("message", e.getMessage());
         }
-        return new ModelAndView(new MappingJacksonJsonView(), model);
+        return new ModelAndView(new MappingJackson2JsonView(), model);
     }
 }

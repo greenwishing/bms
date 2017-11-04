@@ -3,13 +3,13 @@ package cn.greenwishing.bms.web.controller.app.api;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
 import cn.greenwishing.bms.service.BillingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -17,14 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: Wufan
- * Date: 2015/11/7.
+ * @author Frank wu
+ * @date 2015/11/7.
  */
 @Controller
 @RequestMapping("/oauth/api/")
 public class OAuthAPIController {
 
-    @Autowired
+    @Resource
     private BillingService billingService;
 
     @RequestMapping("redirect")
@@ -36,12 +36,12 @@ public class OAuthAPIController {
             String value = request.getParameter(name);
             params.put(name, value);
         }
-        return new ModelAndView(new MappingJacksonJsonView(), params);
+        return new ModelAndView(new MappingJackson2JsonView(), params);
     }
 
     @RequestMapping("nearest")
     public ModelAndView nearest(@RequestParam(defaultValue = "20") Integer size, @RequestParam(defaultValue = "EXPEND") BillingType type) {
         List<SeriesObject> series = billingService.loadNearestStatistics(size, type);
-        return new ModelAndView(new MappingJacksonJsonView(), "series", series);
+        return new ModelAndView(new MappingJackson2JsonView(), "series", series);
     }
 }

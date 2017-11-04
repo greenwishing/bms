@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
- * User: Wufan
- * Date: 2015/6/23.
+ * @author Frank wu
+ * @date 2015/6/23.
  */
 public class SeriesObjectData implements Comparable<SeriesObjectData> {
 

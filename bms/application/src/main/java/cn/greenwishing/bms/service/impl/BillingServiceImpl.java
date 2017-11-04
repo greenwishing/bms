@@ -16,9 +16,9 @@ import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,14 +26,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @Service("billService")
 public class BillingServiceImpl implements BillingService {
 
-    @Autowired
+    @Resource
     private BillingRepository billingRepository;
-    @Autowired
+    @Resource
     private UserRepository userRepository;
 
     @Override

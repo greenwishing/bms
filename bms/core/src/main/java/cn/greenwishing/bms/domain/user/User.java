@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
 import javax.persistence.*;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @Entity
 @Table(name = "`user`")
@@ -25,7 +25,7 @@ public class User extends AbstractDomain {
     private String password;
 
     @Column(name = "last_login_time")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastLoginTime;
 
     @Column(name = "`status`")

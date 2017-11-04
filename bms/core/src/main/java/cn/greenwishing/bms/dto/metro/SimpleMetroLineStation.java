@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2016/6/9
+ * @author Frank wu
+ * @date 2016/6/9
  */
 public class SimpleMetroLineStation {
 

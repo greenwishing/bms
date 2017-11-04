@@ -8,15 +8,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2016/8/13
+ * @author Frank wu
+ * @date 2016/8/13
  */
 @Repository("oAuthRepository")
 public class AppRepositoryHibernate extends AbstractRepositoryHibernate implements AppRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<App> findUserApps(String userGuid) {
-        return getHibernateTemplate().find("select uc.app from UserApp uc  join uc.user u where u.guid=?", userGuid);
+        return (List<App>) getHibernateTemplate().find("select uc.app from UserApp uc  join uc.user u where u.guid=?", userGuid);
     }
 
     @Override

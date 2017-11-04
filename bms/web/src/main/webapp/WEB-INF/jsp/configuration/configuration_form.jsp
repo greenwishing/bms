@@ -7,7 +7,7 @@
     <title>系统配置</title>
 </head>
 <body>
-    <spring-form:form commandName="configurationDTO" method="post" id="data-form" onsubmit="return false;">
+    <spring-form:form modelAttribute="configurationDTO" method="post" id="data-form" onsubmit="return false;">
         <div class="weui-cells__title">键</div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">

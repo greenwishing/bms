@@ -17,8 +17,8 @@ import java.io.*;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/29
+ * @author Frank wu
+ * @date 2017/5/29
  */
 public class OSSTest {
     static Logger logger = Logger.getLogger(OSSTest.class);

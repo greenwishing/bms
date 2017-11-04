@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public class JodaUtils {
 

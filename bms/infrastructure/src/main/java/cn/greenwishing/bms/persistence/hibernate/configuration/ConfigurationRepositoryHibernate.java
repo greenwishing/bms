@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/13
+ * @author Frank wu
+ * @date 2017/5/13
  */
 @Repository("configurationRepository")
 public class ConfigurationRepositoryHibernate extends AbstractRepositoryHibernate implements ConfigurationRepository {

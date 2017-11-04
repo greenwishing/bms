@@ -8,15 +8,14 @@ import cn.greenwishing.bms.utils.paging.BillingPaging;
 import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import cn.greenwishing.bms.utils.query.helper.BillingQueryHelper;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 import org.joda.time.LocalDate;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
         final String userGuid = SecurityHolder.getUserGuid();
         return getHibernateTemplate().execute(new HibernateCallback<List<Object[]>>() {
             @Override
-            public List<Object[]> doInHibernate(Session session) throws HibernateException, SQLException {
+            public List<Object[]> doInHibernate(Session session) throws HibernateException {
                 String sql = "select date(b.occurred_time), sum(b.amount) from billing b join `user` u on b.user_id=u.id" +
                         " where u.guid=:userGuid and b.type=:type group by concat(year(b.occurred_time), month(b.occurred_time)) order by b.occurred_time desc";
                 Query query = session.createSQLQuery(sql);
@@ -50,19 +49,19 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     @Override
     @SuppressWarnings("unchecked")
     public List<BillingCategory> findBillingCategoryByUserGuid(String userGuid) {
-        return getHibernateTemplate().find("from BillingCategory c where c.user.guid=?", userGuid);
+        return (List<BillingCategory>) getHibernateTemplate().find("from BillingCategory c where c.user.guid=?", userGuid);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<BillingSubcategory> findBillingSubcategory(String categoryGuid) {
-        return getHibernateTemplate().find("from BillingSubcategory s where s.category.guid=?", categoryGuid);
+        return (List<BillingSubcategory>) getHibernateTemplate().find("from BillingSubcategory s where s.category.guid=?", categoryGuid);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<BillingCategory> findBillingCategoryByType(BillingType billingType, String userGuid) {
-        return getHibernateTemplate().find("from BillingCategory c where c.type=? and c.user.guid=?", billingType, userGuid);
+        return (List<BillingCategory>) getHibernateTemplate().find("from BillingCategory c where c.type=? and c.user.guid=?", billingType, userGuid);
     }
 
     @Override
@@ -70,13 +69,13 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     public List<BillingStatistics> loadBillingStatistics(String userGuid, BillingType billingType, LocalDate startDate, LocalDate endDate) {
         String queryString = "select new cn.greenwishing.bms.domain.statistics.BillingStatistics(b.type, b.category.name, b.subcategory.name, sum(b.amount))" +
                 " from Billing b where b.user.guid=? and b.type=? and b.occurredTime>=? and b.occurredTime<? group by b.category.id, b.subcategory.id";
-        return getHibernateTemplate().find(queryString, userGuid, billingType, startDate, endDate.plusDays(1));
+        return (List<BillingStatistics>) getHibernateTemplate().find(queryString, userGuid, billingType, startDate, endDate.plusDays(1));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<BillingAccount> findBillingAccounts(String userGuid) {
-        return getHibernateTemplate().find("from BillingAccount a where a.user.guid=?", userGuid);
+        return (List<BillingAccount>) getHibernateTemplate().find("from BillingAccount a where a.user.guid=?", userGuid);
     }
 
     @Override
@@ -84,7 +83,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     public List<SqlResultParser> findSuggestTemplate(final BillingType type, final Integer userId, final Integer size) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<SqlResultParser>>() {
             @Override
-            public List<SqlResultParser> doInHibernate(Session session) throws HibernateException, SQLException {
+            public List<SqlResultParser> doInHibernate(Session session) throws HibernateException {
                 Query query = session.createSQLQuery("" +
                         "select b.id,b.guid,b.name,b.type,b.category_id,b.subcategory_id,b.src_account_id,b.target_account_id,b.amount,b.description" +
                         " from billing b join (" +
@@ -102,7 +101,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     public SqlResultParser findAssertData(final Integer userId) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<SqlResultParser>() {
             @Override
-            public SqlResultParser doInHibernate(Session session) throws HibernateException, SQLException {
+            public SqlResultParser doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery("select " +
                         " sum(case when (a.type='CASH' or a.type='VIRTUAL' or a.type='DEPOSIT_CARD') then a.balance else 0 end)," +
                         " sum(case when (a.type='LOAN') then a.balance else 0 end)," +
@@ -121,8 +120,8 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Map<String, Float>>() {
             @Override
             @SuppressWarnings("unchecked")
-            public Map<String, Float> doInHibernate(Session session) throws HibernateException, SQLException {
-                SQLQuery query = session.createSQLQuery("select date(b.occurred_time), sum(b.amount) from billing b" +
+            public Map<String, Float> doInHibernate(Session session) throws HibernateException {
+                NativeQuery query = session.createNativeQuery("select date(b.occurred_time), sum(b.amount) from billing b" +
                         " where b.user_id=:userId and b.type=:type and year(b.occurred_time)=:year" +
                         "  group by date(b.occurred_time) order by b.occurred_time");
                 query.setParameter("userId", userId);

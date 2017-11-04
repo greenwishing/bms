@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2016/7/19
+ * @author Frank wu
+ * @date 2016/7/19
  */
 public class DefaultData {
 

@@ -3,11 +3,13 @@ package cn.greenwishing.bms.spring;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
- * User: Wufan
- * Date: 2016/8/13
+ * @author Frank wu
+ * @date 2016/8/13
  */
+@Component
 public class SpringBeanFactory implements ApplicationContextAware {
 
     private static SpringBeanWrapper wrapper = new SpringBeanWrapper();

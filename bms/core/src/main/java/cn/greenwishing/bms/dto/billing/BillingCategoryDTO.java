@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2015/3/7.
+ * @author Frank wu
+ * @date 2015/3/7.
  */
 public class BillingCategoryDTO {
 

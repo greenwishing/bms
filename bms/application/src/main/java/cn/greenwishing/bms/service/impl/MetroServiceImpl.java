@@ -8,20 +8,20 @@ import cn.greenwishing.bms.dto.metro.StationDTO;
 import cn.greenwishing.bms.service.MetroService;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.parser.SqlResultParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2016/6/5
+ * @author Frank wu
+ * @date 2016/6/5
  */
 @Service("metroService")
 public class MetroServiceImpl implements MetroService {
 
-    @Autowired
+    @Resource
     private MetroRepository metroRepository;
 
     @Override

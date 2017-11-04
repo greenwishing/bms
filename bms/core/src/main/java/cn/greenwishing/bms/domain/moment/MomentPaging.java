@@ -3,8 +3,8 @@ package cn.greenwishing.bms.domain.moment;
 import cn.greenwishing.bms.utils.paging.AbstractPaging;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 public class MomentPaging extends AbstractPaging<Moment> {
 

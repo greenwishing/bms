@@ -7,7 +7,7 @@ import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.utils.StringDecoder;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public class ArticlePaging extends AbstractPaging<Article> {
 

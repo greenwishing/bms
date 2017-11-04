@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public class PublicUserDetails implements UserDetails {
 

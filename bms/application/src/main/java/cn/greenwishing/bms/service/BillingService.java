@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public interface BillingService {
 

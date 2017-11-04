@@ -9,21 +9,21 @@ import cn.greenwishing.bms.dto.oauth.OAuthAppDTO;
 import cn.greenwishing.bms.service.AppService;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2015/11/7.
+ * @author Frank wu
+ * @date 2015/11/7.
  */
 @Service("appService")
 public class AppServiceImpl implements AppService {
 
-    @Autowired
+    @Resource
     private AppRepository appRepository;
-    @Autowired
+    @Resource
     private UserRepository userRepository;
 
     @Override

@@ -8,8 +8,8 @@ import cn.greenwishing.bms.dto.metro.StationDTO;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2016/6/5
+ * @author Frank wu
+ * @date 2016/6/5
  */
 public interface MetroService {
     void saveOrUpdateMetroLine(MetroLineDTO metroLineDTO);

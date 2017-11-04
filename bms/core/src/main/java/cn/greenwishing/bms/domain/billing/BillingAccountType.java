@@ -3,8 +3,8 @@ package cn.greenwishing.bms.domain.billing;
 /**
  * 账户类型
  *
- * User: Wufan
- * Date: 2016/10/15
+ * @author Frank wu
+ * @date 2016/10/15
  */
 public enum BillingAccountType {
     CASH("现金账户"),

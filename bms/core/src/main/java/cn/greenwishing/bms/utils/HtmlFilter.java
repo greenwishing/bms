@@ -4,8 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * User: WuFan
- * Date: 13-7-6
+ * @author Frank wu
+ * @date 13-7-6
  */
 public class HtmlFilter {
     private static final String REGEX_HTML = "<[^>]+>|<[^>]+";

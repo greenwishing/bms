@@ -3,8 +3,8 @@ package cn.greenwishing.bms.dto;
 import cn.greenwishing.bms.utils.OSSUtils;
 
 /**
- * User: Wufan
- * Date: 2017/5/29
+ * @author Frank wu
+ * @date 2017/5/29
  */
 public class OSSKey {
 

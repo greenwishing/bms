@@ -6,89 +6,49 @@ import cn.greenwishing.bms.dto.moment.MomentPagingDTO;
 import cn.greenwishing.bms.dto.moment.MomentTypeDTO;
 import cn.greenwishing.bms.service.MomentService;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 @Controller
 @RequestMapping("/system/moment")
-@SessionAttributes({"momentDTO", "momentTypeDTO"})
 public class MomentController {
 
-    @Autowired
+    @Resource
     private MomentService momentService;
 
     @RequestMapping("list")
-    public ModelAndView list(MomentPagingDTO pagingDTO, ModelMap model) throws Exception {
+    public String list(MomentPagingDTO pagingDTO, ModelMap model) throws Exception {
         List<MomentTypeDTO> types = momentService.loadMomentTypes();
         model.put("types", types);
         pagingDTO = momentService.loadMomentPaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
-        return new ModelAndView("moment/moment_list");
+        return "moment/moment_list";
     }
 
-    @RequestMapping(value = "types", method = RequestMethod.GET)
-    public ModelAndView types(ModelMap model) throws Exception {
+    @GetMapping("types")
+    public String types(ModelMap model) throws Exception {
         List<MomentTypeDTO> types = momentService.loadMomentTypes();
         model.put("types", types);
-        return new ModelAndView("moment/moment_type_list");
+        return "moment/moment_type_list";
     }
 
-    @RequestMapping(value = {"add_moment_type", "edit_moment_type"}, method = RequestMethod.GET)
-    public ModelAndView type_form(String guid, ModelMap model) throws Exception {
-        model.put("types", GoalType.values());
-        MomentTypeDTO momentTypeDTO;
-        if (ValidationUtils.isEmpty(guid)) {
-            momentTypeDTO = new MomentTypeDTO();
-        } else {
-            momentTypeDTO = momentService.loadMomentTypeByGuid(guid);
-        }
-        model.put("momentTypeDTO", momentTypeDTO);
-        return new ModelAndView("moment/moment_type_form");
-    }
-
-    @RequestMapping(value = {"add_moment_type", "edit_moment_type"}, method = RequestMethod.POST)
-    public ModelAndView save_type(MomentTypeDTO momentTypeDTO, BindingResult errors) throws Exception {
-        String name = momentTypeDTO.getName();
-        if (ValidationUtils.isEmpty(name)) {
-            errors.rejectValue("name", "name", "请输入名称");
-        }
-        GoalType type = momentTypeDTO.getGoalType();
-        if (type == null) {
-            errors.rejectValue("goalType", "goalType", "请选择目标时间类型");
-        }
-        if (GoalType.NONE != type) {
-            Long goal = momentTypeDTO.getGoal();
-            if (goal == null) {
-                errors.rejectValue("goal", "goal", "请选择目标时间");
-            }
-        }
-        ModelMap model = new ModelMap();
-        if (errors.hasErrors()) {
-            model.put("success", false);
-            model.put("message", errors.getFieldError().getDefaultMessage());
-        } else {
-            momentService.saveOrUpdateMomentType(momentTypeDTO);
-            model.put("success", true);
-            model.put("redirectUrl", "types");
-        }
-        return new ModelAndView(new MappingJacksonJsonView(), model);
-    }
-
-    @RequestMapping(value = {"add_moment", "edit_moment"}, method = RequestMethod.GET)
-    public ModelAndView moment_form(String guid, ModelMap model) throws Exception {
+    @GetMapping({"add_moment", "edit_moment"})
+    @ModelAttribute("momentDTO")
+    public String momentForm(String guid, ModelMap model) throws Exception {
         List<MomentTypeDTO> types = momentService.loadMomentTypes();
         model.put("types", types);
         MomentDTO momentDTO;
@@ -98,11 +58,11 @@ public class MomentController {
             momentDTO = momentService.loadMomentByGuid(guid);
         }
         model.put("momentDTO", momentDTO);
-        return new ModelAndView("moment/moment_form");
+        return "moment/moment_form";
     }
 
-    @RequestMapping(value = {"add_moment", "edit_moment"}, method = RequestMethod.POST)
-    public ModelAndView moment_type(MomentDTO momentDTO, BindingResult errors) throws Exception {
+    @PostMapping({"add_moment", "edit_moment"})
+    public ModelAndView saveMoment(@ModelAttribute("momentDTO") MomentDTO momentDTO, BindingResult errors) throws Exception {
         String typeGuid = momentDTO.getTypeGuid();
         if (ValidationUtils.isEmpty(typeGuid)) {
             errors.rejectValue("typeGuid", "typeGuid", "请选择类型");
@@ -128,6 +88,48 @@ public class MomentController {
             model.put("success", true);
             model.put("redirectUrl", "list");
         }
-        return new ModelAndView(new MappingJacksonJsonView(), model);
+        return new ModelAndView(new MappingJackson2JsonView(), model);
+    }
+
+    @GetMapping({"add_moment_type", "edit_moment_type"})
+    @ModelAttribute("momentTypeDTO")
+    public String typeForm(String guid, ModelMap model) throws Exception {
+        model.put("types", GoalType.values());
+        MomentTypeDTO momentTypeDTO;
+        if (ValidationUtils.isEmpty(guid)) {
+            momentTypeDTO = new MomentTypeDTO();
+        } else {
+            momentTypeDTO = momentService.loadMomentTypeByGuid(guid);
+        }
+        model.put("momentTypeDTO", momentTypeDTO);
+        return "moment/moment_type_form";
+    }
+
+    @PostMapping({"add_moment_type", "edit_moment_type"})
+    public ModelAndView saveType(@ModelAttribute("momentTypeDTO") MomentTypeDTO momentTypeDTO, BindingResult errors) throws Exception {
+        String name = momentTypeDTO.getName();
+        if (ValidationUtils.isEmpty(name)) {
+            errors.rejectValue("name", "name", "请输入名称");
+        }
+        GoalType type = momentTypeDTO.getGoalType();
+        if (type == null) {
+            errors.rejectValue("goalType", "goalType", "请选择目标时间类型");
+        }
+        if (GoalType.NONE != type) {
+            Long goal = momentTypeDTO.getGoal();
+            if (goal == null) {
+                errors.rejectValue("goal", "goal", "请选择目标时间");
+            }
+        }
+        ModelMap model = new ModelMap();
+        if (errors.hasErrors()) {
+            model.put("success", false);
+            model.put("message", errors.getFieldError().getDefaultMessage());
+        } else {
+            momentService.saveOrUpdateMomentType(momentTypeDTO);
+            model.put("success", true);
+            model.put("redirectUrl", "types");
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), model);
     }
 }

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/13
+ * @author Frank wu
+ * @date 2017/5/13
  */
 public class ConfigurationDTO {
 

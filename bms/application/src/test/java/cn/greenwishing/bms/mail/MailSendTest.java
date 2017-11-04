@@ -4,8 +4,8 @@ import cn.greenwishing.bms.handler.MailSender;
 import org.testng.annotations.Test;
 
 /**
- * User: Wufan
- * Date: 2017/5/13
+ * @author Frank wu
+ * @date 2017/5/13
  */
 public class MailSendTest {
 

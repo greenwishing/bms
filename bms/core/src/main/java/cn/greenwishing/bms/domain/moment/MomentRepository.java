@@ -5,8 +5,8 @@ import cn.greenwishing.bms.domain.Repository;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2017/5/7
+ * @author Frank wu
+ * @date 2017/5/7
  */
 public interface MomentRepository extends Repository {
     List<MomentType> findMomentTypes(Integer userId);

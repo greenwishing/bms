@@ -6,12 +6,12 @@ import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.joda.time.LocalDate;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPaging> {
 

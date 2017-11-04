@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http pattern="/api/**" security="none" create-session="never"/>
+    <http pattern="/message/**" security="none" create-session="never"/>
+
+    <http auto-config="false" disable-url-rewriting="true" access-decision-manager-ref="accessDecisionManager" authentication-manager-ref="authenticationManager">
+        <intercept-url pattern="/common/**" access="hasRole('ROLE_SYSTEM')" />
+        <intercept-url pattern="/system/index" access="hasRole('ROLE_SYSTEM')" />
+        <intercept-url pattern="/system/user/**" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/system/billing/**" access="hasRole('ROLE_BILLING')" />
+        <intercept-url pattern="/system/moment/**" access="hasRole('ROLE_MOMENT')" />
+        <intercept-url pattern="/system/todo/**" access="hasRole('ROLE_TODO')" />
+        <intercept-url pattern="/system/article/**" access="hasRole('ROLE_ARTICLE')" />
+        <intercept-url pattern="/system/metro/**" access="hasRole('ROLE_METRO')" />
+        <intercept-url pattern="/system/app/**" access="hasRole('ROLE_APP')" />
+        <form-login login-page="/system/login" login-processing-url="/system/account_check"
+                    default-target-url="/system/index" authentication-failure-url="/system/login?action=1"
+                    username-parameter="account" password-parameter="password"/>
+        <session-management invalid-session-url="/system/login?action=2" />
+        <remember-me services-ref="tokenBasedRememberMeServices" />
+        <logout logout-url="/system/logout" logout-success-url="/system/login?action=3"/>
+        <access-denied-handler error-page="/403.jsp"/>
+        <csrf disabled="true"/>
+        <anonymous/>
+    </http>
+
+    <beans:bean id="tokenBasedRememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+        <beans:constructor-arg value="BMS"/>
+        <beans:constructor-arg ref="userService"/>
+        <beans:property name="parameter" value="rememberMe"/>
+        <beans:property name="cookieName" value="REMEMBER_ME"/>
+    </beans:bean>
+
+    <beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+        <beans:constructor-arg value="BMS"/>
+    </beans:bean>
+
+    <!-- 访问控制 -->
+    <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+        <beans:constructor-arg>
+            <beans:list>
+                <beans:bean class="org.springframework.security.access.vote.RoleVoter"/>
+                <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+                <beans:bean class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
+            </beans:list>
+        </beans:constructor-arg>
+        <beans:property name="allowIfAllAbstainDecisions" value="false"/>
+    </beans:bean>
+
+    <!-- 认证管理器 -->
+    <authentication-manager id="authenticationManager">
+        <authentication-provider user-service-ref="userService">
+            <password-encoder hash="md5"/>
+        </authentication-provider>
+        <authentication-provider ref="rememberMeAuthenticationProvider"/>
+    </authentication-manager>
+
+</beans:beans>

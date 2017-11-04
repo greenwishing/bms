@@ -6,8 +6,8 @@ import cn.greenwishing.bms.domain.user.User;
 import javax.persistence.*;
 
 /**
- * User: Wufan
- * Date: 2015/3/7.
+ * @author Frank wu
+ * @date 2015/3/7.
  */
 @Entity
 @Table(name = "billing_category")

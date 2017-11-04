@@ -1,8 +1,8 @@
 package cn.greenwishing.bms.service.impl;
 
 import cn.greenwishing.bms.cache.ConfigurationCache;
-import cn.greenwishing.bms.cache.OSSClientFactory;
 import cn.greenwishing.bms.dto.OSSFile;
+import cn.greenwishing.bms.oss.OSSClientFactory;
 import cn.greenwishing.bms.service.OSSService;
 import cn.greenwishing.bms.utils.MD5Utils;
 import cn.greenwishing.bms.utils.ValidationUtils;
@@ -11,15 +11,17 @@ import com.aliyun.oss.model.ObjectMetadata;
 import org.springframework.stereotype.Service;
 
 /**
- * User: Wufan
- * Date: 2017/5/29
+ * @author Frank wu
+ * @date 2017/5/29
  */
 @Service("ossService")
 public class OSSServiceImpl implements OSSService {
 
     @Override
     public String upload(OSSFile file, String mode) {
-        if (file.isEmpty()) return null;
+        if (file.isEmpty()) {
+            return null;
+        }
 
         OSSClient client = OSSClientFactory.getClient();
         String bucketName = ConfigurationCache.get("aliyun.oss.bucketName");
@@ -31,7 +33,8 @@ public class OSSServiceImpl implements OSSService {
         String contentMd5 = MD5Utils.md5(bytes);
         String key = contentMd5 + suffix(file);
 
-        if (!client.doesObjectExist(bucketName, key)) { // 文件不存在就上传
+        if (!client.doesObjectExist(bucketName, key)) {
+            // 文件不存在就上传
             String contentType = file.getContentType();
             if (ValidationUtils.isEmpty(contentType)) {
                 contentType = genContentType(file);

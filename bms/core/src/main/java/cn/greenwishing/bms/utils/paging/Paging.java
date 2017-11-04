@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * 分页接口
- * User: Wu Fan
+ * @author Frank wu
  */
 public interface Paging<T> {
 

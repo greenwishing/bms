@@ -7,8 +7,8 @@ import cn.greenwishing.bms.utils.paging.UserPaging;
 import java.util.List;
 
 /**
- * User: Wufan
- * Date: 2016/7/13
+ * @author Frank wu
+ * @date 2016/7/13
  */
 public class UserPagingDTO extends AbstractPagingDTO<UserDTO, UserPaging> {
 

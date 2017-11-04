@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 public abstract class AbstractPagingDTO<T, P extends AbstractPaging> implements Paging<T> {
     protected int pageSize = 10;

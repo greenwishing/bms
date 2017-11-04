@@ -7,7 +7,7 @@
     <title>文章分类</title>
 </head>
 <body>
-    <spring-form:form commandName="articleCategoryDTO" method="post" id="data-form" onsubmit="return false;">
+    <spring-form:form modelAttribute="articleCategoryDTO" method="post" id="data-form" onsubmit="return false;">
         <div class="weui-cells__title">名称</div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">

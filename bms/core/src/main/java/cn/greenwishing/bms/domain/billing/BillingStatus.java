@@ -1,8 +1,8 @@
 package cn.greenwishing.bms.domain.billing;
 
 /**
- * User: Wufan
- * Date: 2016/6/27
+ * @author Frank wu
+ * @date 2016/6/27
  */
 public enum BillingStatus {
     NORMAL(""),

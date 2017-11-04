@@ -4,8 +4,8 @@ import cn.greenwishing.bms.service.TaskService;
 import org.springframework.stereotype.Service;
 
 /**
- * User: Wufan
- * Date: 2015/6/15.
+ * @author Frank wu
+ * @date 2015/6/15.
  */
 @Service("taskService")
 public class TaskServiceImpl implements TaskService {

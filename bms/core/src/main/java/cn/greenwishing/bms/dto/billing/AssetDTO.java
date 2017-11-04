@@ -4,8 +4,8 @@ import cn.greenwishing.bms.dto.SigNum;
 import cn.greenwishing.bms.utils.parser.SqlResultParser;
 
 /**
- * User: Wufan
- * Date: 2016/10/30
+ * @author Frank wu
+ * @date 2016/10/30
  */
 public class AssetDTO {
 

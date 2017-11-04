@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * User: Wu Fan
+ * @author Frank wu
  */
 @Repository("userRepository")
 public class UserRepositoryHibernate extends AbstractRepositoryHibernate implements UserRepository {
     @Override
     @SuppressWarnings("unchecked")
     public User findUserByAccount(String account) {
-        List<User> list = getHibernateTemplate().find("from User u where u.account=?", account);
+        List<User> list = (List<User>) getHibernateTemplate().find("from User u where u.account=?", account);
         return list.isEmpty() ? null : list.get(0);
     }
 

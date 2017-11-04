@@ -1,8 +1,8 @@
 package cn.greenwishing.bms.utils;
 
 /**
- * User: Wufan
- * Date: 2015/11/7.
+ * @author Frank wu
+ * @date 2015/11/7.
  */
 public interface BmsEnum {
 
