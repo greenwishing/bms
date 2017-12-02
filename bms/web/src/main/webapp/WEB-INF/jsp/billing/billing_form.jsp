@@ -17,13 +17,23 @@
                     data: {type: '${param.type}', size: 30},
                     success: function(result) {
                         var tpl = result.tplList;
-                        $tplList.empty();
-                        $tplList.append('<option value="">请选择</option>');
+                        var menus = [], templates = [];
                         for (var i in tpl) {
                             var template = tpl[i];
-                            var $menu = $('<option></option>').data({template: template}).html(template.name + ' ' + template.amount);
-                            $tplList.append($menu);
+                            templates.push(template);
+                            menus.push({
+                                label: template.name + ' ' + template.amount,
+                                onClick: function(){
+                                    var index = $(this).index();
+                                    var templates = $tplList.data('templates');
+                                    applyTemplate(templates[index]);
+                                }
+                            });
                         }
+                        $tplList.data({templates: templates});
+                        $tplList.bind('click', function(){
+                            weui.actionSheet(menus, [{label: '取消', onClick: function(){}}]);
+                        })
                     }
                 });
             })();
@@ -34,9 +44,7 @@
             });
         });
 
-        function applyTemplate(el) {
-            var $option = $(el).find('option:selected');
-            var template = $option.data('template');
+        function applyTemplate(template) {
             if (!template) return;
             var type = template.type;
             $('#categoryGuid').attr({'default-value': template.categoryId});
@@ -51,29 +59,21 @@
 </head>
 <body>
 <form id="data-form" action="record?type=${param.type}" method="post" onsubmit="return false;">
-    <div class="weui-cells__title">从模板添加</div>
     <div class="weui-cells weui-cells_form">
-        <div class="weui-cell weui-cell_select">
-            <div class="weui-cell__bd">
-                <select class="weui-select" id="tpl-list" onchange="applyTemplate(this)">
-                    <option value="">请选择</option>
-                </select>
+        <div class="weui-cell weui-cell_select weui-cell_select-after">
+            <div class="weui-cell__hd">
+                <label class="weui-label">分类</label>
             </div>
-        </div>
-    </div>
-    <div class="weui-cells__title">分类</div>
-    <div class="weui-cells weui-cells_form">
-        <div class="weui-cell weui-cell_select">
             <div class="weui-cell__bd">
                 <select class="weui-select" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid">
                     <option value="">请选择</option>
                 </select>
             </div>
         </div>
-    </div>
-    <div class="weui-cells__title">子分类</div>
-    <div class="weui-cells weui-cells_form">
-        <div class="weui-cell weui-cell_select">
+        <div class="weui-cell weui-cell_select weui-cell_select-after">
+            <div class="weui-cell__hd">
+                <label class="weui-label">子分类</label>
+            </div>
             <div class="weui-cell__bd">
                 <select class="weui-select" id="subcategoryGuid" name="subcategoryGuid">
                     <option value="">请选择</option>
@@ -81,6 +81,7 @@
             </div>
         </div>
     </div>
+    <div class="weui-cells__title">${billingDTO.type.label}</div>
     <div class="weui-cells weui-cells_form">
         <div class="weui-cell">
             <div class="weui-cell__hd">
@@ -315,16 +316,12 @@
             </div>
         </div>
     </div>
-    <div class="weui-cells__title">描述</div>
     <div class="weui-cells weui-cells_form">
         <div class="weui-cell">
             <div class="weui-cell__bd">
                 <textarea class="weui-textarea" name="description" placeholder="描述" rows="3"></textarea>
             </div>
         </div>
-    </div>
-    <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:void(0)" onclick="saveContinue()">保存</a>
     </div>
 </form>
 </body>

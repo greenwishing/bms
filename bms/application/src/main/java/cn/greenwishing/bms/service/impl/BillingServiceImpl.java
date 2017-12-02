@@ -100,7 +100,7 @@ public class BillingServiceImpl implements BillingService {
         DateTime occurredTime = JodaUtils.now();
         String occurredTimeStr = billingDTO.getOccurredTime();
         if (ValidationUtils.isNotEmpty(occurredTimeStr)) {
-            occurredTime = JodaUtils.parseDateTime(occurredTimeStr);
+            occurredTime = JodaUtils.parseDateTime(occurredTimeStr, JodaUtils.DATE_TIME_FORMAT);
         }
 
         String name = billingDTO.getName();

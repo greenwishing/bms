@@ -11,13 +11,29 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/mobiscroll/mobiscroll.i18n.zh.js"></script>
     <script type="text/javascript">
         $(function(){
-            changeType($('#type'));
+            var $type = $('#type'), types = [], menus = [];
+            <c:forEach items="${types}" var="type">
+            types.push({value: '${type.value}', label: '${type.label}'});
+            menus.push({label: '${type.label}', onClick: function(){
+                var index = $(this).index();
+                changeType($type, index);
+            }});
+            </c:forEach>
+            $type.data({types: types});
+            $type.bind('click', function(){
+                weui.actionSheet(menus, [{label: '取消', onClick: function(){}}]);
+            });
+            changeType($type, 0);
         });
 
-        function changeType(el) {
-            var $option = $(el).find('option:selected');
+        function changeType($el, index) {
+            var types = $el.data('types');
+            var type = types[index];
+            if (!type) return;
+            $el.data({index: index});
+            $('#type-label').html(type.label);
             WF.ajax.req({
-                url: $option.attr('data-url'),
+                url: 'record?type=' + type.value,
                 type: 'GET',
                 success: function(result) {
                     $('#form-wrapper').html(result);
@@ -34,24 +50,37 @@
                         $('body').scrollTop(0);
                     }
                 });
-                changeType($('#type'));
+                var $type = $('#type');
+                changeType($type, $type.data('index') || 0);
             });
         }
     </script>
 </head>
 <body>
-    <div class="weui-cells__title">记账类型</div>
-    <div class="weui-cells weui-cells_form">
-        <div class="weui-cell weui-cell_select">
-            <div class="weui-cell__bd">
-                <select class="weui-select" id="type" onchange="changeType(this)">
-                    <c:forEach items="${types}" var="type">
-                        <option value="${type.value}" data-url="record?type=${type.value}">${type.label}</option>
-                    </c:forEach>
-                </select>
+<div class="page">
+    <div class="weui-tab">
+        <div class="weui-tab__panel">
+            <div class="weui-cells">
+                <div class="weui-cell weui-cell_access" id="type">
+                    <div class="weui-cell__bd">
+                        <p id="type-label"></p>
+                    </div>
+                    <div class="weui-cell__ft">更换</div>
+                </div>
             </div>
+            <div id="form-wrapper"></div>
+        </div>
+        <div class="weui-tabbar">
+            <a href="javascript:void(0)" class="weui-tabbar__item" id="tpl-list">
+                <img src="/images/icons/icon_clock.png" class="weui-tabbar__icon">
+                <p class="weui-tabbar__label">从模板添加</p>
+            </a>
+            <a href="javascript:void(0)" class="weui-tabbar__item weui-bar__item_on" onclick="saveContinue()">
+                <img src="/images/icons/icon_save.png" class="weui-tabbar__icon">
+                <p class="weui-tabbar__label">保存</p>
+            </a>
         </div>
     </div>
-    <div id="form-wrapper"></div>
+</div>
 </body>
 </html>
