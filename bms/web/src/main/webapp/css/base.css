@@ -78,3 +78,21 @@ body {
 .signum_1 {
     color:#4cd964;
 }
+
+.amount-sign {
+    font-weight: 500;
+    font-size: 16px;
+}
+.amount-sign:before {
+    content: '￥';
+}
+.amount-sign_EXPEND:before,
+.amount-sign_LOAN:before,
+.amount-sign_PAYBACK:before {
+    content: '-￥';
+}
+.amount-sign_INCOME:before,
+.amount-sign_BORROW:before,
+.amount-sign_RECEIVE:before {
+    content: '+￥';
+}

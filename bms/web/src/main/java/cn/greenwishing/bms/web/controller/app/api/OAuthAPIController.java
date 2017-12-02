@@ -1,7 +1,7 @@
 package cn.greenwishing.bms.web.controller.app.api;
 
 import cn.greenwishing.bms.domain.billing.BillingType;
-import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
+import cn.greenwishing.bms.dto.statistics.highcharts.Series;
 import cn.greenwishing.bms.service.BillingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +41,7 @@ public class OAuthAPIController {
 
     @RequestMapping("nearest")
     public ModelAndView nearest(@RequestParam(defaultValue = "20") Integer size, @RequestParam(defaultValue = "EXPEND") BillingType type) {
-        List<SeriesObject> series = billingService.loadNearestStatistics(size, type);
+        List<Series> series = billingService.loadNearestStatistics(size, type);
         return new ModelAndView(new MappingJackson2JsonView(), "series", series);
     }
 }

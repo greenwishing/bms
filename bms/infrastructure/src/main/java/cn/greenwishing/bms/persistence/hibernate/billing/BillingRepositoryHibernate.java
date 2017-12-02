@@ -1,6 +1,9 @@
 package cn.greenwishing.bms.persistence.hibernate.billing;
 
-import cn.greenwishing.bms.domain.billing.*;
+import cn.greenwishing.bms.domain.billing.BillingAccount;
+import cn.greenwishing.bms.domain.billing.BillingRepository;
+import cn.greenwishing.bms.domain.billing.BillingSubcategory;
+import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.persistence.hibernate.AbstractRepositoryHibernate;
 import cn.greenwishing.bms.utils.SecurityHolder;
@@ -48,8 +51,9 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<BillingCategory> findBillingCategoryByUserGuid(String userGuid) {
-        return (List<BillingCategory>) getHibernateTemplate().find("from BillingCategory c where c.user.guid=?", userGuid);
+    public List<SqlResultParser> findBillingCategoryByUserGuid(String userGuid) {
+        List<Object[]> results = (List<Object[]>) getHibernateTemplate().find("select c.id, c.guid, c.type, c.name from BillingCategory c where c.user.guid=?", userGuid);
+        return SqlResultParser.valueOf(results);
     }
 
     @Override
@@ -60,8 +64,16 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<BillingCategory> findBillingCategoryByType(BillingType billingType, String userGuid) {
-        return (List<BillingCategory>) getHibernateTemplate().find("from BillingCategory c where c.type=? and c.user.guid=?", billingType, userGuid);
+    public List<SqlResultParser> findBillingSubcategoryByUserGuid(String userGuid) {
+        List<Object[]> results = (List<Object[]>) getHibernateTemplate().find("select s.id, s.guid, s.name, c.guid from BillingSubcategory s join s.category c where c.user.guid=?", userGuid);
+        return SqlResultParser.valueOf(results);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<SqlResultParser> findBillingCategoryByType(BillingType billingType, String userGuid) {
+        List<Object[]> results = (List<Object[]>) getHibernateTemplate().find("select c.id, c.guid, c.type, c.name from BillingCategory c where c.user.guid=? and c.type=?", userGuid, billingType);
+        return SqlResultParser.valueOf(results);
     }
 
     @Override
@@ -84,7 +96,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<SqlResultParser>>() {
             @Override
             public List<SqlResultParser> doInHibernate(Session session) throws HibernateException {
-                Query query = session.createSQLQuery("" +
+                NativeQuery query = session.createNativeQuery("" +
                         "select b.id,b.guid,b.name,b.type,b.category_id,b.subcategory_id,b.src_account_id,b.target_account_id,b.amount,b.description" +
                         " from billing b join (" +
                         "SELECT max(id) id FROM billing b WHERE type = :type AND user_id = :userId GROUP BY category_id, subcategory_id,name ORDER BY count(*) DESC" +

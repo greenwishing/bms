@@ -6,7 +6,10 @@ import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.domain.user.UserRepository;
 import cn.greenwishing.bms.dto.billing.*;
-import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
+import cn.greenwishing.bms.dto.statistics.highcharts.Series;
+import cn.greenwishing.bms.dto.statistics.mobiscroll.Wheel;
+import cn.greenwishing.bms.dto.statistics.mobiscroll.WheelData;
+import cn.greenwishing.bms.dto.statistics.tree.TreeNode;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.shared.EnumUtils;
 import cn.greenwishing.bms.utils.JodaUtils;
@@ -15,15 +18,13 @@ import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import cn.greenwishing.bms.utils.parser.SqlResultParser;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Frank wu
@@ -96,10 +97,10 @@ public class BillingServiceImpl implements BillingService {
         String guid = SecurityHolder.getUserGuid();
         User user = userRepository.findByGuid(User.class, guid);
 
-        LocalDate occurredTime = JodaUtils.today();
+        DateTime occurredTime = JodaUtils.now();
         String occurredTimeStr = billingDTO.getOccurredTime();
         if (ValidationUtils.isNotEmpty(occurredTimeStr)) {
-            occurredTime = JodaUtils.parseLocalDate(occurredTimeStr);
+            occurredTime = JodaUtils.parseDateTime(occurredTimeStr);
         }
 
         String name = billingDTO.getName();
@@ -108,6 +109,15 @@ public class BillingServiceImpl implements BillingService {
                 billingDTO.getDescription(), occurredTime, user);
         billing.updateStatus(status);
         billingRepository.saveOrUpdate(billing);
+    }
+
+    @Override
+    public BillingDTO loadBillingByGuid(String guid) {
+        Billing billing = billingRepository.findByGuid(Billing.class, guid);
+        if (billing != null) {
+            return new BillingDTO(billing);
+        }
+        return null;
     }
 
     private BillingAccount accountAddAmount(String accountGuid, BigDecimal amount) {
@@ -130,24 +140,24 @@ public class BillingServiceImpl implements BillingService {
     }
 
     @Override
-    public List<SeriesObject> loadNearestStatistics(Integer size, BillingType billingType) {
-        List<SeriesObject> series = new ArrayList<>();
+    public List<Series> loadNearestStatistics(Integer size, BillingType billingType) {
+        List<Series> series = new ArrayList<>();
 
-        SeriesObject result = loadSeriesObject(billingType, size);
+        Series result = loadSeriesObject(billingType, size);
         series.add(result);
 
         return series;
     }
 
-    private SeriesObject loadSeriesObject(BillingType billingType, Integer size) {
+    private Series loadSeriesObject(BillingType billingType, Integer size) {
         List<Object[]> results = billingRepository.loadNearestStatistics(billingType, size);
-        return SeriesObject.valueOf(billingType, results);
+        return Series.valueOf(billingType, results);
     }
 
     @Override
     public List<BillingCategoryDTO> loadBillingCategory() {
         String userGuid = SecurityHolder.getUserGuid();
-        List<BillingCategory> categories = billingRepository.findBillingCategoryByUserGuid(userGuid);
+        List<SqlResultParser> categories = billingRepository.findBillingCategoryByUserGuid(userGuid);
         return BillingCategoryDTO.toDTOs(categories);
     }
 
@@ -202,7 +212,7 @@ public class BillingServiceImpl implements BillingService {
     @Override
     public List<BillingCategoryDTO> loadBillingCategoryByType(BillingType billingType) {
         String userGuid = SecurityHolder.getUserGuid();
-        List<BillingCategory> categories = billingRepository.findBillingCategoryByType(billingType, userGuid);
+        List<SqlResultParser> categories = billingRepository.findBillingCategoryByType(billingType, userGuid);
         return BillingCategoryDTO.toDTOs(categories);
     }
 
@@ -238,7 +248,9 @@ public class BillingServiceImpl implements BillingService {
     public void generateDefaultCategory() {
         String userGuid = SecurityHolder.getUserGuid();
         User user = userRepository.findByGuid(User.class, userGuid);
-        if (user == null) return;
+        if (user == null) {
+            return;
+        }
 
         for (DefaultData.DefaultBillingCategory defaultBillingCategory : DefaultData.DefaultBillingCategory.values()) {
             BillingCategory billingCategory = new BillingCategory(user);
@@ -312,5 +324,56 @@ public class BillingServiceImpl implements BillingService {
         }
         Integer userId = SecurityHolder.getUserId();
         return billingRepository.findBillingMapData(userId, billingType, year);
+    }
+
+    @Override
+    public List<Wheel> loadBillingWheels(String userGuid) {
+        Wheel firstLevel = new Wheel("类型");
+        firstLevel.add(new WheelData(-1, "", "全部"));
+        for (BillingType billingType : BillingType.values()) {
+            firstLevel.add(new WheelData(billingType.ordinal(), billingType.getValue(), billingType.getLabel()));
+        }
+        Wheel secondLevel = new Wheel("分类");
+        secondLevel.add(new WheelData(-1, "", "全部").setSign(""));
+        List<BillingCategoryDTO> categories = loadBillingCategory();
+        for (BillingCategoryDTO category : categories) {
+            secondLevel.add(new WheelData(category.getId(), category.getGuid(), category.getName()).setSign(category.getType().getValue()));
+        }
+        Wheel thirdLevel = new Wheel("子分类");
+        thirdLevel.add(new WheelData(-1, "", "全部").setSign(""));
+        List<BillingSubcategoryDTO> subcategories = loadBillSubcategories(userGuid);
+        for (BillingSubcategoryDTO subcategory : subcategories) {
+            thirdLevel.add(new WheelData(subcategory.getId(), subcategory.getGuid(), subcategory.getName()).setSign(subcategory.getCategoryGuid()));
+        }
+        return Arrays.asList(firstLevel.sort(), secondLevel.sort(), thirdLevel.sort());
+    }
+
+    @Override
+    public List<TreeNode> loadBillingTreeNodes(String userGuid) {
+        List<TreeNode> typeNodes = new ArrayList<>();
+        List<BillingCategoryDTO> categories = loadBillingCategory();
+        List<BillingSubcategoryDTO> subcategories = loadBillSubcategories(userGuid);
+        for (BillingType type : BillingType.values()) {
+            TreeNode typeNode = new TreeNode(type.getValue(), type.getLabel());
+            for (BillingCategoryDTO category : categories) {
+                if (type == category.getType()) {
+                    TreeNode categoryNode = new TreeNode(category.getGuid(), category.getName());
+                    for (BillingSubcategoryDTO subcategory : subcategories) {
+                        if (category.getGuid().equals(subcategory.getCategoryGuid())) {
+                            TreeNode subcategoryNode = new TreeNode(subcategory.getGuid(), subcategory.getName());
+                            categoryNode.addChild(subcategoryNode);
+                        }
+                    }
+                    typeNode.addChild(categoryNode);
+                }
+            }
+            typeNodes.add(typeNode);
+        }
+        return typeNodes;
+    }
+
+    private List<BillingSubcategoryDTO> loadBillSubcategories(String userGuid) {
+        List<SqlResultParser> parsers = billingRepository.findBillingSubcategoryByUserGuid(userGuid);
+        return BillingSubcategoryDTO.valueOf(parsers);
     }
 }

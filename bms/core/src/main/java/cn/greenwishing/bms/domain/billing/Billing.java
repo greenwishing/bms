@@ -44,8 +44,8 @@ public class Billing extends AbstractDomain {
     private String description;
 
     @Column(name = "occurred_time")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-	private LocalDate occurredTime;
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime occurredTime;
 
     @JoinColumn(name = "user_id")
     @ManyToOne(targetEntity = User.class)
@@ -64,7 +64,7 @@ public class Billing extends AbstractDomain {
 
     public Billing(String name, BillingType type, BillingCategory category, BillingSubcategory subcategory,
                    BillingAccount srcAccount, BillingAccount targetAccount, BigDecimal amount, String description,
-                   LocalDate occurredTime, User user) {
+                   DateTime occurredTime, User user) {
         this.name = name;
         this.type = type;
         this.category = category;
@@ -116,7 +116,7 @@ public class Billing extends AbstractDomain {
         return amount;
     }
 
-    public LocalDate occurredTime() {
+    public DateTime occurredTime() {
         return occurredTime;
     }
 

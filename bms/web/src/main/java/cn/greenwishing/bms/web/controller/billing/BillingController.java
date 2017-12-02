@@ -5,9 +5,12 @@ import cn.greenwishing.bms.domain.billing.BillingStatus;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.dto.billing.*;
-import cn.greenwishing.bms.dto.statistics.highcharts.SeriesObject;
+import cn.greenwishing.bms.dto.statistics.highcharts.Series;
+import cn.greenwishing.bms.dto.statistics.mobiscroll.Wheel;
+import cn.greenwishing.bms.dto.statistics.tree.TreeNode;
 import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.shared.EnumUtils;
+import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,7 +50,9 @@ public class BillingController {
     public ModelAndView list(BillingPagingDTO pagingDTO, ModelMap model) {
         pagingDTO = billingService.loadBillingPaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
-        model.put("types", BillingType.values());
+        String userGuid = SecurityHolder.getUserGuid();
+        List<TreeNode> nodes = billingService.loadBillingTreeNodes(userGuid);
+        model.put("nodes", nodes);
         return new ModelAndView("billing/billing_list");
     }
 
@@ -102,7 +107,7 @@ public class BillingController {
             errors.rejectValue("amount", "amount", "金额格式不正确");
         }
         String occurredTime = billingDTO.getOccurredTime();
-        if (!ValidationUtils.isEmpty(occurredTime) && !ValidationUtils.isValidDate(occurredTime)) {
+        if (!ValidationUtils.isEmpty(occurredTime) && !ValidationUtils.isValidDateTime(occurredTime)) {
             errors.rejectValue("occurredTime", "occurredTime", "时间格式不正确");
         }
         BillingType type = billingDTO.getType();
@@ -130,6 +135,13 @@ public class BillingController {
             model.put("success", true);
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
+    }
+
+    @RequestMapping("detail")
+    public ModelAndView detail(String guid, ModelMap model) {
+        BillingDTO billingDTO = billingService.loadBillingByGuid(guid);
+        model.put("billingDTO", billingDTO);
+        return new ModelAndView("billing/billing_detail", model);
     }
 
     @GetMapping({"add_category", "edit_category"})
@@ -252,6 +264,15 @@ public class BillingController {
         return new ModelAndView(new MappingJackson2JsonView(), new ModelMap("tplList", tplList));
     }
 
+    @RequestMapping("wheels")
+    public ModelAndView wheels() {
+        ModelMap model = new ModelMap();
+        String userGuid = SecurityHolder.getUserGuid();
+        List<Wheel> wheels = billingService.loadBillingWheels(userGuid);
+        model.put("wheels", wheels);
+        return new ModelAndView(new MappingJackson2JsonView(), model);
+    }
+
     @RequestMapping("delete")
     public ModelAndView delete(String guid) {
         billingService.deleteBillingByGuid(guid);
@@ -266,7 +287,7 @@ public class BillingController {
 
     @RequestMapping("nearest_data")
     public ModelAndView nearestData(@RequestParam(defaultValue = "20") Integer size, @RequestParam(defaultValue = "EXPEND") BillingType type) {
-        List<SeriesObject> series = billingService.loadNearestStatistics(size, type);
+        List<Series> series = billingService.loadNearestStatistics(size, type);
         return new ModelAndView(new MappingJackson2JsonView(), "series", series);
     }
 

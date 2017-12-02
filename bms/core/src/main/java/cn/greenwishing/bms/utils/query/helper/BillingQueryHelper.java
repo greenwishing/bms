@@ -7,7 +7,7 @@ import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import org.hibernate.query.Query;
-import org.joda.time.LocalDate;
+import org.joda.time.DateTime;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
 /**
@@ -42,8 +42,8 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
         String dateFrom = paging.getDateFrom();
         String dateTo = paging.getDateTo();
         if (ValidationUtils.isValidDate(dateFrom) && ValidationUtils.isValidDate(dateTo)) {
-            LocalDate from = JodaUtils.parseLocalDate(dateFrom);
-            LocalDate to = JodaUtils.parseLocalDate(dateTo).plusDays(1);
+            DateTime from = JodaUtils.parseDateTime(dateFrom, JodaUtils.DATE_FORMAT);
+            DateTime to = JodaUtils.parseDateTime(dateTo, JodaUtils.DATE_FORMAT).plusDays(1);
             addFilter(dateRangeFilter(from, to));
         }
     }
@@ -90,7 +90,7 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
         };
     }
 
-    private Filter dateRangeFilter(final LocalDate from, final LocalDate to) {
+    private Filter dateRangeFilter(final DateTime from, final DateTime to) {
         return new ParameterFilter() {
             @Override
             public void setParameter(Query query) {

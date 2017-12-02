@@ -6,6 +6,9 @@
 <html>
 <head>
     <title>记账</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/mobiscroll/mobiscroll.custom-3.0.0.min.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/mobiscroll/mobiscroll.custom-3.0.0.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/mobiscroll/mobiscroll.i18n.zh.js"></script>
     <script type="text/javascript">
         $(function(){
             changeType($('#type'));
@@ -26,6 +29,7 @@
             WF.form.ajaxSubmit($('#data-form'), function(){
                 // 保存并继续
                 WF.util.topTip('添加成功', {
+                    duration: 1000,
                     callback: function() {
                         $('body').scrollTop(0);
                     }

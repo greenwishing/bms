@@ -23,6 +23,7 @@
     <link rel="apple-touch-icon" sizes="114x114" href="/images/apple-touch-icon-114.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="/images/apple-touch-icon-144.png" />
 
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/moment.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.2.min.js"></script>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/weui/weui.min.css" />

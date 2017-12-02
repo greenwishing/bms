@@ -5,16 +5,16 @@
 String.prototype.format = function (args) {
     var result = this;
     if (arguments.length > 0) {
-        if (arguments.length == 1 && typeof (args) == "object") {
+        if (arguments.length === 1 && typeof args === "object") {
             for (var key in args) {
-                if (args[key] != undefined) {
+                if (args[key] !== undefined) {
                     result = result.replace(new RegExp("({" + key + "})", "g"), args[key]);
                 }
             }
         }
         else {
             for (var i = 0; i < arguments.length; i++) {
-                if (arguments[i] != undefined) {
+                if (arguments[i] !== undefined) {
                     result = result.replace(new RegExp("({)" + i + "(})", "g"), arguments[i]);
                 }
             }
@@ -33,10 +33,10 @@ String.prototype.replaceAll = function (c, b, a) {
     }
 };
 String.prototype.startsWith = function (a) {
-    return (!WF.validation.isEmpty(a) || this.length || a.length <= this.length) && this.substring(0, a.length) == a;
+    return (!WF.validation.isEmpty(a) || this.length || a.length <= this.length) && this.substring(0, a.length) === a;
 };
 String.prototype.endsWith = function (a) {
-    return (!WF.validation.isEmpty(a) || this.length || a.length <= this.length) && this.substring(this.length - a.length) == a;
+    return (!WF.validation.isEmpty(a) || this.length || a.length <= this.length) && this.substring(this.length - a.length) === a;
 };
 Date.prototype.add = function (a) {
     if ("days" in a) {
@@ -59,7 +59,7 @@ var WF = {
         GO: function(form, page){
             var thisForm = $(form);
             var url = thisForm.attr('action');
-            var searchUrl = url + ((url.indexOf("?") != -1) ? "&" : "?") + "currentPage=" + page;
+            var searchUrl = url + ((url.indexOf("?") !== -1) ? "&" : "?") + "currentPage=" + page;
             WF.page.forward(searchUrl + '&' + thisForm.serialize());
         }
     },
@@ -97,7 +97,7 @@ var WF = {
         submit: function(form, params) {
             if (params) {
                 var firstFn = params.first;
-                if (firstFn && typeof firstFn == 'function'){
+                if (firstFn && typeof firstFn === 'function'){
                     firstFn();
                 }
             }
@@ -131,24 +131,63 @@ var WF = {
         }
     },
     util: {
-        dateFromToPicker: function(from, to) {
-            var options = {language:  'zh-CN', format: 'yyyy-mm-dd', weekStart: 1, todayBtn: 1, autoclose: 1, todayHighlight: 1, startView: 2, minView: 2, forceParse: 0};
-            $("#" + from).datetimepicker(options).on('changeDate', function(ev){
-                $("#" + to).datetimepicker("setStartDate", ev.date);
+        dateRangePicker: function($el, callback) {
+            // required mobiscroll, momentjs
+            var startSel = $el.data('start-input'), endSel = $el.data('end-input'),
+                startInput = $(startSel), endInput = $(endSel),
+                startValue = startInput.val(), endValue = endInput.val(),
+                startDate = moment(startValue).toDate(), endDate = moment(endValue).toDate(),
+                render = function(event, inst){
+                    var range = inst.getVal();
+                    if (!range || !range[0] || !range[1]) {
+                        if (event && typeof callback === 'function') {
+                            callback.apply(this, []);
+                        }
+                        $el.html($el.data('empty-text') || '日期');
+                    } else {
+                        var start = moment(range[0]), end = moment(range[1]), now = moment(), format;
+                        startInput.val(start.format('YYYY-MM-DD'));
+                        endInput.val(end.format('YYYY-MM-DD'));
+                        if (event && typeof callback === 'function') {
+                            callback.apply(this, [start, end, event, inst]);
+                        }
+                        var thisYear = start.year() === now.year() && end.year() === now.year();
+                        var thisMonth = thisYear && start.month() === now.month() && end.month() === now.month();
+                        if (thisYear) {
+                            format = {start: 'M月D日'};
+                            if (thisMonth) {
+                                format.end = 'D日';
+                            }
+                        } else {
+                            format = {start: 'YY年M月D日'}
+                        }
+                        if (!format.end) {
+                            format.end = format.start;
+                        }
+                        $el.html(start.format(format.start) + '至' + end.format(format.end));
+                    }
+                };
+            render(null, {
+                getVal: function(){
+                    return [startValue, endValue]
+                }
             });
-            $("#" + to).datetimepicker(options).on('changeDate', function(ev){
-                $("#" + from).datetimepicker("setEndDate", ev.date);
+            $el.mobiscroll().range({
+                lang: 'zh',
+                startInput: startInput,
+                endInput: endInput,
+                defaultValue: [startDate, endDate],
+                maxDate: new Date(),
+                onSet: function() {
+                    render.apply(this, arguments);
+                }
             });
-        },
-        datePicker: function(id) {
-            var options = {language:  'zh-CN', format: 'yyyy-mm-dd', weekStart: 1, todayBtn: 1, autoclose: 1, todayHighlight: 1, startView: 2, minView: 2, forceParse: 0};
-            $("#" + id).datetimepicker(options);
         },
         checkAll: function(field) {
             var all = $(field);
             var checkbox = $('input:checkbox[name="' + all.attr('data-name') + '"]');
             all.bind('click', function(){
-                if (all.attr('checked') == 'checked') {
+                if (all.is(':checked')) {
                     checkbox.attr({'checked': 'checked'});
                 } else {
                     checkbox.removeAttr('checked');
@@ -164,7 +203,7 @@ var WF = {
             });
             $menu.delegate('li:not(.divider):visible', 'click', function(){
                 toggleOpen();
-                (typeof callback == 'function') && callback($(this));
+                (typeof callback === 'function') && callback($(this));
             });
             $parent.delegate('.dropdown-backdrop', 'click', function(){
                 toggleOpen();
@@ -195,7 +234,7 @@ var WF = {
             opts = $.extend(opts, {success: function(result){
                 loading.hide();
                 if (result.success) {
-                    if (typeof customSuccess == 'function') {
+                    if (typeof customSuccess === 'function') {
                         customSuccess.apply(ctx || this, arguments);
                     } else if (result.redirectUrl) {
                         WF.page.forward(result.redirectUrl);
@@ -219,7 +258,7 @@ var WF = {
             }
         },
         successHandler: function(result, callback) {
-            if (callback && typeof callback == 'function') {
+            if (callback && typeof callback === 'function') {
                 callback(result);
             } else if (result.redirectUrl) {
                 WF.page.forward(result.redirectUrl);
@@ -232,7 +271,7 @@ var WF = {
     },
     validation: {
         isEmpty: function(val) {
-            return null == val || "" == val;
+            return null === val || "" === val;
         },
         isDate: function(val) {
             return /^\d{4}-\d{2}-\d{2}$/.test(val);
@@ -240,7 +279,7 @@ var WF = {
     },
     billing: {
         categories: function (_this) {
-            var billingType = (typeof _this == 'object') ? $(_this).val() : _this;
+            var billingType = (typeof _this === 'object') ? $(_this).val() : _this;
             var $target = $('#categoryGuid');
             var defaultValue = $target.attr('default-value');
             $target.html(WF.resources.emptyOption);
@@ -266,7 +305,7 @@ var WF = {
             });
         },
         subcategories: function (_this) {
-            var categoryGuid = (typeof _this == 'object') ? $(_this).val() : _this;
+            var categoryGuid = (typeof _this === 'object') ? $(_this).val() : _this;
             var $target = $('#subcategoryGuid');
             var defaultValue = $target.attr('default-value');
             $target.html(WF.resources.emptyOption);
@@ -310,5 +349,5 @@ var WF = {
         }
     },
     article: {},
-    user: {},
+    user: {}
 };

@@ -29,8 +29,8 @@ public class BillingDTO {
     private String targetAccountGuid;
     private String targetAccountName;
     private String amount;
-    private BigDecimal _amount = BigDecimal.ZERO;
-    private String occurredTime = JodaUtils.today().toString(JodaUtils.DATE_FORMAT);
+    private BigDecimal amountTemp = BigDecimal.ZERO;
+    private String occurredTime = JodaUtils.now().toString(JodaUtils.DATE_TIME_FORMAT);
     private String occurredUserGuid;
     private BillingStatus status;
     private String settleTime;
@@ -62,10 +62,10 @@ public class BillingDTO {
             this.targetAccountGuid = targetAccount.guid();
             this.targetAccountName = targetAccount.name();
         }
-        this._amount = billing.amount();
+        this.amountTemp = billing.amount();
         this.amount = NumberUtils.toString(billing.amount().abs());
         this.description = billing.description();
-        this.occurredTime = JodaUtils.localDateToString(billing.occurredTime());
+        this.occurredTime = JodaUtils.dateTimeFriendly(billing.occurredTime());
         this.settleTime = JodaUtils.dateTimeToString(billing.settleTime());
         this.status = billing.status();
     }
@@ -171,6 +171,10 @@ public class BillingDTO {
         return occurredTime;
     }
 
+    public String getOccurredTimeFriendly() {
+        return occurredTime;
+    }
+
     public void setOccurredTime(String occurredTime) {
         this.occurredTime = occurredTime;
     }
@@ -193,9 +197,9 @@ public class BillingDTO {
 
     public String getClassName() {
         List<String> classes = new ArrayList<>();
-        if (_amount.compareTo(BigDecimal.ZERO) > 0) {
+        if (amountTemp.compareTo(BigDecimal.ZERO) > 0) {
             classes.add("POSITIVE");
-        } else if (_amount.compareTo(BigDecimal.ZERO) < 0) {
+        } else if (amountTemp.compareTo(BigDecimal.ZERO) < 0) {
             classes.add("NEGATIVE");
         }
         if (BillingStatus.RECEIVED == status || BillingStatus.PAYED == status) {

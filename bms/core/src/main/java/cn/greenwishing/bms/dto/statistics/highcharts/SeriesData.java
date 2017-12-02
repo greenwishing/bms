@@ -9,14 +9,14 @@ import java.sql.Date;
  * @author Frank wu
  * @date 2015/6/23.
  */
-public class SeriesObjectData implements Comparable<SeriesObjectData> {
+public class SeriesData implements Comparable<SeriesData> {
 
     private Long time;
     private String name;
     private Float y = 0f;
 
-    public static SeriesObjectData valueOf(Object[] result) {
-        SeriesObjectData data = new SeriesObjectData();
+    public static SeriesData valueOf(Object[] result) {
+        SeriesData data = new SeriesData();
         Object r0 = result[0];
         if (r0 != null) {
             Date date = (Date) r0;
@@ -41,7 +41,7 @@ public class SeriesObjectData implements Comparable<SeriesObjectData> {
     }
 
     @Override
-    public int compareTo(SeriesObjectData o) {
+    public int compareTo(SeriesData o) {
         if (this.time == null || o.time == null) return 0;
         return this.time.compareTo(o.time);
     }

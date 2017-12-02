@@ -27,6 +27,11 @@
                     }
                 });
             })();
+            mobiscroll.datetime('#occurredTime', {
+                minDate: new Date(),
+                format: 'yyyy-MM-dd HH:ii',
+                lang: 'zh'
+            });
         });
 
         function applyTemplate(el) {
@@ -295,10 +300,10 @@
         </c:choose>
         <div class="weui-cell">
             <div class="weui-cell__hd">
-                <label class="weui-label">日期</label>
+                <label class="weui-label">时间</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" type="date" name="occurredTime" placeholder="日期" value="${billingDTO.occurredTime}"/>
+                <input class="weui-input" id="occurredTime" name="occurredTime" placeholder="时间" value="${billingDTO.occurredTime}" readonly/>
             </div>
         </div>
         <div class="weui-cell">

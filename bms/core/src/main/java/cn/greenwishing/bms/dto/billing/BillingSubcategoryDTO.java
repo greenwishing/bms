@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.dto.billing;
 
 import cn.greenwishing.bms.domain.billing.BillingSubcategory;
+import cn.greenwishing.bms.utils.parser.SqlResultParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,25 @@ public class BillingSubcategoryDTO {
         this.name = subcategory.name();
     }
 
+    private BillingSubcategoryDTO(SqlResultParser subcategory) {
+        this.id = subcategory.nextInt();
+        this.guid = subcategory.nextString();
+        this.name = subcategory.nextString();
+        this.categoryGuid = subcategory.nextString();
+    }
+
     public static List<BillingSubcategoryDTO> toDTO(List<BillingSubcategory> subcategories) {
         List<BillingSubcategoryDTO> subcategoryDTOs = new ArrayList<>();
         for (BillingSubcategory subcategory : subcategories) {
+            BillingSubcategoryDTO subcategoryDTO = new BillingSubcategoryDTO(subcategory);
+            subcategoryDTOs.add(subcategoryDTO);
+        }
+        return subcategoryDTOs;
+    }
+
+    public static List<BillingSubcategoryDTO> valueOf(List<SqlResultParser> subcategories) {
+        List<BillingSubcategoryDTO> subcategoryDTOs = new ArrayList<>();
+        for (SqlResultParser subcategory : subcategories) {
             BillingSubcategoryDTO subcategoryDTO = new BillingSubcategoryDTO(subcategory);
             subcategoryDTOs.add(subcategoryDTO);
         }

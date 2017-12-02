@@ -2,6 +2,7 @@ package cn.greenwishing.bms.dto.billing;
 
 import cn.greenwishing.bms.domain.billing.BillingCategory;
 import cn.greenwishing.bms.domain.billing.BillingType;
+import cn.greenwishing.bms.utils.parser.SqlResultParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,16 @@ public class BillingCategoryDTO {
         this.name = category.name();
     }
 
-    public static List<BillingCategoryDTO> toDTOs(List<BillingCategory> categories) {
+    private BillingCategoryDTO(SqlResultParser category) {
+        this.id = category.nextInt();
+        this.guid = category.nextString();
+        this.type = category.nextEnumWithName(BillingType.class);
+        this.name = category.nextString();
+    }
+
+    public static List<BillingCategoryDTO> toDTOs(List<SqlResultParser> categories) {
         List<BillingCategoryDTO> categoryDTOs = new ArrayList<>();
-        for (BillingCategory category : categories) {
+        for (SqlResultParser category : categories) {
             BillingCategoryDTO categoryDTO = new BillingCategoryDTO(category);
             categoryDTOs.add(categoryDTO);
         }

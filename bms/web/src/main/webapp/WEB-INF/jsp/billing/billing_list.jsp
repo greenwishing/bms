@@ -6,192 +6,192 @@
 <html>
 <head>
     <title>账单列表</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/mobiscroll/mobiscroll.custom-3.0.0.min.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/mobiscroll/mobiscroll.custom-3.0.0.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/mobiscroll/mobiscroll.i18n.zh.js"></script>
     <script type="text/javascript">
         $(function(){
-            WF.billing.categories($('#type'));
+            WF.util.dateRangePicker($('#date-range-picker'), function(start, end){
+                WF.paging.GO($('#search-form'), 1);
+            });
+            initCategorySelector();
+            weui.searchBar('#searchBar');
         });
+        function initCategorySelector() {
+            var $el = $('#category-selector'), $label = $('#category-label');
+            var $fieldType = $('#type'), $fieldCategory = $('#categoryGuid'), $fieldSubcategory = $('#subcategoryGuid');
+            $el.mobiscroll().treelist({
+                lang: 'zh',
+                showInput: false,
+                circular: false,
+                buttons: ['set', 'clear', 'cancel'],
+                clearText: '重置',
+                onSet: function (event, inst) {
+                    updateIndexValue(inst.getArrayVal());
+                },
+                onClear: function(event, inst) {
+                    clearValue();
+                }
+            });
+            initDefaultValue();
+            $label.bind('click', function(){
+                $el.mobiscroll('show');
+            });
+
+            function clearValue() {
+                $fieldType.val('');
+                $fieldCategory.val('');
+                $fieldSubcategory.val('');
+                WF.paging.GO($('#search-form'), 1);
+            }
+
+            function updateIndexValue(indexArray) {
+                var typeIndex = indexArray[0], categoryIndex = typeIndex + '-' + indexArray[1], subcategoryIndex = categoryIndex + '-' + indexArray[2];
+                var $type = $el.find('li[data-index="' + typeIndex + '"]');
+                var $category = $el.find('li[data-index="' + categoryIndex + '"]');
+                var $subcategory = $el.find('li[data-index="' + subcategoryIndex + '"]');
+                updateValue($type, $category, $subcategory, true);
+            }
+
+            function initDefaultValue() {
+                var $type = $el.find('li[data-value="' + $fieldType.val() + '"]');
+                var $category = $el.find('li[data-value="' + $fieldCategory.val() + '"]');
+                var $subcategory = $el.find('li[data-value="' + $fieldSubcategory.val() + '"]');
+                updateValue($type, $category, $subcategory, false);
+            }
+
+            function updateValue($type, $category, $subcategory, search) {
+                var type = $type.data();
+                var category = $category.data();
+                var subcategory = $subcategory.data();
+                console.log('XXXXXXX -  ', type, category, subcategory);
+                var label = '', enabled = false;
+                if (type) {
+                    $fieldType.val(type.value);
+                    label += type.label;
+                    if (category) {
+                        $fieldCategory.val(category.value);
+                        label += ' ' + category.label;
+                        if (subcategory) {
+                            $fieldSubcategory.val(subcategory.value);
+                            label += ' ' + subcategory.label;
+                        }
+                    }
+                    enabled = true;
+                }
+                if (enabled) {
+                    $label.html(label);
+                    if (search) {
+                        WF.paging.GO($('#search-form'), 1);
+                    }
+                } else {
+                    $label.html($label.data('default-label'));
+                }
+            }
+        }
     </script>
     <style type="text/css">
         .weui-form-preview {
             margin-top: 15px;
         }
+        .weui-search-bar__condition {
+            position: relative;
+            padding-right: 10px;
+            cursor: pointer;
+            color: #666;
+        }
+        .weui-search-bar__condition + .weui-search-bar__condition,
+        .weui-search-bar__condition + .weui-search-bar__form:before {
+            padding-left: 10px;
+        }
+        .weui-search-bar__condition + .weui-search-bar__condition:before {
+            content: " ";
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            width: 1px;
+            height: 200%;
+            border-left: 1px solid #d9d9d9;
+            color: #d9d9d9;
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+            -webkit-transform: scaleY(.5);
+            transform: scaleY(.5);
+        }
+        .caret {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-left: 5px;
+            vertical-align: middle;
+            border-top: 4px dashed;
+            border-top: 4px solid\9;
+            border-right: 4px solid transparent;
+            border-left: 4px solid transparent;
+        }
     </style>
 </head>
 <body>
-<form id="search-form" action="list" onsubmit="return false;">
-    <div class="weui-cells__title">查询</div>
-    <div class="weui-cells weui-cells_form">
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">关键字</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" type="text" name="key" value="${pagingDTO.key}" placeholder="请输入关键字">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">日期从</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" type="date" name="dateFrom" value="${pagingDTO.dateFrom}" placeholder="请选择开始日期">
-            </div>
-        </div>
-        <div class="weui-cell">
-            <div class="weui-cell__hd">
-                <label class="weui-label">到</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" type="date" name="dateTo" value="${pagingDTO.dateTo}" placeholder="请选择结束日期">
-            </div>
-        </div>
-        <div class="weui-cell weui-cell_select weui-cell_select-after">
-            <div class="weui-cell__hd">
-                <label class="weui-label">类型</label>
-            </div>
-            <div class="weui-cell__bd">
-                <select class="weui-select" name="type" id="type" onchange="WF.billing.categories(this)" targetId="categoryGuid" default-value="${param.type}">
-                    <option value="">请选择</option>
-                    <c:forEach items="${types}" var="type">
-                        <option value="${type.value}" ${type.value eq param.type ? 'selected':''}>${type.label}</option>
-                    </c:forEach>
-                </select>
-            </div>
-        </div>
-        <div class="weui-cell weui-cell_select weui-cell_select-after">
-            <div class="weui-cell__hd">
-                <label class="weui-label">分类</label>
-            </div>
-            <div class="weui-cell__bd">
-                <select class="weui-select" id="categoryGuid" name="categoryGuid" onchange="WF.billing.subcategories(this)" targetId="subcategoryGuid" default-value="${param.categoryGuid}">
-                    <option value="">请选择</option>
-                </select>
-            </div>
-        </div>
-        <div class="weui-cell weui-cell_select weui-cell_select-after">
-            <div class="weui-cell__hd">
-                <label class="weui-label">子分类</label>
-            </div>
-            <div class="weui-cell__bd">
-                <select class="weui-select" id="subcategoryGuid" name="subcategoryGuid" default-value="${param.subcategoryGuid}">
-                    <option value="">请选择</option>
-                </select>
-            </div>
-        </div>
+<div class="weui-search-bar" id="searchBar">
+    <div class="weui-search-bar__condition">
+        <span id="date-range-picker" data-empty-text="日期" data-start-input="#dateFrom" data-end-input="#dateTo">日期</span>
+        <span class="caret"></span>
     </div>
-    <div class="weui-btn-area">
-        <a href="javascript:void(0);" class="weui-btn weui-btn_primary" onclick="WF.paging.GO($('#search-form'), 1);">查询</a>
+    <div class="weui-search-bar__condition">
+        <span id="category-label" data-default-label="分类">分类</span>
+        <ul id="category-selector" style="display:none">
+            <c:forEach items="${nodes}" var="type" varStatus="i">
+                <li data-index="${i.index}" data-value="${type.value}" data-label="${type.label}"><span>${type.label}</span>
+                    <c:if test="${not empty type.children}">
+                    <ul>
+                        <c:forEach items="${type.children}" var="category" varStatus="j">
+                        <li data-index="${i.index}-${j.index}" data-value="${category.value}" data-label="${category.label}"><span>${category.label}</span>
+                            <c:if test="${not empty category.children}">
+                            <ul>
+                                <c:forEach items="${category.children}" var="subcategory" varStatus="k">
+                                    <li data-index="${i.index}-${j.index}-${k.index}" data-value="${subcategory.value}" data-label="${subcategory.label}"><span>${subcategory.label}</span></li>
+                                </c:forEach>
+                            </ul>
+                            </c:if>
+                        </li>
+                        </c:forEach>
+                    </ul>
+                    </c:if>
+                </li>
+            </c:forEach>
+        </ul>
+        <span class="caret"></span>
     </div>
-</form>
+    <form class="weui-search-bar__form" id="search-form" action="list" onsubmit="WF.paging.GO($('#search-form'), 1);return false;">
+        <div class="weui-search-bar__box">
+            <i class="weui-icon-search"></i>
+            <input type="text" class="weui-search-bar__input" name="key" placeholder="搜索" value="${pagingDTO.key}">
+            <a href="javascript:void(0)" class="weui-icon-clear"></a>
+        </div>
+        <label class="weui-search-bar__label">
+            <i class="weui-icon-search"></i>
+            <span>搜索</span>
+        </label>
+        <input type="hidden" id="dateFrom" name="dateFrom" value="${pagingDTO.dateFrom}">
+        <input type="hidden" id="dateTo" name="dateTo" value="${pagingDTO.dateTo}">
+        <input type="hidden" id="type" name="type" value="${pagingDTO.type}">
+        <input type="hidden" id="categoryGuid" name="categoryGuid" value="${pagingDTO.categoryGuid}">
+        <input type="hidden" id="subcategoryGuid" name="subcategoryGuid" value="${pagingDTO.subcategoryGuid}">
+    </form>
+    <a href="javascript:void(0)" class="weui-search-bar__cancel-btn">取消</a>
+</div>
+<div class="weui-cells">
 <c:forEach items="${pagingDTO.list}" var="billing">
-    <div class="weui-form-preview">
-        <div class="weui-form-preview__hd">
-            <div class="weui-form-preview__item">
-                <label class="weui-form-preview__label">金额</label>
-                <em class="weui-form-preview__value">￥${billing.amount}</em>
-            </div>
+    <a class="weui-cell weui-cell_access" href="detail?guid=${billing.guid}">
+        <div class="weui-cell__bd">
+            <p>${billing.name}</p>
+            <p class="text-small color-grey">${billing.occurredTimeFriendly} ${billing.subcategoryName} ${billing.type.label}</p>
         </div>
-        <div class="weui-form-preview__bd">
-            <div class="weui-form-preview__item">
-                <label class="weui-form-preview__label">类型</label>
-                <span class="weui-form-preview__value">${billing.type.label}</span>
-            </div>
-            <c:if test="${not empty billing.categoryName}">
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">分类</label>
-                    <span class="weui-form-preview__value">${billing.categoryName} ${billing.subcategoryName}</span>
-                </div>
-            </c:if>
-            <div class="weui-form-preview__item">
-                <label class="weui-form-preview__label">项目</label>
-                <span class="weui-form-preview__value">${billing.name}</span>
-            </div>
-            <c:choose>
-                <c:when test="${'EXPEND' eq billing.type}">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">支出账户</label>
-                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
-                    </div>
-                </c:when>
-                <c:when test="${'INCOME' eq billing.type}">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">收入账户</label>
-                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
-                    </div>
-                </c:when>
-                <c:when test="${'TRANSFER' eq billing.type}">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">转出账户</label>
-                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
-                    </div>
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">转入账户</label>
-                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
-                    </div>
-                </c:when>
-                <c:when test="${'BORROW' eq billing.type}">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">借入账户</label>
-                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
-                    </div>
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">债权人</label>
-                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
-                    </div>
-                </c:when>
-                <c:when test="${'LOAN' eq billing.type}">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">借出账户</label>
-                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
-                    </div>
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">债务人</label>
-                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
-                    </div>
-                </c:when>
-                <c:when test="${'RECEIVE' eq billing.type}">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">收款账户</label>
-                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
-                    </div>
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">债务人</label>
-                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
-                    </div>
-                </c:when>
-                <c:when test="${'PAYBACK' eq billing.type}">
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">还款账户</label>
-                        <span class="weui-form-preview__value">${billing.srcAccountName}</span>
-                    </div>
-                    <div class="weui-form-preview__item">
-                        <label class="weui-form-preview__label">债务人</label>
-                        <span class="weui-form-preview__value">${billing.targetAccountName}</span>
-                    </div>
-                </c:when>
-            </c:choose>
-            <div class="weui-form-preview__item">
-                <label class="weui-form-preview__label">时间</label>
-                <span class="weui-form-preview__value">${billing.occurredTime}</span>
-            </div>
-            <c:if test="${not empty billing.description}">
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">描述</label>
-                    <span class="weui-form-preview__value">${billing.description}</span>
-                </div>
-            </c:if>
-            <c:if test="${not empty billing.settleTime}">
-                <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">还款时间</label>
-                    <span class="weui-form-preview__value">${billing.settleTime} ${billing.status.label}</span>
-                </div>
-            </c:if>
-        </div>
-        <%--<div class="weui-form-preview__ft">
-            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">操作</a>
-        </div>--%>
-    </div>
+        <div class="weui-cell__ft"><span class="amount-sign amount-sign_${billing.type.value}">${billing.amount}</span></div>
+    </a>
 </c:forEach>
+</div>
 <tags:paging formName="search-form" paging="${pagingDTO}"/>
 </body>
 </html>
