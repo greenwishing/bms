@@ -7,7 +7,6 @@
     <title>记账</title>
     <script type="text/javascript">
         $(function(){
-            applyTemplate($('#tpl-list'));
             WF.billing.categories('${param.type}');
             (function(){
                 var $tplList = $('#tpl-list');
@@ -30,10 +29,7 @@
                                 }
                             });
                         }
-                        $tplList.data({templates: templates});
-                        $tplList.bind('click', function(){
-                            weui.actionSheet(menus, [{label: '取消', onClick: function(){}}]);
-                        })
+                        $tplList.data({menus: menus, templates: templates});
                     }
                 });
             })();
@@ -43,6 +39,11 @@
                 lang: 'zh'
             });
         });
+
+        function showSuggestTemplate(el) {
+            var menus = $(el).data('menus');
+            weui.actionSheet(menus, [{label: '取消', onClick: function(){}}]);
+        }
 
         function applyTemplate(template) {
             if (!template) return;

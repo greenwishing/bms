@@ -14,6 +14,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
@@ -81,7 +82,9 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
     public List<BillingStatistics> loadBillingStatistics(String userGuid, BillingType billingType, LocalDate startDate, LocalDate endDate) {
         String queryString = "select new cn.greenwishing.bms.domain.statistics.BillingStatistics(b.type, b.category.name, b.subcategory.name, sum(b.amount))" +
                 " from Billing b where b.user.guid=? and b.type=? and b.occurredTime>=? and b.occurredTime<? group by b.category.id, b.subcategory.id";
-        return (List<BillingStatistics>) getHibernateTemplate().find(queryString, userGuid, billingType, startDate, endDate.plusDays(1));
+        DateTime timeStart = startDate.toDateTimeAtStartOfDay();
+        DateTime timeEnd = endDate.toDateTimeAtStartOfDay().plusDays(1);
+        return (List<BillingStatistics>) getHibernateTemplate().find(queryString, userGuid, billingType, timeStart, timeEnd.plusDays(1));
     }
 
     @Override

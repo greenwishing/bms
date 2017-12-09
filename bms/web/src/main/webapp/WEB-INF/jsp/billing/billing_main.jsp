@@ -24,6 +24,10 @@
                 weui.actionSheet(menus, [{label: '取消', onClick: function(){}}]);
             });
             changeType($type, 0);
+
+            $('#tpl-list').on('click', function(){
+                showSuggestTemplate(this);
+            })
         });
 
         function changeType($el, index) {
