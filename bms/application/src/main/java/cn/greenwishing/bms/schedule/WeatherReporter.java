@@ -1,8 +1,7 @@
 package cn.greenwishing.bms.schedule;
 
+import cn.greenwishing.bms.api.weather.*;
 import cn.greenwishing.bms.handler.MailSender;
-import cn.greenwishing.bms.utils.BmsClient;
-import net.sf.json.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,50 +22,20 @@ public class WeatherReporter {
      */
     @Scheduled(cron = "0 0 7 * * ?")
     public void report() {
-        String stationId = "101270102";
-        float lat = 30.605027f;
-        float lng = 104.155828f;
+        long stationId = 101270102L;
+        float lat = 30.605027F;
+        float lng = 104.155828F;
 
-        StringBuilder sb = new StringBuilder();
         // 实时天气预报
-        String forecastUrl = String.format("http://forecast.weather.com.cn/town/api/v1/sk?lat=%s&lng=%s", lat, lng);
-        String forecastResult = BmsClient.doGet(forecastUrl);
-        JSONObject forecast = JSONObject.fromObject(forecastResult);
-        sb.append("实时天气：");
-        if (forecast.has("weather")) {
-            String weather = forecast.getString("weather");
-            sb.append(weather).append("，");
-        }
-        if (forecast.has("temp")) {
-            String temp = forecast.getString("temp");
-            sb.append(temp).append("℃").append("\n");
-        }
-        String cityInfoUrl = String.format("http://www.weather.com.cn/data/cityinfo/%s.html", stationId);
-        String cityInfoResult = BmsClient.doGet(cityInfoUrl);
-        JSONObject cityInfo = JSONObject.fromObject(cityInfoResult);
-        if (cityInfo.has("weatherinfo")) {
-            JSONObject weatherInfo = cityInfo.getJSONObject("weatherinfo");
-            sb.append("今天：");
-            if (weatherInfo.has("weather")) {
-                sb.append(weatherInfo.getString("weather")).append("，");
-            }
-            if (weatherInfo.has("temp1")) {
-                sb.append("夜间").append(weatherInfo.getString("temp1")).append("，");
-            }
-            if (weatherInfo.has("temp2")) {
-                sb.append("白天").append(weatherInfo.getString("temp2"));
-            }
-            sb.append("\n");
-        }
-
+        StringBuilder sb = new StringBuilder();
+        ForecastWeatherResponse forecastWeather = new ForecastWeatherRequest(lat, lng).execute();
+        sb.append(forecastWeather).append("\n");
+        // 城市一日天气
+        CityWeatherInfoResponse weatherInfo = new CityWeatherInfoRequest(stationId).execute();
+        sb.append(weatherInfo.getWeatherInfo()).append("\n");
         // 下雨预报
-        String rainUrl = String.format("http://d3.weather.com.cn/webgis_rain_new/webgis/minute?lat=%s&lon=%s&stationid=%s" + stationId, lat, lng, stationId);
-        String rainResult = BmsClient.doGet(rainUrl);
-        JSONObject rain = JSONObject.fromObject(rainResult);
-        if (rain.has("msg")) {
-            String msg = rain.getString("msg");
-            sb.append(msg).append("\n");
-        }
+        RainNewResponse rainNew = new RainNewRequest(stationId, lat, lng).execute();
+        sb.append(rainNew).append("\n");
         MailSender.systemSend("greenwishing@msn.cn", "天气预报", sb.toString().replaceAll("\n", "<br/>"));
     }
 }
