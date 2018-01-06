@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.schedule;
 
 import cn.greenwishing.bms.api.weather.*;
+import cn.greenwishing.bms.cache.ConfigurationCache;
 import cn.greenwishing.bms.handler.MailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -22,9 +23,9 @@ public class WeatherReporter {
      */
     @Scheduled(cron = "0 0 7 * * ?")
     public void report() {
-        long stationId = 101270102L;
-        float lat = 30.605027F;
-        float lng = 104.155828F;
+        Long stationId = ConfigurationCache.getLong("weather.location.station.id", 101270102L);
+        Float lat = ConfigurationCache.getFloat("weather.location.lat", 30.605027F);
+        Float lng = ConfigurationCache.getFloat("weather.location.lng", 104.155828F);
 
         // 实时天气预报
         StringBuilder sb = new StringBuilder();

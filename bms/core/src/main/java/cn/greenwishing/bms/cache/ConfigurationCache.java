@@ -4,6 +4,7 @@ import cn.greenwishing.bms.domain.config.ConfigurationRepository;
 import cn.greenwishing.bms.spring.SpringBeanFactory;
 import cn.greenwishing.bms.utils.ValidationUtils;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,17 +16,39 @@ public class ConfigurationCache {
 
     private static final Map<String, String> configurations = new HashMap<>();
 
-    public static Integer getInt(String key, Integer defaultValue) {
-        Integer value = getInt(key);
-        return value != null ? value : defaultValue;
+    public static Integer getInt(String key) {
+        return getInt(key, null);
     }
 
-    public static Integer getInt(String key) {
+    public static Integer getInt(String key, Integer defaultValue) {
+        Number number = getNumber(key, defaultValue);
+        return number == null ? defaultValue : number.intValue();
+    }
+
+    private static Number getNumber(String key, Number defaultValue) {
         String value = get(key);
-        if (ValidationUtils.isPositiveNumber(value)) {
-            return Integer.valueOf(value);
+        if (ValidationUtils.isAllNumber(value)) {
+            return new BigDecimal(value);
         }
-        return null;
+        return defaultValue;
+    }
+
+    public static Long getLong(String key) {
+        return getLong(key, null);
+    }
+
+    public static Long getLong(String key, Long defaultValue) {
+        Number number = getNumber(key, defaultValue);
+        return number == null ? defaultValue : number.longValue();
+    }
+
+    public static Float getFloat(String key) {
+        return getFloat(key, null);
+    }
+
+    public static Float getFloat(String key, Float defaultValue) {
+        Number number = getNumber(key, defaultValue);
+        return number == null ? defaultValue : number.floatValue();
     }
 
     public static String get(String key, String defaultValue) {
