@@ -1,5 +1,8 @@
 package cn.greenwishing.bms.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -62,5 +65,27 @@ public class StringUtils {
      */
     public static int random(int min, int max) {
         return (int) (Math.random() * (max - min)) + min;
+    }
+
+    public static String encode(String value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            return URLEncoder.encode(value, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            return value;
+        }
+    }
+
+    public static String decode(String value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            return URLDecoder.decode(value, "utf-8");
+        } catch (UnsupportedEncodingException ignored) {
+            return value;
+        }
     }
 }
