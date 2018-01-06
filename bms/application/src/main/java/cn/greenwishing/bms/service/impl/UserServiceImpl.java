@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByAccount(username);
+        User user = userRepository.findUserByAccount(username);
         if (user == null) {
             return new PublicUserDetails();
         }
@@ -35,8 +35,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User findByAccount(String account) {
-        return userRepository.findUserByAccount(account);
+    public UserDTO findByAccount(String account) {
+        User user = userRepository.findUserByAccount(account);
+        return user == null ? null : new UserDTO(user);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void saveOrUpdateUser(UserDTO userDTO) {
+    public UserDTO saveOrUpdateUser(UserDTO userDTO) {
         User user;
         String guid = userDTO.getGuid();
         String username = userDTO.getUsername();
@@ -59,6 +60,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.updateUsername(username);
         user.updateStatus(userDTO.getStatus());
         userRepository.saveOrUpdate(user);
+        return new UserDTO(user);
     }
 
     @Override

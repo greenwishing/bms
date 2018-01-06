@@ -1,6 +1,5 @@
 package cn.greenwishing.bms.web.controller.user;
 
-import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.domain.user.UserStatus;
 import cn.greenwishing.bms.dto.user.UserDTO;
 import cn.greenwishing.bms.dto.user.UserPagingDTO;
@@ -62,7 +61,7 @@ public class UserController {
             if (ValidationUtils.isEmpty(account)) {
                 errors.rejectValue("account", "account", "请输入帐号");
             } else {
-                User user = userService.findByAccount(account);
+                UserDTO user = userService.findByAccount(account);
                 if (user != null) {
                     errors.rejectValue("account", "account", "帐号已被使用，请更换");
                 }

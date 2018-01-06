@@ -1,4 +1,4 @@
-package cn.greenwishing.bms.web.controller.app.api;
+package cn.greenwishing.bms.web.controller.api;
 
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.dto.statistics.highcharts.Series;

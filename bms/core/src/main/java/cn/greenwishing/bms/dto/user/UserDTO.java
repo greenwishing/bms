@@ -3,8 +3,6 @@ package cn.greenwishing.bms.dto.user;
 import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.domain.user.UserStatus;
 import cn.greenwishing.bms.utils.JodaUtils;
-import cn.greenwishing.bms.utils.MD5Utils;
-import cn.greenwishing.bms.utils.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +32,7 @@ public class UserDTO {
         this.guid = user.guid();
         this.username = user.username();
         this.account = user.account();
+        this.password = user.password();
         this.lastLoginTime = JodaUtils.dateTimeToString(user.lastLoginTime());
         this.status = user.status();
     }

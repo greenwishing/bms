@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MD5Utils {
     public static final String MD5 = "MD5";
+    public static final String EMPTY = md5("");
 
     public static String md5(String value) {
         return md5(value.getBytes());

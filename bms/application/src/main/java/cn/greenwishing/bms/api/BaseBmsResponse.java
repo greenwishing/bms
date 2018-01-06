@@ -8,9 +8,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public abstract class BaseBmsResponse implements BmsResponse {
 
-    @SerializedName("err_code")
+    @SerializedName("errcode")
     private Integer errorCode;
-    @SerializedName("err_msg")
+    @SerializedName("errmsg")
     private String errorMessage;
 
     /**

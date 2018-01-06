@@ -1,4 +1,4 @@
-package cn.greenwishing.bms.web.controller.weixin;
+package cn.greenwishing.bms.web.controller.api.weixin;
 
 import cn.greenwishing.bms.web.mapping.RootMappingHandler;
 import cn.greenwishing.bms.web.mapping.SpecialMappingHandlerMapping;

@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.domain.user;
 
 import cn.greenwishing.bms.domain.Repository;
+import cn.greenwishing.bms.domain.open.OpenUser;
 import cn.greenwishing.bms.utils.paging.UserPaging;
 
 /**
@@ -12,4 +13,6 @@ public interface UserRepository extends Repository {
     UserPaging findUserPaging(UserPaging paging);
 
     String findUserGuidByAppId(String appId);
+
+    OpenUser findOpenUserByOpenid(String openid);
 }
