@@ -1,0 +1,7 @@
+<!--index.wxml-->
+<view class="container" wx:if="{{showPage}}">
+  <view bindtap="bindViewTap" class="userinfo">
+    <image class="userinfo-avatar" src="/images/logo.png" background-size="cover"></image>
+    <text class="userinfo-nickname">记账管理</text>
+  </view>
+</view>

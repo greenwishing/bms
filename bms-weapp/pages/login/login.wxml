@@ -1,0 +1,26 @@
+<form bindsubmit="login">
+  <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{topTipsText}}</view>
+  <view class="weui-cells__title">登录</view>
+  <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+              <view class="weui-label">帐号</view>
+          </view>
+          <view class="weui-cell__bd">
+              <input class="weui-input" type="text" name="account" placeholder="请输入帐号"/>
+          </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+              <view class="weui-label">密码</view>
+          </view>
+          <view class="weui-cell__bd">
+              <input class="weui-input" type="password" name="password" placeholder="请输入密码"/>
+          </view>
+      </view>
+  </view>
+  <view class="weui-cells__tips">没有帐号？那就<text class="weui-agree__link" bindtap="fastRegister">直接使用</text></view>
+  <view class="weui-btn-area">
+      <button class="weui-btn" type="primary" form-type="submit">登录</button>
+  </view>
+</form>
