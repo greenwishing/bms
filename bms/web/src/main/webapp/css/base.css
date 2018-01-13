@@ -69,6 +69,11 @@ body {
 .weui-footer {  margin-top: 50px; }
 .weui-footer a { color: inherit;}
 
+.weui-article img {
+    display: block;
+    margin: 0 auto;
+}
+
 .signum {
     text-align: center;
     font-size: 28px;
