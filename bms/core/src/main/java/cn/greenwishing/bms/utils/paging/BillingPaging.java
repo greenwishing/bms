@@ -16,8 +16,8 @@ public class BillingPaging extends AbstractPaging<Billing> {
     private String dateFrom;
     private String dateTo;
 
-    public BillingPaging(int currentPage, int pageSize, String key, BillingType type, String categoryGuid, String subcategoryGuid, String dateFrom, String dateTo) {
-        super(currentPage, pageSize);
+    public BillingPaging(int currentPage, int pageSize, String userGuid, String key, BillingType type, String categoryGuid, String subcategoryGuid, String dateFrom, String dateTo) {
+        super(currentPage, pageSize, userGuid);
         this.key = key;
         this.type = type;
         this.categoryGuid = categoryGuid;

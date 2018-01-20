@@ -16,7 +16,7 @@ public class UserPagingDTO extends AbstractPagingDTO<UserDTO, UserPaging> {
 
     @Override
     public UserPaging toPaging() {
-        return new UserPaging(currentPage, pageSize, key);
+        return new UserPaging(currentPage, pageSize, userGuid, key);
     }
 
     @Override

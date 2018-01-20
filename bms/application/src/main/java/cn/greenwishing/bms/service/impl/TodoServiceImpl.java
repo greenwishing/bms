@@ -30,7 +30,7 @@ public class TodoServiceImpl implements TodoService {
         Todo todo;
         String guid = todoDTO.getGuid();
         if (ValidationUtils.isEmpty(guid)) {
-            String userGuid = SecurityHolder.getUserGuid();
+            String userGuid = todoDTO.getUserGuid();
             User user = userRepository.findByGuid(User.class, userGuid);
             todo = new Todo(user);
         } else {

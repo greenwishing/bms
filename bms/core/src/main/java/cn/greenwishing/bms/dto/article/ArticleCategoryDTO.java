@@ -1,9 +1,7 @@
 package cn.greenwishing.bms.dto.article;
 
 import cn.greenwishing.bms.domain.article.ArticleCategory;
-import cn.greenwishing.bms.domain.user.User;
-import cn.greenwishing.bms.utils.SecurityHolder;
-import cn.greenwishing.bms.utils.ValidationUtils;
+import cn.greenwishing.bms.dto.AbstractDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +9,7 @@ import java.util.List;
 /**
  * @author Frank wu
  */
-public class ArticleCategoryDTO {
+public class ArticleCategoryDTO extends AbstractDTO {
 
     private String guid;
     private String name;

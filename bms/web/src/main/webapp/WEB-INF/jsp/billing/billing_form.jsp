@@ -7,13 +7,13 @@
     <title>记账</title>
     <script type="text/javascript">
         $(function(){
-            WF.billing.categories('${param.type}');
+            WF.billing.categories('${billingDTO.type.value}');
             (function(){
                 var $tplList = $('#tpl-list');
                 WF.ajax.req({
                     type: 'post',
                     url: 'suggest_tpl',
-                    data: {type: '${param.type}', size: 30},
+                    data: {type: '${billingDTO.type.value}', size: 30},
                     success: function(result) {
                         var tpl = result.tplList;
                         var menus = [], templates = [];
@@ -59,7 +59,7 @@
     </script>
 </head>
 <body>
-<form id="data-form" action="record?type=${param.type}" method="post" onsubmit="return false;">
+<form id="data-form" action="record?type=${billingDTO.type.value}" method="post" onsubmit="return false;">
     <div class="weui-cells weui-cells_form">
         <div class="weui-cell weui-cell_select weui-cell_select-after">
             <div class="weui-cell__hd">
@@ -82,7 +82,8 @@
             </div>
         </div>
     </div>
-    <div class="weui-cells__title">${billingDTO.type.label}</div>
+    <c:set var="type" value="${billingDTO.type}"/>
+    <div class="weui-cells__title">${type.label}</div>
     <div class="weui-cells weui-cells_form">
         <div class="weui-cell">
             <div class="weui-cell__hd">
@@ -92,214 +93,42 @@
                 <input class="weui-input" type="text" name="name" id="name" placeholder="名称" value="${billingDTO.name}">
             </div>
         </div>
-        <c:choose>
-            <c:when test="${'EXPEND' eq param.type}">
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">支出账户</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="srcAccountGuid">
-                            <c:forEach items="${accountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
+        <c:if test="${type.src.enabled}">
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">${type.src.name}</label>
                 </div>
-            </c:when>
-            <c:when test="${'INCOME' eq param.type}">
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">收入账户</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="srcAccountGuid">
-                            <c:forEach items="${accountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="srcAccountGuid">
+                        <c:forEach items="${type.src.loan ? loanAccountMap : accountMap}" var="group">
+                            <optgroup label="${group.key.label}">
+                                <c:forEach items="${group.value}" var="account">
+                                    <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                </c:forEach>
+                            </optgroup>
+                        </c:forEach>
+                    </select>
                 </div>
-            </c:when>
-            <c:when test="${'TRANSFER' eq param.type}">
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">转出账户</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="srcAccountGuid">
-                            <c:forEach items="${accountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
+            </div>
+        </c:if>
+        <c:if test="${type.target.enabled}">
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">${type.target.name}</label>
                 </div>
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">转入账户</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="targetAccountGuid">
-                            <c:forEach items="${accountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="targetAccountGuid">
+                        <c:forEach items="${type.target.loan ? loanAccountMap : accountMap}" var="group">
+                            <optgroup label="${group.key.label}">
+                                <c:forEach items="${group.value}" var="account">
+                                    <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
+                                </c:forEach>
+                            </optgroup>
+                        </c:forEach>
+                    </select>
                 </div>
-            </c:when>
-            <c:when test="${'BORROW' eq param.type}">
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">借入账户</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="srcAccountGuid">
-                            <c:forEach items="${accountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">债权人</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="targetAccountGuid">
-                            <c:forEach items="${loanAccountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-            </c:when>
-            <c:when test="${'LOAN' eq param.type}">
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">借出账户</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="srcAccountGuid">
-                            <c:forEach items="${accountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">债务人</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="targetAccountGuid">
-                            <c:forEach items="${loanAccountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-            </c:when>
-            <c:when test="${'RECEIVE' eq param.type}">
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">收款账户</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="srcAccountGuid">
-                            <c:forEach items="${accountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">债务人</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="targetAccountGuid">
-                            <c:forEach items="${loanAccountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-            </c:when>
-            <c:when test="${'PAYBACK' eq param.type}">
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">还款账户</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="srcAccountGuid">
-                            <c:forEach items="${accountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                <div class="weui-cell weui-cell_select weui-cell_select-after">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label">债权人</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <select class="weui-select" name="targetAccountGuid">
-                            <c:forEach items="${loanAccountMap}" var="group">
-                                <optgroup label="${group.key.label}">
-                                    <c:forEach items="${group.value}" var="account">
-                                        <option value="${account.guid}" data-id="${account.id}">${account.name}</option>
-                                    </c:forEach>
-                                </optgroup>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-            </c:when>
-        </c:choose>
+            </div>
+        </c:if>
         <div class="weui-cell">
             <div class="weui-cell__hd">
                 <label class="weui-label">时间</label>

@@ -6,7 +6,6 @@ import cn.greenwishing.bms.domain.billing.BillingSubcategory;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.persistence.hibernate.AbstractRepositoryHibernate;
-import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import cn.greenwishing.bms.utils.query.helper.BillingQueryHelper;
@@ -35,8 +34,7 @@ public class BillingRepositoryHibernate extends AbstractRepositoryHibernate impl
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Object[]> loadNearestStatistics(final BillingType billingType, final Integer size) {
-        final String userGuid = SecurityHolder.getUserGuid();
+    public List<Object[]> loadNearestStatistics(final BillingType billingType, final Integer size, final String userGuid) {
         return getHibernateTemplate().execute(new HibernateCallback<List<Object[]>>() {
             @Override
             public List<Object[]> doInHibernate(Session session) throws HibernateException {

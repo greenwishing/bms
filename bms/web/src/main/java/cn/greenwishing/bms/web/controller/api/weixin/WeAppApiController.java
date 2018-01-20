@@ -2,20 +2,36 @@ package cn.greenwishing.bms.web.controller.api.weixin;
 
 import cn.greenwishing.bms.api.weixin.weapp.JSCode2SessionRequest;
 import cn.greenwishing.bms.api.weixin.weapp.JSCode2SessionResponse;
+import cn.greenwishing.bms.domain.billing.BillingAccountType;
+import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
+import cn.greenwishing.bms.dto.billing.BillingAccountDTO;
+import cn.greenwishing.bms.dto.billing.BillingDTO;
+import cn.greenwishing.bms.dto.billing.BillingPagingDTO;
 import cn.greenwishing.bms.dto.open.OpenUserDTO;
 import cn.greenwishing.bms.dto.open.WeAppUserInfo;
+import cn.greenwishing.bms.dto.statistics.tree.BillingAccountTypeNode;
+import cn.greenwishing.bms.dto.statistics.tree.TreeNode;
 import cn.greenwishing.bms.dto.user.UserDTO;
+import cn.greenwishing.bms.service.ArticleService;
+import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.service.UserService;
 import cn.greenwishing.bms.service.WeAppService;
 import cn.greenwishing.bms.utils.MD5Utils;
 import cn.greenwishing.bms.utils.ValidationUtils;
+import cn.greenwishing.bms.utils.grouper.GroupResult;
+import cn.greenwishing.bms.utils.grouper.GroupResults;
+import cn.greenwishing.bms.utils.grouper.Grouper;
 import cn.greenwishing.bms.web.controller.api.ApiResult;
+import cn.greenwishing.bms.web.validator.BillingValidator;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Wufan
@@ -29,11 +45,15 @@ public class WeAppApiController {
     private UserService userService;
     @Resource
     private WeAppService weAppService;
+    @Resource
+    private BillingService billingService;
+    @Resource
+    private ArticleService articleService;
 
     /**
      * 更新小程序用户资料
      */
-    @RequestMapping("user")
+    @RequestMapping("updateuser")
     public ModelAndView updateUserInfo(String code, WeAppUserInfo userInfo) {
         ApiResult result;
         try {
@@ -123,6 +143,74 @@ public class WeAppApiController {
                 result = ApiResult.fail(-1, e.getMessage());
             }
         }
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    @RequestMapping("checkupdate")
+    public ModelAndView checkUpdate(String version) {
+        ApiResult result = ApiResult.success()
+                .add("update", true);
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    /**
+     * 小程序获取账单类型，账户、文章分类等信息
+     */
+    @RequestMapping("data")
+    public ModelAndView data(String userGuid) {
+        ApiResult result;
+        if (ValidationUtils.isEmpty(userGuid)) {
+            result = ApiResult.fail(-1, "未登录");
+        } else {
+            try {
+                List<TreeNode> billingTypes = billingService.loadBillingTreeNodes(userGuid);
+                List<BillingAccountDTO> accountDTOs = billingService.loadBillingAccounts(userGuid);
+                GroupResults<BillingAccountType, BillingAccountDTO> results = Grouper.group(accountDTOs);
+                List<BillingAccountTypeNode> billingAccounts = new ArrayList<>();
+                for (GroupResult<BillingAccountType, BillingAccountDTO> groupResult : results.getGroupResults()) {
+                    BillingAccountType accountType = groupResult.getKey();
+                    BillingAccountTypeNode node = new BillingAccountTypeNode(accountType);
+                    for (BillingAccountDTO accountDTO : groupResult.getResults()) {
+                        node.addChild(new TreeNode(accountDTO));
+                    }
+                    billingAccounts.add(node);
+                }
+                List<ArticleCategoryDTO> articleCategories = articleService.loadArticleCategories(userGuid);
+                result = ApiResult.success()
+                        .add("billingTypes", billingTypes)
+                        .add("billingAccounts", billingAccounts)
+                        .add("articleCategories", articleCategories)
+                ;
+            } catch (Exception e) {
+                result = ApiResult.fail(-1, e.getMessage());
+            }
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    /**
+     * 记账
+     */
+    @RequestMapping("addbilling")
+    public ModelAndView addBilling(BillingDTO billingDTO, BindingResult errors) {
+        ApiResult result;
+        new BillingValidator().validate(billingDTO, errors);
+        if (errors.hasErrors()) {
+            result = ApiResult.fail(-1, errors.getFieldError().getDefaultMessage());
+        } else {
+            billingService.saveOrUpdateBilling(billingDTO);
+            result = ApiResult.success();
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    /**
+     * 账单
+     */
+    @RequestMapping("billingdata")
+    public ModelAndView billingData(BillingPagingDTO pagingDTO) {
+        BillingPagingDTO paging = billingService.loadBillingPaging(pagingDTO);
+        ApiResult result = ApiResult.success().add("paging", paging);
         return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
     }
 }

@@ -6,6 +6,7 @@ import cn.greenwishing.bms.domain.oauth.OAuthResourceId;
 import cn.greenwishing.bms.domain.oauth.OAuthScope;
 import cn.greenwishing.bms.dto.oauth.OAuthAppDTO;
 import cn.greenwishing.bms.service.AppService;
+import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,7 +34,8 @@ public class AppController {
 
     @RequestMapping("list")
     public ModelAndView list(ModelMap model) {
-        List<OAuthAppDTO> apps = appService.loadApps();
+        String userGuid = SecurityHolder.getUserGuid();
+        List<OAuthAppDTO> apps = appService.loadApps(userGuid);
         model.put("apps", apps);
         return new ModelAndView("app/app_list");
     }
@@ -43,7 +45,8 @@ public class AppController {
     public ModelAndView appForm(String appId, ModelMap model) {
         OAuthAppDTO appDTO;
         if (ValidationUtils.isEmpty(appId)) {
-            Long appCount = appService.loadAppCount();
+            String userGuid = SecurityHolder.getUserGuid();
+            Long appCount = appService.loadAppCount(userGuid);
             if (appCount >= 3) {
                 throw new RuntimeException("一个用户最多创建3个应用，你已创建了" + appCount + "个应用");
             }
@@ -66,6 +69,7 @@ public class AppController {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
         } else {
+            appDTO.setUserGuid(SecurityHolder.getUserGuid());
             appService.saveOrUpdate(appDTO);
             model.put("success", true);
             model.put("redirectUrl", "list");

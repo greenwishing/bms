@@ -11,8 +11,8 @@ public class MomentPaging extends AbstractPaging<Moment> {
     private String key;
     private String typeGuid;
 
-    public MomentPaging(int currentPage, int pageSize, String key, String typeGuid) {
-        super(currentPage, pageSize);
+    public MomentPaging(int currentPage, int pageSize, String userGuid, String key, String typeGuid) {
+        super(currentPage, pageSize, userGuid);
         this.key = key;
         this.typeGuid = typeGuid;
     }

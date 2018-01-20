@@ -2,8 +2,12 @@ package cn.greenwishing.bms.dto.billing;
 
 import cn.greenwishing.bms.domain.billing.BillingAccount;
 import cn.greenwishing.bms.domain.billing.BillingAccountType;
+import cn.greenwishing.bms.dto.AbstractDTO;
+import cn.greenwishing.bms.dto.Selectable;
 import cn.greenwishing.bms.utils.NumberUtils;
+import cn.greenwishing.bms.utils.grouper.GroupItem;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +16,7 @@ import java.util.List;
  * @author Frank wu
  * @date 2016/10/16
  */
-public class BillingAccountDTO {
+public class BillingAccountDTO extends AbstractDTO implements GroupItem<BillingAccountType>, Selectable {
 
     private Integer id;
     private String guid;
@@ -71,6 +75,14 @@ public class BillingAccountDTO {
         return type;
     }
 
+    public boolean isLoan() {
+        return type.isLoan();
+    }
+
+    public String getTypeLabel() {
+        return type.getLabel();
+    }
+
     public void setType(BillingAccountType type) {
         this.type = type;
     }
@@ -85,5 +97,20 @@ public class BillingAccountDTO {
 
     public int getSignum() {
         return signum;
+    }
+
+    @Override
+    public BillingAccountType key() {
+        return type;
+    }
+
+    @Override
+    public Serializable getValue() {
+        return guid;
+    }
+
+    @Override
+    public String getLabel() {
+        return name;
     }
 }

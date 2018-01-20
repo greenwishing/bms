@@ -48,7 +48,7 @@ public class MomentServiceImpl implements MomentService {
         MomentType momentType;
         String guid = momentTypeDTO.getGuid();
         if (ValidationUtils.isEmpty(guid)) {
-            String userGuid = SecurityHolder.getUserGuid();
+            String userGuid = momentTypeDTO.getUserGuid();
             User user = userRepository.findByGuid(User.class, userGuid);
             momentType = new MomentType(user);
         } else {

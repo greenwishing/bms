@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.dto.oauth;
 
 import cn.greenwishing.bms.domain.oauth.*;
+import cn.greenwishing.bms.dto.AbstractDTO;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Frank wu
  * @date 2015/11/7.
  */
-public class OAuthAppDTO {
+public class OAuthAppDTO extends AbstractDTO {
 
     private String appId;
     private String appSecret;

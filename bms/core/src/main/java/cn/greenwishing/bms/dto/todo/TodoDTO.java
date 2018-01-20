@@ -2,6 +2,7 @@ package cn.greenwishing.bms.dto.todo;
 
 import cn.greenwishing.bms.domain.Status;
 import cn.greenwishing.bms.domain.todo.Todo;
+import cn.greenwishing.bms.dto.AbstractDTO;
 import cn.greenwishing.bms.utils.JodaUtils;
 import org.joda.time.DateTime;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author Frank wu
  * @date 2017/5/7
  */
-public class TodoDTO {
+public class TodoDTO extends AbstractDTO {
 
     private String guid;
     private String content;

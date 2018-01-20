@@ -2,6 +2,7 @@ package cn.greenwishing.bms.web.controller.todo;
 
 import cn.greenwishing.bms.dto.todo.TodoDTO;
 import cn.greenwishing.bms.service.TodoService;
+import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,6 +60,7 @@ public class TodoController {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
         } else {
+            todoDTO.setUserGuid(SecurityHolder.getUserGuid());
             todoService.saveOrUpdateTodo(todoDTO);
             model.put("success", true);
             model.put("redirectUrl", "list");

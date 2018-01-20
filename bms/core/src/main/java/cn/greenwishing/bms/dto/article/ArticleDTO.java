@@ -4,6 +4,7 @@ import cn.greenwishing.bms.domain.article.Article;
 import cn.greenwishing.bms.domain.article.ArticleAccess;
 import cn.greenwishing.bms.domain.article.ArticleCategory;
 import cn.greenwishing.bms.domain.user.User;
+import cn.greenwishing.bms.dto.AbstractDTO;
 import cn.greenwishing.bms.dto.OSSKey;
 import cn.greenwishing.bms.dto.user.UserDTO;
 import cn.greenwishing.bms.utils.HtmlFilter;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * @author Frank wu
  */
-public class ArticleDTO {
+public class ArticleDTO extends AbstractDTO {
 
     private String guid;
     private String title;

@@ -6,6 +6,8 @@ import cn.greenwishing.bms.domain.user.UserRepository;
 import cn.greenwishing.bms.dto.open.OpenUserDTO;
 import cn.greenwishing.bms.dto.open.WeAppUserInfo;
 import cn.greenwishing.bms.dto.user.UserDTO;
+import cn.greenwishing.bms.service.ArticleService;
+import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.service.WeAppService;
 import cn.greenwishing.bms.utils.MD5Utils;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,10 @@ public class WeAppServiceImpl implements WeAppService {
 
     @Resource
     private UserRepository userRepository;
+    @Resource
+    private BillingService billingService;
+    @Resource
+    private ArticleService articleService;
 
     @Override
     public OpenUserDTO saveOpenUserInfo(WeAppUserInfo userInfo) {
@@ -49,6 +55,12 @@ public class WeAppServiceImpl implements WeAppService {
             user = new User(openid, MD5Utils.EMPTY);
             user.updateUsername(userInfo.getNickName());
             userRepository.saveOrUpdate(user);
+            try {
+                // 生成默认账单分类
+                billingService.generateDefaultCategory(user.guid());
+                // 生成默认文章分类
+                articleService.generateDefaultCategory(user.guid());
+            } catch (Exception ignored) {}
         }
         bindOpenUser(openid, user.guid());
         return new UserDTO(user);

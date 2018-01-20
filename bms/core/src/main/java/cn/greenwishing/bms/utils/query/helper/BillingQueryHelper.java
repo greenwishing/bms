@@ -3,7 +3,6 @@ package cn.greenwishing.bms.utils.query.helper;
 import cn.greenwishing.bms.domain.billing.Billing;
 import cn.greenwishing.bms.domain.billing.BillingType;
 import cn.greenwishing.bms.utils.JodaUtils;
-import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.BillingPaging;
 import org.hibernate.query.Query;
@@ -18,7 +17,10 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
     public BillingQueryHelper(HibernateTemplate hibernateTemplate, BillingPaging paging) {
         super(hibernateTemplate, paging);
 
-        addFilter(userFilter());
+        String userGuid = paging.getUserGuid();
+        if (ValidationUtils.isNotEmpty(userGuid)) {
+            addFilter(userFilter(userGuid));
+        }
 
         String key = paging.getKey();
         if (ValidationUtils.isNotEmpty(key)) {
@@ -48,11 +50,11 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
         }
     }
 
-    private Filter userFilter() {
+    private Filter userFilter(final String userGuid) {
         return new ParameterFilter() {
             @Override
             public void setParameter(Query query) {
-                query.setParameter("userGuid", SecurityHolder.getUserGuid());
+                query.setParameter("userGuid", userGuid);
             }
 
             @Override

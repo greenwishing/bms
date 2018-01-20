@@ -1,7 +1,6 @@
 package cn.greenwishing.bms.dto;
 
 import cn.greenwishing.bms.utils.paging.AbstractPaging;
-import cn.greenwishing.bms.utils.paging.BillingPaging;
 import cn.greenwishing.bms.utils.paging.Paging;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * @author Frank wu
  */
-public abstract class AbstractPagingDTO<T, P extends AbstractPaging> implements Paging<T> {
+public abstract class AbstractPagingDTO<T, P extends AbstractPaging> extends AbstractDTO implements Paging<T> {
     protected int pageSize = 10;
     protected int currentPage = 1;
     private int pageCount;

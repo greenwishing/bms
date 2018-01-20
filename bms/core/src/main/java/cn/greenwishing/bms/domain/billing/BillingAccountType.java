@@ -1,12 +1,14 @@
 package cn.greenwishing.bms.domain.billing;
 
+import cn.greenwishing.bms.dto.Selectable;
+
 /**
  * 账户类型
  *
  * @author Frank wu
  * @date 2016/10/15
  */
-public enum BillingAccountType {
+public enum BillingAccountType implements Selectable {
     CASH("现金账户"),
     CREDIT_CARD("信用卡账户"),
     DEPOSIT_CARD("储蓄卡账户"),
@@ -27,10 +29,12 @@ public enum BillingAccountType {
         this.loan = loan;
     }
 
+    @Override
     public String getValue() {
         return name();
     }
 
+    @Override
     public String getLabel() {
         return label;
     }

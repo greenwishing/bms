@@ -13,7 +13,6 @@ import cn.greenwishing.bms.dto.article.ArticleDTO;
 import cn.greenwishing.bms.dto.article.ArticlePagingDTO;
 import cn.greenwishing.bms.service.ArticleService;
 import cn.greenwishing.bms.utils.JodaUtils;
-import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.ArticlePaging;
 import org.springframework.stereotype.Service;
@@ -39,8 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleCategoryDTO> loadArticleCategories() {
-        String userGuid = SecurityHolder.getUserGuid();
+    public List<ArticleCategoryDTO> loadArticleCategories(String userGuid) {
         List<ArticleCategory> categories = articleRepository.findArticleCategoryByUserGuid(userGuid);
         return ArticleCategoryDTO.toDTOs(categories);
     }
@@ -52,7 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (guid != null) {
             article = articleRepository.findByGuid(Article.class, guid);
         } else {
-            String userGuid = SecurityHolder.getUserGuid();
+            String userGuid = articleDTO.getUserGuid();
             User author = userRepository.findByGuid(User.class, userGuid);
             article = new Article(author);
         }
@@ -93,7 +91,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (ValidationUtils.isNotEmpty(guid)) {
             category = articleRepository.findByGuid(ArticleCategory.class, guid);
         } else {
-            String userGuid = SecurityHolder.getUserGuid();
+            String userGuid = categoryDTO.getUserGuid();
             User owner = userRepository.findByGuid(User.class, userGuid);
             category = new ArticleCategory(owner);
         }
@@ -102,8 +100,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void generateDefaultCategory() {
-        String userGuid = SecurityHolder.getUserGuid();
+    public void generateDefaultCategory(String userGuid) {
         User user = userRepository.findByGuid(User.class, userGuid);
         if (user == null) return;
         for (DefaultData.DefaultArticleCategory defaultArticleCategory : DefaultData.DefaultArticleCategory.values()) {

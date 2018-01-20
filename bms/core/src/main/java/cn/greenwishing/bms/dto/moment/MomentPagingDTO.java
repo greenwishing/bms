@@ -17,7 +17,7 @@ public class MomentPagingDTO extends AbstractPagingDTO<MomentDTO, MomentPaging> 
 
     @Override
     public MomentPaging toPaging() {
-        return new MomentPaging(currentPage, pageSize, key, typeGuid);
+        return new MomentPaging(currentPage, pageSize, userGuid, key, typeGuid);
     }
 
     @Override

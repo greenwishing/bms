@@ -16,7 +16,7 @@ public class ArticlePaging extends AbstractPaging<Article> {
     private ArticleAccess access;
 
     public ArticlePaging(int currentPage, int pageSize, String key, String userGuid, ArticleAccess access) {
-        super(currentPage, pageSize);
+        super(currentPage, pageSize, userGuid);
         this.key = key;
         this.userGuid = userGuid;
         this.access = access;

@@ -13,7 +13,7 @@ public interface BillingRepository extends Repository {
 
     BillingPaging findBillingByPaging(BillingPaging paging);
 
-    List<Object[]> loadNearestStatistics(BillingType billingType, Integer size);
+    List<Object[]> loadNearestStatistics(BillingType billingType, Integer size, String userGuid);
 
     List<SqlResultParser> findBillingCategoryByUserGuid(String userGuid);
 

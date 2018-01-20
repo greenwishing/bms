@@ -5,6 +5,7 @@ import cn.greenwishing.bms.dto.moment.MomentDTO;
 import cn.greenwishing.bms.dto.moment.MomentPagingDTO;
 import cn.greenwishing.bms.dto.moment.MomentTypeDTO;
 import cn.greenwishing.bms.service.MomentService;
+import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import sun.security.provider.SHA;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -126,6 +128,7 @@ public class MomentController {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
         } else {
+            momentTypeDTO.setUserGuid(SecurityHolder.getUserGuid());
             momentService.saveOrUpdateMomentType(momentTypeDTO);
             model.put("success", true);
             model.put("redirectUrl", "types");

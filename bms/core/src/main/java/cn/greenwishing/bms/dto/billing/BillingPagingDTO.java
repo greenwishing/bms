@@ -22,7 +22,7 @@ public class BillingPagingDTO extends AbstractPagingDTO<BillingDTO, BillingPagin
 
     @Override
     public BillingPaging toPaging() {
-        return new BillingPaging(currentPage, pageSize, key, type, categoryGuid, subcategoryGuid, dateFrom, dateTo);
+        return new BillingPaging(currentPage, pageSize, userGuid, key, type, categoryGuid, subcategoryGuid, dateFrom, dateTo);
     }
 
     @Override

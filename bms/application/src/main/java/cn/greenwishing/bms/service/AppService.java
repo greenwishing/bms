@@ -9,11 +9,11 @@ import java.util.List;
  * @date 2015/11/7.
  */
 public interface AppService {
-    List<OAuthAppDTO> loadApps();
+    List<OAuthAppDTO> loadApps(String userGuid);
 
     OAuthAppDTO loadAppByAppId(String appId);
 
     void saveOrUpdate(OAuthAppDTO appDTO);
 
-    Long loadAppCount();
+    Long loadAppCount(String userGuid);
 }

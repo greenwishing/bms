@@ -1,6 +1,8 @@
 package cn.greenwishing.bms.dto.statistics.tree;
 
-import java.io.Serializable;
+import cn.greenwishing.bms.dto.SelectItem;
+import cn.greenwishing.bms.dto.Selectable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,23 +10,16 @@ import java.util.List;
  * @author Wufan
  * @date 2017/12/2
  */
-public class TreeNode {
+public class TreeNode extends SelectItem {
 
-    private Serializable value;
-    private String label;
     private List<TreeNode> children = new ArrayList<>();
 
-    public TreeNode(Serializable value, String label) {
-        this.value = value;
-        this.label = label;
+    public TreeNode(Selectable selectable) {
+        super(selectable);
     }
 
-    public Serializable getValue() {
-        return value;
-    }
-
-    public String getLabel() {
-        return label;
+    public TreeNode(String value, String label) {
+        super(value, label);
     }
 
     public void addChild(TreeNode child) {

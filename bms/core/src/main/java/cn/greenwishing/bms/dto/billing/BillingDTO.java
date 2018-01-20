@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.dto.billing;
 
 import cn.greenwishing.bms.domain.billing.*;
+import cn.greenwishing.bms.dto.AbstractDTO;
 import cn.greenwishing.bms.utils.JodaUtils;
 import cn.greenwishing.bms.utils.NumberUtils;
 import cn.greenwishing.bms.utils.StringUtils;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Frank wu
  */
 @Component
-public class BillingDTO {
+public class BillingDTO extends AbstractDTO {
 
     private String guid;
     private String name;
@@ -36,6 +37,10 @@ public class BillingDTO {
     private String settleTime;
 
     public BillingDTO(){
+    }
+
+    public BillingDTO(BillingType type) {
+        this.type = type;
     }
 
     public BillingDTO(Billing billing) {

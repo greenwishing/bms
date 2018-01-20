@@ -7,7 +7,6 @@ import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.domain.user.UserRepository;
 import cn.greenwishing.bms.dto.oauth.OAuthAppDTO;
 import cn.greenwishing.bms.service.AppService;
-import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,7 @@ public class AppServiceImpl implements AppService {
     private UserRepository userRepository;
 
     @Override
-    public List<OAuthAppDTO> loadApps() {
-        String userGuid = SecurityHolder.getUserGuid();
+    public List<OAuthAppDTO> loadApps(String userGuid) {
         List<App> list = appRepository.findUserApps(userGuid);
         return OAuthAppDTO.toDTOs(list);
     }
@@ -46,7 +44,7 @@ public class AppServiceImpl implements AppService {
     @Override
     public void saveOrUpdate(OAuthAppDTO appDTO) {
         boolean isNew = false;
-        String userGuid = SecurityHolder.getUserGuid();
+        String userGuid = appDTO.getUserGuid();
         App app;
         String appId = appDTO.getAppId();
         if (ValidationUtils.isNotEmpty(appId)) {
@@ -68,8 +66,7 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public Long loadAppCount() {
-        String userGuid = SecurityHolder.getUserGuid();
+    public Long loadAppCount(String userGuid) {
         return appRepository.findAppCount(userGuid);
     }
 }

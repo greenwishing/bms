@@ -12,9 +12,11 @@ import cn.greenwishing.bms.service.BillingService;
 import cn.greenwishing.bms.shared.EnumUtils;
 import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
+import cn.greenwishing.bms.web.validator.BillingValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -58,79 +60,45 @@ public class BillingController {
 
     @GetMapping("record")
     @ModelAttribute("billingDTO")
-    public ModelAndView form(ModelMap model) {
-        List<BillingAccountDTO> accounts = billingService.loadBillingAccounts();
+    public ModelAndView form(BillingType type) {
+        String userGuid = SecurityHolder.getUserGuid();
+        List<BillingAccountDTO> accounts = billingService.loadBillingAccounts(userGuid);
         Map<BillingAccountType, List<BillingAccountDTO>> accountMap = new TreeMap<>();
         Map<BillingAccountType, List<BillingAccountDTO>> loanAccountMap = new TreeMap<>();
         for (BillingAccountDTO account : accounts) {
-            BillingAccountType type = account.getType();
-            if (type.isLoan()) {
-                List<BillingAccountDTO> loanAccountList = loanAccountMap.get(type);
+            BillingAccountType accountType = account.getType();
+            if (accountType.isLoan()) {
+                List<BillingAccountDTO> loanAccountList = loanAccountMap.get(accountType);
                 if (loanAccountList == null) {
                     loanAccountList = new ArrayList<>();
-                    loanAccountMap.put(type, loanAccountList);
+                    loanAccountMap.put(accountType, loanAccountList);
                 }
                 loanAccountList.add(account);
             } else {
-                List<BillingAccountDTO> accountList = accountMap.get(type);
+                List<BillingAccountDTO> accountList = accountMap.get(accountType);
                 if (accountList == null) {
                     accountList = new ArrayList<>();
-                    accountMap.put(type, accountList);
+                    accountMap.put(accountType, accountList);
                 }
                 accountList.add(account);
             }
         }
+        ModelMap model = new ModelMap();
         model.put("accountMap", accountMap);
         model.put("loanAccountMap", loanAccountMap);
-        model.put("billingDTO", new BillingDTO());
-        return new ModelAndView("billing/billing_form");
+        model.put("billingDTO", new BillingDTO(type));
+        return new ModelAndView("billing/billing_form", model);
     }
 
     @PostMapping("record")
     public ModelAndView save(@ModelAttribute("billingDTO") BillingDTO billingDTO, BindingResult errors) {
-        String categoryGuid = billingDTO.getCategoryGuid();
-        if (ValidationUtils.isEmpty(categoryGuid)) {
-            errors.rejectValue("categoryGuid", "categoryGuid", "请选择分类");
-        }
-        String subcategoryGuid = billingDTO.getSubcategoryGuid();
-        if (ValidationUtils.isEmpty(subcategoryGuid)) {
-            errors.rejectValue("subcategoryGuid", "subcategoryGuid", "请选择子分类");
-        }
-        String name = billingDTO.getName();
-        if (ValidationUtils.isEmpty(name)) {
-            errors.rejectValue("name", "name", "名称不能为空");
-        }
-        String amount = billingDTO.getAmount();
-        if (ValidationUtils.isEmpty(amount)) {
-            errors.rejectValue("amount", "amount", "金额不能为空");
-        } else if (!ValidationUtils.isAllNumber(amount)) {
-            errors.rejectValue("amount", "amount", "金额格式不正确");
-        }
-        String occurredTime = billingDTO.getOccurredTime();
-        if (!ValidationUtils.isEmpty(occurredTime) && !ValidationUtils.isValidDateTime(occurredTime)) {
-            errors.rejectValue("occurredTime", "occurredTime", "时间格式不正确");
-        }
-        BillingType type = billingDTO.getType();
-        if (type == null) {
-            errors.rejectValue("type", "type", "缺少参数");
-        } else {
-            String srcAccountGuid = billingDTO.getSrcAccountGuid();
-            if (ValidationUtils.isEmpty(srcAccountGuid)) {
-                errors.rejectValue("srcAccountGuid", "srcAccountGuid", "请选择账户");
-            }
-            if (BillingType.targetAccountNeeds().contains(type)) {
-                String targetAccountGuid = billingDTO.getTargetAccountGuid();
-                if (ValidationUtils.isEmpty(targetAccountGuid)) {
-                    errors.rejectValue("targetAccountGuid", "targetAccountGuid", "请选择目标账户");
-                }
-            }
-        }
-
         ModelMap model = new ModelMap();
+        new BillingValidator().validate(billingDTO, errors);
         if (errors.hasErrors()) {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
         } else {
+            billingDTO.setUserGuid(SecurityHolder.getUserGuid());
             billingService.saveOrUpdateBilling(billingDTO);
             model.put("success", true);
         }
@@ -173,6 +141,7 @@ public class BillingController {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
         } else {
+            categoryDTO.setUserGuid(SecurityHolder.getUserGuid());
             billingService.saveOrUpdateBillingCategory(categoryDTO);
             model.put("success", true);
             model.put("redirectUrl", "categories");
@@ -248,6 +217,7 @@ public class BillingController {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
         } else {
+            accountDTO.setUserGuid(SecurityHolder.getUserGuid());
             billingService.saveOrUpdateBillingAccount(accountDTO);
             model.put("success", true);
             model.put("redirectUrl", "accounts");
@@ -287,13 +257,15 @@ public class BillingController {
 
     @RequestMapping("nearest_data")
     public ModelAndView nearestData(@RequestParam(defaultValue = "20") Integer size, @RequestParam(defaultValue = "EXPEND") BillingType type) {
-        List<Series> series = billingService.loadNearestStatistics(size, type);
+        String userGuid = SecurityHolder.getUserGuid();
+        List<Series> series = billingService.loadNearestStatistics(size, type, userGuid);
         return new ModelAndView(new MappingJackson2JsonView(), "series", series);
     }
 
     @RequestMapping("data")
     public ModelAndView data(String type, String from, String to) {
-        List<BillingStatistics> data = billingService.loadBillingStatistics(type, from, to);
+        String userGuid = SecurityHolder.getUserGuid();
+        List<BillingStatistics> data = billingService.loadBillingStatistics(type, from, to, userGuid);
         Map<String, Object> model = new HashMap<>();
         model.put("data", data);
         return new ModelAndView(new MappingJackson2JsonView(), model);
@@ -309,7 +281,8 @@ public class BillingController {
 
     @RequestMapping("accounts")
     public ModelAndView accounts(String dataType) {
-        List<BillingAccountDTO> accounts = billingService.loadBillingAccounts();
+        String userGuid = SecurityHolder.getUserGuid();
+        List<BillingAccountDTO> accounts = billingService.loadBillingAccounts(userGuid);
         Map<String, Object> model = new HashMap<>();
         model.put("accounts", accounts);
         if ("json".equals(dataType)) {
@@ -321,11 +294,12 @@ public class BillingController {
     @RequestMapping("categories")
     public ModelAndView categories(String type, String dataType) {
         BillingType billingType = EnumUtils.nameOf(BillingType.class, type);
+        String userGuid = SecurityHolder.getUserGuid();
         List<BillingCategoryDTO> categories;
         if (billingType != null) {
-            categories = billingService.loadBillingCategoryByType(billingType);
+            categories = billingService.loadBillingCategoryByType(billingType, userGuid);
         } else {
-            categories = billingService.loadBillingCategory();
+            categories = billingService.loadBillingCategory(userGuid);
         }
         Map<String, Object> model = new HashMap<>();
         model.put("categories", categories);
@@ -348,9 +322,10 @@ public class BillingController {
 
     @RequestMapping("gen")
     public ModelAndView gen() {
-        List<BillingCategoryDTO> categoryDTOs = billingService.loadBillingCategory();
+        String userGuid = SecurityHolder.getUserGuid();
+        List<BillingCategoryDTO> categoryDTOs = billingService.loadBillingCategory(userGuid);
         if (categoryDTOs.isEmpty()) {
-            billingService.generateDefaultCategory();
+            billingService.generateDefaultCategory(userGuid);
         }
         return null;
     }

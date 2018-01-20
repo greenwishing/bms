@@ -12,7 +12,7 @@ import java.util.List;
 public interface ArticleService {
     ArticlePagingDTO loadArticlePaging(ArticlePagingDTO articlePagingDTO);
 
-    List<ArticleCategoryDTO> loadArticleCategories();
+    List<ArticleCategoryDTO> loadArticleCategories(String userGuid);
 
     void saveOrUpdateArticle(ArticleDTO articleDTO);
 
@@ -22,5 +22,5 @@ public interface ArticleService {
 
     void saveOrUpdateArticleCategory(ArticleCategoryDTO categoryDTO);
 
-    void generateDefaultCategory();
+    void generateDefaultCategory(String userGuid);
 }

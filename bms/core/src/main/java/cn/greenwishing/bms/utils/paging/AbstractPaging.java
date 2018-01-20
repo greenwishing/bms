@@ -31,9 +31,10 @@ public abstract class AbstractPaging<T> implements Paging {
      * 总记录数
      */
     private long totalCount;
-
     private String sortName;
     private String sortType;
+
+    protected String userGuid;
 
     protected AbstractPaging() {
     }
@@ -44,9 +45,10 @@ public abstract class AbstractPaging<T> implements Paging {
      * @param pageSize 本页容量
      */
 
-    protected AbstractPaging(int currentPage, int pageSize) {
+    protected AbstractPaging(int currentPage, int pageSize, String userGuid) {
         this.pageSize = pageSize;
         this.currentPage = currentPage;
+        this.userGuid = userGuid;
     }
 
     /**
@@ -140,6 +142,14 @@ public abstract class AbstractPaging<T> implements Paging {
 
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public String getUserGuid() {
+        return userGuid;
+    }
+
+    public void setUserGuid(String userGuid) {
+        this.userGuid = userGuid;
     }
 
     public boolean hasSort() {

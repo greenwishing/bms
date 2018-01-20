@@ -2,6 +2,7 @@ package cn.greenwishing.bms.dto.moment;
 
 import cn.greenwishing.bms.domain.moment.GoalType;
 import cn.greenwishing.bms.domain.moment.MomentType;
+import cn.greenwishing.bms.dto.AbstractDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Frank wu
  * @date 2017/5/7
  */
-public class MomentTypeDTO {
+public class MomentTypeDTO extends AbstractDTO {
 
     private String guid;
     private String name;

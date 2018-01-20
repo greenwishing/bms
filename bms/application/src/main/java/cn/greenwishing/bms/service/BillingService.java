@@ -24,9 +24,9 @@ public interface BillingService {
 
     void deleteBillingByGuid(String guid);
 
-    List<Series> loadNearestStatistics(Integer size, BillingType billingType);
+    List<Series> loadNearestStatistics(Integer size, BillingType billingType, String userGuid);
 
-    List<BillingCategoryDTO> loadBillingCategory();
+    List<BillingCategoryDTO> loadBillingCategory(String userGuid);
 
     BillingCategoryDTO loadBillingCategoryByGuid(String guid);
 
@@ -38,15 +38,15 @@ public interface BillingService {
 
     List<BillingSubcategoryDTO> loadBillingSubcategory(String categoryGuid);
 
-    List<BillingCategoryDTO> loadBillingCategoryByType(BillingType billingType);
+    List<BillingCategoryDTO> loadBillingCategoryByType(BillingType billingType, String userGuid);
 
-    List<BillingStatistics> loadBillingStatistics(String type, String fromDateStr, String toDateStr);
+    List<BillingStatistics> loadBillingStatistics(String type, String fromDateStr, String toDateStr, String userGuid);
 
     void changeStatus(String guid, BillingStatus status);
 
-    void generateDefaultCategory();
+    void generateDefaultCategory(String userGuid);
 
-    List<BillingAccountDTO> loadBillingAccounts();
+    List<BillingAccountDTO> loadBillingAccounts(String userGuid);
 
     BillingAccountDTO loadBillingAccountByGuid(String guid);
 

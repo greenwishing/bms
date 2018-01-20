@@ -41,7 +41,8 @@ public class ArticleController {
     @GetMapping({"add", "edit"})
     @ModelAttribute("articleDTO")
     public ModelAndView articleForm(String guid, ModelMap model) {
-        List<ArticleCategoryDTO> categoryDTOs = articleService.loadArticleCategories();
+        String userGuid = SecurityHolder.getUserGuid();
+        List<ArticleCategoryDTO> categoryDTOs = articleService.loadArticleCategories(userGuid);
         model.put("categoryDTOs", categoryDTOs);
         model.put("accessTypes", ArticleAccess.values());
         ArticleDTO articleDTO;
@@ -65,6 +66,7 @@ public class ArticleController {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
         } else {
+            articleDTO.setUserGuid(SecurityHolder.getUserGuid());
             articleService.saveOrUpdateArticle(articleDTO);
             model.put("success", true);
             model.put("redirectUrl", "list");
@@ -96,6 +98,7 @@ public class ArticleController {
             model.put("success", false);
             model.put("message", errors.getFieldError().getDefaultMessage());
         } else {
+            articleCategoryDTO.setUserGuid(SecurityHolder.getUserGuid());
             articleService.saveOrUpdateArticleCategory(articleCategoryDTO);
             model.put("success", true);
             model.put("redirectUrl", "categories");
@@ -113,14 +116,16 @@ public class ArticleController {
 
     @RequestMapping("categories")
     public ModelAndView categories(ModelMap model) {
-        List<ArticleCategoryDTO> categoryDTOs = articleService.loadArticleCategories();
+        String userGuid = SecurityHolder.getUserGuid();
+        List<ArticleCategoryDTO> categoryDTOs = articleService.loadArticleCategories(userGuid);
         model.put("categoryDTOs", categoryDTOs);
         return new ModelAndView("article/article_category_list");
     }
 
     @RequestMapping("gen")
     public ModelAndView gen() {
-        articleService.generateDefaultCategory();
+        String userGuid = SecurityHolder.getUserGuid();
+        articleService.generateDefaultCategory(userGuid);
         return null;
     }
 }
