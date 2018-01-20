@@ -1,26 +1,51 @@
 // app.js
-var util = require('utils/util.js');
+var _ = require('utils/util.js');
 App({
+  version: '1.0.0',
+  util: _,
+  openid: null,
+  userInfo: null,
+  userGuid: null,
+  billingTypes: [],
+  billingAccounts: [],
+  articleCategories: [],
+
   onLaunch: function () {
-    // app init
+    console.log('app launch')
+  },
+  checkUserLogin: function (callback, context) {
+    this.getUserInfo(function (userInfo) {
+      if (!this.userGuid) {
+        wx.navigateTo({
+          url: '/pages/login/login',
+        });
+        return;
+      }
+      this.checkUpdate(function(result){
+        if (result.update) {
+          this.syncAppData(callback, context);
+        } else {
+          callback.apply(context || this, arguments);
+        }
+      }, this);
+    }.bind(this));
   },
   getUserInfo: function (callback, context) {
-    if (this.cfg.userInfo){
+    if (this.userInfo){
       if (typeof callback === "function") {
-        callback.apply(context || this, [this.cfg.userInfo]);
+        callback.apply(context || this, [this.userInfo]);
       }
     } else {
-      // 调用登录接口
-      var that = this;
+      var self = this;
       wx.login({
         success: function (res) {
           let code = res.code;
           wx.getUserInfo({
             success: function (res) {
               var userInfo = res.userInfo;
-              that.cfg.userInfo = userInfo;
+              self.userInfo = userInfo;
               userInfo.code = code;
-              that.updateUserInfo(userInfo, callback, context);
+              self.updateUserInfo(userInfo, callback, context);
             }
           });
         }
@@ -28,22 +53,40 @@ App({
     }
   },
   updateUserInfo: function (data, callback, context) {
-    util.ajax({
-      url: '/api/weixin/weapp/user',
+    _.ajax({
+      url: 'updateuser',
       data: data,
       success: function (result) {
-        this.cfg.openid = result.openid;
-        this.cfg.userGuid = result.userGuid;
+        this.openid = result.openid;
+        this.userGuid = result.userGuid;
         if (typeof callback === "function") {
           callback.apply(context || this, [data]);
         }
       }
     }, this);
   },
-  util: util,
-  cfg:{
-    openid: null,
-    userInfo: null,
-    userGuid: null
+  checkUpdate: function(callback, context) {
+    _.ajax({
+      url: 'checkupdate',
+      data: { version: '1.0.0' },
+      success: function (result) {
+        if (typeof callback === 'function') {
+          callback.apply(context || this, arguments);
+        }
+      }
+    }, this);
+  },
+  syncAppData: function (callback, context) {
+    _.ajax({
+      url: 'data',
+      data: { userGuid: this.userGuid },
+      success: function (result) {
+        this.billingTypes = result.billingTypes;
+        this.billingAccounts = result.billingAccounts;
+        this.articleCategories = result.articleCategories;
+        callback.apply(context || this, arguments);
+      },
+      loadingText: '正在同步数据'
+    }, this);
   }
 })

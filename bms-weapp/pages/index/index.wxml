@@ -1,7 +1,20 @@
 <!--index.wxml-->
-<view class="container" wx:if="{{showPage}}">
+<view class="container" wx:if="{{pageReady}}">
   <view bindtap="bindViewTap" class="userinfo">
     <image class="userinfo-avatar" src="/images/logo.png" background-size="cover"></image>
-    <text class="userinfo-nickname">记账管理</text>
+    <text class="userinfo-nickname">账小流</text>
+  </view>
+  <view class="weui-cells">
+    <navigator url="/pages/billing/add" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">记账</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <navigator url="/pages/billing/list" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">账单</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+  </view>
+  <view class="weui-footer">
+    <view class="weui-footer__text">© 2018 greenwishing.cn</view>
   </view>
 </view>

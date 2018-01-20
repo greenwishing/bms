@@ -30,7 +30,7 @@ Page({
     var data = value;
     data.openid = app.cfg.openid;
     _.ajax({
-      url: '/api/weixin/weapp/register',
+      url: 'register',
       data: data,
       success: function (result) {
         app.cfg.userGuid = result.userGuid;

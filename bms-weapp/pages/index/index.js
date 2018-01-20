@@ -2,18 +2,19 @@
 var app = getApp();
 Page({
   data: {
-    showPage: false
+    pageReady: false
   },
   onLoad: function () {
-    var self = this;
-    app.getUserInfo(function (userInfo) {
-      if (!app.cfg.userGuid) {
-        wx.navigateTo({
-          url: '/pages/login/login',
-        })
-      } else {
-        self.setData({showPage: true});
-      }
+    wx.showLoading({
+      title: '请稍后',
+    });
+    app.checkUserLogin(function () {
+      wx.hideLoading();
+      this.setData({
+        pageReady: true
+      })
     }, this);
+  },
+  onReady: function () {
   }
 })

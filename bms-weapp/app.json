@@ -2,13 +2,14 @@
   "pages": [
     "pages/index/index",
     "pages/login/login",
-    "pages/nearest/nearest",
-    "pages/register/register"
+    "pages/register/register",
+    "pages/billing/add",
+    "pages/billing/list"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#179b16",
+    "navigationBarTitleText": "账小流",
+    "navigationBarTextStyle": "white"
   }
 }

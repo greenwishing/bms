@@ -1,19 +1,21 @@
 
-// const BASE_URL = 'https://greenwishing.cn';
+const BASE_URL = 'https://greenwishing.cn';
+// const BASE_URL = 'http://localhost:8086';
+const URI_PREFIX = '/api/weixin/weapp/';
 
-const BASE_URL = 'http://localhost:8086';
-
-function formatTime(date) {
+function formatDate(date) {
   var year = date.getFullYear()
   var month = date.getMonth() + 1
   var day = date.getDate()
 
+
+  return [year, month, day].map(formatNumber).join('-');
+}
+
+function formatTime(date) {
   var hour = date.getHours()
   var minute = date.getMinutes()
-  var second = date.getSeconds()
-
-
-  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
+  return [hour, minute].map(formatNumber).join(':')
 }
 
 function formatNumber(n) {
@@ -38,30 +40,35 @@ function showTopTips(page, options) {
 
 function ajax(options, context) {
   let loading = false;
-  if (options.loading) {
+  if (options.loadingText) {
     loading = true;
     wx.showLoading({
       title: options.loadingText || '请稍后',
     });
   }
   var originUrl = options.url || '';
-  options.url = originUrl.indexOf('/') === 0 ? BASE_URL + options.url : originUrl;
+  options.url = originUrl.indexOf('http') === 0 ? originUrl : (BASE_URL + (originUrl.indexOf('/') === 0 ? '' : URI_PREFIX) + options.url);
   var originSuccess = options.success;
   var success = function (res) {
     if (loading) {
       wx.hideLoading();
     }
-    if (res.statusCode === 200) {
-      let result = res.data;
-      if (result.success) {
-        if (typeof originSuccess === 'function') {
-          originSuccess.apply(context || this, [result]);
+    var msg = res.errMsg;
+    if (msg && 'request:ok' === msg.trim()) {
+      if (res.statusCode === 200) {
+        let result = res.data;
+        if (result.success) {
+          if (typeof originSuccess === 'function') {
+            originSuccess.apply(context || this, [result]);
+          }
+        } else {
+          alert(result.message);
         }
       } else {
-        alert(result.message);
+        alert(res.statusCode);
       }
     } else {
-      alert(res.statusCode);
+      alert(msg);
     }
   };
   options.success = success;
@@ -69,7 +76,12 @@ function ajax(options, context) {
     if (loading) {
       wx.hideLoading();
     }
-    alert(res.statusCode);
+    var msg = res.errMsg;
+    if (msg) {
+      alert('request:fail' === msg.trim() ? '请求失败，请检查您的网络' : msg);
+    } else {
+      alert(res.statusCode);
+    }
   };
   options.complete = function (res) {
     if (loading) {
@@ -103,11 +115,22 @@ function confirm(text, ok) {
   });
 }
 
+function min(value1, value2) {
+  return value1 < value2 ? value1: value2;
+}
+
+function max(value1, value2) {
+  return value1 > value2 ? value1 : value2;
+}
+
 module.exports = {
+  formatDate: formatDate,
   formatTime: formatTime,
   ajax: ajax,
   isEmpty: isEmpty,
   showTopTips: showTopTips,
   alert: alert,
-  confirm, confirm
+  confirm, confirm,
+  min: min,
+  max: max
 }
