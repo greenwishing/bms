@@ -20,12 +20,12 @@ Page({
       return;
     }
     var data = value;
-    data.openid = app.cfg.openid;
+    data.openid = app.openid;
     _.ajax({
       url: '/api/weixin/weapp/login',
       data: data,
       success: function(result) {
-        app.cfg.userGuid = result.userGuid;
+        app.userGuid = result.userGuid;
         wx.navigateTo({
           url: '/pages/index/index',
         })
@@ -37,13 +37,13 @@ Page({
    */
   fastRegister: function () {
     var confirm = function () {
-      var data = app.cfg.userInfo;
-      data.openid = app.cfg.openid;
+      var data = app.userInfo;
+      data.openid = app.openid;
       _.ajax({
         url: '/api/weixin/weapp/fastRegister',
         data: data,
         success: function (result) {
-          app.cfg.userGuid = result.userGuid;
+          app.userGuid = result.userGuid;
           wx.navigateTo({
             url: '/pages/index/index',
           })
