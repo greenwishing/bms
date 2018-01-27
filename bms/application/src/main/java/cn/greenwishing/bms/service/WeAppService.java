@@ -14,4 +14,6 @@ public interface WeAppService {
     void bindOpenUser(String openid, String userGuid);
 
     UserDTO fastRegister(WeAppUserInfo userInfo);
+
+    void generateDefaultData(String userGuid);
 }

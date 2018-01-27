@@ -56,15 +56,20 @@ public class WeAppServiceImpl implements WeAppService {
             user.updateUsername(userInfo.getNickName());
             userRepository.saveOrUpdate(user);
             try {
-                // 生成默认账单分类
-                billingService.generateDefaultCategory(user.guid());
-                // 生成默认账户
-                billingService.generateDefaultAccount(user.guid());
-                // 生成默认文章分类
-                articleService.generateDefaultCategory(user.guid());
+                generateDefaultData(user.guid());
             } catch (Exception ignored) {}
         }
         bindOpenUser(openid, user.guid());
         return new UserDTO(user);
+    }
+
+    @Override
+    public void generateDefaultData(String userGuid) {
+        // 生成默认账单分类
+        billingService.generateDefaultCategory(userGuid);
+        // 生成默认账户
+        billingService.generateDefaultAccount(userGuid);
+        // 生成默认文章分类
+        articleService.generateDefaultCategory(userGuid);
     }
 }
