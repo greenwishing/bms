@@ -50,9 +50,10 @@ public class BillingController {
 
     @RequestMapping("list")
     public ModelAndView list(BillingPagingDTO pagingDTO, ModelMap model) {
+        String userGuid = SecurityHolder.getUserGuid();
+        pagingDTO.setUserGuid(userGuid);
         pagingDTO = billingService.loadBillingPaging(pagingDTO);
         model.put("pagingDTO", pagingDTO);
-        String userGuid = SecurityHolder.getUserGuid();
         List<TreeNode> nodes = billingService.loadBillingTreeNodes(userGuid);
         model.put("nodes", nodes);
         return new ModelAndView("billing/billing_list");
@@ -326,6 +327,10 @@ public class BillingController {
         List<BillingCategoryDTO> categoryDTOs = billingService.loadBillingCategory(userGuid);
         if (categoryDTOs.isEmpty()) {
             billingService.generateDefaultCategory(userGuid);
+        }
+        List<BillingAccountDTO> billingAccounts = billingService.loadBillingAccounts(userGuid);
+        if (billingAccounts.isEmpty()) {
+            billingService.generateDefaultAccount(userGuid);
         }
         return null;
     }

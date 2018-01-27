@@ -1,5 +1,6 @@
 package cn.greenwishing.bms.domain;
 
+import cn.greenwishing.bms.domain.billing.BillingAccountType;
 import cn.greenwishing.bms.domain.billing.BillingType;
 
 import java.util.ArrayList;
@@ -48,9 +49,28 @@ public class DefaultData {
         }
     }
 
-    public enum DefaultArticleCategory {
-        L1("随记"),
+    public enum DefaultBillingAccount {
+        L1(BillingAccountType.CASH, "现金账户"),
+        L2(BillingAccountType.CREDIT_CARD, "信用卡账户"),
+        L3(BillingAccountType.DEPOSIT_CARD, "银行卡"),
+        L4(BillingAccountType.VIRTUAL, "支付宝", "微信"),
+        L5(BillingAccountType.INDEBTED, "负债账户"),
+        L6(BillingAccountType.LOAN, "债权账户"),
         ;
+
+        public BillingAccountType type;
+        public List<String> names = new ArrayList<>();
+
+        DefaultBillingAccount(BillingAccountType type, String... names) {
+            this.type = type;
+            if (names != null) {
+                this.names = Arrays.asList(names);
+            }
+        }
+    }
+
+    public enum DefaultArticleCategory {
+        L1("随记"),;
 
         public String name;
 

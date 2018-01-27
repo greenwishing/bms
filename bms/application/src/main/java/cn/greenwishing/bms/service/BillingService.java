@@ -52,6 +52,8 @@ public interface BillingService {
 
     void saveOrUpdateBillingAccount(BillingAccountDTO accountDTO);
 
+    void generateDefaultAccount(String userGuid);
+
     List<SuggestTemplateDTO> loadSuggestTemplate(BillingType type, Integer size);
 
     AssetDTO loadAsset();

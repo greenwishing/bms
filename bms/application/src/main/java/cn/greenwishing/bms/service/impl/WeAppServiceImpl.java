@@ -58,6 +58,8 @@ public class WeAppServiceImpl implements WeAppService {
             try {
                 // 生成默认账单分类
                 billingService.generateDefaultCategory(user.guid());
+                // 生成默认账户
+                billingService.generateDefaultAccount(user.guid());
                 // 生成默认文章分类
                 articleService.generateDefaultCategory(user.guid());
             } catch (Exception ignored) {}

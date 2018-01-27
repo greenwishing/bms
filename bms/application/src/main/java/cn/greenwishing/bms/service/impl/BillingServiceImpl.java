@@ -294,6 +294,22 @@ public class BillingServiceImpl implements BillingService {
     }
 
     @Override
+    public void generateDefaultAccount(String userGuid) {
+        User user = userRepository.findByGuid(User.class, userGuid);
+        if (user == null) {
+            return;
+        }
+
+        for (DefaultData.DefaultBillingAccount defaultBillingAccount : DefaultData.DefaultBillingAccount.values()) {
+            for (String name : defaultBillingAccount.names) {
+                BillingAccount billingAccount = new BillingAccount(user);
+                billingAccount.update(defaultBillingAccount.type, name, BigDecimal.ZERO);
+                userRepository.saveOrUpdate(billingAccount);
+            }
+        }
+    }
+
+    @Override
     public List<SuggestTemplateDTO> loadSuggestTemplate(BillingType type, Integer size) {
         Integer userId = SecurityHolder.getUserId();
         List<SqlResultParser> parsers = billingRepository.findSuggestTemplate(type, userId, size);
