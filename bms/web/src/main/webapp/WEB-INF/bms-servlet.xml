@@ -22,13 +22,13 @@
     </mvc:annotation-driven>
 
     <!--static resource-->
-    <mvc:resources mapping="/wiki/**" location="/wiki/"/>
-    <mvc:resources mapping="/static/**" location="/static/"/>
-    <mvc:resources mapping="/js/**" location="/js/"/>
-    <mvc:resources mapping="/css/**" location="/css/"/>
-    <mvc:resources mapping="/images/**" location="/images/"/>
-    <mvc:resources mapping="/*.html" location="/"/>
-    <mvc:resources mapping="/favicon.ico" location="/"/>
+    <mvc:resources mapping="/wiki/**" location="/wiki/" cache-period="5184000"/>
+    <mvc:resources mapping="/static/**" location="/static/" cache-period="5184000"/>
+    <mvc:resources mapping="/js/**" location="/js/" cache-period="5184000"/>
+    <mvc:resources mapping="/css/**" location="/css/" cache-period="5184000"/>
+    <mvc:resources mapping="/images/**" location="/images/" cache-period="5184000"/>
+    <mvc:resources mapping="/*.html" location="/" cache-period="5184000"/>
+    <mvc:resources mapping="/favicon.ico" location="/" cache-period="5184000"/>
 
     <mvc:interceptors>
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
