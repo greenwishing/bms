@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件命名</title>
+    <style type="text/css">
+        .color-primary {
+            color: #0c80fe;
+        }
+        .color-warn {
+            color: #ec2a32;
+        }
+        .color-success {
+            color: #0BB20C;
+        }
+        .color-default {
+            color: #666;
+        }
+        section > section {
+            padding-left: 2em;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>关于文件的命名</h1>
+    <p>阿里巴巴的Java规范还是值得去遵循的，但在一些细节上要稍微统一一下比较好。
+        我说的这些并不是说一定就是正确、非要去遵守的，就当是一次讨论吧。</p>
+    <p>现从以下几个方面简单讲一下：</p>
+    <ul>
+        <li><a href="#object-naming">对象的命名</a></li>
+        <li><a href="#uri-page-naming">请求路径与JSP的命名</a></li>
+        <li><a href="#sql-naming">SQL 的命名</a></li>
+    </ul>
+</header>
+<section id="object-naming">
+    <h2>一、对象的命名</h2>
+    <section>
+        <h3>1、方法名及属性名<em class="color-warn">不建议</em>包含类名。</h3>
+        <p>以下是不推荐的用法：</p>
+        <pre class="color-warn">
+            class Material {
+                String materialNo;
+            }
+            // 这样定义显得太过冗余，特别体现在使用的时候
+            material.materialNo;
+            Material.saveOrUpdateMaterial(Material material);
+            Material.loadMaterials(Integer enterpriseId);
+        </pre>
+        <p>建议用以下方法，在自身所在类中无需再次出现类名：</p>
+        <pre class="color-success">
+            class Restaurant {
+                Integer id;
+                String name;
+            }
+            // 简洁而优雅，也能知道其是什么对象的属性
+            restaurant.id;
+            restaurant.name;
+            restaurant.saveOrUpdate();
+            Restaurant.findById(Integer id);
+            Restaurant.findAll();
+        </pre>
+        <p>注：当一个类服务于多个不同的对象时，此时的方法名是建议加上类名作为区分的，如：</p>
+        <pre class="color-default">
+            // 一般一个 Service 或 Repository 不只服务于一个实体，
+            // 所以这里建议 Service 或 Repository 中还是需要添加类名作为区分
+            interface MemberService {
+                void saveMember(MemberDTO userDTO);
+                void saveRestaurantMember(MemberContext context);
+            }
+            interface MemberRepository {
+                Member findMemberByAccount(String account);
+                List findMemberGroups(Integer enterpriseId, Status status);
+            }
+        </pre>
+        <h3>2、一个类的属性<em class="color-warn">不建议</em>过多，可视情况分为一个或多个<em class="color-success">Component</em>。</h3>
+        <p>最早活动类是这样的，虽然一眼观尽有些什么，但这样一个类显得非常臃肿。</p>
+        <pre class="color-warn">
+            class Activity {
+                private Restaurant restaurant;
+
+                // 活动基本信息
+                private String keyword;
+                private String title;
+                private String information;
+                private String summary;
+                private String description;
+                private String picture;
+                private DateTime startTime;
+                private DateTime endTime;
+
+                // 活动结束信息
+                private String title;
+                private String description;
+                private String picture;
+
+                // 活动设置信息
+                private ActivityPrizes prizes;
+                private Integer estimatedNumber;
+                private Integer totalTimes;
+                private Integer timesPerDay;
+                private String numberAlias;
+                private String contactAlias;
+                private String confirmPassword;
+                private boolean showNumberOfPrizes;
+                private boolean memberOnly;
+                ...
+            }
+        </pre>
+        <p>经过 Component 组装后，结构清晰明了，如：</p>
+        <pre class="color-success">
+            class Activity {
+                private Restaurant restaurant;
+                private ActivityBasicInfo basicInfo;
+                private ActivityEndInfo endInfo;
+                private ActivitySetting setting;
+                ...
+            }
+        </pre>
+        <h3>3、方法名及属性名必须有明确意义，且要符合实际逻辑。</h3>
+        <p>方法名与实际逻辑不符，会直接导致对外不易理解，必须要看具体实现才能知其意义，如下：</p>
+        <pre class="color-warn">
+            @RequestMapping("loadbox")
+            ModelAndView loadBox(req, resp) {
+                ...
+                ActivityDTO prizeName = activityService.loadPrizeInBox(activityId);
+                ...
+            }
+        </pre>
+        <p>我希望从方法名能大致知道其实现逻辑。</p>
+    </section>
+</section>
+<section id="uri-page-naming">
+    <h2>二、请求路径与JSP的命名</h2>
+    <section>
+        <h3>1、网站路径的命名建议按<em class="color-success">角色->模块->功能</em>划分，比如：</h3>
+        <pre class="color-default">
+            /restaurant/product/add 门店账户的商品添加功能
+            /restaurant/product/edit 门店账户的商品编辑功能
+            /restaurant/product/export 门店账户的商品导出功能
+            /system/restaurant/edit 系统账户的门店编辑功能
+        </pre>
+        <p>这样的目录结构简单清晰，一看就明白其功能。</p>
+        <h3>2、视图类文件（JSP、HTML等）统一使用<em class="color-success">全小写命名，以下划线分隔</em>，如：</h3>
+        <pre class="color-default">
+            product_form.jsp 表示商品表单页
+            product_list.jsp 表示商品列表页
+            product_group_list.jsp 表示商品分组列表页
+        </pre>
+        <p>按以上规则进行命名，无论新老开发者均可快速定位任何一个想找的文件。</p>
+    </section>
+</section>
+<section id="sql-naming">
+    <h2>三、SQL 的命名</h2>
+    <section>
+        <h3>1、表与字段全小写，以下划线分隔，如：</h3>
+        <pre>
+            会员（member）, 会员分组（member_group）
+        </pre>
+        <h3>2、若表中有关联其它表的主键的，命名为表名加主键名，如：</h3>
+        <pre>
+            商户会员（enterprise_member）关联会员分组（member_group）的 id 为：member_group_id
+            账单明细（bill_detail）关联账单（bill）的 exid 为：bill_exid
+        </pre>
+    </section>
+</section>
+<section id="css-naming">
+    <h2>四、CSS 的命名</h2>
+    <section>
+        <h3>1、CSS 样式名称统一以中划线分割，且从名称能大概体现出具体作用，如：</h3>
+        <pre>
+            .text-right { text-align: right; }
+            .bg-blue { background: blue; }
+            .color-red { color: red; }
+        </pre>
+        <p>这样定义的样式，只看代码就能知道大概什么效果。</p>
+        <h3>2、<em class="color-warn">不建议</em>对 id 选择器定义样式。</h3>
+        <p>id 是网页唯一的标识，这样做意味着定义的样式无法重用。注：框架相关的唯一样式除外。</p>
+        <h3>3、当一个页面有特殊样式时，直接在 head 的 style 标签中书写。</h3>
+        <h3>4、<em class="color-warn">不建议</em>直接在标签的 style 中写样式。</h3>
+    </section>
+</section>
+<section id="js-naming">
+    <h2>四、Javascript 的命名</h2>
+    <section>
+        <h3>1、变量、方法及插件的命名要有具体的意义，且与对应逻辑相符。</h3>
+        <h3>2、变量名用 $ 开头用以区分是 jQuery 对象，如：</h3>
+        <pre>
+            var $checkedMemberIds = $(':checkbox[name="member_id"]');
+        </pre>
+        <h3>3、当一个功能或插件涉及到大量 JS 代码时，可以考虑以功能或插件名创建独立的 JS 文件。</h3>
+        <h3>4、Ajax 请求请使用封装好的插件，这样会减少很多重复的工作。</h3>
+    </section>
+</section>
+</body>
+</html>
