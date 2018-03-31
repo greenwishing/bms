@@ -55,9 +55,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public void removeDone(List<String> guids) {
         List<Todo> todos = todoRepository.findByGuids(Todo.class, guids);
-        for (Todo todo : todos) {
-            todo.remove();
-        }
+        todos.forEach(Todo::remove);
         todoRepository.saveAll(todos);
     }
 

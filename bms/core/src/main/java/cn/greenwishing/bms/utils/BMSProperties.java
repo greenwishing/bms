@@ -20,11 +20,10 @@ public class BMSProperties extends PropertyPlaceholderConfigurer {
     protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {
         super.processProperties(beanFactoryToProcess, props);
         ctxPropertiesMap = new HashMap<>();
-        for (Object key : props.keySet()) {
+        props.forEach((key, value) -> {
             String keyStr = key.toString();
-            String value = props.getProperty(keyStr);
-            ctxPropertiesMap.put(keyStr, value);
-        }
+            ctxPropertiesMap.put(keyStr, props.getProperty(keyStr));
+        });
     }
 
     public static String get(String name) {

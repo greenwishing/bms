@@ -31,9 +31,7 @@ public class MomentTypeDTO extends AbstractDTO {
 
     public static List<MomentTypeDTO> toDTOs(List<MomentType> types) {
         List<MomentTypeDTO> typeDTOs = new ArrayList<>();
-        for (MomentType type : types) {
-            typeDTOs.add(new MomentTypeDTO(type));
-        }
+        types.forEach(type -> typeDTOs.add(new MomentTypeDTO(type)));
         return typeDTOs;
     }
 

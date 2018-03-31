@@ -66,24 +66,16 @@ public class BillingController {
         List<BillingAccountDTO> accounts = billingService.loadBillingAccounts(userGuid);
         Map<BillingAccountType, List<BillingAccountDTO>> accountMap = new TreeMap<>();
         Map<BillingAccountType, List<BillingAccountDTO>> loanAccountMap = new TreeMap<>();
-        for (BillingAccountDTO account : accounts) {
+        accounts.forEach(account -> {
             BillingAccountType accountType = account.getType();
             if (accountType.isLoan()) {
-                List<BillingAccountDTO> loanAccountList = loanAccountMap.get(accountType);
-                if (loanAccountList == null) {
-                    loanAccountList = new ArrayList<>();
-                    loanAccountMap.put(accountType, loanAccountList);
-                }
+                List<BillingAccountDTO> loanAccountList = loanAccountMap.computeIfAbsent(accountType, k -> new ArrayList<>());
                 loanAccountList.add(account);
             } else {
-                List<BillingAccountDTO> accountList = accountMap.get(accountType);
-                if (accountList == null) {
-                    accountList = new ArrayList<>();
-                    accountMap.put(accountType, accountList);
-                }
+                List<BillingAccountDTO> accountList = accountMap.computeIfAbsent(accountType, k -> new ArrayList<>());
                 accountList.add(account);
             }
-        }
+        });
         ModelMap model = new ModelMap();
         model.put("accountMap", accountMap);
         model.put("loanAccountMap", loanAccountMap);

@@ -5,7 +5,6 @@ import cn.greenwishing.bms.utils.NumberUtils;
 import cn.greenwishing.bms.utils.parser.SqlResultParser;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,10 +43,7 @@ public class SuggestTemplateDTO {
 
     public static List<SuggestTemplateDTO> valueOf(List<SqlResultParser> parsers) {
         List<SuggestTemplateDTO> tplList = new ArrayList<>();
-        for (SqlResultParser parser : parsers) {
-            SuggestTemplateDTO tpl = new SuggestTemplateDTO(parser);
-            tplList.add(tpl);
-        }
+        parsers.forEach(parser -> tplList.add(new SuggestTemplateDTO(parser)));
         return tplList;
     }
 

@@ -77,10 +77,10 @@ public class StationDTO {
 
     public static List<StationDTO> toDTOs(List<Station> stations) {
         List<StationDTO> stationDTOs = new ArrayList<>();
-        for (Station station : stations) {
+        stations.forEach(station -> {
             StationDTO stationDTO = new StationDTO(station);
             stationDTOs.add(stationDTO);
-        }
+        });
         return stationDTOs;
     }
 

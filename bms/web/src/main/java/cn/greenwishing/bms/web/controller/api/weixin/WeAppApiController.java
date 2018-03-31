@@ -18,9 +18,6 @@ import cn.greenwishing.bms.service.UserService;
 import cn.greenwishing.bms.service.WeAppService;
 import cn.greenwishing.bms.utils.MD5Utils;
 import cn.greenwishing.bms.utils.ValidationUtils;
-import cn.greenwishing.bms.utils.grouper.GroupResult;
-import cn.greenwishing.bms.utils.grouper.GroupResults;
-import cn.greenwishing.bms.utils.grouper.Grouper;
 import cn.greenwishing.bms.web.controller.api.ApiResult;
 import cn.greenwishing.bms.web.validator.BillingValidator;
 import org.springframework.stereotype.Controller;
@@ -32,6 +29,8 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Wufan
@@ -165,16 +164,17 @@ public class WeAppApiController {
             try {
                 List<TreeNode> billingTypes = billingService.loadBillingTreeNodes(userGuid);
                 List<BillingAccountDTO> accountDTOs = billingService.loadBillingAccounts(userGuid);
-                GroupResults<BillingAccountType, BillingAccountDTO> results = Grouper.group(accountDTOs);
+
                 List<BillingAccountTypeNode> billingAccounts = new ArrayList<>();
-                for (GroupResult<BillingAccountType, BillingAccountDTO> groupResult : results.getGroupResults()) {
-                    BillingAccountType accountType = groupResult.getKey();
+                accountDTOs.stream()
+                        .collect(Collectors.groupingBy(BillingAccountDTO::getType))
+                        .forEach((accountType, accounts) -> {
                     BillingAccountTypeNode node = new BillingAccountTypeNode(accountType);
-                    for (BillingAccountDTO accountDTO : groupResult.getResults()) {
-                        node.addChild(new TreeNode(accountDTO));
-                    }
+                    accounts.forEach(account -> {
+                        node.addChild(new TreeNode(account));
+                    });
                     billingAccounts.add(node);
-                }
+                });
                 List<ArticleCategoryDTO> articleCategories = articleService.loadArticleCategories(userGuid);
                 result = ApiResult.success()
                         .add("billingTypes", billingTypes)

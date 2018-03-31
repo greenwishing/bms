@@ -46,10 +46,7 @@ public class OAuthAppDTO extends AbstractDTO {
 
     public static List<OAuthAppDTO> toDTOs(List<App> apps) {
         List<OAuthAppDTO> appDTOs = new ArrayList<>();
-        for (App app : apps) {
-            OAuthAppDTO appDTO = new OAuthAppDTO(app);
-            appDTOs.add(appDTO);
-        }
+        apps.forEach(app -> appDTOs.add(new OAuthAppDTO(app)));
         return appDTOs;
     }
 

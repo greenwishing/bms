@@ -18,10 +18,7 @@ public class Series {
     public static Series valueOf(BillingType billingType, List<Object[]> results) {
         Series obj = new Series();
         obj.name = billingType.getLabel();
-        for (Object[] result : results) {
-            SeriesData data = SeriesData.valueOf(result);
-            obj.data.add(data);
-        }
+        results.forEach(result -> obj.data.add(SeriesData.valueOf(result)));
         Collections.sort(obj.data);
         return obj;
     }

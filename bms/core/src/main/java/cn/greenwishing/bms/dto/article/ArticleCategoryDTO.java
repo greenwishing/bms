@@ -24,10 +24,7 @@ public class ArticleCategoryDTO extends AbstractDTO {
 
     public static List<ArticleCategoryDTO> toDTOs(List<ArticleCategory> categories) {
         List<ArticleCategoryDTO> categoryDTOs = new ArrayList<>();
-        for (ArticleCategory category : categories) {
-            ArticleCategoryDTO categoryDTO = new ArticleCategoryDTO(category);
-            categoryDTOs.add(categoryDTO);
-        }
+        categories.forEach(category -> categoryDTOs.add(new ArticleCategoryDTO(category)));
         return categoryDTOs;
     }
 

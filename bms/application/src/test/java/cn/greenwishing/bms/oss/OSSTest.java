@@ -108,9 +108,7 @@ public class OSSTest {
             ObjectListing objectListing = ossClient.listObjects(bucketName);
             List<OSSObjectSummary> objectSummary = objectListing.getObjectSummaries();
             System.out.println("您有以下Object：");
-            for (OSSObjectSummary object : objectSummary) {
-                System.out.println("\t" + object.getKey());
-            }
+            objectSummary.forEach(object -> System.out.println("\t" + object.getKey()));
 
             // 删除Object。详细请参看“SDK手册 > Java-SDK > 管理文件”。
             // 链接地址是：https://help.aliyun.com/document_detail/oss/sdk/java-sdk/manage_object.html?spm=5176.docoss/sdk/java-sdk/manage_bucket

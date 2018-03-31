@@ -34,9 +34,7 @@ public class ApiResult {
         model.put("code", getCode());
         model.put("message", getMessage());
         if (!params.isEmpty()) {
-            for (String key : params.keySet()) {
-                model.put(key, params.get(key));
-            }
+            model.putAll(params);
         }
         return model;
     }

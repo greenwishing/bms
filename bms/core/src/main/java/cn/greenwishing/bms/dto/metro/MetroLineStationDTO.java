@@ -49,10 +49,10 @@ public class MetroLineStationDTO {
 
     public static List<MetroLineStationDTO> toDTOs(List<MetroLineStation> metroLineStations) {
         List<MetroLineStationDTO> metroLineStationDTOs = new ArrayList<>();
-        for (MetroLineStation metroLineStation : metroLineStations) {
+        metroLineStations.forEach(metroLineStation -> {
             MetroLineStationDTO metroLineStationDTO = new MetroLineStationDTO(metroLineStation);
             metroLineStationDTOs.add(metroLineStationDTO);
-        }
+        });
         return metroLineStationDTOs;
     }
 }

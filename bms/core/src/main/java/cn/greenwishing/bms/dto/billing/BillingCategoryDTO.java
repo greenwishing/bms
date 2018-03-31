@@ -40,10 +40,7 @@ public class BillingCategoryDTO extends AbstractDTO implements Selectable {
 
     public static List<BillingCategoryDTO> toDTOs(List<SqlResultParser> categories) {
         List<BillingCategoryDTO> categoryDTOs = new ArrayList<>();
-        for (SqlResultParser category : categories) {
-            BillingCategoryDTO categoryDTO = new BillingCategoryDTO(category);
-            categoryDTOs.add(categoryDTO);
-        }
+        categories.forEach(category -> categoryDTOs.add(new BillingCategoryDTO(category)));
         return categoryDTOs;
     }
 

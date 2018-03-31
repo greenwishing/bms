@@ -5,7 +5,6 @@ import cn.greenwishing.bms.domain.billing.BillingAccountType;
 import cn.greenwishing.bms.dto.AbstractDTO;
 import cn.greenwishing.bms.dto.Selectable;
 import cn.greenwishing.bms.utils.NumberUtils;
-import cn.greenwishing.bms.utils.grouper.GroupItem;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,7 +15,7 @@ import java.util.List;
  * @author Frank wu
  * @date 2016/10/16
  */
-public class BillingAccountDTO extends AbstractDTO implements GroupItem<BillingAccountType>, Selectable {
+public class BillingAccountDTO extends AbstractDTO implements Selectable {
 
     private Integer id;
     private String guid;
@@ -40,10 +39,7 @@ public class BillingAccountDTO extends AbstractDTO implements GroupItem<BillingA
 
     public static List<BillingAccountDTO> toDTOs(List<BillingAccount> accounts) {
         List<BillingAccountDTO> accountDTOs = new ArrayList<>();
-        for (BillingAccount account : accounts) {
-            BillingAccountDTO accountDTO = new BillingAccountDTO(account);
-            accountDTOs.add(accountDTO);
-        }
+        accounts.forEach(account -> accountDTOs.add(new BillingAccountDTO(account)));
         return accountDTOs;
     }
 
@@ -97,11 +93,6 @@ public class BillingAccountDTO extends AbstractDTO implements GroupItem<BillingA
 
     public int getSignum() {
         return signum;
-    }
-
-    @Override
-    public BillingAccountType key() {
-        return type;
     }
 
     @Override

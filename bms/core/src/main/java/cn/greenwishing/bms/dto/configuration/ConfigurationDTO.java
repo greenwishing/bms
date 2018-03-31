@@ -28,10 +28,7 @@ public class ConfigurationDTO {
 
     public static List<ConfigurationDTO> toDTOs(List<Configuration> configurations) {
         List<ConfigurationDTO> configurationDTOs = new ArrayList<>();
-        for (Configuration configuration : configurations) {
-            ConfigurationDTO configurationDTO = new ConfigurationDTO(configuration);
-            configurationDTOs.add(configurationDTO);
-        }
+        configurations.forEach(cfg -> configurationDTOs.add(new ConfigurationDTO(cfg)));
         return configurationDTOs;
     }
 

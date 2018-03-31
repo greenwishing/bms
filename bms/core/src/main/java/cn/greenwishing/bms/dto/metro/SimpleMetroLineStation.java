@@ -38,10 +38,10 @@ public class SimpleMetroLineStation {
 
     public static List<SimpleMetroLineStation> valueOf(List<SqlResultParser> parsers) {
         List<SimpleMetroLineStation> ms = new ArrayList<>();
-        for (SqlResultParser parser : parsers) {
+        parsers.forEach(parser -> {
             SimpleMetroLineStation s = new SimpleMetroLineStation(parser);
             ms.add(s);
-        }
+        });
         return ms;
     }
 

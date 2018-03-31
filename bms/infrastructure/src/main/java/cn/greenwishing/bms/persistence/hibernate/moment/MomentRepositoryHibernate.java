@@ -23,13 +23,10 @@ public class MomentRepositoryHibernate extends AbstractRepositoryHibernate imple
     @Override
     @SuppressWarnings("unchecked")
     public List<MomentType> findMomentTypes(final Integer userId) {
-        return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<MomentType>>() {
-            @Override
-            public List<MomentType> doInHibernate(Session session) throws HibernateException {
-                Criteria criteria = session.createCriteria(MomentType.class);
-                criteria.add(Restrictions.eq("user.id", userId));
-                return criteria.list();
-            }
+        return getHibernateTemplate().executeWithNativeSession(session -> {
+            Criteria criteria = session.createCriteria(MomentType.class);
+            criteria.add(Restrictions.eq("user.id", userId));
+            return criteria.list();
         });
     }
 

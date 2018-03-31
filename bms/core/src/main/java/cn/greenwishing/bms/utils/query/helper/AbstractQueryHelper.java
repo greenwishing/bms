@@ -3,19 +3,16 @@ package cn.greenwishing.bms.utils.query.helper;
 import cn.greenwishing.bms.utils.paging.AbstractPaging;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
-import org.springframework.orm.hibernate5.HibernateCallback;
+import org.hibernate.query.Query;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractQueryHelper<T, P extends AbstractPaging<T>> implements QueryHelper<T> {
     final static Logger log = LogManager.getLogger(AbstractQueryHelper.class);
-    private List<Filter> filters = new ArrayList<Filter>();
+    private List<Filter> filters = new ArrayList<>();
 
     private HibernateTemplate hibernateTemplate;
 
@@ -39,13 +36,11 @@ public abstract class AbstractQueryHelper<T, P extends AbstractPaging<T>> implem
 
     public String getSubHql() {
         StringBuilder subHql = new StringBuilder();
-        List<Filter> filters = getFilters();
-        for (Filter filter : filters) {
-            subHql.append(filter.getSubHql());
-        }
+        getFilters().forEach(filter -> subHql.append(filter.getSubHql()));
         return subHql.toString();
     }
 
+    @Override
     public abstract String getResultHql();
 
     public int getStartIndex() {
@@ -68,12 +63,9 @@ public abstract class AbstractQueryHelper<T, P extends AbstractPaging<T>> implem
         final String totalCountHql = getTotalCountHql();
         log.debug("TotalCount hql:" + totalCountHql);
 
-        return this.hibernateTemplate.execute(new HibernateCallback<Integer>() {
-            @Override
-            public Integer doInHibernate(Session session) throws HibernateException {
-                Query query = createQuery(session, totalCountHql);
-                return ((Long) query.uniqueResult()).intValue();
-            }
+        return this.hibernateTemplate.execute(session -> {
+            Query query = createQuery(session, totalCountHql);
+            return ((Long) query.uniqueResult()).intValue();
         });
     }
 
@@ -82,30 +74,22 @@ public abstract class AbstractQueryHelper<T, P extends AbstractPaging<T>> implem
         final String resultHql = getResultHql();
         log.debug("Result sql: " + resultHql);
 
-        return this.hibernateTemplate.execute(new HibernateCallback<List<T>>() {
-            @Override
-            public List<T> doInHibernate(Session session) throws HibernateException {
-                Query query = createQuery(session, resultHql);
-                int amountPerPage = getPageSize();
-                if (amountPerPage == 0) {
-                    return query.list();
-                }
-                int startPosition = getStartIndex();
-                return query.setFirstResult(startPosition).setMaxResults(amountPerPage).list();
+        return this.hibernateTemplate.execute(session -> {
+            Query query = createQuery(session, resultHql);
+            int amountPerPage = getPageSize();
+            if (amountPerPage == 0) {
+                return query.list();
             }
+            int startPosition = getStartIndex();
+            return query.setFirstResult(startPosition).setMaxResults(amountPerPage).list();
         });
 
     }
 
     private Query createQuery(Session session, String resultHql) {
         Query query = session.createQuery(resultHql);
-        List<Filter> filters = getFilters();
-        for (Filter filter : filters) {
-            if (filter instanceof ParameterFilter) {
-                ParameterFilter parameterFilter = (ParameterFilter) filter;
-                parameterFilter.setParameter(query);
-            }
-        }
+        getFilters().stream().filter(filter -> filter instanceof ParameterFilter)
+        .forEach(filter -> ((ParameterFilter) filter).setParameter(query));
         return query;
     }
 

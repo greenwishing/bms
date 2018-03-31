@@ -52,10 +52,7 @@ public class ArticleDTO extends AbstractDTO {
 
     public static List<ArticleDTO> toDTOs(List<Article> articles) {
         List<ArticleDTO> articleDTOs = new ArrayList<>();
-        for (Article article : articles) {
-            ArticleDTO articleDTO = new ArticleDTO(article);
-            articleDTOs.add(articleDTO);
-        }
+        articles.forEach(article -> articleDTOs.add(new ArticleDTO(article)));
         return articleDTOs;
     }
 

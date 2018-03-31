@@ -68,7 +68,7 @@ public class ArticleQueryHelper extends AbstractQueryHelper<Article, ArticlePagi
         return new ParameterFilter() {
             @Override
             public void setParameter(Query query) {
-                for (int i = 0; i < keys.size(); i++) {
+                for (int i = query.getParameterMetadata().isOrdinalParametersZeroBased() ? 0 : 1; i < keys.size(); i++) {
                     String k = keys.get(i);
                     query.setParameter("key" + i, "%" + k + "%");
                 }

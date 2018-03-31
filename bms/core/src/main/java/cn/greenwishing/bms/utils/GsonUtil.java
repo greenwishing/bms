@@ -66,9 +66,7 @@ public class GsonUtil {
 
     public static GsonBuilder builder() {
         GsonBuilder builder = new GsonBuilder();
-        for (Map.Entry<Class, CustomSerializer> entry : SERIALIZER_MAP.entrySet()) {
-            builder.registerTypeAdapter(entry.getKey(), entry.getValue());
-        }
+        SERIALIZER_MAP.forEach((key, value) -> builder.registerTypeAdapter(key, value));
         return builder;
     }
 

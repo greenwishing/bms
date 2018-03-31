@@ -2,8 +2,6 @@ package cn.greenwishing.bms.persistence.hibernate;
 
 import cn.greenwishing.bms.domain.Domain;
 import cn.greenwishing.bms.domain.Repository;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.dao.support.DaoSupport;
 import org.springframework.orm.hibernate5.HibernateCallback;
@@ -52,32 +50,24 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
 
     @Override
     public Object singleResult(final String hql, final Object... params) {
-        return getHibernateTemplate().execute(new HibernateCallback<Object>() {
-
-            @Override
-            public Object doInHibernate(Session session) throws HibernateException {
-                Query query = session.createQuery(hql);
-                for (int i = 0; i < params.length; i++) {
-                    query = query.setParameter(i, params[i]);
-                }
-                return query.uniqueResult();
+        return getHibernateTemplate().execute(session -> {
+            Query query = session.createQuery(hql);
+            for (int i = query.getParameterMetadata().isOrdinalParametersZeroBased() ? 0 : 1; i < params.length; i++) {
+                query = query.setParameter(i, params[i]);
             }
+            return query.uniqueResult();
         });
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void update(final String hql, final Object... params) {
-        getHibernateTemplate().execute(new HibernateCallback() {
-
-            @Override
-            public Object doInHibernate(Session session) throws HibernateException {
-                Query query = session.createQuery(hql);
-                for (int i = 0; i < params.length; i++) {
-                    query = query.setParameter(i, params[i]);
-                }
-                return query.executeUpdate();
+        getHibernateTemplate().execute((HibernateCallback) session -> {
+            Query query = session.createQuery(hql);
+            for (int i = query.getParameterMetadata().isOrdinalParametersZeroBased() ? 0 : 1; i < params.length; i++) {
+                query = query.setParameter(i, params[i]);
             }
+            return query.executeUpdate();
         });
 
     }
@@ -89,9 +79,7 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
 
     @Override
     public <T extends Domain> void saveAll(Collection<T> domains) {
-        for (T domain : domains) {
-            getHibernateTemplate().save(domain);
-        }
+        domains.forEach(domain -> getHibernateTemplate().saveOrUpdate(domain));
     }
 
     @Override
@@ -114,12 +102,9 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
             return Collections.emptyList();
         }
         final String hql = "from " + clazz.getName() + " t  where t.guid  in (:guids)";
-        return getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
-            @Override
-            public List<T> doInHibernate(Session session) throws HibernateException {
-                Query query = session.createQuery(hql).setParameterList("guids", guids);
-                return query.list();
-            }
+        return getHibernateTemplate().execute(session -> {
+            Query query = session.createQuery(hql).setParameterList("guids", guids);
+            return query.list();
         });
     }
 
@@ -130,14 +115,11 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
             return;
         }
         final String hql = "update " + clazz.getName() + " t set t.status=:status where t.guid in (:guids)";
-        getHibernateTemplate().execute(new HibernateCallback<Object>() {
-            @Override
-            public Object doInHibernate(Session session) throws HibernateException {
-                Query query = session.createQuery(hql);
-                query.setParameter("status", status);
-                query.setParameterList("guids", guids);
-                return query.executeUpdate();
-            }
+        getHibernateTemplate().execute((HibernateCallback<Object>) session -> {
+            Query query = session.createQuery(hql);
+            query.setParameter("status", status);
+            query.setParameterList("guids", guids);
+            return query.executeUpdate();
         });
     }
 
@@ -147,13 +129,10 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
             return;
         }
         final String hql = "delete from " + clazz.getName() + " t where t.guid in (:guids)";
-        getHibernateTemplate().execute(new HibernateCallback<Object>() {
-            @Override
-            public Object doInHibernate(Session session) throws HibernateException {
-                Query query = session.createQuery(hql);
-                query.setParameterList("guids", guids);
-                return query.executeUpdate();
-            }
+        getHibernateTemplate().execute((HibernateCallback<Object>) session -> {
+            Query query = session.createQuery(hql);
+            query.setParameterList("guids", guids);
+            return query.executeUpdate();
         });
     }
 
@@ -163,17 +142,14 @@ public class AbstractRepositoryHibernate extends DaoSupport implements Repositor
     }
 
     public List find(final String hql, final Integer startIndex, final Integer pageCount, final Object... args) {
-        return getHibernateTemplate().execute(new HibernateCallback<List>() {
-            @Override
-            public List doInHibernate(Session session) throws HibernateException {
-                Query query = session.createQuery(hql);
-                for (int i = 0; i < args.length; i++) {
-                    query.setParameter(i, args[i]);
-                }
-                return query.setFirstResult(startIndex)
-                        .setMaxResults(pageCount)
-                        .list();
+        return getHibernateTemplate().execute(session -> {
+            Query query = session.createQuery(hql);
+            for (int i = query.getParameterMetadata().isOrdinalParametersZeroBased() ? 0 : 1; i < args.length; i++) {
+                query.setParameter(i, args[i]);
             }
+            return query.setFirstResult(startIndex)
+                    .setMaxResults(pageCount)
+                    .list();
         });
     }
 

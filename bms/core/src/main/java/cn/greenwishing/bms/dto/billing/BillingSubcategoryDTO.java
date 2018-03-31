@@ -38,19 +38,13 @@ public class BillingSubcategoryDTO implements Selectable {
 
     public static List<BillingSubcategoryDTO> toDTO(List<BillingSubcategory> subcategories) {
         List<BillingSubcategoryDTO> subcategoryDTOs = new ArrayList<>();
-        for (BillingSubcategory subcategory : subcategories) {
-            BillingSubcategoryDTO subcategoryDTO = new BillingSubcategoryDTO(subcategory);
-            subcategoryDTOs.add(subcategoryDTO);
-        }
+        subcategories.forEach(subcategory -> subcategoryDTOs.add(new BillingSubcategoryDTO(subcategory)));
         return subcategoryDTOs;
     }
 
     public static List<BillingSubcategoryDTO> valueOf(List<SqlResultParser> subcategories) {
         List<BillingSubcategoryDTO> subcategoryDTOs = new ArrayList<>();
-        for (SqlResultParser subcategory : subcategories) {
-            BillingSubcategoryDTO subcategoryDTO = new BillingSubcategoryDTO(subcategory);
-            subcategoryDTOs.add(subcategoryDTO);
-        }
+        subcategories.forEach(subcategory -> subcategoryDTOs.add(new BillingSubcategoryDTO(subcategory)));
         return subcategoryDTOs;
     }
 

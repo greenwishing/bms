@@ -1,7 +1,6 @@
 package cn.greenwishing.app;
 
-import net.sf.json.JSONObject;
-import net.sf.json.util.JSONUtils;
+import cn.greenwishing.bms.utils.GsonUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -10,6 +9,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * @author Frank wu
@@ -26,16 +26,14 @@ public class Test {
         try {
             String requestUrl = String.format(TOKEN_URL, appId, appSecret);
             String tokenResponse = sendRequest(requestUrl);
-            if (JSONUtils.mayBeJSON(tokenResponse)) {
-                JSONObject tokenJson = JSONObject.fromObject(tokenResponse);
-                if (tokenJson.has("access_token")) {
-                    String accessToken = tokenJson.getString("access_token");
-                    System.out.println("获取到Token：" + accessToken);
-                    requestUrl = String.format(DATA_URL, accessToken);
-                    sendRequest(requestUrl);
-                } else {
-                    System.out.println("获取Token失败[" + tokenJson.get("error") + "]：" + tokenJson.get("error_description"));
-                }
+            Map map = GsonUtil.fromJson(tokenResponse, Map.class);
+            if (map.containsKey("access_token")) {
+                Object accessToken = map.get("access_token");
+                System.out.println("获取到Token：" + accessToken);
+                requestUrl = String.format(DATA_URL, accessToken);
+                sendRequest(requestUrl);
+            } else {
+                System.out.println("获取Token失败[" + map.get("error") + "]：" + map.get("error_description"));
             }
         } catch (Exception e) {
             System.out.println("出错了：" + e.getLocalizedMessage());

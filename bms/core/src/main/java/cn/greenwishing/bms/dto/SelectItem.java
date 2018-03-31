@@ -25,9 +25,7 @@ public class SelectItem implements Selectable {
 
     public static <T extends Selectable> List<SelectItem> valueOf (List<T> selectList) {
         List<SelectItem> items = new ArrayList<>();
-        for (T select : selectList) {
-            items.add(new SelectItem(select));
-        }
+        selectList.forEach(select -> items.add(new SelectItem(select)));
         return items;
     }
 
@@ -43,8 +41,12 @@ public class SelectItem implements Selectable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SelectItem that = (SelectItem) o;
 

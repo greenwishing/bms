@@ -252,11 +252,11 @@ public class BillingServiceImpl implements BillingService {
             BillingCategory billingCategory = new BillingCategory(user);
             billingCategory.update(defaultBillingCategory.type, defaultBillingCategory.name);
             userRepository.saveOrUpdate(billingCategory);
-            for (String defaultSubcategory : defaultBillingCategory.subcategories) {
+            defaultBillingCategory.subcategories.forEach(defaultSubcategory -> {
                 BillingSubcategory billingSubcategory = new BillingSubcategory(billingCategory);
                 billingSubcategory.update(defaultSubcategory);
                 userRepository.saveOrUpdate(billingSubcategory);
-            }
+            });
         }
     }
 
@@ -301,11 +301,11 @@ public class BillingServiceImpl implements BillingService {
         }
 
         for (DefaultData.DefaultBillingAccount defaultBillingAccount : DefaultData.DefaultBillingAccount.values()) {
-            for (String name : defaultBillingAccount.names) {
+            defaultBillingAccount.names.forEach(name -> {
                 BillingAccount billingAccount = new BillingAccount(user);
                 billingAccount.update(defaultBillingAccount.type, name, BigDecimal.ZERO);
                 userRepository.saveOrUpdate(billingAccount);
-            }
+            });
         }
     }
 
@@ -347,15 +347,19 @@ public class BillingServiceImpl implements BillingService {
         Wheel secondLevel = new Wheel("分类");
         secondLevel.add(new WheelData(-1, "", "全部").setSign(""));
         List<BillingCategoryDTO> categories = loadBillingCategory(userGuid);
-        for (BillingCategoryDTO category : categories) {
-            secondLevel.add(new WheelData(category.getId(), category.getGuid(), category.getName()).setSign(category.getType().getValue()));
-        }
+        categories.forEach(category -> {
+            WheelData data = new WheelData(category.getId(), category.getGuid(), category.getName())
+                    .setSign(category.getType().getValue());
+            secondLevel.add(data);
+        });
         Wheel thirdLevel = new Wheel("子分类");
         thirdLevel.add(new WheelData(-1, "", "全部").setSign(""));
         List<BillingSubcategoryDTO> subcategories = loadBillSubcategories(userGuid);
-        for (BillingSubcategoryDTO subcategory : subcategories) {
-            thirdLevel.add(new WheelData(subcategory.getId(), subcategory.getGuid(), subcategory.getName()).setSign(subcategory.getCategoryGuid()));
-        }
+        subcategories.forEach(subcategory -> {
+            WheelData data = new WheelData(subcategory.getId(), subcategory.getGuid(), subcategory.getName())
+                    .setSign(subcategory.getCategoryGuid());
+            thirdLevel.add(data);
+        });
         return Arrays.asList(firstLevel.sort(), secondLevel.sort(), thirdLevel.sort());
     }
 
@@ -366,18 +370,16 @@ public class BillingServiceImpl implements BillingService {
         List<BillingSubcategoryDTO> subcategories = loadBillSubcategories(userGuid);
         for (BillingType type : BillingType.values()) {
             TreeNode typeNode = new BillingTypeNode(type);
-            for (BillingCategoryDTO category : categories) {
-                if (type == category.getType()) {
-                    TreeNode categoryNode = new TreeNode(category);
-                    for (BillingSubcategoryDTO subcategory : subcategories) {
-                        if (category.getGuid().equals(subcategory.getCategoryGuid())) {
-                            TreeNode subcategoryNode = new TreeNode(subcategory);
-                            categoryNode.addChild(subcategoryNode);
-                        }
-                    }
-                    typeNode.addChild(categoryNode);
-                }
-            }
+            categories.stream().filter(category -> type == category.getType())
+                    .forEach(category -> {
+                        TreeNode categoryNode = new TreeNode(category);
+                        subcategories.stream().filter(subcategory -> category.getGuid().equals(subcategory.getCategoryGuid()))
+                                .forEach(subcategory -> {
+                                    TreeNode subcategoryNode = new TreeNode(subcategory);
+                                    categoryNode.addChild(subcategoryNode);
+                                });
+                        typeNode.addChild(categoryNode);
+                    });
             typeNodes.add(typeNode);
         }
         return typeNodes;

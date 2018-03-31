@@ -3,11 +3,8 @@ package cn.greenwishing.bms.dto.moment;
 import cn.greenwishing.bms.domain.moment.Moment;
 import cn.greenwishing.bms.domain.moment.MomentType;
 import cn.greenwishing.bms.utils.JodaUtils;
-import org.joda.time.Duration;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +53,7 @@ public class MomentDTO {
 
     public static List<MomentDTO> toDTOs(List<Moment> moments) {
         List<MomentDTO> momentDTOs = new ArrayList<>();
-        for (Moment moment : moments) {
-            momentDTOs.add(new MomentDTO(moment));
-        }
+        moments.forEach(moment -> momentDTOs.add(new MomentDTO(moment)));
         return momentDTOs;
     }
 

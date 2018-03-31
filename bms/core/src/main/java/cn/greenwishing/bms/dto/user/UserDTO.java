@@ -39,10 +39,10 @@ public class UserDTO {
 
     public static List<UserDTO> toDTOs(List<User> users) {
         List<UserDTO> userDTOs = new ArrayList<>();
-        for (User user : users) {
+        users.forEach(user -> {
             UserDTO userDTO = new UserDTO(user);
             userDTOs.add(userDTO);
-        }
+        });
         return userDTOs;
     }
 

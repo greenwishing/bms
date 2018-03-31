@@ -66,10 +66,10 @@ public class MetroLineDTO {
 
     public static List<MetroLineDTO> toDTOs(List<MetroLine> lines) {
         List<MetroLineDTO> lineDTOs = new ArrayList<>();
-        for (MetroLine line : lines) {
+        lines.forEach(line -> {
             MetroLineDTO lineDTO = new MetroLineDTO(line);
             lineDTOs.add(lineDTO);
-        }
+        });
         return lineDTOs;
     }
 }

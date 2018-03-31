@@ -77,10 +77,7 @@ public class BillingDTO extends AbstractDTO {
 
     public static List<BillingDTO> toDTOs(List<Billing> billings) {
         List<BillingDTO> billingDTOs = new ArrayList<>();
-        for (Billing billing : billings) {
-            BillingDTO billingDTO = new BillingDTO(billing);
-            billingDTOs.add(billingDTO);
-        }
+        billings.forEach(billing -> billingDTOs.add(new BillingDTO(billing)));
         return billingDTOs;
     }
 
