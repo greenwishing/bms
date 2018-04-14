@@ -44,11 +44,11 @@ public abstract class AbstractQueryHelper<T, P extends AbstractPaging<T>> implem
     public abstract String getResultHql();
 
     public int getStartIndex() {
-        return 0;
+        return paging.getStartIndex();
     }
 
     public int getPageSize() {
-        return 0;
+        return paging.getPageSize();
     }
 
     public String getTotalCountHql() {

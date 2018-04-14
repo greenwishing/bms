@@ -144,14 +144,4 @@ public class BillingQueryHelper extends AbstractQueryHelper<Billing, BillingPagi
     public String getTotalCountHql() {
         return "select count(*) from Billing b where 1=1 " + getSubHql();
     }
-
-    @Override
-    public int getStartIndex() {
-        return paging.getStartIndex();
-    }
-
-    @Override
-    public int getPageSize() {
-        return paging.getPageSize();
-    }
 }

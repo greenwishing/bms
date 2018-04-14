@@ -2,7 +2,6 @@ package cn.greenwishing.bms.utils.query.helper;
 
 import cn.greenwishing.bms.domain.article.Article;
 import cn.greenwishing.bms.domain.article.ArticleAccess;
-import cn.greenwishing.bms.utils.SecurityHolder;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.utils.paging.ArticlePaging;
 import org.hibernate.query.Query;
@@ -96,15 +95,5 @@ public class ArticleQueryHelper extends AbstractQueryHelper<Article, ArticlePagi
     @Override
     public String getTotalCountHql() {
         return "select count(*) from Article a where 1=1 " + getSubHql();
-    }
-
-    @Override
-    public int getStartIndex() {
-        return paging.getStartIndex();
-    }
-
-    @Override
-    public int getPageSize() {
-        return paging.getPageSize();
     }
 }
