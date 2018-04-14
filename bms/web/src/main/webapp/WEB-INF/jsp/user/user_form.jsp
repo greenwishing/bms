@@ -50,7 +50,7 @@
                 </div>
             </div>
         </c:if>
-        <c:if test="${!userDTO.admin}">
+        <c:if test="${userDTO.admin}">
             <div class="weui-cells__title">状态</div>
             <div class="weui-cells weui-cells_form">
                 <div class="weui-cell">
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </c:if>
-        <c:if test="${userDTO.admin}">
+        <c:if test="${!userDTO.admin}">
             <div class="weui-cells__title">状态</div>
             <div class="weui-cells weui-cells_radio">
                 <c:forEach items="${statusList}" var="status">
