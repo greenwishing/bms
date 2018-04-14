@@ -11,9 +11,11 @@ Page({
     this.queryBilling();
   },
   queryBilling: function(data){
+    if (!data) data = { currentPage: 1 };
+    data.userGuid = app.userGuid;
     _.ajax({
       url: 'billingdata',
-      data: data || { currentPage: 1 },
+      data: data,
       success: function (result) {
         this.renderPaging(result.paging);
       },

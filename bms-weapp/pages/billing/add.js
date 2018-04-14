@@ -52,6 +52,8 @@ Page({
   },
   pageInit: function() {
     this.initPickerValue([0, 0, 0]);
+    this.initAccount('src');
+    this.initAccount('target');
     var date = new Date();
     this.setData({
       name: null,
@@ -115,8 +117,7 @@ Page({
       },
       typeIndex: index
     });
-    this.initAccount('src');
-    this.initAccount('target');
+    console.log('initPickerValue: ', this.data)
   },
   children: function(node){
     var children = node.children;
@@ -136,7 +137,8 @@ Page({
     return results;
   },
   initAccount: function (goal, detail) {
-    var data = this.data;
+    var data = {};
+    data[goal] = this.data[goal];
     if (!detail) {
       detail = { column: 0, index: 0};
     }
@@ -178,6 +180,7 @@ Page({
   submitBilling: function(e){
     var data = this.data, form = e.detail.value;
     var params = {
+      userGuid: app.userGuid,
       name: form.name,
       amount: form.amount,
       description: form.remark
@@ -201,7 +204,12 @@ Page({
       url: 'addbilling',
       data: params,
       success: function(result) {
-        this.pageInit();
+        wx.showToast({
+          title: '保存成功！',
+          success: function(){
+            wx.navigateBack();
+          }
+        })
       },
       loadingText: '保存中...'
     }, this);

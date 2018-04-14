@@ -14,10 +14,18 @@ App({
     console.log('app launch')
   },
   checkUserLogin: function (callback, context) {
+    var self = this;
     this.getUserInfo(function (userInfo) {
       if (!this.userGuid) {
-        wx.navigateTo({
-          url: '/pages/login/login',
+        var data = this.userInfo;
+        data.openid = this.openid;
+        _.ajax({
+          url: '/api/weixin/weapp/fastRegister',
+          data: data,
+          success: function (result) {
+            self.userGuid = result.userGuid;
+            self.checkUserLogin(callback, context);
+          }
         });
         return;
       }

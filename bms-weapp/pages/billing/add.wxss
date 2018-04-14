@@ -1,5 +1,6 @@
 /* pages/billing/billing.wxss */
 .picker-wrapper {
+  z-index: 1000;
   display: none;
   position: fixed;
   width: 100%;
