@@ -69,7 +69,6 @@ public class ArticleController {
             articleDTO.setUserGuid(SecurityHolder.getUserGuid());
             articleService.saveOrUpdateArticle(articleDTO);
             model.put("success", true);
-            model.put("redirectUrl", "list");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }
@@ -101,7 +100,6 @@ public class ArticleController {
             articleCategoryDTO.setUserGuid(SecurityHolder.getUserGuid());
             articleService.saveOrUpdateArticleCategory(articleCategoryDTO);
             model.put("success", true);
-            model.put("redirectUrl", "categories");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }

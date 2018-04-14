@@ -11,6 +11,18 @@
             weui.searchBar('#searchBar');
         });
     </script>
+    <style type="text/css">
+        .status {
+            display: inline-block;
+            width: 2px;
+            height: 2px;
+            background: #888;
+            margin-left: 2px;
+        }
+        .status.status-ENABLED {
+            background: #09bb07;
+        }
+    </style>
 </head>
 <body>
 <div class="weui-tab">
@@ -32,16 +44,22 @@
         <div class="weui-cells__title">用户列表</div>
         <div class="weui-cells">
             <c:forEach items="${pagingDTO.list}" var="user">
-                <a class="weui-cell weui-cell_access" href="edit?guid=${user.guid}">
-                    <div class="weui-cell__bd">${user.username}（${user.account}）</div>
-                    <div class="weui-cell__ft">${user.status.label}</div>
+                <a class="weui-cell weui-cell_access" href="edit?guid=${user.guid}" async-load="true">
+                    <div class="weui-cell__bd">
+                        <p>${user.username}</p>
+                        <p class="text-small color-grey">
+                            <span class="status status-${user.status}"></span>
+                            <span>${user.account}</span>
+                        </p>
+                    </div>
+                    <div class="weui-cell__ft"></div>
                 </a>
             </c:forEach>
         </div>
         <tags:paging formName="search-form" paging="${pagingDTO}"/>
     </div>
     <div class="weui-tabbar">
-        <a href="add" class="weui-tabbar__item">
+        <a href="add" class="weui-tabbar__item" async-load="true">
             <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">添加</p>
         </a>

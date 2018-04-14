@@ -137,7 +137,6 @@ public class BillingController {
             categoryDTO.setUserGuid(SecurityHolder.getUserGuid());
             billingService.saveOrUpdateBillingCategory(categoryDTO);
             model.put("success", true);
-            model.put("redirectUrl", "categories");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }
@@ -172,7 +171,6 @@ public class BillingController {
         } else {
             billingService.saveOrUpdateBillingSubcategory(subcategoryDTO);
             model.put("success", true);
-            model.put("redirectUrl", "subcategories?categoryGuid=" + categoryGuid);
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }
@@ -213,7 +211,6 @@ public class BillingController {
             accountDTO.setUserGuid(SecurityHolder.getUserGuid());
             billingService.saveOrUpdateBillingAccount(accountDTO);
             model.put("success", true);
-            model.put("redirectUrl", "accounts");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }

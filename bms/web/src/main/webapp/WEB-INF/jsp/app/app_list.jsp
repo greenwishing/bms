@@ -11,7 +11,7 @@
     <div class="weui-tab__panel">
         <div class="weui-cells">
             <c:forEach items="${apps}" var="app">
-                <a class="weui-cell weui-cell_access" href="edit?appId=${app.appId}">
+                <a class="weui-cell weui-cell_access" href="edit?appId=${app.appId}"  async-load="true">
                     <div class="weui-cell__bd">${app.appId}</div>
                     <div class="weui-cell__ft"></div>
                 </a>
@@ -20,7 +20,7 @@
         <div class="weui-cells__tips"><a class="weui-cell_link" href="${pageContext.request.contextPath}/wiki/app.html">接入文档</a></div>
     </div>
     <div class="weui-tabbar">
-        <a href="reg" class="weui-tabbar__item">
+        <a href="reg" class="weui-tabbar__item"  async-load="true">
             <img src="/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">添加</p>
         </a>

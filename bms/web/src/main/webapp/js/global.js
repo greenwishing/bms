@@ -1,6 +1,9 @@
 /**
  * @author Frank wu
  */
+$(function(){
+    $('[async-load="true"]').asyncLoader();
+});
 
 String.prototype.format = function (args) {
     var result = this;
@@ -105,22 +108,23 @@ var WF = {
         },
         ajaxSubmit: function(form, callback) {
             var loading = weui.loading('提交数据...');
+            var $form = $(form);
             WF.ajax.req({
-                url: $(form).attr('action'),
-                type: $(form).attr('method') || 'POST',
-                data: $(form).serialize(),
+                url: $form.attr('action'),
+                type: $form.attr('method') || 'POST',
+                data: $form.serialize(),
                 success: function(result) {
                     loading.hide();
                     if (result.success) {
                         if (result.tips) {
                             weui.topTips(result.tips, function(){
-                                WF.ajax.successHandler(result, callback);
+                                WF.ajax.successHandler($form, result, callback);
                             });
                         } else {
-                            WF.ajax.successHandler(result, callback);
+                            WF.ajax.successHandler($form, result, callback);
                         }
                     } else {
-                        weui.alert(result.message);
+                        weui.top(result.message);
                     }
                 },
                 error: function () {
@@ -257,7 +261,7 @@ var WF = {
                 weui.alert(e || s || x.status || '未知错误');
             }
         },
-        successHandler: function(result, callback) {
+        successHandler: function($form, result, callback) {
             if (callback && typeof callback === 'function') {
                 callback(result);
             } else if (result.redirectUrl) {
@@ -265,7 +269,12 @@ var WF = {
             } else if (result.back) {
                 history.back();
             } else {
-                location.reload();
+                var $dialog = $form.closest('.async-load-dialog');
+                if ($dialog.length) {
+                    $dialog.data('asyncLoader').close();
+                } else {
+                    location.reload();
+                }
             }
         }
     },
@@ -351,3 +360,84 @@ var WF = {
     article: {},
     user: {}
 };
+
+'use strict';
+(function($){
+    function AsyncLoader($el, options) {
+        this.$el = $el;
+        this.options = $.extend($.fn.asyncLoader.defaults, options || {});
+        this.$dialog = null;
+        this.$content = null;
+        this.create();
+    }
+    $.extend(AsyncLoader.prototype, {
+        create: function() {
+            var self = this;
+            this.$el.bind('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                self.show();
+            });
+        },
+        show: function(){
+            var dialog = weui.dialog({
+                title: '&nbsp;',
+                content: '',
+                className: 'async-load-dialog',
+                buttons: []
+            });
+            this.$dialog = $(dialog);
+            this.$content = this.$dialog.find('.weui-dialog__bd');
+            this.$dialog.data('asyncLoader', this);
+            this.bindClose();
+            this.load();
+        },
+        load: function() {
+            this.$content.html('<div class="weui-loading"></div>');
+            var url = this.$el.attr(this.options.urlAttr);
+            var self = this;
+            WF.ajax.req({
+                url: url,
+                success: function(result){
+                    self.render(result);
+                }
+            })
+        },
+        render: function(content) {
+            this.$content.html(content);
+            var $title = this.$content.find('title');
+            if ($title.length) {
+                this.$dialog.find('.weui-dialog__title').html($title.html());
+            }
+        },
+        bindClose: function() {
+            var self = this, $dialog = this.$dialog;
+            var $close = $('<a href="javascript:void(0)" class="weui-dialog__close">&times</a>');
+            $close.bind('click', function(){
+                self.close();
+            });
+            this.$dialog.find('.weui-dialog__hd').append($close);
+        },
+        close: function(callback) {
+            this.$dialog.hide(function () {
+                if (typeof callback === 'function') {
+                    callback();
+                } else {
+                    location.reload();
+                }
+            });
+        }
+    });
+    var old = $.fn.asyncLoader;
+    $.fn.asyncLoader = function (options) {
+        return this.each(function () {
+            var $el = $(this), data = $el.data('asyncLoader');
+            if (!data) $el.data('asyncLoader', (data = new AsyncLoader($el, options)))
+        });
+    };
+    $.fn.asyncLoader.Constructor = AsyncLoader;
+    $.fn.asyncLoader.noConflict = function () {$.fn.asyncLoader = old;return this;};
+    $.fn.asyncLoader.defaults = {
+        urlAttr: 'href'
+    };
+})(jQuery);

@@ -14,7 +14,7 @@
         </div>
         <div class="weui-cells">
             <c:forEach items="${stations}" var="station">
-                <a class="weui-cell weui-cell_access" href="edit_station?guid=${station.guid}">
+                <a class="weui-cell weui-cell_access" href="edit_station?guid=${station.guid}" async-load="true">
                     <div class="weui-cell__bd">${station.name}</div>
                     <div class="weui-cell__ft"></div>
                 </a>
@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="weui-tabbar">
-        <a href="add_station" class="weui-tabbar__item">
+        <a href="add_station" class="weui-tabbar__item" async-load="true">
             <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">添加</p>
         </a>

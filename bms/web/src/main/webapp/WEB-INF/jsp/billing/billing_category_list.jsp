@@ -25,7 +25,7 @@
         </div>
         <div class="weui-cells">
             <c:forEach items="${categories}" var="category">
-                <a class="weui-cell weui-cell_access" href="edit_category?guid=${category.guid}">
+                <a class="weui-cell weui-cell_access" href="edit_category?guid=${category.guid}" async-load="true">
                     <div class="weui-cell__bd">${category.type.label} - ${category.name}</div>
                     <div class="weui-cell__ft"></div>
                 </a>
@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="weui-tabbar">
-        <a href="add_category" class="weui-tabbar__item">
+        <a href="add_category" class="weui-tabbar__item" async-load="true">
             <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">添加</p>
         </a>

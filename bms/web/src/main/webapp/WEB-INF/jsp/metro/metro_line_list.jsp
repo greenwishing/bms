@@ -25,7 +25,7 @@
         </div>
         <div class="weui-cells">
             <c:forEach items="${lines}" var="line">
-                <a class="weui-cell weui-cell_access" href="edit?guid=${line.guid}">
+                <a class="weui-cell weui-cell_access" href="edit?guid=${line.guid}" async-load="true">
                     <div class="weui-cell__hd"><span class="station" style="background: ${line.color};"></span></div>
                     <div class="weui-cell__bd"><span style="color: ${line.color}">${line.name}</span></div>
                     <div class="weui-cell__ft"></div>
@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="weui-tabbar">
-        <a href="add" class="weui-tabbar__item">
+        <a href="add" class="weui-tabbar__item" async-load="true">
             <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">添加</p>
         </a>

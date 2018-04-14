@@ -64,7 +64,6 @@
                 var type = $type.data();
                 var category = $category.data();
                 var subcategory = $subcategory.data();
-                console.log('XXXXXXX -  ', type, category, subcategory);
                 var label = '', enabled = false;
                 if (type) {
                     $fieldType.val(type.value);
@@ -183,7 +182,7 @@
 </div>
 <div class="weui-cells">
 <c:forEach items="${pagingDTO.list}" var="billing">
-    <a class="weui-cell weui-cell_access" href="detail?guid=${billing.guid}">
+    <a class="weui-cell weui-cell_access" href="detail?guid=${billing.guid}" async-load="true">
         <div class="weui-cell__bd">
             <p>${billing.name}</p>
             <p class="text-small color-grey">${billing.occurredTimeFriendly} ${billing.subcategoryName} ${billing.type.label}</p>

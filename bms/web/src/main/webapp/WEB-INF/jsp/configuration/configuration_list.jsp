@@ -35,7 +35,7 @@
         <c:forEach items="${configurations}" var="configuration">
             <div class="weui-cells__title">${configuration.key}</div>
             <div class="weui-cells">
-                <a class="weui-cell weui-cell_access" href="edit?guid=${configuration.guid}">
+                <a class="weui-cell weui-cell_access" href="edit?guid=${configuration.guid}" async-load="true">
                     <div class="weui-cell__bd">
                         <p>${configuration.value}</p>
                     </div>
@@ -48,7 +48,7 @@
         </c:forEach>
     </div>
     <div class="weui-tabbar">
-        <a href="add" class="weui-tabbar__item">
+        <a href="add" class="weui-tabbar__item" async-load="true">
             <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">添加</p>
         </a>

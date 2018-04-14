@@ -27,7 +27,7 @@
             WF.ajax.doAjax({
                 url: 'done?guid=' + guid,
                 success: function() {
-                    location.reload();
+                    // nothing to do
                 }
             })
         }
@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class="weui-tabbar">
-        <a href="add" class="weui-tabbar__item">
+        <a href="add" class="weui-tabbar__item" async-load="true">
             <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">添加</p>
         </a>

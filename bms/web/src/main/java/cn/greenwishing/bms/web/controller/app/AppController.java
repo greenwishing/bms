@@ -72,7 +72,6 @@ public class AppController {
             appDTO.setUserGuid(SecurityHolder.getUserGuid());
             appService.saveOrUpdate(appDTO);
             model.put("success", true);
-            model.put("redirectUrl", "list");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }

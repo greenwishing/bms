@@ -64,7 +64,6 @@ public class ConfigurationController {
         } else {
             configurationService.saveOrUpdateConfiguration(configurationDTO);
             model.put("success", true);
-            model.put("redirectUrl", "list");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }

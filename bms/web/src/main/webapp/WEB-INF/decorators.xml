@@ -18,10 +18,36 @@
         <pattern>/404.jsp*</pattern>
         <pattern>/exception.jsp*</pattern>
 
+        <pattern>/system/user/add*</pattern>
+        <pattern>/system/user/edit*</pattern>
+
         <pattern>/system/billing/record*</pattern>
+        <!-- include add & edit category, subcategory, account etc. -->
+        <pattern>/system/billing/add*</pattern>
+        <pattern>/system/billing/edit*</pattern>
         <pattern>/system/billing/statistics*</pattern>
         <pattern>/system/billing/nearest*</pattern>
 
+        <!-- include add & edit category -->
+        <pattern>/system/article/add*</pattern>
+        <pattern>/system/article/edit*</pattern>
+
+        <!-- include add & edit moment, moment_type -->
+        <pattern>/system/moment/add*</pattern>
+        <pattern>/system/moment/edit*</pattern>
+
+        <pattern>/system/todo/add*</pattern>
+        <pattern>/system/todo/edit*</pattern>
+
+        <!-- include add & edit station -->
+        <pattern>/system/metro/add*</pattern>
+        <pattern>/system/metro/edit*</pattern>
+
+        <pattern>/system/configuration/add*</pattern>
+        <pattern>/system/configuration/edit*</pattern>
+
+        <pattern>/system/app/reg*</pattern>
+        <pattern>/system/app/edit*</pattern>
 
     </excludes>
 </decorators>

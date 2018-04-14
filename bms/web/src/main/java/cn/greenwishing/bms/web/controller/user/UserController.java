@@ -82,7 +82,6 @@ public class UserController {
         } else {
             userService.saveOrUpdateUser(userDTO);
             model.put("success", true);
-            model.put("redirectUrl", "list");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }

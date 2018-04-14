@@ -39,6 +39,99 @@ body {
     margin-top: 10px;
 }
 
+.weui-cell__bd {
+    word-wrap: break-word;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.async-load-dialog {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.async-load-dialog .weui-dialog {
+    height: 100%;
+    margin: 0 auto;
+    text-align: start;
+    top: 0;
+    left: 0;
+    max-width: none;
+    -webkit-transform: translate(0,0);
+    transform: translate(0,0);
+    border-radius: 0;
+}
+
+@media (min-width: 768px) {
+    .async-load-dialog .weui-dialog {
+        width: 768px;
+        left: 50%;
+        -webkit-transform: translate(-384px, 0);
+        transform: translate(-384px, 0);
+    }
+}
+
+.async-load-dialog .weui-dialog__hd {
+    position: relative;
+    padding: 10px 15px;
+    background: #efefef;
+}
+
+.async-load-dialog .weui-dialog__close {
+    float: right;
+    color: #888;
+}
+
+.async-load-dialog .weui-dialog__close:hover {
+    color: #555;
+}
+
+.async-load-dialog .weui-dialog__close:focus,
+.async-load-dialog .weui-dialog__close:active {
+    color: #000;
+}
+
+.async-load-dialog .weui-dialog__hd:after {
+    content: " ";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 1px;
+    border-bottom: 1px solid #D7D6DC;
+    color: #D7D6DC;
+    -webkit-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+}
+
+.async-load-dialog .weui-dialog__bd {
+    height: 100%;
+    background: #f8f8f8;
+    padding: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+}
+.async-load-dialog .weui-loading {
+    margin: 30px 0 0;
+    width: 38px;
+    height: 38px;
+    vertical-align: baseline;
+}
+
+.async-load-dialog .weui-dialog__ft {
+    display: none;
+}
+
 .color-grey {
     color: #888;
 }

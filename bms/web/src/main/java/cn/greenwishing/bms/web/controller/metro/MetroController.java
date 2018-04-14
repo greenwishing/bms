@@ -85,7 +85,6 @@ public class MetroController {
         } else {
             metroService.saveOrUpdateMetroLine(metroLineDTO);
             model.put("success", true);
-            model.put("redirectUrl", "list");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }

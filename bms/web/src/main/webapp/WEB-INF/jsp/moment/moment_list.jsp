@@ -14,7 +14,7 @@
         </div>
         <div class="weui-cells">
             <c:forEach items="${pagingDTO.list}" var="moment">
-                <a class="weui-cell weui-cell_access" href="edit_moment?guid=${moment.guid}">
+                <a class="weui-cell weui-cell_access" href="edit_moment?guid=${moment.guid}" async-load="true">
                     <div class="weui-cell__bd">
                         <p>${moment.typeName}</p>
                         <p class="color-grey text-small">${moment.date} ${moment.startTime} ${moment.friendlyTime}</p>
@@ -26,7 +26,7 @@
         <tags:paging formName="search-form" paging="${pagingDTO}"/>
     </div>
     <div class="weui-tabbar">
-        <a href="add_moment" class="weui-tabbar__item">
+        <a href="add_moment" class="weui-tabbar__item" async-load="true">
             <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">添加</p>
         </a>

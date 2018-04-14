@@ -32,7 +32,7 @@
             <div class="weui-panel__hd">文章列表</div>
             <div class="weui-panel__bd">
                 <c:forEach items="${pagingDTO.list}" var="article">
-                    <a href="edit?guid=${article.guid}" class="weui-media-box weui-media-box_appmsg">
+                    <a href="edit?guid=${article.guid}" class="weui-media-box weui-media-box_appmsg" async-load="true">
                         <c:if test="${not empty article.cover.url}">
                             <div class="weui-media-box__hd">
                                 <div class="weui-media-box__thumb" style="background-image: url(${article.cover.url});"></div>
@@ -52,7 +52,7 @@
         <tags:paging formName="search-form" paging="${pagingDTO}"/>
     </div>
     <div class="weui-tabbar">
-        <a href="add" class="weui-tabbar__item">
+        <a href="add" class="weui-tabbar__item" async-load="true">
             <img src="${pageContext.request.contextPath}/images/icons/icon_add.png" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">写文章</p>
         </a>

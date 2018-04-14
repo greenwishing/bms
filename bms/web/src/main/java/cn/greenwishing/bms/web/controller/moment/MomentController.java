@@ -88,7 +88,6 @@ public class MomentController {
         } else {
             momentService.saveOrUpdateMoment(momentDTO);
             model.put("success", true);
-            model.put("redirectUrl", "list");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }
@@ -131,7 +130,6 @@ public class MomentController {
             momentTypeDTO.setUserGuid(SecurityHolder.getUserGuid());
             momentService.saveOrUpdateMomentType(momentTypeDTO);
             model.put("success", true);
-            model.put("redirectUrl", "types");
         }
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }
