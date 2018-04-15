@@ -2,13 +2,15 @@ package cn.greenwishing.bms.web.controller.api.weixin;
 
 import cn.greenwishing.bms.api.weixin.weapp.JSCode2SessionRequest;
 import cn.greenwishing.bms.api.weixin.weapp.JSCode2SessionResponse;
-import cn.greenwishing.bms.domain.billing.BillingAccountType;
+import cn.greenwishing.bms.domain.billing.BillingType;
+import cn.greenwishing.bms.domain.statistics.BillingStatistics;
 import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.billing.BillingAccountDTO;
 import cn.greenwishing.bms.dto.billing.BillingDTO;
 import cn.greenwishing.bms.dto.billing.BillingPagingDTO;
 import cn.greenwishing.bms.dto.open.OpenUserDTO;
 import cn.greenwishing.bms.dto.open.WeAppUserInfo;
+import cn.greenwishing.bms.dto.statistics.highcharts.Series;
 import cn.greenwishing.bms.dto.statistics.tree.BillingAccountTypeNode;
 import cn.greenwishing.bms.dto.statistics.tree.TreeNode;
 import cn.greenwishing.bms.dto.user.UserDTO;
@@ -23,13 +25,13 @@ import cn.greenwishing.bms.web.validator.BillingValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -209,8 +211,37 @@ public class WeAppApiController {
      */
     @RequestMapping("billingdata")
     public ModelAndView billingData(BillingPagingDTO pagingDTO) {
-        BillingPagingDTO paging = billingService.loadBillingPaging(pagingDTO);
-        ApiResult result = ApiResult.success().add("paging", paging);
+        ApiResult result;
+        if (ValidationUtils.isEmpty(pagingDTO.getUserGuid())) {
+            result = ApiResult.fail(-1, "未登录");
+        } else {
+            BillingPagingDTO paging = billingService.loadBillingPaging(pagingDTO);
+            result = ApiResult.success().add("paging", paging);
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    @RequestMapping("nearest")
+    public ModelAndView nearest(String userGuid, @RequestParam(defaultValue = "20") Integer size, @RequestParam(defaultValue = "EXPEND") BillingType type) {
+        ApiResult result;
+        if (ValidationUtils.isEmpty(userGuid)) {
+            result = ApiResult.fail(-1, "未登录");
+        } else {
+            List<Series> series = billingService.loadNearestStatistics(size, type, userGuid);
+            result = ApiResult.success().add("series", series);
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    @RequestMapping("statistics")
+    public ModelAndView statistics(String userGuid, String type, String from, String to) {
+        ApiResult result;
+        if (ValidationUtils.isEmpty(userGuid)) {
+            result = ApiResult.fail(-1, "未登录");
+        } else {
+            List<BillingStatistics> data = billingService.loadBillingStatistics(type, from, to, userGuid);
+            result = ApiResult.success().add("data", data);
+        }
         return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
     }
 }
