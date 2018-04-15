@@ -9,7 +9,6 @@ page {
 .container {
   height: 100%;
   justify-content: space-between;
-  padding: 100rpx 0;
   box-sizing: border-box;
 }
 
@@ -67,7 +66,7 @@ page {
 .brand-text_hide .brand-logo {  margin: 20px; }
 .brand-logo_hide .brand-logo { display: none; }
 .brand-logo_hide .brand-text { margin: 20px; }
-.weui-footer {  margin-top: 50px; }
+.weui-footer {  margin: 10px auto; }
 .weui-footer a { color: inherit;}
 
 .weui-article img {
@@ -107,4 +106,22 @@ page {
 .amount-sign_BORROW:before,
 .amount-sign_RECEIVE:before {
     content: '+￥';
+}
+
+.chart {
+    width: 100%;
+    height: 230px;
+}
+.chart.chart-pie {
+  height: 260px;
+}
+.chart + .chart {
+  margin-top: 15px;
+}
+
+.button-sp-area {
+  text-align: center;
+}
+.button-sp-area .weui-btn + .weui-btn {
+  margin-left: 5px;
 }
