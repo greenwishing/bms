@@ -124,7 +124,7 @@ var WF = {
                             WF.ajax.successHandler($form, result, callback);
                         }
                     } else {
-                        weui.top(result.message);
+                        weui.topTips(result.message);
                     }
                 },
                 error: function () {
@@ -225,6 +225,14 @@ var WF = {
         },
         topTip: function(message, opts){
             weui.toast(message, opts);
+        },
+        closeDialog: function(el) {
+            var $dialog = $(el).closest('.async-load-dialog');
+            if ($dialog.length) {
+                $dialog.data('asyncLoader').close();
+            } else {
+                location.reload();
+            }
         }
     },
     ajax: {

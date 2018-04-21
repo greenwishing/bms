@@ -115,7 +115,7 @@
         </c:if>
     </div>
     <div class="weui-wepay-details__ft">
-        <a class="weui-btn weui-btn_default" href="javascript:void(0)" onclick="history.back()">返回</a>
+        <a class="weui-btn weui-btn_default" href="javascript:void(0)" onclick="WF.util.closeDialog(this)">关闭</a>
     </div>
 </div>
 </body>

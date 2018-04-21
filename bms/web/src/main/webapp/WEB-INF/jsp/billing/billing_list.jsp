@@ -122,7 +122,6 @@
             display: inline-block;
             width: 0;
             height: 0;
-            margin-left: 5px;
             vertical-align: middle;
             border-top: 4px dashed;
             border-top: 4px solid\9;
