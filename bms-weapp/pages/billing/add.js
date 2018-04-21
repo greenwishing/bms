@@ -3,6 +3,7 @@ var app = getApp();
 var _ = app.util;
 Page({
   data: {
+    pageReady:true,
     showTypePicker: false,
     type: {
       data: null,
@@ -39,6 +40,7 @@ Page({
   },
   onReady: function() {
     this.pageInit();
+    this.setData({ pageReady: true})
   },
   onShow: function () {
     this.maskAnimation = wx.createAnimation({

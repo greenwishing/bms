@@ -131,8 +131,8 @@ Page({
     var typeData = this.data.statisticsType;
     var typeValue = typeData.list[typeData.index].value;
     var today = new Date(), dateType = this.data.dateType, dateTypeValue = dateType.list[dateType.index].value;
-    var dateFrom = _.formatDate(today.add(this.offset, dateTypeValue).startOf(dateTypeValue));
-    var dateTo = _.formatDate(today.add(this.offset, dateTypeValue).endOf(dateTypeValue));
+    var dateFrom = today.clone().add(this.offset, dateTypeValue).startOf(dateTypeValue).format('yyyy-MM-dd');
+    var dateTo = today.clone().add(this.offset, dateTypeValue).endOf(dateTypeValue).format('yyyy-MM-dd');
     this.setData({ statisticsTitle: dateFrom + '~' + dateTo });
     _.ajax({
       type: 'post',

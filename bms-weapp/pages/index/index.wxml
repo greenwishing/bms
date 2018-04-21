@@ -52,15 +52,15 @@
       </view>
     </view>
     <view class="weui-cell">
-      <view class="weui-cell__bd" wx:if="{{showStatistics}}">
+      <view class="weui-cell__bd">
         <view class="text-center color-grey text-small">{{statisticsTitle}}</view>
-        <canvas canvas-id="billing-statistics" class="chart chart-pie"></canvas>
+        <canvas canvas-id="billing-statistics" wx:if="{{showStatistics}}" class="chart chart-pie"></canvas>
+        <view class="text-center" wx:if="{{!showStatistics}}">无数据</view>
         <view class="button-sp-area">
           <button class="weui-btn mini-btn" type="default" size="mini" bindtap="decrementOffset">向前</button>
           <button class="weui-btn mini-btn" type="default" size="mini" bindtap="incrementOffset">向后</button>
         </view>
       </view>
-      <view class="weui-cell__bd" wx:if="{{!showStatistics}}">无数据</view>
     </view>
   </view>
   <view class="weui-footer">

@@ -3,20 +3,83 @@ const BASE_URL = 'https://greenwishing.cn';
 // const BASE_URL = 'http://localhost:8086';
 const URI_PREFIX = '/api/weixin/weapp/';
 
-function formatDate(date) {
-  var year = date.getFullYear()
-  var month = date.getMonth() + 1
-  var day = date.getDate()
+const DATE_MAP = {
+  milliseconds: { get: 'getMilliseconds', set: 'setMilliseconds' },
+  seconds: { get: 'getSeconds', set: 'setSeconds' },
+  minutes: { get: 'getMinutes', set: 'setMinutes' },
+  hours: { get: 'getHours', set: 'setHours' },
+  days: { get: 'getDate', set: 'setDate' },
+  weeks: { get: 'getDate', set: 'setDate', times: 7 },
+  months: { get: 'getMonth', set: 'setMonth' },
+  years: { get: 'getFullYear', set: 'setFullYear' }
+};
 
+Date.prototype.clone = function () {
+  return new Date(this.getTime());
+};
 
-  return [year, month, day].map(formatNumber).join('-');
-}
+Date.prototype.format = function (format) { 
+  var o = {
+    "M+": this.getMonth() + 1, 
+    "d+": this.getDate(),
+    "h+": this.getHours(),
+    "m+": this.getMinutes(),
+    "s+": this.getSeconds(),
+    "q+": Math.floor((this.getMonth() + 3) / 3),
+    "S": this.getMilliseconds()
+  };
+  if (/(y+)/.test(format)) {
+    format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  for (var k in o) {
+    if (new RegExp('(' + k + ')').test(format)) {
+      format = format.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
+    }
+  }
+  return format;  
+};
 
-function formatTime(date) {
-  var hour = date.getHours()
-  var minute = date.getMinutes()
-  return [hour, minute].map(formatNumber).join(':')
-}
+Date.prototype.add = function (value, type) {
+  if (value === 0) return this;
+  var method = DATE_MAP[type];
+  if (method.times) value = value * method.times;
+  return this.set(type, this[method['get']]() + value);
+};
+
+Date.prototype.set = function (type, value) {
+  var method = DATE_MAP[type];
+  this[method['set']](value);
+  return this;
+};
+
+Date.prototype.get = function (type) {
+  var method = DATE_MAP[type];
+  return this[method['get']]();
+};
+
+Date.prototype.startOf = function (type) {
+  switch (type) {
+    case 'years':
+      this.set('months', 0);
+    case 'months':
+      this.set('days', 1);
+    case 'weeks':
+    case 'days':
+      this.set('hours', 0);
+    case 'hours':
+      this.set('minutes', 0);
+    case 'minutes':
+      this.set('seconds', 0);
+    case 'seconds':
+      this.set('milliseconds', 0);
+  }
+  return this;
+};
+
+Date.prototype.endOf = function (type) {
+  var end = this.add(1, type).startOf(type).add(-1, 'milliseconds');
+  return end;
+};
 
 function formatNumber(n) {
   n = n.toString()
@@ -124,8 +187,6 @@ function max(value1, value2) {
 }
 
 module.exports = {
-  formatDate: formatDate,
-  formatTime: formatTime,
   ajax: ajax,
   isEmpty: isEmpty,
   showTopTips: showTopTips,
