@@ -17,17 +17,13 @@
                 type: 'file',
                 fileVal: 'file',
                 compress: {
-                    width: 800,
-                    height: 800,
+                    width: 1920,
+                    height: 1920,
                     quality: .8
                 },
                 onBeforeQueued: function onBeforeQueued(files) {
                     if (["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0) {
                         weui.alert('请上传图片');
-                        return false;
-                    }
-                    if (this.size > 1024 * 1024) {
-                        weui.alert('请上传不超过1M的图片');
                         return false;
                     }
                     var $files = $('.weui-uploader__file');
