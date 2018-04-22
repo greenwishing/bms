@@ -42,13 +42,14 @@ public class PublicUserDetails implements UserDetails {
             addAuthority("ROLE_USER");
             addAuthority("ROLE_METRO");
             addAuthority("ROLE_CONFIGURATION");
+            addAuthority("ROLE_FEEDBACK");
+            addAuthority("ROLE_APP");
         }
         addAuthority("ROLE_SYSTEM");
         addAuthority("ROLE_BILLING");
         addAuthority("ROLE_MOMENT");
         addAuthority("ROLE_TODO");
         addAuthority("ROLE_ARTICLE");
-        addAuthority("ROLE_APP");
 
     }
 

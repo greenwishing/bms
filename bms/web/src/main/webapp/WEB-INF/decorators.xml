@@ -50,5 +50,7 @@
         <pattern>/system/app/reg*</pattern>
         <pattern>/system/app/edit*</pattern>
 
+        <pattern>/system/feedback/reply*</pattern>
+
     </excludes>
 </decorators>

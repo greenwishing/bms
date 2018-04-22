@@ -8,16 +8,15 @@ import cn.greenwishing.bms.dto.article.ArticleCategoryDTO;
 import cn.greenwishing.bms.dto.billing.BillingAccountDTO;
 import cn.greenwishing.bms.dto.billing.BillingDTO;
 import cn.greenwishing.bms.dto.billing.BillingPagingDTO;
+import cn.greenwishing.bms.dto.feedback.FeedbackDTO;
+import cn.greenwishing.bms.dto.feedback.FeedbackPagingDTO;
 import cn.greenwishing.bms.dto.open.OpenUserDTO;
 import cn.greenwishing.bms.dto.open.WeAppUserInfo;
 import cn.greenwishing.bms.dto.statistics.highcharts.Series;
 import cn.greenwishing.bms.dto.statistics.tree.BillingAccountTypeNode;
 import cn.greenwishing.bms.dto.statistics.tree.TreeNode;
 import cn.greenwishing.bms.dto.user.UserDTO;
-import cn.greenwishing.bms.service.ArticleService;
-import cn.greenwishing.bms.service.BillingService;
-import cn.greenwishing.bms.service.UserService;
-import cn.greenwishing.bms.service.WeAppService;
+import cn.greenwishing.bms.service.*;
 import cn.greenwishing.bms.utils.MD5Utils;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.web.controller.api.ApiResult;
@@ -50,6 +49,8 @@ public class WeAppApiController {
     private BillingService billingService;
     @Resource
     private ArticleService articleService;
+    @Resource
+    private FeedbackService feedbackService;
 
     /**
      * 更新小程序用户资料
@@ -241,6 +242,38 @@ public class WeAppApiController {
         } else {
             List<BillingStatistics> data = billingService.loadBillingStatistics(type, from, to, userGuid);
             result = ApiResult.success().add("data", data);
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    /**
+     * 我的反馈记录
+     */
+    @RequestMapping("feedbackdata")
+    public ModelAndView loadFeedbackData(FeedbackPagingDTO pagingDTO) {
+        ApiResult result;
+        if (ValidationUtils.isEmpty(pagingDTO.getUserGuid())) {
+            result = ApiResult.fail(-1, "未登录");
+        } else {
+            FeedbackPagingDTO paging = feedbackService.loadFeedbackPaging(pagingDTO);
+            result = ApiResult.success().add("paging", paging);
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    /**
+     * 反馈
+     */
+    @RequestMapping("addfeedback")
+    public ModelAndView addFeedback(FeedbackDTO feedbackDTO, BindingResult errors) {
+        ApiResult result;
+        if (ValidationUtils.isEmpty(feedbackDTO.getUserGuid())) {
+            result = ApiResult.fail(-1, "未登录");
+        } else if (ValidationUtils.isEmpty(feedbackDTO.getContent())) {
+            result = ApiResult.fail(-1, "请输入反馈内容");
+        } else {
+            feedbackService.saveFeedback(feedbackDTO);
+            result = ApiResult.success();
         }
         return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
     }

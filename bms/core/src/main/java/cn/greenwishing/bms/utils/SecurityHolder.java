@@ -1,6 +1,7 @@
 package cn.greenwishing.bms.utils;
 
 import cn.greenwishing.bms.cache.AppUserCache;
+import cn.greenwishing.bms.domain.user.User;
 import cn.greenwishing.bms.shared.PublicUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,5 +36,10 @@ public class SecurityHolder {
             return user.getId();
         }
         return null;
+    }
+
+    public static boolean isAdminAccount() {
+        Authentication authentication = get();
+        return authentication != null && User.ADMIN_GUID.equalsIgnoreCase(getUserGuid());
     }
 }
