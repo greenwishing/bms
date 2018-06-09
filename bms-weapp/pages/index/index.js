@@ -26,14 +26,14 @@ Page({
       index: 0
     }
   },
-  onLoad: function () {
+  onReady: function () {
     wx.showLoading({
       title: '请稍后',
     });
+    this.setData({ pageReady: true});
     app.checkUserLogin(function () {
       wx.hideLoading();
       this.setData({
-        pageReady: true,
         userInfo: app.userInfo,
         nearestType: {
           list: app.billingTypes,
@@ -95,15 +95,17 @@ Page({
       categories.push(item.name);
       list.push(item.y);
     }
+    var chartData = {
+      categories: categories,
+      series: [{
+        name: '金额',
+        data: list
+      }]
+    };
     if (this.nearestChart) {
-      this.nearestChart.updateData({
-        categories: categories,
-        series: [{
-          name: '金额',
-          data: list
-        }]
-      })
+      this.nearestChart.updateData(chartData)
     } else {
+      chartData.width = this.width;
       this.nearestChart = new Chart({
         canvasId: 'nearest',
         type: 'line',
@@ -157,7 +159,7 @@ Page({
     var series = [];
     for (var category in list) {
       series.push({
-        name: category,
+        name: category + ' ' + list[category],
         data: list[category]
        });
     }

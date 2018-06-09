@@ -61,8 +61,8 @@ Page({
       name: null,
       amount: null,
       remark: null,
-      date: _.formatDate(date),
-      time: _.formatTime(date)
+      date: date.format('yyyy-MM-dd'),
+      time: date.format('mm:ss')
     });
   },
   showTypeChooser: function (e) {
