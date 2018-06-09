@@ -277,4 +277,23 @@ public class WeAppApiController {
         }
         return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
     }
+
+    /**
+     * 回复反馈
+     */
+    @RequestMapping("replyfeedback")
+    public ModelAndView replyFeedback(FeedbackDTO feedbackDTO, BindingResult errors) {
+        ApiResult result;
+        if (ValidationUtils.isEmpty(feedbackDTO.getUserGuid())) {
+            result = ApiResult.fail(-1, "未登录");
+        } else if (ValidationUtils.isEmpty(feedbackDTO.getFeedbackGuid())) {
+            result = ApiResult.fail(-1, "未指定反馈记录");
+        } else if (ValidationUtils.isEmpty(feedbackDTO.getContent())) {
+            result = ApiResult.fail(-1, "请输入回复内容");
+        } else {
+            feedbackService.saveReply(feedbackDTO);
+            result = ApiResult.success();
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
 }
