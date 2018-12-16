@@ -42,6 +42,7 @@
         <p>积跬步以至千里，积怠惰以至深渊</p>
         <br/>
         <p><a href="/articles">进入 &gt;&gt;</a></p>
+        <p><a href="/system/index">记账 &gt;&gt;</a></p>
     </div>
     <div class="weui-footer">
         <div class="weui-footer__text">&copy; 2017 <a href="http://www.miitbeian.gov.cn" target="_blank">蜀ICP备17012081号</a></div>

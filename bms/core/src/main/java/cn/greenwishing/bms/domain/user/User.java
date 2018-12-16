@@ -67,4 +67,9 @@ public class User extends AbstractDomain {
     public UserStatus status() {
         return status;
     }
+
+    public void modifyAccount(String account, String md5Password) {
+        this.account = account;
+        this.password = md5Password;
+    }
 }

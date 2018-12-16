@@ -8,4 +8,6 @@ import cn.greenwishing.bms.dto.OSSFile;
  */
 public interface OSSService {
     String upload(OSSFile file, String mode);
+
+    String upload(String avatarUrl);
 }

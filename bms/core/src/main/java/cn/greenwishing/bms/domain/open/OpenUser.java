@@ -52,6 +52,10 @@ public class OpenUser extends AbstractDomain {
         this.updateTime = JodaUtils.now();
     }
 
+    public void updateAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public void update(User user) {
         this.user = user;
         this.updateTime = JodaUtils.now();

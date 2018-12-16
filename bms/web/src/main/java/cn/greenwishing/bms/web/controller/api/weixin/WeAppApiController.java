@@ -17,7 +17,6 @@ import cn.greenwishing.bms.dto.statistics.tree.BillingAccountTypeNode;
 import cn.greenwishing.bms.dto.statistics.tree.TreeNode;
 import cn.greenwishing.bms.dto.user.UserDTO;
 import cn.greenwishing.bms.service.*;
-import cn.greenwishing.bms.utils.MD5Utils;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import cn.greenwishing.bms.web.controller.api.ApiResult;
 import cn.greenwishing.bms.web.validator.BillingValidator;
@@ -53,18 +52,19 @@ public class WeAppApiController {
     private FeedbackService feedbackService;
 
     /**
-     * 更新小程序用户资料
+     * 小程序用户注册
      */
-    @RequestMapping("updateuser")
-    public ModelAndView updateUserInfo(String code, WeAppUserInfo userInfo) {
+    @RequestMapping("register")
+    public ModelAndView register(String code, WeAppUserInfo userInfo) {
         ApiResult result;
         try {
             JSCode2SessionResponse response = new JSCode2SessionRequest(code).execute();
             userInfo.setOpenid(response.getOpenid());
-            OpenUserDTO openUserDTO = weAppService.saveOpenUserInfo(userInfo);
+            OpenUserDTO openUserDTO = weAppService.register(userInfo);
             result = ApiResult.success()
                     .add("openid", response.getOpenid())
-                    .add("userGuid", openUserDTO.getUserGuid());
+                    .add("userGuid", openUserDTO.getUserGuid())
+                    .add("userAccount", openUserDTO.getUserAccount());
         } catch (Exception e) {
             result = ApiResult.fail(-1, e.getMessage());
         }
@@ -75,22 +75,17 @@ public class WeAppApiController {
      * 小程序用户登录
      */
     @RequestMapping("login")
-    public ModelAndView login(String openid, String account, String password) {
+    public ModelAndView login(String openid) {
         ApiResult result;
         try {
-            UserDTO user = userService.findByAccount(account);
+            UserDTO user = weAppService.loadUserByOpenid(openid);
             if (user == null) {
-                result = ApiResult.fail(-1, String.format("帐号“%s”不存在", account));
+                result = ApiResult.fail(-1, "未关联用户");
             } else {
-                String md5Password = MD5Utils.md5(password);
-                if (!md5Password.equalsIgnoreCase(user.getPassword())) {
-                    result = ApiResult.fail(-1, "密码错误");
-                } else {
-                    String userGuid = user.getGuid();
-                    weAppService.bindOpenUser(openid, userGuid);
-                    result = ApiResult.success()
-                            .add("userGuid", userGuid);
-                }
+                String userGuid = user.getGuid();
+                result = ApiResult.success()
+                        .add("userGuid", userGuid)
+                        .add("userAccount", user.getAccount());
             }
         } catch (Exception e) {
             result = ApiResult.fail(-1, e.getMessage());
@@ -99,51 +94,16 @@ public class WeAppApiController {
     }
 
     /**
-     * 小程序用户帐号密码注册
+     * 小程序设置帐号密码
      */
-    @RequestMapping("register")
-    public ModelAndView register(String openid, UserDTO userDTO) {
+    @RequestMapping("account")
+    public ModelAndView account(String userGuid, String account, String password) {
         ApiResult result;
         try {
-            String account = userDTO.getAccount();
-            String password = userDTO.getPassword();
-            String retypePassword = userDTO.getRetypePassword();
-            UserDTO user = userService.findByAccount(account);
-            if (user != null) {
-                result = ApiResult.fail(-1, String.format("帐号“%s”已被别人用啦！", account));
-            } else if (ValidationUtils.isEmpty(password)){
-                result = ApiResult.fail(-1, "还是设置一个密码吧！");
-            } else if (!password.equalsIgnoreCase(retypePassword)) {
-                result = ApiResult.fail(-1, "密码都没弄对啊！");
-            } else {
-                user = userService.saveOrUpdateUser(userDTO);
-                String userGuid = user.getGuid();
-                weAppService.bindOpenUser(openid, userGuid);
-                result = ApiResult.success()
-                        .add("userGuid", userGuid);
-            }
+            weAppService.updateAccount(userGuid, account, password);
+            result = ApiResult.success();
         } catch (Exception e) {
             result = ApiResult.fail(-1, e.getMessage());
-        }
-        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
-    }
-
-    /**
-     * 小程序用户快速注册（使用微信资料）
-     */
-    @RequestMapping("fastRegister")
-    public ModelAndView register(WeAppUserInfo userInfo) {
-        ApiResult result;
-        if (ValidationUtils.isEmpty(userInfo.getOpenid())) {
-            result = ApiResult.fail(-1, "缺少参数openid");
-        } else {
-            try {
-                UserDTO user = weAppService.fastRegister(userInfo);
-                result = ApiResult.success()
-                        .add("userGuid", user.getGuid());
-            } catch (Exception e) {
-                result = ApiResult.fail(-1, e.getMessage());
-            }
         }
         return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
     }
@@ -172,12 +132,12 @@ public class WeAppApiController {
                 accountDTOs.stream()
                         .collect(Collectors.groupingBy(BillingAccountDTO::getType))
                         .forEach((accountType, accounts) -> {
-                    BillingAccountTypeNode node = new BillingAccountTypeNode(accountType);
-                    accounts.forEach(account -> {
-                        node.addChild(new TreeNode(account));
-                    });
-                    billingAccounts.add(node);
-                });
+                            BillingAccountTypeNode node = new BillingAccountTypeNode(accountType);
+                            accounts.forEach(account -> {
+                                node.addChild(new TreeNode(account));
+                            });
+                            billingAccounts.add(node);
+                        });
                 List<ArticleCategoryDTO> articleCategories = articleService.loadArticleCategories(userGuid);
                 result = ApiResult.success()
                         .add("billingTypes", billingTypes)
@@ -293,6 +253,36 @@ public class WeAppApiController {
         } else {
             feedbackService.saveReply(feedbackDTO);
             result = ApiResult.success();
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    /**
+     * 回复反馈
+     */
+    @RequestMapping("openid_list")
+    public ModelAndView openidList() {
+        List<OpenUserDTO> users = weAppService.loadAllOpenUser();
+        List<String> openidList = new ArrayList<>();
+        for (OpenUserDTO user : users) {
+            openidList.add(user.getOpenid());
+        }
+        ApiResult result = ApiResult.success();
+        result.add("openid_list", openidList);
+        return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
+    }
+
+    /**
+     * 回复反馈
+     */
+    @RequestMapping("upload")
+    public ModelAndView upload(String openid) {
+        ApiResult result;
+        try {
+            weAppService.uploadAvatar(openid);
+            result = ApiResult.success();
+        }catch (Exception e) {
+            result = ApiResult.fail(-1, e.getMessage());
         }
         return new ModelAndView(new MappingJackson2JsonView(), result.toModelMap());
     }

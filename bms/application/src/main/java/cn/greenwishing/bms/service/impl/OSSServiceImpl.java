@@ -4,11 +4,17 @@ import cn.greenwishing.bms.cache.ConfigurationCache;
 import cn.greenwishing.bms.dto.OSSFile;
 import cn.greenwishing.bms.oss.OSSClientFactory;
 import cn.greenwishing.bms.service.OSSService;
+import cn.greenwishing.bms.utils.BmsClient;
 import cn.greenwishing.bms.utils.MD5Utils;
 import cn.greenwishing.bms.utils.ValidationUtils;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * @author Frank wu
@@ -50,6 +56,23 @@ public class OSSServiceImpl implements OSSService {
             client.putObject(bucketName, key, file.getInputStream(), metadata);
         }
         return key;
+    }
+
+    @Override
+    public String upload(String avatarUrl) {
+        byte[] bytes;
+        InputStream is = null;
+        try {
+            URL url = new URL(avatarUrl);
+            is = url.openStream();
+            bytes = IOUtils.toByteArray(is);
+        } catch (IOException e) {
+            return avatarUrl;
+        } finally {
+            IOUtils.closeQuietly(is);
+        }
+        OSSFile file = new OSSFile("wx_avatar", "avatar.jpg", "image/jpeg", bytes);
+        return upload(file, "image");
     }
 
     public static String suffix(OSSFile file) {
