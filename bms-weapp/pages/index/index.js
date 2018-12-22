@@ -1,4 +1,4 @@
-//index.js
+// pages/index/index.js
 var app = getApp();
 var _ = app.util;
 var Chart = require('../../utils/chart.js');
@@ -12,49 +12,59 @@ Page({
       list: [
         { label: '按天', value: 'days' },
         { label: '按周', value: 'weeks' },
-        { label: '按月', value: 'months' }, 
+        { label: '按月', value: 'months' },
         { label: '按年', value: 'years' }
       ],
       index: 2
     },
     nearestType: {
-      list: [{ label: '请选择', value: ''}],
+      list: [{ label: '请选择', value: '' }],
       index: 0
     },
     statisticsType: {
       list: [{ label: '请选择', value: '' }],
       index: 0
-    }
+    },
+    pieChartStyle: '',
+    pieChartText: ''
   },
   onReady: function () {
-    wx.showLoading({
-      title: '请稍后',
+    console.log('index ready')
+    if (!app.loged) {
+      app.login(function () {
+        this.prepareData();
+      }, this);
+    } else {
+      this.prepareData();
+    }
+  },
+  onShow: function () {
+    if (!app.loged) return;
+    this.initPage();
+  },
+  prepareData: function(){
+    console.log('index init')
+    this.setData({
+      userInfo: app.userInfo,
+      nearestType: {
+        list: app.billingTypes,
+        index: 0
+      },
+      statisticsType: {
+        list: app.billingTypes,
+        index: 0
+      }
     });
-    this.setData({ pageReady: true});
-    app.checkUserLogin(function () {
-      wx.hideLoading();
-      this.setData({
-        userInfo: app.userInfo,
-        nearestType: {
-          list: app.billingTypes,
-          index: 0
-        },
-        statisticsType: {
-          list: app.billingTypes,
-          index: 0
-        }
-      });
-      this.initPage();
-    }, this);
+    this.initPage();
   },
   initPage: function () {
-    this.width = wx.getSystemInfoSync().windowWidth;
+    this.width = wx.getSystemInfoSync().windowWidth - 30;
     this.userGuid = app.userGuid;
     this.offset = 0;
     this.loadBillingNearest();
     this.loadBillingStatistics();
   },
-  onDateTypeChange: function(e) {
+  onDateTypeChange: function (e) {
     this.data.dateType.index = e.detail.value;
     this.setData(this.data);
     this.offset = 0;
@@ -128,6 +138,9 @@ Page({
         }
       });
     }
+  }, 
+  onBillingNearestTouch: function(e) {
+    this.nearestChart.showToolTip(e);
   },
   loadBillingStatistics: function () {
     var typeData = this.data.statisticsType;
@@ -139,13 +152,13 @@ Page({
     _.ajax({
       type: 'post',
       url: 'statistics',
-      data: { userGuid: this.userGuid, type: typeValue, from: dateFrom, to: dateTo},
+      data: { userGuid: this.userGuid, type: typeValue, from: dateFrom, to: dateTo },
       success: function (result) {
         this.renderBillingStatistics(result.data);
       }
     }, this);
   },
-  renderBillingStatistics: function(data) {
+  renderBillingStatistics: function (data) {
     if (data.length === 0) {
       this.setData({ showStatistics: false });
       return;
@@ -159,27 +172,38 @@ Page({
     var series = [];
     for (var category in list) {
       series.push({
-        name: category + ' ' + list[category],
+        name: category,
         data: list[category]
-       });
+      });
     }
     series.sort(function (a, b) {
       return b.data - a.data;
     });
     if (this.statisticsChart) {
-      this.statisticsChart.updateData({series: series});
+      this.statisticsChart.updateData({ series: series });
     } else {
+      var self = this;
       this.statisticsChart = new Chart({
         canvasId: 'billing-statistics',
         type: 'pie',
         width: this.width,
         height: 260,
         series: series,
-        dataLabel: true
+        dataLabel: true,
+        legend: false,
+        onPieTouch: function (series){
+          self.setData({
+             pieChartText: series.name + ' ' + series.data + '元', 
+             pieChartStyle: 'color: ' + series.color
+          });
+        }
       });
     }
   },
-  decrementOffset: function(){
+  onBillingStatisticsTouch: function (e) {
+    this.statisticsChart.showToolTip(e);
+  },
+  decrementOffset: function () {
     this.offset -= 1;
     this.loadBillingStatistics();
 

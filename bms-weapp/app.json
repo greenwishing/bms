@@ -1,10 +1,11 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/index/init",
     "pages/billing/add",
     "pages/billing/list",
-    "pages/feedback/add",
-    "pages/feedback/list"
+    "pages/account/index",
+    "pages/account/modify"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -36,8 +37,8 @@
       {
         "iconPath": "icons/feedback.png",
         "selectedIconPath": "icons/feedback_active.png",
-        "pagePath": "pages/feedback/add",
-        "text": "反馈"
+        "pagePath": "pages/account/index",
+        "text": "更多"
       }
     ]
   }

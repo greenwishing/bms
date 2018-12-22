@@ -2,6 +2,7 @@
 var _ = require('utils/util.js');
 App({
   version: '1.0.0',
+  loged: false,
   util: _,
   openid: null,
   userInfo: null,
@@ -11,65 +12,55 @@ App({
   articleCategories: [],
 
   onLaunch: function () {
-    console.log('app launch')
+    console.log('app launch');
   },
-  checkUserLogin: function (callback, context) {
-    var self = this;
-    this.getUserInfo(function (userInfo) {
-      if (!this.userGuid) {
-        var data = this.userInfo;
-        data.openid = this.openid;
-        _.ajax({
-          url: '/api/weixin/weapp/fastRegister',
-          data: data,
-          success: function (result) {
-            self.userGuid = result.userGuid;
-            self.checkUserLogin(callback, context);
-          }
-        });
-        return;
-      }
-      this.checkUpdate(function(result){
-        if (result.update) {
-          this.syncAppData(callback, context);
-        } else {
-          callback.apply(context || this, arguments);
-        }
-      }, this);
-    }.bind(this));
-  },
-  getUserInfo: function (callback, context) {
-    if (this.userInfo){
-      if (typeof callback === "function") {
-        callback.apply(context || this, [this.userInfo]);
-      }
-    } else {
-      var self = this;
-      wx.login({
-        success: function (res) {
-          let code = res.code;
-          wx.getUserInfo({
-            success: function (res) {
-              var userInfo = res.userInfo;
-              self.userInfo = userInfo;
-              userInfo.code = code;
-              self.updateUserInfo(userInfo, callback, context);
-            }
-          });
-        }
-      })
-    }
-  },
-  updateUserInfo: function (data, callback, context) {
+  register: function (data, callback, context) {
     _.ajax({
-      url: 'updateuser',
+      url: 'register',
       data: data,
       success: function (result) {
+        this.loged = true;
         this.openid = result.openid;
         this.userGuid = result.userGuid;
-        if (typeof callback === "function") {
-          callback.apply(context || this, [data]);
+        this.userAccount = result.openid;
+        wx.setStorageSync('openid', this.openid);
+        this.initAppData(callback, context);
+      },
+      loadingText: '正在验证身份'
+    }, this);
+  },
+  login: function (callback, context) {
+    var openid = wx.getStorageSync('openid');
+    if (_.isEmpty(openid)) {
+      wx.redirectTo({
+        url: '/pages/index/init',
+      });
+      return;
+    }
+    _.ajax({
+      url: 'login',
+      data: { openid: openid },
+      success: function (result) {
+        if (result.success) {
+          this.loged = true;
+          this.openid = openid;
+          this.userGuid = result.userGuid;
+          this.userAccount = result.userAccount;
+          this.initAppData(callback, context);
+        } else {
+          _.alert(result.message);
+          wx.removeStorageSync('openid');
         }
+      },
+      loadingText: '正在验证身份'
+    }, this);
+  },
+  initAppData: function (callback, context) {
+    this.checkUpdate(function (result) {
+      if (result.update) {
+        this.syncAppData(callback, context);
+      } else {
+        callback.apply(context || this, arguments);
       }
     }, this);
   },
@@ -96,5 +87,6 @@ App({
       },
       loadingText: '正在同步数据'
     }, this);
-  }
+  },
+  openidPrefix: 'oTzMa0'
 })

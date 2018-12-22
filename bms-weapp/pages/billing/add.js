@@ -62,7 +62,7 @@ Page({
       amount: null,
       remark: null,
       date: date.format('yyyy-MM-dd'),
-      time: date.format('mm:ss')
+      time: date.format('hh:mm')
     });
   },
   showTypeChooser: function (e) {
@@ -94,7 +94,7 @@ Page({
     this.initPickerValue(e.detail.value);
   },
   initPickerValue: function(index) {
-    var typeIndex = index[0], categoryIndex = index[1], subcategoryIndex = index[2];
+    var typeIndex = index[0] || 0, categoryIndex = index[1] || 0, subcategoryIndex = index[2] || 0;
     var types = app.billingTypes;
     var type = types[typeIndex];
     var categories = this.children(type);
@@ -119,7 +119,6 @@ Page({
       },
       typeIndex: index
     });
-    console.log('initPickerValue: ', this.data)
   },
   children: function(node){
     var children = node.children;
@@ -140,19 +139,20 @@ Page({
   },
   initAccount: function (goal, detail) {
     var data = {};
-    data[goal] = this.data[goal];
+    data[goal] = this.data[goal] || {};
     if (!detail) {
       detail = { column: 0, index: 0};
     }
+    console.log(goal, JSON.stringify(detail))
     if (detail.column === 0) {
       var accountTypes = app.billingAccounts;
-      var accountType = accountTypes[detail.index];
       var types = [], accounts = [], loan = this.data.type.data[goal].loan;
       for (var i in accountTypes) {
         if (accountTypes[i].loan === loan) {
           types.push(accountTypes[i]);
         }
       }
+      var accountType = types[detail.index];
       accounts = accounts.concat(accountType.children);
       data[goal].index[1] = 0;
       data[goal].list = [types, accounts];
@@ -187,9 +187,9 @@ Page({
       amount: form.amount,
       description: form.remark
     };
-    var type = data.type.data;
-    var category = data.category.data;
-    var subcategory = data.subcategory.data;
+    var type = data.type.data || { value: '' };
+    var category = data.category.data || { value: '' };
+    var subcategory = data.subcategory.data || { value: '' };
     params.type = type.value;
     params.categoryGuid = category.value;
     params.subcategoryGuid = subcategory.value;
@@ -198,10 +198,11 @@ Page({
       params.srcAccountGuid = srcAccount.value;
     }
     if (type.target.enabled) {
-      var targetAccount = data.target.data;
+      var targetAccount = data.target.data || { value: '' };
       params.targetAccountGuid = targetAccount.value;
     }
     params.occurredTime = data.date + ' ' + data.time;
+    var self = this;
     _.ajax({
       url: 'addbilling',
       data: params,
@@ -209,7 +210,7 @@ Page({
         wx.showToast({
           title: '保存成功！',
           success: function(){
-            wx.navigateBack();
+            self.pageInit();
           }
         })
       },

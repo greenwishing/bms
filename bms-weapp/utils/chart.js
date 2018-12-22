@@ -2003,6 +2003,12 @@ Charts.prototype.showToolTip = function (e) {
       }
     }
     drawCharts.call(this, opts.type, opts, this.config, this.context);
+  } else if (this.opts.type === 'pie') {
+    var index = this.getCurrentDataIndex(e);
+    var seriesData = this.opts.series[index];
+    if (typeof this.opts.onPieTouch === 'function') {
+      this.opts.onPieTouch.apply(this, [seriesData, this.opts.series]);
+    }
   }
 };
 
