@@ -8,6 +8,13 @@ body {
     background-color: #e3e3e3;
 }
 
+a {
+    color: #7188b7;
+}
+a:active, a:hover ,a:visited {
+    color: #586C94;
+}
+
 .page {
     height: 100%;
     margin: 0 auto;
@@ -115,7 +122,12 @@ body {
 }
 
 .async-load-dialog .weui-dialog__bd {
-    height: 100%;
+    position: absolute;
+    top: 48px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
     background: #f8f8f8;
     padding: 0;
     overflow: auto;
@@ -210,4 +222,18 @@ body {
 .amount-sign_BORROW:before,
 .amount-sign_RECEIVE:before {
     content: '+￥';
+}
+
+.page .weui-tab__panel {
+    position: absolute;
+    top: 0;
+    bottom: 53px;
+    left: 0;
+    right: 0;
+    height: auto;
+    padding-bottom: 0;
+}
+
+body .weui-wepay-details {
+    background-color: transparent;
 }

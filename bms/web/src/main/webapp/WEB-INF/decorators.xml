@@ -32,6 +32,7 @@
         <!-- include add & edit category -->
         <pattern>/system/article/add*</pattern>
         <pattern>/system/article/edit*</pattern>
+        <pattern>/system/article/preview*</pattern>
 
         <!-- include add & edit moment, moment_type -->
         <pattern>/system/moment/add*</pattern>

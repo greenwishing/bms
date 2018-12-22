@@ -104,6 +104,13 @@ public class ArticleController {
         return new ModelAndView(new MappingJackson2JsonView(), model);
     }
 
+    @RequestMapping("preview")
+    public ModelAndView preview(String guid, ModelMap model) {
+        ArticleDTO article = articleService.loadArticleByGuid(guid);
+        model.put("article", article);
+        return new ModelAndView("article/article_preview");
+    }
+
     @RequestMapping("show")
     public ModelAndView show(String guid, ModelMap model) {
         ArticleDTO article = articleService.loadArticleByGuid(guid);

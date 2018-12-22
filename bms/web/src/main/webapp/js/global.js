@@ -371,6 +371,7 @@ var WF = {
 
 'use strict';
 (function($){
+    const win = window, $win = $(win);
     function AsyncLoader($el, options) {
         this.$el = $el;
         this.options = $.extend($.fn.asyncLoader.defaults, options || {});
@@ -401,9 +402,16 @@ var WF = {
             this.load();
         },
         load: function() {
-            this.$content.html('<div class="weui-loading"></div>');
+            this.$content.html('<div class="text-center"><div class="weui-loading"></div></div>');
             var url = this.$el.attr(this.options.urlAttr);
             var self = this;
+            if (win.history && win.history.pushState) {
+                $win.on('popstate', function () {
+                    self.close();
+                    $win.off('popstate');
+                });
+                win.history.pushState('forward', null, '#' + url);
+            }
             WF.ajax.req({
                 url: url,
                 success: function(result){
@@ -417,9 +425,10 @@ var WF = {
             if ($title.length) {
                 this.$dialog.find('.weui-dialog__title').html($title.html());
             }
+            $('[async-load="true"]').asyncLoader();
         },
         bindClose: function() {
-            var self = this, $dialog = this.$dialog;
+            var self = this;
             var $close = $('<a href="javascript:void(0)" class="weui-dialog__close">&times</a>');
             $close.bind('click', function(){
                 self.close();

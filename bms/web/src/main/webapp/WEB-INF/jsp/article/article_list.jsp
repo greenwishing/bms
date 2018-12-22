@@ -32,7 +32,7 @@
             <div class="weui-panel__hd">文章列表</div>
             <div class="weui-panel__bd">
                 <c:forEach items="${pagingDTO.list}" var="article">
-                    <a href="edit?guid=${article.guid}" class="weui-media-box weui-media-box_appmsg" async-load="true">
+                    <a href="preview?guid=${article.guid}" class="weui-media-box weui-media-box_appmsg" async-load="true">
                         <c:if test="${not empty article.cover.url}">
                             <div class="weui-media-box__hd">
                                 <div class="weui-media-box__thumb" style="background-image: url(${article.cover.url});"></div>
