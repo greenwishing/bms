@@ -38,19 +38,6 @@
             </div>
         </div>
     </c:when>
-    <c:when test="${'PUBLIC' ne article.access and (loginUserGuid == null ? true : (loginUserGuid ne article.user.guid))}">
-        <div class="weui-msg">
-            <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
-            <div class="weui-msg__text-area">
-                <h2 class="weui-msg__title">无权查看此文章</h2>
-            </div>
-            <div class="weui-msg__opr-area">
-                <div class="weui-btn-area">
-                    <a href="javascript:history.back();" class="weui-btn weui-btn_primary">确定</a>
-                </div>
-            </div>
-        </div>
-    </c:when>
     <c:otherwise>
         <div class="weui-article">
             <h1>${article.title}</h1>

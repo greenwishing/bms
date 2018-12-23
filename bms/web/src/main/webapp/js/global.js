@@ -389,6 +389,7 @@ var WF = {
             });
         },
         show: function(){
+            console.log('show')
             var dialog = weui.dialog({
                 title: '&nbsp;',
                 content: '',
@@ -396,22 +397,17 @@ var WF = {
                 buttons: []
             });
             this.$dialog = $(dialog);
+            console.log(this.$dialog)
             this.$content = this.$dialog.find('.weui-dialog__bd');
             this.$dialog.data('asyncLoader', this);
-            this.bindClose();
+            this.$dialog.show();
             this.load();
         },
         load: function() {
             this.$content.html('<div class="text-center"><div class="weui-loading"></div></div>');
             var url = this.$el.attr(this.options.urlAttr);
+            this.listenHistory(url);
             var self = this;
-            if (win.history && win.history.pushState) {
-                $win.on('popstate', function () {
-                    self.close();
-                    $win.off('popstate');
-                });
-                win.history.pushState('forward', null, '#' + url);
-            }
             WF.ajax.req({
                 url: url,
                 success: function(result){
@@ -427,22 +423,25 @@ var WF = {
             }
             $('[async-load="true"]').asyncLoader();
         },
-        bindClose: function() {
-            var self = this;
-            var $close = $('<a href="javascript:void(0)" class="weui-dialog__close">&times</a>');
-            $close.bind('click', function(){
-                self.close();
-            });
-            this.$dialog.find('.weui-dialog__hd').append($close);
-        },
         close: function(callback) {
             this.$dialog.hide(function () {
                 if (typeof callback === 'function') {
                     callback();
-                } else {
-                    location.reload();
                 }
             });
+        },
+        listenHistory: function(url) {
+            var self = this;
+            if (win.history && win.history.pushState) {
+                $win.on('popstate', function () {
+                    self.removeHistory();
+                });
+                win.history.pushState('forward', null, '#' + url);
+            }
+        },
+        removeHistory: function() {
+            $win.off('popstate');
+            this.close();
         }
     });
     var old = $.fn.asyncLoader;
