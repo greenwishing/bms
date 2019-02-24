@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue Calendar</title>
+    <script type="text/javascript" src="../js/vue-2.5.17.js"></script>
+    <style type="text/css">
+        .calendar {
+            position: relative;
+            width: 300px;
+            height: 260px;
+            margin: 35px auto;
+            color: #333;
+        }
+        .calendar .month-mask {
+            position: absolute;
+            width: 300px;
+            height: 260px;
+            top: 0;
+            left: 0;
+            font-size: 150px;
+            font-weight: bold;
+            line-height: 260px;
+            text-align: center;
+            z-index: 1;
+            color: rgba(0, 154, 255, .15);
+        }
+        .calendar table {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        .calendar th, td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .date-today {
+            color: #ff5500;
+            font-weight: bold;
+        }
+        .date-other-month {
+            color: #888;
+        }
+        a {
+            text-decoration: none;
+            color: #0c80fe;
+        }
+    </style>
+</head>
+<body>
+<div class="calendar">
+    <div class="month-mask">{{month}}</div>
+    <table>
+        <thead>
+        <tr>
+            <th><a href="javascript:void(0)" @click="prevMonth()">&lt;</a></th>
+            <th colspan="5">{{year}}年</th>
+            <th><a href="javascript:void(0)" @click="nextMonth()">&gt;</a></th>
+        </tr>
+        <tr>
+            <th>一</th>
+            <th>二</th>
+            <th>三</th>
+            <th>四</th>
+            <th>五</th>
+            <th>六</th>
+            <th>日</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="week in weeks">
+            <td v-for="date in week.days" :class="{'date-other-month': date.other, 'date-today': date.today }">{{date.value}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    let app = new Vue({
+        data: {
+            date: new Date(),
+            year: null,
+            month: null,
+            day: null,
+            leap: null,
+            weekList: []
+        },
+        computed: {
+            weeks() {
+                return this.weekList;
+            }
+        },
+        methods: {
+            init() {
+                this.today = new Date();
+                this.refresh();
+            },
+            prevMonth() {
+                this.date.setMonth(this.date.getMonth() - 1);
+                this.refresh();
+            },
+            nextMonth() {
+                this.date.setMonth(this.date.getMonth() + 1);
+                this.refresh();
+            },
+            refresh() {
+                this.year = this.date.getFullYear();
+                this.month = this.date.getMonth() + 1;
+                this.day = this.date.getDate();
+                let weekList = [], dayList = [], daysInMonth = this.getDaysInMonth(),
+                    date = new Date(this.year, this.month - 1, 1), days = date.getDate(), day = date.getDay();
+                let daysInLastMonth = (day + 7 - 1) % 7;
+                if (daysInLastMonth) {
+                    let lastMonthDate = new Date(date.getTime());
+                    lastMonthDate.setDate(lastMonthDate.getDate() - daysInLastMonth);
+                    let lastMonthDays = lastMonthDate.getDate();
+                    for (let i = 1; i <= daysInLastMonth; i++) {
+                        dayList.push({value: lastMonthDays, other: true});
+                        lastMonthDate.setDate(lastMonthDate.getDate() + 1);
+                        lastMonthDays = lastMonthDate.getDate();
+                    }
+                }
+                for (let i = 1; i <= daysInMonth; i++) {
+                    let weekend = day === 0,
+                        today = this.isToday(date),
+                        endOfMonth = days === daysInMonth;
+                    dayList.push({value: days, today: today, other: false});
+                    if ((weekend || endOfMonth) && dayList.length) {
+                        weekList.push({days: dayList});
+                        if (weekend) {
+                            dayList = [];
+                        }
+                    }
+                    if (endOfMonth) {
+                        break;
+                    }
+                    date.setDate(date.getDate() + 1);
+                    days = date.getDate();
+                    day = date.getDay();
+                }
+                let daysInNextMonth = (7 - day) % 7;
+                if (daysInNextMonth) {
+                    let nextMonthDate = new Date(date.getTime());
+                    nextMonthDate.setDate(nextMonthDate.getDate() + 1);
+                    let nextMonthDays = nextMonthDate.getDate();
+                    for (let i = 1; i <= daysInNextMonth; i++) {
+                        dayList.push({value: nextMonthDays, other: true});
+                        nextMonthDate.setDate(nextMonthDate.getDate() + 1);
+                        nextMonthDays = nextMonthDate.getDate();
+                    }
+                }
+                this.weekList = weekList;
+            },
+            getDaysInMonth() {
+                if (this.month === 2) {
+                    return this.isLeapYear() ? 29 : 28;
+                }
+                return [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][this.month - 1];
+            },
+            isLeapYear() {
+                return this.year % 4 === 0 && this.year % 100 !== 0 || this.year % 400 === 0;
+            },
+            isToday(date) {
+                return this.today.getFullYear() === date.getFullYear()
+                    && this.today.getMonth() === date.getMonth()
+                    && this.today.getDate() === date.getDate();
+            }
+        }
+    });
+    app.$mount('.calendar');
+    app.init();
+</script>
+</body>
+</html>
