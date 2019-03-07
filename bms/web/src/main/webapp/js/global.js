@@ -280,9 +280,8 @@ var WF = {
                 var $dialog = $form.closest('.async-load-dialog');
                 if ($dialog.length) {
                     $dialog.data('asyncLoader').close();
-                } else {
-                    location.reload();
                 }
+                location.reload();
             }
         }
     },
@@ -389,7 +388,6 @@ var WF = {
             });
         },
         show: function(){
-            console.log('show')
             var dialog = weui.dialog({
                 title: '&nbsp;',
                 content: '',
@@ -397,7 +395,6 @@ var WF = {
                 buttons: []
             });
             this.$dialog = $(dialog);
-            console.log(this.$dialog)
             this.$content = this.$dialog.find('.weui-dialog__bd');
             this.$dialog.data('asyncLoader', this);
             this.$dialog.show();
