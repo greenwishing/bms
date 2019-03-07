@@ -108,6 +108,7 @@ public class ArticleController {
     public ModelAndView preview(String guid, ModelMap model) {
         ArticleDTO article = articleService.loadArticleByGuid(guid);
         model.put("article", article);
+        model.put("login", SecurityHolder.getUserId() != null);
         return new ModelAndView("article/article_preview");
     }
 
