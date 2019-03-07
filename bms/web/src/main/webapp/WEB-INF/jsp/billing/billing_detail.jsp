@@ -114,6 +114,10 @@
             </div>
         </c:if>
     </div>
+    <div class="weui-wepay-details__ft">
+        <%--<a href="record?type=${billingDTO.type.value}&guid=${billingDTO.guid}" async-load="true" class="weui-btn weui-btn_default">编辑</a>--%>
+        <a href="javascript:history.back();" class="weui-btn weui-btn_default">返回</a>
+    </div>
 </div>
 </body>
 </html>
