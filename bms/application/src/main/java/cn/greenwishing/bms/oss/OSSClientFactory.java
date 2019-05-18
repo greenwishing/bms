@@ -16,7 +16,7 @@ public class OSSClientFactory {
             String endpoint = ConfigurationCache.get("aliyun.oss.endpoint");
             String accessKeyId = ConfigurationCache.get("aliyun.oss.accessKeyId");
             String secretAccessKey = ConfigurationCache.get("aliyun.oss.accessKeySecret");
-            client = new OSSClient(endpoint, accessKeyId, secretAccessKey);
+            client = new OSSClient("http://" + endpoint, accessKeyId, secretAccessKey);
         }
         return client;
     }
