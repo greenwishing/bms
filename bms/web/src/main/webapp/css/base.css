@@ -8,7 +8,7 @@ body {
     background-color: #e3e3e3;
 }
 
-a, a:active, a:hover ,a:visited {
+a:not(.weui-btn), a:not(.weui-btn):active, a:not(.weui-btn):hover ,a:not(.weui-btn):visited {
     color: #7188b7;
 }
 
@@ -233,4 +233,48 @@ a, a:active, a:hover ,a:visited {
 
 body .weui-wepay-details {
     background-color: transparent;
+}
+
+.container.activity {
+    color: rgb(255, 255, 255);
+    text-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+    padding-bottom: 50px;
+}
+@media (max-width: 375px) {
+    .container.activity p {
+        font-size: 14px;
+    }
+}
+blockquote {
+    margin-top: 30px;
+}
+@media (min-width: 376px) {
+    blockquote p {
+        text-indent: 1em;
+        line-height: 1.2em;
+        margin-bottom: .8em;
+    }
+}
+.event,
+.event.event-coming {
+    color: #fff;
+}
+.event.event-gone:not(.event-done) {
+    color: #faa;
+}
+.event.event-doing:not(.event-done) {
+    color: #afa;
+}
+.event-icon {
+    display: inline-block;
+    margin-right: .3em;
+}
+.event .event-icon:after {
+    content: '×';
+}
+.event.event-done {
+    text-decoration: line-through;
+}
+.event.event-done .event-icon:after {
+    content: '√';
 }

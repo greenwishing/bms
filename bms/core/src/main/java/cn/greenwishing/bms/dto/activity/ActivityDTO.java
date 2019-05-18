@@ -22,6 +22,7 @@ public class ActivityDTO extends AbstractDTO {
     private String dateTo;
     private Boolean done;
     private String doneTime;
+    private String username;
 
     public ActivityDTO() {
     }
@@ -38,6 +39,7 @@ public class ActivityDTO extends AbstractDTO {
         User user = activity.user();
         if (user != null) {
             this.userGuid = user.guid();
+            this.username = user.username();
         }
     }
 
@@ -111,5 +113,9 @@ public class ActivityDTO extends AbstractDTO {
 
     public void setDoneTime(String doneTime) {
         this.doneTime = doneTime;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

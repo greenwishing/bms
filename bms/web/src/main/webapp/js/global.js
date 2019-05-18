@@ -523,7 +523,9 @@ var WF = {
                     $event.toggleClass('event-gone', gone);
                     $event.toggleClass('event-coming', coming);
                     $event.toggleClass('event-doing', !gone && !coming);
-                    self.appendEventAction($event, data);
+                    if (!plan.done) {
+                        self.appendEventAction($event, data);
+                    }
                     $el.append($event);
                 });
             } else if ('budgets' === opts.action) {
@@ -554,7 +556,7 @@ var WF = {
             let opts = this.options, actions = opts.actions;
             if (actions.length) {
                 $.each(actions, function(i, action){
-                    let $edit = $('<a href="javascript:void(0)"></a>').html(action.label);
+                    let $edit = $('<a class="event-action" href="javascript:void(0)"></a>').html(action.label);
                     let key = action.key, name = action.name || key, value = data[key] || '';
                     $edit.attr({href: action.url + (action.url.indexOf('?') === -1 ? '?' : '&') + name + '=' + value});
                     $event.append('\n', $edit);

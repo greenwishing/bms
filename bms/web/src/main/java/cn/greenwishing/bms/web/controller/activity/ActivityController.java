@@ -80,8 +80,8 @@ public class ActivityController {
     public ModelAndView preview(String guid, ModelMap model) {
         ActivityDTO activity = activityService.loadActivityByGuid(guid);
         model.put("activity", activity);
-        model.put("login", SecurityHolder.getUserId() != null);
-        model.put("loginUserGuid", SecurityHolder.getUserGuid());
+        model.put("dataAction", "plans");
+        model.put("me", activity.getUserGuid().equals(SecurityHolder.getUserGuid()));
         return new ModelAndView("activity/activity_view");
     }
 
@@ -144,8 +144,8 @@ public class ActivityController {
     public ModelAndView planView(@RequestParam("planGuid") String planGuid, ModelMap model) {
         ActivityPlanDTO plan = activityService.loadActivityPlanByGuid(planGuid);
         model.put("plan", plan);
-        model.put("login", SecurityHolder.getUserId() != null);
-        model.put("loginUserGuid", SecurityHolder.getUserGuid());
+        model.put("dataAction", "budgets");
+        model.put("me", plan.getUserGuid().equals(SecurityHolder.getUserGuid()));
         return new ModelAndView("activity/activity_plan_view");
     }
 

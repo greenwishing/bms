@@ -32,6 +32,18 @@
                 </div>
             </div>
         </div>
+        <div class="weui-cells__title">已完成</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd">已完成</div>
+                <div class="weui-cell__ft">
+                    <label for="done" class="weui-switch-cp">
+                        <spring-form:checkbox id="done" path="done" cssClass="weui-switch-cp__input"/>
+                        <span class="weui-switch-cp__box"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
         <div class="weui-cells__title">备注</div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">

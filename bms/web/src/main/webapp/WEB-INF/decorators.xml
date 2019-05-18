@@ -4,6 +4,7 @@
     <decorator name="system" page="system.jsp">
         <pattern>/system/*</pattern>
         <pattern>/article*</pattern>
+        <pattern>/activity*</pattern>
     </decorator>
 
     <excludes>

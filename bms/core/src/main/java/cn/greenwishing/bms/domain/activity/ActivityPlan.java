@@ -61,6 +61,10 @@ public class ActivityPlan extends AbstractDomain {
         this.dateTo = dateTo;
     }
 
+    public void updateDone(Boolean done) {
+        this.done = done != null && done;
+    }
+
     public Activity activity() {
         return activity;
     }

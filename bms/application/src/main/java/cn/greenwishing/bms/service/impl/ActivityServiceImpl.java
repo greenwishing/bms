@@ -103,6 +103,7 @@ public class ActivityServiceImpl implements ActivityService {
             dateTo = JodaUtils.parseLocalDate(dateToStr);
         }
         plan.updateDate(dateFrom, dateTo);
+        plan.updateDone(planDTO.getDone());
         activityRepository.saveOrUpdate(plan);
     }
 
