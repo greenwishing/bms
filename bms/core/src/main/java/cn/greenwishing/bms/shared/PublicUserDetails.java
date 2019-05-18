@@ -50,6 +50,7 @@ public class PublicUserDetails implements UserDetails {
         addAuthority("ROLE_MOMENT");
         addAuthority("ROLE_TODO");
         addAuthority("ROLE_ARTICLE");
+        addAuthority("ROLE_ACTIVITY");
 
     }
 

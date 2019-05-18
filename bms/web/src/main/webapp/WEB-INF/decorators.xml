@@ -53,5 +53,8 @@
 
         <pattern>/system/feedback/reply*</pattern>
 
+        <pattern>/system/activity/edit*</pattern>
+        <pattern>/system/activity/plan_edit*</pattern>
+
     </excludes>
 </decorators>

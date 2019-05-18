@@ -8,11 +8,8 @@ body {
     background-color: #e3e3e3;
 }
 
-a {
+a, a:active, a:hover ,a:visited {
     color: #7188b7;
-}
-a:active, a:hover ,a:visited {
-    color: #586C94;
 }
 
 .page {

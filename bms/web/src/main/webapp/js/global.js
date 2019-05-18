@@ -3,6 +3,7 @@
  */
 $(function(){
     $('[async-load="true"]').asyncLoader();
+    moment && moment.locale('zh-cn');
 });
 
 String.prototype.format = function (args) {
@@ -279,7 +280,10 @@ var WF = {
             } else {
                 var $dialog = $form.closest('.async-load-dialog');
                 if ($dialog.length) {
-                    $dialog.data('asyncLoader').close();
+                    let asyncLoader = $dialog.data('asyncLoader');
+                    if (asyncLoader) {
+                        asyncLoader.close();
+                    }
                 }
                 location.reload();
             }
@@ -453,4 +457,123 @@ var WF = {
     $.fn.asyncLoader.defaults = {
         urlAttr: 'href'
     };
+})(jQuery);
+
+
+(function($){
+    let defaults = {
+        dist: null,
+        events: [],
+        dateFormat: 'YYYY-MM-DD',
+        action: '',
+        /**
+         * {url: 'edit', label: '编辑', name: 'guid', key: 'guid'}
+         */
+        actions: []
+    };
+    function EventShow($el, options){
+        this.$el = $el;
+        this.options = $.extend(true, {}, defaults, options || {});
+        this.loadEvents();
+    }
+    $.extend(EventShow.prototype, {
+        loadEvents: function(){
+            let self = this;
+            WF.ajax.req({
+                url: self.options.action,
+                data: this.options.data,
+                success: function(result){
+                    if (result.success) {
+                        self.renderEvents(result[self.options.action]);
+                    } else {
+                        weui.alert(result.message);
+                    }
+                }
+            })
+        },
+        /**
+         * 渲染
+         * @param list [{done:boolean,name:string,start:moment,end:moment}]
+         */
+        renderEvents: function(list) {
+            let self = this, $el = self.$el, opts = self.options, dist = opts.dist;
+            if ('plans' === opts.action) {
+                let today = moment().startOf('day');
+                let year = today.year();
+                let coming = today.isBefore(dist);
+                let prefix = coming ? '距离 ' : '';
+                let $event = $('<p/>').html(prefix + dist.format((year !== dist.year() ? 'YYYY年' : '') + 'MM月DD日 ') + self.friendlyDiff(today, dist));
+                $el.append($event);
+                $.each(list, function(i, data){
+                    let converter = self.options.dataConverter;
+                    let plan = $.extend({},{
+                        done: false,
+                        name: '',
+                        start: moment(),
+                        end: moment()
+                    }, typeof converter === 'function' ? converter(data) : (data || {}));
+                    let $icon = $('<i class="event-icon"></i>');
+                    let $event = $('<p class="event"/>');
+                    $event.append($icon);
+                    let format = (year !== plan.start.year() && year !== plan.end.year() ? 'YYYY年' : '') + 'MM月DD日';
+                    let tips = plan.done ? '' : ' 最迟' + plan.end.format(format) + ' ' + self.friendlyDiff(today, plan.end);
+                    $event.append((i + 1) + '、' + plan.name + tips);
+                    $event.toggleClass('event-done', plan.done);
+                    let gone = !plan.end.isAfter(today), coming = !plan.start.isBefore(today);
+                    $event.toggleClass('event-gone', gone);
+                    $event.toggleClass('event-coming', coming);
+                    $event.toggleClass('event-doing', !gone && !coming);
+                    self.appendEventAction($event, data);
+                    $el.append($event);
+                });
+            } else if ('budgets' === opts.action) {
+                let amount = 0, actualAmount = 0;
+                $.each(list, function(i, data){
+                    let $event = $('<p class="event"/>');
+                    let tips = [];
+                    if (data.amount) {
+                        tips.push('预算￥' + data.amount);
+                        amount += parseFloat(data.amount);
+                    }
+                    if (data.actualAmount) {
+                        tips.push('实际￥' + data.actualAmount);
+                        actualAmount += parseFloat(data.actualAmount);
+                    }
+                    $event.append((i + 1) + '、' + data.name + ' ' + tips.join('，'));
+                    self.appendEventAction($event, data);
+                    $el.append($event);
+                });
+                let $event = $('<p class="event"/>');
+                $event.append('合计：预算￥' + amount + '，实际￥' + actualAmount);
+                $el.append($event);
+            } else {
+                console.error('not support ' + opts.action +  ' render.');
+            }
+        },
+        appendEventAction: function($event, data) {
+            let opts = this.options, actions = opts.actions;
+            if (actions.length) {
+                $.each(actions, function(i, action){
+                    let $edit = $('<a href="javascript:void(0)"></a>').html(action.label);
+                    let key = action.key, name = action.name || key, value = data[key] || '';
+                    $edit.attr({href: action.url + (action.url.indexOf('?') === -1 ? '?' : '&') + name + '=' + value});
+                    $event.append('\n', $edit);
+                });
+            }
+        },
+        friendlyDiff: function(start, end) {
+            return (end.isBefore(start) ? '已过去' : '还剩') + ' ' + end.to(start, true)
+        }
+    });
+
+    let old = $.fn.eventShow;
+    $.fn.eventShow = function(options){
+        return this.each(function(){
+            let $el = $(this);
+            let instance = $el.data('eventShow');
+            if (!instance) $el.data('eventShow', (instance = new EventShow($el, options)));
+        });
+    };
+    $.fn.eventShow.Constructor = EventShow;
+    $.fn.eventShow.noConflict = function(){ $.fn.eventShow = old; return this};
 })(jQuery);

@@ -20,6 +20,7 @@
         <intercept-url pattern="/system/article/**" access="hasRole('ROLE_ARTICLE')" />
         <intercept-url pattern="/system/metro/**" access="hasRole('ROLE_METRO')" />
         <intercept-url pattern="/system/app/**" access="hasRole('ROLE_APP')" />
+        <intercept-url pattern="/system/activity/**" access="hasRole('ROLE_ACTIVITY')" />
         <intercept-url pattern="/system/feedback/**" access="hasRole('ROLE_FEEDBACK')" />
         <form-login login-page="/system/login" login-processing-url="/system/account_check"
                     default-target-url="/system/index" authentication-failure-url="/system/login?action=1"

@@ -57,6 +57,14 @@
     <p class="weui-grid__label">待办事项</p>
   </a>
 </security:authorize>
+<security:authorize access="hasRole('ROLE_ACTIVITY')">
+  <a href="${pageContext.request.contextPath}/system/activity/list" class="weui-grid">
+    <div class="weui-grid__icon">
+      <img src="${pageContext.request.contextPath}/images/icons/icon_plan.png">
+    </div>
+    <p class="weui-grid__label">活动</p>
+  </a>
+</security:authorize>
 <security:authorize access="hasRole('ROLE_ARTICLE')">
   <a href="${pageContext.request.contextPath}/system/article/list" class="weui-grid">
     <div class="weui-grid__icon">
